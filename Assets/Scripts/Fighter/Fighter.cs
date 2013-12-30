@@ -94,5 +94,10 @@ public class Fighter : MonoBehaviour {
 		{
 			currentSpeed -= (acceleration * Time.deltaTime);
 		}
+
+		if(Input.GetKey (KeyCode.Q))
+		{
+			this.transform.Rotate(new Vector3(0,0,100 * Time.deltaTime));
+		}
 	}
 }
