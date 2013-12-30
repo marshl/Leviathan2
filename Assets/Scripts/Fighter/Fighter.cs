@@ -9,7 +9,9 @@ public class Fighter : MonoBehaviour {
 		Undocked,
 		Dead
 	};
-	
+
+	const float EULER = 2.71828f;
+
 	FighterState state;
 	public float turnSpeed = 0.5f;
 	public float turnRate = 4;
@@ -17,6 +19,8 @@ public class Fighter : MonoBehaviour {
 	public float currentSpeed = 0.0f;
 	public float acceleration = 2.0f;
 	public float maxSpeed = 10.0f;
+
+	public bool useGaussianSmoothing = false;
 
 	Quaternion desiredRotation;
 	
@@ -30,13 +34,14 @@ public class Fighter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//inertialVector = this.transform.forward;
+		desiredRotation = this.transform.rotation;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 		CheckFlightControls();
-		print(Input.mousePosition);
+		//print(Input.mousePosition);
 	
 	}
 	
@@ -78,11 +83,42 @@ public class Fighter : MonoBehaviour {
 			                                          Input.mousePosition.y - Screen.height / 2,
 			                                          0);
 			//Set the desired rotation based on mouse position.
-			desiredRotation = this.transform.rotation * Quaternion.Euler (new Vector3(
+
+			transformedMousePos.y /= Screen.height / 2;
+			transformedMousePos.x /= Screen.width / 2;
+
+			if(useGaussianSmoothing)
+			{
+				transformedMousePos.y *= Gaussian(transformedMousePos.y);
+				transformedMousePos.x *= Gaussian(transformedMousePos.x);
+			}
+
+			print(transformedMousePos);
+
+			if(useGaussianSmoothing)
+			{
+				desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(
+				turnSpeed * transformedMousePos.y,
+				turnSpeed * transformedMousePos.x * -1 ,
+				0));
+			}
+			else 
+			{
+				desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(
+					turnSpeed * transformedMousePos.y * -1,
+					turnSpeed * transformedMousePos.x ,
+					0));
+			}
+
+			/*desiredRotation = this.transform.rotation * Quaternion.Euler (new Vector3(
+				turnSpeed * (transformedMousePos.y / Screen.height/2 ) * -1,
+				turnSpeed * (transformedMousePos.x / Screen.width/2 ),
+				0));*/
+		/*	desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(
 				turnSpeed * (transformedMousePos.y / Screen.height/2 ) * -1,
 				turnSpeed * (transformedMousePos.x / Screen.width/2 ),
 				0));
-
+				*/
 
 		}
 		
@@ -97,7 +133,26 @@ public class Fighter : MonoBehaviour {
 
 		if(Input.GetKey (KeyCode.Q))
 		{
-			this.transform.Rotate(new Vector3(0,0,100 * Time.deltaTime));
+			desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(0,0,rollSpeed));
 		}
+		if(Input.GetKey (KeyCode.E))
+		{
+			desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(0,0,-rollSpeed));
+		}
+
+	}
+	//Function to compute a gaussian curve to smooth turning a bit
+	//Uses magic numbers because it's highly unlikely to be used with any other code in this game.
+	float Gaussian(float x)
+	{
+		float a, b, c, d;
+
+		a = -1.0f; // peak height
+		b = 0.0f; // center peak position
+		c = 1.0f; // width of the bell
+		d = +2.0f; // offset
+
+		float gaussian = a * EULER -  (Mathf.Pow ( x - b,2) / ( 2 * Mathf.Pow (c,2))) + d;
+		return gaussian;
 	}
 }
