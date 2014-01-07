@@ -6730,7 +6730,7 @@ MonoBehaviour:
   currentSpeed: 0
   acceleration: 2
   maxSpeed: 10
-  useGaussianSmoothing: 0
+  useGaussianSmoothing: 1
 --- !u!54 &1988041917
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6740,11 +6740,11 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 99999998000
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &1991713409
 GameObject:
