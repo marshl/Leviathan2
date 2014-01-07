@@ -3,8 +3,10 @@ using System.Collections;
 
 public class MenuHost : MonoBehaviour
 {
+	// Instance
 	public static MenuHost instance;
 
+	// Public Variables
 	public int numConnections;
 	public int portNumber;
 	public bool useNat;
@@ -22,6 +24,7 @@ public class MenuHost : MonoBehaviour
 
 	public void OnGUI()
 	{
+
 	}
 }
 
