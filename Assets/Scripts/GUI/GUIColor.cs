@@ -12,6 +12,7 @@ public class GUIColor : GUILerp
 
 	protected override void Awake()
 	{
+		base.Awake();
 		if ( this.targetText != null )
 		{
 			this.normalColour = this.targetText.color;

@@ -9,7 +9,7 @@ public class GUITextField : MonoBehaviour
 	public float blinkRate = 0.25f;
 	private float blinkTimer = 0.0f;
 
-	private string text = "";
+	public string text = "";
 
 	public bool selected = false;
 	private bool mouseIsHovering = false;
@@ -55,6 +55,8 @@ public class GUITextField : MonoBehaviour
 					this.text = this.text.Substring( 0, this.text.Length - 1 );
 				}
 			}
+			//TODO: Tab handling (switch to other fields)
+			//TODO: Event trigger on enter event
 			else if ( this.text.Length < this.characterLimit )
 			{
 				this.text += c;
@@ -85,20 +87,4 @@ public class GUITextField : MonoBehaviour
 	{
 		this.selected = true;
 	}
-
-	/*public void OnGUI()
-	{
-		if ( Event.current.type == EventType.KeyDown
-		  && Event.current.keyCode != KeyCode.None )
-		{
-			KeyPressedEventHandler();
-		}
-	}
-
-	private void KeyPressedEventHandler()
-	{
-		Debug.Log( Event.current.keyCode );
-		this.text += Event.current.keyCode.ToString();
-	}
-	*/
 }
