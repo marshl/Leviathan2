@@ -47,13 +47,14 @@ public class Fighter : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
+		if(this.rigidbody.velocity != this.transform.forward * currentSpeed)
 		this.rigidbody.velocity = (this.transform.forward * currentSpeed);// + (inertialVector * inertialSpeed);
-
+		this.rigidbody.maxAngularVelocity = 0;
 	}
 
 	void LateUpdate()
 	{
-		this.transform.rotation = Quaternion.Slerp (this.transform.rotation,desiredRotation,Time.deltaTime * turnRate);
+		this.rigidbody.rotation = Quaternion.Slerp (this.rigidbody.rotation,desiredRotation,Time.deltaTime * turnRate);
 	}
 	
 	void CheckFlightControls()
