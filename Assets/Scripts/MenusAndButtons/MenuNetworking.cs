@@ -13,26 +13,27 @@ public class MenuNetworking : MonoBehaviour
 	// Public Variables
 	public string gameName;
 	public string gameComment;
+	public HostData connectionHost = null;
 	
 	// Private Variables
 	private HostData[] gameHosts;
-
+	
 	private void Awake()
 	{
 		MenuNetworking.instance = this;
-		Debug.Log( "Requesting host list for \"" + this.gameTypeName + "\"" );
 		MasterServer.RequestHostList( this.gameTypeName );
 	}
 
 	public void UpdateHostList()
 	{
-		MasterServer.ClearHostList();
+		//MasterServer.ClearHostList();
+		MasterServer.RequestHostList( this.gameTypeName );
 		this.gameHosts = MasterServer.PollHostList();
-		Debug.Log( "Games found: " + this.gameHosts.Length );
+		/*Debug.Log( "Games found: " + this.gameHosts.Length );
 		foreach ( HostData hostData in this.gameHosts )
 		{
 			Debug.Log( hostData.gameName + " " + hostData.ip + " " + hostData.port + " " + hostData.useNat );
-		}
+		}*/
 	}
 	
 	public void StartServer( int _port, string _gameName, string _comment )
@@ -63,6 +64,20 @@ public class MenuNetworking : MonoBehaviour
 		Debug.Log( "Connection result " + _ip + ":" + _port + " " + result.ToString() );
 	}
 
+	public void ConnectToHostIndex( int _index )
+	{
+		if ( _index < 0 || _index > this.gameHosts.Length )
+		{
+			Debug.LogError( "Index out of range: " + _index, this );
+			return;
+		}
+
+		this.connectionHost = this.gameHosts[ _index ];
+		this.gameName = this.connectionHost.gameName;
+		this.gameComment = this.connectionHost.comment;
+		this.Connect( this.connectionHost.ip[0], this.connectionHost.port );
+	}
+
 	public HostData GetHostData( int _index )
 	{
 		if ( _index < 0 )
@@ -80,6 +95,7 @@ public class MenuNetworking : MonoBehaviour
 	private void OnConnectedToServer()
 	{
 		Debug.Log( "Successfully connected to server." );
+		MainMenuButtons.instance.OpenGameLobby();
 	}
 	
 	private void OnDisconnectedFromServer( NetworkDisconnection _info )
@@ -97,6 +113,8 @@ public class MenuNetworking : MonoBehaviour
 		{
 			Debug.Log( "Diconnected from server." );
 		}
+
+		MainMenuButtons.instance.ExitLobby();
 	}
 	
 	private void OnFailedToConnect( NetworkConnectionError _info )
@@ -118,6 +136,11 @@ public class MenuNetworking : MonoBehaviour
 			Debug.Log( "Connection Failure: Banned from server." );
 			break;
 		}
+		case NetworkConnectionError.ConnectionFailed:
+		{
+			Debug.Log( "Connection Failure: General connection failure" );
+			break;
+		}
 		default:
 		{
 			Debug.LogError( "Uncaught connection failure \"" + _info.ToString() + "\"" );
@@ -130,6 +153,8 @@ public class MenuNetworking : MonoBehaviour
 	{
 		Debug.Log( "Player connected IP:" + _player.ipAddress + " Port;" + _player.port
 		          + " ExtIP:" + _player.externalIP + " ExtPort:" + _player.externalPort );
+
+		//MenuLobby.instance.AddPlayer( _player );
 	}
 	
 	private void OnPlayerDisconnected( NetworkPlayer _player )
@@ -137,6 +162,7 @@ public class MenuNetworking : MonoBehaviour
 		Debug.Log( "Player has disconnected IP:" + _player.ipAddress + " Port:" + _player.port );
 		Network.RemoveRPCs( _player );
 		Network.DestroyPlayerObjects( _player ); 
+		//MenuLobby.instance.RemovePlayer( _player );
 	}
 	
 	private void OnServerInitialized()

@@ -18,14 +18,25 @@ public class MenuServerList : MonoBehaviour
 		MenuServerList.instance = this;
 
 		this.serverRows = new MenuServerRow[this.serverTableLength];
-		this.serverRows[0] = this.firstServerRow;
-		for ( int i = 1; i < this.serverTableLength; ++i )
+		for ( int i = 0; i < this.serverTableLength; ++i )
 		{
-			GameObject rowObj = GameObject.Instantiate( this.firstServerRow.gameObject ) as GameObject;
+			GameObject rowObj;
+			if ( i == 0 )
+			{
+				rowObj = this.firstServerRow.gameObject;
+			}
+			else
+			{
+				rowObj = GameObject.Instantiate( this.firstServerRow.gameObject ) as GameObject;
+			}
+
 			this.serverRows[i] = rowObj.GetComponent<MenuServerRow>();
 			rowObj.transform.Translate( 0.0f, -(float)i * this.serverRowHeight, 0.0f, Space.Self );
 			rowObj.name = "ConnectionRow" + i;
 			rowObj.transform.parent = this.firstServerRow.transform.parent;
+
+			GUIEventMessage messageHandler = rowObj.GetComponent<GUIEventMessage>();
+			messageHandler.value = i.ToString();
 		}
 	}
 
@@ -42,11 +53,19 @@ public class MenuServerList : MonoBehaviour
 
 	private void RefreshServerList()
 	{
-		Debug.Log( "Refreshing server list." );
+		//Debug.Log( "Refreshing server list." );
 		MenuNetworking.instance.UpdateHostList();
 		for ( int i = 0; i < this.serverTableLength; ++i )
 		{
-			this.serverRows[i].hostData = MenuNetworking.instance.GetHostData( i );
+			//this.serverRows[i].hostData = MenuNetworking.instance.GetHostData( i );
+			if ( MenuNetworking.instance.GetHostData(i) != null )
+			{
+				this.serverRows[i].hostDataIndex = i;
+			}
+			else
+			{
+				this.serverRows[i].hostDataIndex = -1;
+			}
 		}
 		this.RefreshGUI();
 	}
@@ -63,5 +82,25 @@ public class MenuServerList : MonoBehaviour
 		{
 			serverRow.UpdateGUI();
 		}
+	}
+
+	private void OnServerRowDown( string _arg )
+	{
+		int index = 0;
+		if ( int.TryParse( _arg, out index ) == false )
+		{
+			Debug.LogError( "Cannot convert argument into int \"" + _arg + "\"", this );
+			return;
+		}
+	
+		if ( index < 0 || index > this.serverRows.Length )
+		{
+			Debug.LogError( "Server index out of range \"" + index + "\"", this );
+			return;
+		}
+		//MenuServerRow serverRow = this.serverRows[ _index ];
+
+		MenuNetworking.instance.ConnectToHostIndex( index );
+		MainMenuButtons.instance.OpenConnectingWindow();
 	}
 }

@@ -5,24 +5,60 @@ using System;
 
 public class MenuLobby : MonoBehaviour
 {
+	// Instance
 	public static MenuLobby instance;
 
-	public GUIText gameNameText;
-	public GUIText gameCommentText;
-
+	// Private Structures
 	private class LobbyMessage
 	{
+		public NetworkPlayer sender;
 		public string message;
 		public string playerName;
 		public DateTime timeReceived;
 	};
 
+	// Editor Variables
+	public GUIText gameNameText;
+	public GUIText gameCommentText;
+	public GUITextField messageTextField;
+	public GUIText messageText;
+
+	public MenuPlayerRow firstPlayerRow;
+	public float playerRowOffset;
+
+	public int messageLimit;
+
+	public string[] playerMessageColours;
+
+	// Private Variables
+	//private List<NetworkPlayer> networkPlayers;
 	private List<LobbyMessage> messages;
+	private List<MenuPlayerRow> playerRows;
 
 	private void Awake ()
 	{
 		MenuLobby.instance = this;
 		this.messages = new List<LobbyMessage>();
+		this.playerRows = new List<MenuPlayerRow>( MenuNetworking.instance.connections );
+		//this.networkPlayers = new List<NetworkPlayer>( MenuNetworking.instance.connections );
+
+		for ( int i = 0; i < MenuNetworking.instance.connections; ++i )
+		{
+			GameObject rowObj = ( i == 0 ) ? this.firstPlayerRow.gameObject 
+				: GameObject.Instantiate( this.firstPlayerRow.gameObject ) as GameObject;
+
+			rowObj.transform.parent = this.firstPlayerRow.transform.parent;
+			rowObj.transform.Translate( 0.0f, (float)i * this.playerRowOffset, 0.0f );
+			rowObj.name = "PlayerRow" + i;
+			MenuPlayerRow rowScript = rowObj.GetComponent<MenuPlayerRow>();
+			rowScript.playerIndex = i;
+			this.playerRows.Add( rowScript );
+		}
+	}
+
+	private void Update()
+	{
+		this.UpdatePlayerListGUI();
 	}
 
 	public void StartLobby()
@@ -37,13 +73,78 @@ public class MenuLobby : MonoBehaviour
 		MainMenuButtons.instance.ExitLobby();
 	}
 
-	private void SendLobbyMessage( string _message, NetworkPlayer _sender )
+	[RPC]
+	private void SendLobbyMessage( NetworkViewID _viewID, string _message )
 	{
 		LobbyMessage message = new LobbyMessage();
 		message.message = _message;
-		message.playerName = _sender.ipAddress;
+		//message.playerName = _sender.ipAddress;
+		message.playerName = _viewID.owner.ipAddress;
 		message.timeReceived = DateTime.Now;
+		message.sender = _viewID.owner;
+
 
 		this.messages.Add( message );
+		if ( this.messages.Count > this.messageLimit )
+		{
+			this.messages.RemoveAt( this.messages.Count - 1 );
+		}
+
+		this.UpdateMessageGUI();
 	}
+
+	private void UpdateMessageGUI()
+	{
+		string str = "";
+		for ( int i = this.messages.Count - 1; i >= 0; --i )
+		{
+			LobbyMessage message = this.messages[i];
+			str += message.sender.ipAddress + " ("
+				+ message.timeReceived + "): " + this.messages[i].message + "\n";
+		}
+		this.messageText.text = str;
+	}
+
+	private void OnSendMessageDown()
+	{
+		string text = this.messageTextField.text;
+		if ( text == "" )
+		{
+			return;
+		}
+
+		networkView.RPC( "SendLobbyMessage", RPCMode.All, networkView.viewID, text );
+		this.messageTextField.GetComponent<GUITextField>().text = "";
+	}
+
+	/*public void AddPlayer( NetworkPlayer _player )
+	{
+		this.networkPlayers.Add( _player );
+		this.UpdatePlayerListGUI();
+	}*/
+
+	/*public void RemovePlayer( NetworkPlayer _player )
+	{
+		this.networkPlayers.Remove ( _player );
+		this.UpdatePlayerListGUI();
+	}*/
+
+	private void UpdatePlayerListGUI()
+	{
+		//Debug.Log ( this.networkPlayers.Count );
+		for ( int i = 0; i < this.playerRows.Count; ++i )
+		{
+			this.playerRows[i].UpdateGUI();
+		}
+	}
+
+	/*public bool PlayerIndexIsValid( int _index )
+	{
+		return _index >= 0 && _index < this.networkPlayers.Count;;
+	}
+
+	public NetworkPlayer GetPlayerOfIndex( int _index )
+	{
+		return this.networkPlayers[ _index ];
+	}*/
 }

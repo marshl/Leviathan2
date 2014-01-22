@@ -10,6 +10,7 @@ public class MainMenuButtons : MonoBehaviour
 	public GameObject hostPanelObj;
 	public GameObject serverPanelObj;
 	public GameObject lobbyPanelObj;
+	public GameObject connectingPanelObj;
 
 	public GUITextField hostPortField;
 	public GUITextField hostNameField;
@@ -18,9 +19,10 @@ public class MainMenuButtons : MonoBehaviour
 	private enum STATE
 	{
 		MAIN,
-		JOIN,
+		SERVERS,
 		HOST,
-		LOBBY,
+		GAME_LOBBY,
+		CONNECTING,
 	}
 
 	private MainMenuButtons.STATE currentState = MainMenuButtons.STATE.MAIN;
@@ -28,7 +30,6 @@ public class MainMenuButtons : MonoBehaviour
 	private void Awake()
 	{
 		MainMenuButtons.instance = this;
-
 		this.mainPanelObj.SetActive( true );
 	}
 
@@ -44,7 +45,15 @@ public class MainMenuButtons : MonoBehaviour
 		{
 			break;
 		}
-		case STATE.JOIN:
+		case STATE.SERVERS:
+		{
+			break;
+		}
+		case STATE.GAME_LOBBY:
+		{
+			break;
+		}
+		case STATE.CONNECTING:
 		{
 			break;
 		}
@@ -58,12 +67,14 @@ public class MainMenuButtons : MonoBehaviour
 
 	private void OnHostButtonDown()
 	{
+		this.currentState = STATE.HOST;
 		this.mainPanelObj.SetActive( false );
 		this.hostPanelObj.SetActive( true );
 	}
 
 	private void OnReturnToMainDown()
 	{
+		this.currentState = STATE.MAIN;
 		this.mainPanelObj.SetActive( true );
 		this.hostPanelObj.SetActive( false );
 		this.serverPanelObj.SetActive( false );
@@ -82,10 +93,25 @@ public class MainMenuButtons : MonoBehaviour
 		MenuServerList.instance.StartJoinMenu();
 	}
 
+	public void OpenGameLobby()
+	{
+		this.currentState = STATE.GAME_LOBBY;
+		this.connectingPanelObj.SetActive( false );
+		this.lobbyPanelObj.SetActive( true );
+		MenuLobby.instance.StartLobby();
+	}
+
 	public void ExitLobby()
 	{
 		this.mainPanelObj.SetActive( true );
 		this.lobbyPanelObj.SetActive( false );
+	}
+
+	public void OpenConnectingWindow()
+	{
+		this.currentState = STATE.CONNECTING;
+		this.connectingPanelObj.SetActive( true );
+		this.serverPanelObj.SetActive( false );
 	}
 
 	private void OnStartServerDown()
