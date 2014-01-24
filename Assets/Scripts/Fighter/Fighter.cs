@@ -1,159 +1,140 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class Fighter : MonoBehaviour {
-	
-	enum FighterState
-	{
-		Docked,
-		Undocked,
-		Dead
-	};
 
 	const float EULER = 2.71828f;
 
-	FighterState state;
-	public float turnSpeed = 0.5f;
-	public float turnRate = 4;
-	public float rollSpeed = 0.5f;
-	public float currentSpeed = 0.0f;
+	public float turnSpeed = 35.0f;
+	public float rollSpeed = 2.0f;
 	public float acceleration = 2.0f;
 	public float maxSpeed = 10.0f;
-
-	public bool useGaussianSmoothing = false;
-
-	Quaternion desiredRotation;
-	
-	//public float inertia = 1;
-	//public float inertialSpeed = 0;
-	
-	//public Vector3 inertialVector;
-	//public Vector3 targetVector;
-	
+	public float desiredSpeed = 0.0f;
+	public float minSpeed = -2.0f;
+	public float rollDamping = 0.3f;
+	public float minimumBounce = 10.0f;
+	public float bounceVelocityModifier = 300.0f;
+	//public float currentSpeed = 0.0f;
+	//public float desiredSpeed = 0.0f;
+	//public float maxSpeed = 10.0f; //Potentially used as a hard limit
 
 	// Use this for initialization
 	void Start () {
-		//inertialVector = this.transform.forward;
-		desiredRotation = this.transform.rotation;
+	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-		CheckFlightControls();
-		//print(Input.mousePosition);
 	
-	}
-	
-	void FixedUpdate()
-	{
-		if(this.rigidbody.velocity != this.transform.forward * currentSpeed)
-		this.rigidbody.velocity = (this.transform.forward * currentSpeed);// + (inertialVector * inertialSpeed);
-		this.rigidbody.maxAngularVelocity = 0;
 	}
 
 	void LateUpdate()
 	{
-		this.rigidbody.rotation = Quaternion.Slerp (this.rigidbody.rotation,desiredRotation,Time.deltaTime * turnRate);
+		this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
+		CheckFlightControls();
+		ApplyDrag();
 	}
-	
+
 	void CheckFlightControls()
 	{
-		/*if(Input.GetKey(KeyCode.LeftArrow))
-		{
-			desiredRotation = Quaternion.Euler (this.transform.rotation.eulerAngles + new Vector3(0,-turnSpeed,0));
-			//this.transform.Rotate(new Vector3(0,-turnSpeed * Time.deltaTime,0));
-		}
-		if(Input.GetKey(KeyCode.RightArrow))
-		{
-			desiredRotation = Quaternion.Euler (this.transform.rotation.eulerAngles + new Vector3(0,turnSpeed,0));
-		}
-		
-		if(Input.GetKey(KeyCode.UpArrow))
-		{
-			desiredRotation = Quaternion.Euler (this.transform.rotation.eulerAngles + new Vector3(-turnSpeed,0,0));
-		}
-		if(Input.GetKey(KeyCode.DownArrow))
-		{
-			desiredRotation = Quaternion.Euler (this.transform.rotation.eulerAngles + new Vector3(turnSpeed,0,0));
-		}*/
-
 		if(Input.GetMouseButton(0))
 		{
 			Vector3 transformedMousePos = new Vector3(Input.mousePosition.x - Screen.width / 2,
 			                                          Input.mousePosition.y - Screen.height / 2,
 			                                          0);
-			//Set the desired rotation based on mouse position.
 
+			Vector3 torqueValue = Vector3.zero;
+			//Set the desired rotation based on mouse position.
+			
 			transformedMousePos.y /= Screen.height / 2;
 			transformedMousePos.x /= Screen.width / 2;
 
-			if(useGaussianSmoothing)
-			{
-				transformedMousePos.y *= Gaussian(transformedMousePos.y);
-				transformedMousePos.x *= Gaussian(transformedMousePos.x);
-			}
+			transformedMousePos.y *= Gaussian(transformedMousePos.y);
+			transformedMousePos.x *= Gaussian(transformedMousePos.x);
 
-			print(transformedMousePos);
+			torqueValue.x = transformedMousePos.y * Time.deltaTime * turnSpeed;
+			torqueValue.y = -transformedMousePos.x * Time.deltaTime * turnSpeed;
 
-			if(useGaussianSmoothing)
-			{
-				desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(
-				turnSpeed * transformedMousePos.y,
-				turnSpeed * transformedMousePos.x * -1 ,
-				0));
-			}
-			else 
-			{
-				desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(
-					turnSpeed * transformedMousePos.y * -1,
-					turnSpeed * transformedMousePos.x ,
-					0));
-			}
+			this.rigidbody.AddRelativeTorque(torqueValue);
 
-			/*desiredRotation = this.transform.rotation * Quaternion.Euler (new Vector3(
-				turnSpeed * (transformedMousePos.y / Screen.height/2 ) * -1,
-				turnSpeed * (transformedMousePos.x / Screen.width/2 ),
-				0));*/
-		/*	desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(
-				turnSpeed * (transformedMousePos.y / Screen.height/2 ) * -1,
-				turnSpeed * (transformedMousePos.x / Screen.width/2 ),
-				0));
-				*/
-
+		//	print("Torque vector: " + torqueValue);
+			
 		}
-		
-		if(Input.GetKey(KeyCode.W))
+
+		if(Input.GetKey (KeyCode.W))
 		{
-			currentSpeed += (acceleration * Time.deltaTime);
+			desiredSpeed += acceleration * Time.deltaTime;
+			if(desiredSpeed > maxSpeed)
+			{
+				desiredSpeed = maxSpeed;
+			}
 		}
-		if(Input.GetKey(KeyCode.S))
+		if(Input.GetKey (KeyCode.S))
 		{
-			currentSpeed -= (acceleration * Time.deltaTime);
+			//this.rigidbody.AddForce (-this.transform.forward * acceleration * Time.deltaTime);
+			desiredSpeed -= acceleration * Time.deltaTime;
+			if(desiredSpeed < minSpeed)
+			{
+				desiredSpeed = minSpeed;
+			}
 		}
 
 		if(Input.GetKey (KeyCode.Q))
 		{
-			desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(0,0,rollSpeed));
+			this.rigidbody.AddRelativeTorque (new Vector3(0,0,rollSpeed));
 		}
 		if(Input.GetKey (KeyCode.E))
 		{
-			desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(0,0,-rollSpeed));
+			this.rigidbody.AddRelativeTorque (new Vector3(0,0,-rollSpeed));
 		}
-
 	}
-	//Function to compute a gaussian curve to smooth turning a bit
-	//Uses magic numbers because it's highly unlikely to be used with any other code in this game.
+
+	void ApplyDrag()
+	{
+
+		//I pray this works. Obtain local angular velocity and reduce a single axis of it.
+
+		Vector3 angularVeloc = transform.InverseTransformDirection(rigidbody.angularVelocity);
+
+		angularVeloc.z *= rollDamping;
+
+		this.rigidbody.AddRelativeTorque (angularVeloc - transform.InverseTransformDirection(rigidbody.angularVelocity));
+	}
+
 	float Gaussian(float x)
 	{
 		float a, b, c, d;
-
+		
 		a = -1.0f; // peak height
 		b = 0.0f; // center peak position
 		c = 1.0f; // width of the bell
 		d = +2.0f; // offset
-
+		
 		float gaussian = a * EULER -  (Mathf.Pow ( x - b,2) / ( 2 * Mathf.Pow (c,2))) + d;
 		return gaussian;
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		/*Vector3 averagePoint = Vector3.zero;
+		int counter = 0;
+
+		foreach (ContactPoint contact in collision.contacts)
+		{
+			averagePoint += contact.normal;
+			counter++;
+		}
+
+		averagePoint /= counter;*/
+
+		Vector3 bounceForce = (collision.contacts[0].normal * 
+		                       this.rigidbody.velocity.magnitude * bounceVelocityModifier) 
+			+ (minimumBounce * collision.contacts[0].normal.normalized);
+
+		print(bounceForce);
+
+
+		this.rigidbody.AddForce (bounceForce);
+		//this.rigidbody.AddForce (averagePoint * this.rigidbody.velocity.magnitude * bounciness); //bounciness);
 	}
 }
