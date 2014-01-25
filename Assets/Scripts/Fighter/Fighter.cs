@@ -61,6 +61,12 @@ public class Fighter : MonoBehaviour {
 			
 		}
 
+		if(Input.GetMouseButton (1))
+		{
+			//WeaponDescManager.instance.GetComponent<BurstFireWeaponTest>().SendFireMessage ();
+			this.GetComponent<BurstFireWeaponTest>().SendFireMessage ();
+		}
+
 		if(Input.GetKey (KeyCode.W))
 		{
 			desiredSpeed += acceleration * Time.deltaTime;
