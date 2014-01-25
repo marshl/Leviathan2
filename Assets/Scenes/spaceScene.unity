@@ -1793,7 +1793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 50
-  moveSpeed: 20
+  moveSpeed: 40
   maxDistance: 100
   spread: 1
   turnRate: 0

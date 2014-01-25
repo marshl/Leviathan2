@@ -59,6 +59,9 @@ public abstract class BulletBase : MonoBehaviour
 	public virtual void Reset()
 	{
 		this.distanceTravelled = 0.0f;
+
+		this.rigidbody.velocity = Vector3.zero;
+		this.rigidbody.angularVelocity = Vector3.zero;
 	}
 }
 

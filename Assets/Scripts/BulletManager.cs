@@ -171,13 +171,12 @@ public class BulletManager : MonoBehaviour
 			return null;
 		}
 		bulletScript.Reset();
-		bulletScript.OnShoot();
-		
+
 		GameObject bulletObj = bulletScript.gameObject;
 		bulletObj.SetActive( true );
 		bulletObj.transform.position = _pos;
-		bulletObj.transform.rotation = Quaternion.AngleAxis( _rotation, _forward );
-		
+		bulletObj.transform.rotation = Quaternion.LookRotation( _forward );
+
 		float spread = bulletScript.desc.spread;
 		if ( spread != 0.0f )
 		{
@@ -186,7 +185,7 @@ public class BulletManager : MonoBehaviour
 			perp = bulletObj.transform.TransformDirection( perp );
 			bulletObj.transform.Rotate( perp, UnityEngine.Random.Range( -spread, spread ) );
 		}
-		
+		bulletScript.OnShoot();
 		return bulletScript;
 	}
 

@@ -94,9 +94,10 @@ public abstract class WeaponBase : MonoBehaviour
 				(
 					this.weaponDesc.bulletDesc, 
 					currentFirePoint.transform.position, 
-					currentFirePoint.transform.forward, 
+					currentFirePoint.transform.TransformDirection(Vector3.forward), 
 					this.weaponDesc.spread
 				);
+				Debug.Log( currentFirePoint.transform.TransformDirection(Vector3.forward) );
 				if ( bullet == null )
 				{
 					Debug.LogError( "Error firing weapon \"" + this.GetType().ToString() + "\"", this );
