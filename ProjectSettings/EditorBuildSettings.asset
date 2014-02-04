@@ -7,5 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/MenuTest.unity
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/spaceScene.unity
+  - enabled: 1
+    path: Assets/Scenes/GameTest.unity

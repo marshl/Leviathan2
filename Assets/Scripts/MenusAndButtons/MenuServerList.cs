@@ -93,12 +93,17 @@ public class MenuServerList : MonoBehaviour
 			return;
 		}
 	
-		if ( index < 0 || index > this.serverRows.Length )
+		if ( index < 0 || index >= this.serverRows.Length )
 		{
 			Debug.LogError( "Server index out of range \"" + index + "\"", this );
 			return;
 		}
 		//MenuServerRow serverRow = this.serverRows[ _index ];
+
+		if ( MenuNetworking.instance.IsValidHostIndex( index ) == false )
+		{
+			return;
+		}
 
 		MenuNetworking.instance.ConnectToHostIndex( index );
 		MainMenuButtons.instance.OpenConnectingWindow();

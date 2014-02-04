@@ -18,6 +18,20 @@ public class Fighter : MonoBehaviour {
 	//public float desiredSpeed = 0.0f;
 	//public float maxSpeed = 10.0f; //Potentially used as a hard limit
 
+	// Unity Callback: Do not modify signature
+	private void OnNetworkInstantiate( NetworkMessageInfo _info )
+	{
+		Debug.Log( "Checking ownership status", this );
+
+		if ( this.networkView.isMine == false )
+		{
+			Destroy( this.rigidbody );
+			this.enabled = false;
+			this.gameObject.GetComponentInChildren<Camera>().enabled = false;
+			this.gameObject.GetComponentInChildren<AudioListener>().enabled = false;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 	

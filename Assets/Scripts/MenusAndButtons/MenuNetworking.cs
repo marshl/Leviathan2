@@ -17,9 +17,12 @@ public class MenuNetworking : MonoBehaviour
 	
 	// Private Variables
 	private HostData[] gameHosts;
+
+	private int lastLevelPrefix;
 	
 	private void Awake()
 	{
+		//DontDestroyOnLoad( this );
 		MenuNetworking.instance = this;
 		MasterServer.RequestHostList( this.gameTypeName );
 	}
@@ -36,7 +39,7 @@ public class MenuNetworking : MonoBehaviour
 		}*/
 	}
 	
-	public void StartServer( int _port, string _gameName, string _comment )
+	public NetworkConnectionError StartServer( int _port, string _gameName, string _comment )
 	{
 		this.gameName = _gameName;
 		this.gameComment = _comment;
@@ -50,32 +53,41 @@ public class MenuNetworking : MonoBehaviour
 		catch 
 		{
 			Debug.Log( "Error starting server: " + result.ToString() );
-			return;
+			return result;
 		}
 		Debug.Log( "Start Server result: " + result.ToString() ); 
 		Debug.Log( "Registering master server: " + this.gameTypeName );
 		MasterServer.RegisterHost( this.gameTypeName, this.gameName, this.gameComment );
+
+		return result;
 	}
 
-	public void Connect( string _ip, int _port )
+	public NetworkConnectionError Connect( string _ip, int _port )
 	{
 		Debug.Log( "Connecting IP:" + _ip + " Port:" + _port );
 		NetworkConnectionError result = Network.Connect( _ip, _port );
 		Debug.Log( "Connection result " + _ip + ":" + _port + " " + result.ToString() );
+
+		return result;
 	}
 
-	public void ConnectToHostIndex( int _index )
+	public bool IsValidHostIndex( int _index )
 	{
-		if ( _index < 0 || _index > this.gameHosts.Length )
+		return _index >= 0 && _index < this.gameHosts.Length;
+	}
+
+	public NetworkConnectionError ConnectToHostIndex( int _index )
+	{
+		if ( _index < 0 || _index >= this.gameHosts.Length )
 		{
 			Debug.LogError( "Index out of range: " + _index, this );
-			return;
+			return NetworkConnectionError.ConnectionFailed;
 		}
 
 		this.connectionHost = this.gameHosts[ _index ];
 		this.gameName = this.connectionHost.gameName;
 		this.gameComment = this.connectionHost.comment;
-		this.Connect( this.connectionHost.ip[0], this.connectionHost.port );
+		return this.Connect( this.connectionHost.ip[0], this.connectionHost.port );
 	}
 
 	public HostData GetHostData( int _index )
@@ -92,12 +104,14 @@ public class MenuNetworking : MonoBehaviour
 		return this.gameHosts[_index];
 	}
 
+	// Unity Callback: Do not change signature
 	private void OnConnectedToServer()
 	{
 		Debug.Log( "Successfully connected to server." );
 		MainMenuButtons.instance.OpenGameLobby();
 	}
-	
+
+	// Unity Callback: Do not change signature
 	private void OnDisconnectedFromServer( NetworkDisconnection _info )
 	{
 		if ( Network.isServer )
@@ -116,7 +130,8 @@ public class MenuNetworking : MonoBehaviour
 
 		MainMenuButtons.instance.ExitLobby();
 	}
-	
+
+	// Unity Callback: Do not change signature
 	private void OnFailedToConnect( NetworkConnectionError _info )
 	{
 		switch ( _info )
@@ -148,7 +163,8 @@ public class MenuNetworking : MonoBehaviour
 		}
 		}
 	}
-	
+
+	// Unity Callback: Do not change signature
 	private void OnPlayerConnected( NetworkPlayer _player )
 	{
 		Debug.Log( "Player connected IP:" + _player.ipAddress + " Port;" + _player.port
@@ -156,15 +172,17 @@ public class MenuNetworking : MonoBehaviour
 
 		//MenuLobby.instance.AddPlayer( _player );
 	}
-	
+
+	// Unity Callback: Do not change signature
 	private void OnPlayerDisconnected( NetworkPlayer _player )
 	{
 		Debug.Log( "Player has disconnected IP:" + _player.ipAddress + " Port:" + _player.port );
-		Network.RemoveRPCs( _player );
-		Network.DestroyPlayerObjects( _player ); 
+		//Network.RemoveRPCs( _player );
+		//Network.DestroyPlayerObjects( _player ); 
 		//MenuLobby.instance.RemovePlayer( _player );
 	}
-	
+
+	// Unity Callback: Do not change signature
 	private void OnServerInitialized()
 	{
 		Debug.Log( "Server initialised." );
@@ -181,5 +199,49 @@ public class MenuNetworking : MonoBehaviour
 		{
 			Network.Disconnect();
 		}
+	}
+
+	public void StartGame()
+	{
+		this.networkView.RPC( "LoadLevel", RPCMode.All, "GameTest", this.lastLevelPrefix + 1 );
+	}
+
+	[RPC]
+	private void LoadLevel( string _level, int _prefix )
+	{
+		//this.lastLevelPrefix = _prefix;
+		
+		// There is no reason to send any more data over the network on the default channel,
+		// because we are about to load the level, thus all those objects will get deleted anyway
+		//Network.SetSendingEnabled( 0, false );	
+		
+		// We need to stop receiving because first the level must be loaded first.
+		// Once the level is loaded, rpc's and other state update attached to objects in the level are allowed to fire
+		//Network.isMessageQueueRunning = false;
+		
+		// All network views loaded from a level will get a prefix into their NetworkViewID.
+		// This will prevent old updates from clients leaking into a newly created scene.
+		//Network.SetLevelPrefix( _prefix );
+		Application.LoadLevel( _level );
+		//yield return new WaitForSeconds( 1.0f );
+		//yield return new WaitForSeconds( 1.0f );
+		
+		// Allow receiving data again
+		//Network.isMessageQueueRunning = true;
+		// Now the level has been loaded and we can start sending out data to clients
+		//Network.SetSendingEnabled( 0, true );
+	}
+
+	[RPC]
+	private void SendLobbyMessageRPC( NetworkViewID _viewID, string _message )
+	{
+		MenuLobby.instance.SendLobbyMessage( _viewID, _message );
+		
+	}
+
+	// Unity Callback: Do not modify signature
+	private void OnFailedToConnectToMasterServer( NetworkConnectionError _info )
+	{
+		Debug.Log( "Could not connect to master server: " + _info );
 	}
 }

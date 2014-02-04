@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Common : MonoBehaviour {
-
+public abstract class Common : MonoBehaviour
+{
 	public static Vector3 Hermite( Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent, float t )
 	{
 		float t2 = t*t;
 		float t3 = t*t*t;
-		//return ( 2 * t3 - 3 * t2 + 1) * start + (t3 - 2*t2 + t) * startTangent + ( -2 * t3 + 3 * t2 ) * end + ( t3 - t2) * endTangent;
 		return (1 - 3*t2 + 2*t3)*start + t2*(3 - 2*t)*end + t*(t-1)*(t-1)*startTangent + t2*(t-1)*endTangent;
 	}
 	
@@ -26,8 +25,23 @@ public class Common : MonoBehaviour {
 		return hit;
 	}
 
-	public float GetObjectIntersectionTime( Transform _obj1, Transform _obj2, float _speed1, float _speed2 )
+	public static Vector3 RandomVector3( Vector3 _min, Vector3 _max )
 	{
-		return 0.0f;
+		return new Vector3( Random.Range( _min.x, _max.x ), Random.Range( _min.y, _max.y ), Random.Range( _min.z, _max.z ) );
+	}
+
+	public static Vector3 RandomVector3( float _min, float _max )
+	{
+		return Common.RandomVector3( new Vector3( _min, _min, _min), new Vector3( _max, _max, _max ) );
+	}
+
+	public static float GaussianCurve( float _x, float _height, float _centre, float _std, float _base = 0.0f )
+	{
+		return _height * Mathf.Exp( - Mathf.Pow( _x - _centre, 2.0f ) / ( 2.0f * _std * _std ) ) + _base;
+		/*_           
+		 *          ( (x - c)^2 )
+		 * h . e ^ -( --------_ ) + b
+		 *          (  2 . o^2  )
+		 */
 	}
 }

@@ -72,9 +72,8 @@ public class MenuLobby : MonoBehaviour
 		MenuNetworking.instance.QuitLobby();
 		MainMenuButtons.instance.ExitLobby();
 	}
-
-	[RPC]
-	private void SendLobbyMessage( NetworkViewID _viewID, string _message )
+	
+	public void SendLobbyMessage( NetworkViewID _viewID, string _message )
 	{
 		LobbyMessage message = new LobbyMessage();
 		message.message = _message;
@@ -82,14 +81,14 @@ public class MenuLobby : MonoBehaviour
 		message.playerName = _viewID.owner.ipAddress;
 		message.timeReceived = DateTime.Now;
 		message.sender = _viewID.owner;
-
-
+		
+		
 		this.messages.Add( message );
 		if ( this.messages.Count > this.messageLimit )
 		{
 			this.messages.RemoveAt( this.messages.Count - 1 );
 		}
-
+		
 		this.UpdateMessageGUI();
 	}
 
@@ -113,38 +112,32 @@ public class MenuLobby : MonoBehaviour
 			return;
 		}
 
-		networkView.RPC( "SendLobbyMessage", RPCMode.All, networkView.viewID, text );
+		MenuNetworking.instance.networkView.RPC
+		(
+			"SendLobbyMessageRPC",
+			RPCMode.All,
+			MenuNetworking.instance.networkView.viewID,
+			text
+		);
+
 		this.messageTextField.GetComponent<GUITextField>().text = "";
 	}
 
-	/*public void AddPlayer( NetworkPlayer _player )
-	{
-		this.networkPlayers.Add( _player );
-		this.UpdatePlayerListGUI();
-	}*/
-
-	/*public void RemovePlayer( NetworkPlayer _player )
-	{
-		this.networkPlayers.Remove ( _player );
-		this.UpdatePlayerListGUI();
-	}*/
-
 	private void UpdatePlayerListGUI()
 	{
-		//Debug.Log ( this.networkPlayers.Count );
 		for ( int i = 0; i < this.playerRows.Count; ++i )
 		{
 			this.playerRows[i].UpdateGUI();
 		}
 	}
 
-	/*public bool PlayerIndexIsValid( int _index )
+	private void OnStartGameDown()
 	{
-		return _index >= 0 && _index < this.networkPlayers.Count;;
+		MenuNetworking.instance.StartGame();
 	}
 
-	public NetworkPlayer GetPlayerOfIndex( int _index )
+	private void OnExitLobbyDown()
 	{
-		return this.networkPlayers[ _index ];
-	}*/
+		MainMenuButtons.instance.ExitLobby();
+	}
 }

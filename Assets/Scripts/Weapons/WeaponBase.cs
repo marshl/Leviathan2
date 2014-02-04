@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public abstract class WeaponBase : MonoBehaviour
 {
+	[HideInInspector]
 	public WeaponDescriptor weaponDesc;
 
 	public WeaponFirePoint[] firePoints;

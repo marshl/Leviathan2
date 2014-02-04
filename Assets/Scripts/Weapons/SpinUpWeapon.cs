@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public abstract class SpinUpWeapon : WeaponBase
 {
+	[HideInInspector]
 	public SpinUpWeaponDesc spinUpDesc;
 	public float currentSpin;
 

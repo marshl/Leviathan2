@@ -3,6 +3,7 @@ using System.Collections;
 
 public abstract class BurstFireWeapon : WeaponBase
 {
+	[HideInInspector]
 	public BurstFireWeaponDesc burstFireDesc;
 
 	public bool isFiring = false;
