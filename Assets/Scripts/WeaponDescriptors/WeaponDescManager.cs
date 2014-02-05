@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+/// <summary>
+/// The manager for all weapon descriptors
+/// Used to 
+/// </summary>
 public class WeaponDescManager : MonoBehaviour
 {
 	public static WeaponDescManager instance;
@@ -18,28 +22,37 @@ public class WeaponDescManager : MonoBehaviour
 		}
 		WeaponDescManager.instance = this;
 
+		this.descriptorMap = new Dictionary<Type, WeaponDescriptor>();
 		this.FindWeaponDescriptors();
 	}
 
+	/// <summary>
+	/// Used to find and add all descriptors attached to this object
+	/// </summary>
 	private void FindWeaponDescriptors()
 	{
-		this.descriptorMap = new Dictionary<Type, WeaponDescriptor>();
-
 		WeaponDescriptor[] descArray = this.gameObject.GetComponents<WeaponDescriptor>();
 		foreach ( WeaponDescriptor weaponDesc in descArray )
 		{
 			System.Type descType = weaponDesc.GetType();
 			if ( descriptorMap.ContainsKey( descType ) )
 			{
-				Debug.LogError( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
+				Debug.LogWarning( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
 				continue;
 			}
-
-			//System.Type bulletType = weaponDesc.bulletDesc.GetBulletType();
+			if ( weaponDesc.bulletDesc == null )
+			{
+				Debug.LogWarning( "No Bullet Descriptor set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
+			}
 			this.descriptorMap.Add( descType, weaponDesc );
 		}
 	}
 
+	/// <summary>
+	/// Returns the descriptor object of the given type
+	/// </summary>
+	/// <returns>The desc of type.</returns>
+	/// <param name="_type">_type.</param>
 	public WeaponDescriptor GetDescOfType( System.Type _type )
 	{
 		WeaponDescriptor desc;

@@ -3,6 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+public enum PLAYER_TYPE
+{
+	COMMANDER1,
+	COMMANDER2,
+	FIGHTER1,
+	FIGHTER2,
+};
+
 public class MenuLobby : MonoBehaviour
 {
 	// Instance
@@ -25,22 +33,24 @@ public class MenuLobby : MonoBehaviour
 
 	public MenuPlayerRow firstPlayerRow;
 	public float playerRowOffset;
-
-	public int messageLimit;
-
+	
 	public string[] playerMessageColours;
 
 	// Private Variables
-	//private List<NetworkPlayer> networkPlayers;
 	private List<LobbyMessage> messages;
 	private List<MenuPlayerRow> playerRows;
+	
+	private Dictionary<NetworkPlayer, PLAYER_TYPE> playerDictionary;
+	private NetworkPlayer commander1;
+	private NetworkPlayer commander2;
 
 	private void Awake ()
 	{
 		MenuLobby.instance = this;
 		this.messages = new List<LobbyMessage>();
 		this.playerRows = new List<MenuPlayerRow>( MenuNetworking.instance.connections );
-		//this.networkPlayers = new List<NetworkPlayer>( MenuNetworking.instance.connections );
+
+		this.playerDictionary = new Dictionary<NetworkPlayer, PLAYER_TYPE>();
 
 		for ( int i = 0; i < MenuNetworking.instance.connections; ++i )
 		{
@@ -61,10 +71,23 @@ public class MenuLobby : MonoBehaviour
 		this.UpdatePlayerListGUI();
 	}
 
+	public void Reset()
+	{
+		this.playerDictionary.Clear();
+		this.messages.Clear();
+
+		for ( int i = 0; i < MenuNetworking.instance.connections; ++i )
+		{
+			this.playerRows[i].SetDefaults();
+		}
+	}
+
 	public void StartLobby()
 	{
 		this.gameNameText.text = MenuNetworking.instance.gameName;
 		this.gameCommentText.text = MenuNetworking.instance.gameComment;
+
+		this.Reset();
 	}
 
 	public void ExitLobby()
@@ -77,17 +100,15 @@ public class MenuLobby : MonoBehaviour
 	{
 		LobbyMessage message = new LobbyMessage();
 		message.message = _message;
-		//message.playerName = _sender.ipAddress;
+
 		message.playerName = _viewID.owner.ipAddress;
 		message.timeReceived = DateTime.Now;
 		message.sender = _viewID.owner;
 		
 		
 		this.messages.Add( message );
-		if ( this.messages.Count > this.messageLimit )
-		{
-			this.messages.RemoveAt( this.messages.Count - 1 );
-		}
+		this.messages.RemoveAt( this.messages.Count - 1 );
+
 		
 		this.UpdateMessageGUI();
 	}
@@ -104,24 +125,7 @@ public class MenuLobby : MonoBehaviour
 		this.messageText.text = str;
 	}
 
-	private void OnSendMessageDown()
-	{
-		string text = this.messageTextField.text;
-		if ( text == "" )
-		{
-			return;
-		}
 
-		MenuNetworking.instance.networkView.RPC
-		(
-			"SendLobbyMessageRPC",
-			RPCMode.All,
-			MenuNetworking.instance.networkView.viewID,
-			text
-		);
-
-		this.messageTextField.GetComponent<GUITextField>().text = "";
-	}
 
 	private void UpdatePlayerListGUI()
 	{
@@ -130,14 +134,52 @@ public class MenuLobby : MonoBehaviour
 			this.playerRows[i].UpdateGUI();
 		}
 	}
+	
+	public void AddNewPlayer( NetworkPlayer _player )
+	{
+		this.playerDictionary.Add( _player, 0 );
+	}
+
+	public void RemovePlayer( NetworkPlayer _player )
+	{
+		this.playerDictionary.Remove( _player );
+	}
+
+	public void ChangePlayerType( NetworkPlayer _player, PLAYER_TYPE _type )
+	{
+		this.playerDictionary[_player] = _type;
+	}
+
+
+	/************************************************************
+	 * CALLBACKS */
 
 	private void OnStartGameDown()
 	{
 		MenuNetworking.instance.StartGame();
 	}
-
+	
 	private void OnExitLobbyDown()
 	{
 		MainMenuButtons.instance.ExitLobby();
+	}
+
+	private void OnSendMessageDown()
+	{
+		string text = this.messageTextField.text;
+		if ( text == "" )
+		{
+			return;
+		}
+		
+		MenuNetworking.instance.networkView.RPC
+		(
+			"SendLobbyMessageRPC",
+			RPCMode.All,
+			MenuNetworking.instance.networkView.viewID,
+			text
+		);
+		
+		this.messageTextField.GetComponent<GUITextField>().text = "";
 	}
 }

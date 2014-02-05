@@ -18,8 +18,6 @@ public class MenuNetworking : MonoBehaviour
 	// Private Variables
 	private HostData[] gameHosts;
 
-	private int lastLevelPrefix;
-	
 	private void Awake()
 	{
 		//DontDestroyOnLoad( this );
@@ -29,14 +27,8 @@ public class MenuNetworking : MonoBehaviour
 
 	public void UpdateHostList()
 	{
-		//MasterServer.ClearHostList();
 		MasterServer.RequestHostList( this.gameTypeName );
 		this.gameHosts = MasterServer.PollHostList();
-		/*Debug.Log( "Games found: " + this.gameHosts.Length );
-		foreach ( HostData hostData in this.gameHosts )
-		{
-			Debug.Log( hostData.gameName + " " + hostData.ip + " " + hostData.port + " " + hostData.useNat );
-		}*/
 	}
 	
 	public NetworkConnectionError StartServer( int _port, string _gameName, string _comment )
@@ -170,6 +162,10 @@ public class MenuNetworking : MonoBehaviour
 		Debug.Log( "Player connected IP:" + _player.ipAddress + " Port;" + _player.port
 		          + " ExtIP:" + _player.externalIP + " ExtPort:" + _player.externalPort );
 
+		if ( Network.isServer == true )
+		{
+			MenuLobby.instance.AddNewPlayer( _player );
+		}
 		//MenuLobby.instance.AddPlayer( _player );
 	}
 
@@ -203,11 +199,11 @@ public class MenuNetworking : MonoBehaviour
 
 	public void StartGame()
 	{
-		this.networkView.RPC( "LoadLevel", RPCMode.All, "GameTest", this.lastLevelPrefix + 1 );
+		this.networkView.RPC( "LoadLevel", RPCMode.All, "GameTest" );
 	}
 
 	[RPC]
-	private void LoadLevel( string _level, int _prefix )
+	private void LoadLevel( string _level )
 	{
 		//this.lastLevelPrefix = _prefix;
 		
@@ -222,6 +218,13 @@ public class MenuNetworking : MonoBehaviour
 		// All network views loaded from a level will get a prefix into their NetworkViewID.
 		// This will prevent old updates from clients leaking into a newly created scene.
 		//Network.SetLevelPrefix( _prefix );
+
+		GameObject menuInfoObj = new GameObject();
+		DontDestroyOnLoad( menuInfoObj );
+		MenuToGameInfo infoScript = menuInfoObj.AddComponent<MenuToGameInfo>();
+
+		infoScript.
+
 		Application.LoadLevel( _level );
 		//yield return new WaitForSeconds( 1.0f );
 		//yield return new WaitForSeconds( 1.0f );
@@ -243,5 +246,11 @@ public class MenuNetworking : MonoBehaviour
 	private void OnFailedToConnectToMasterServer( NetworkConnectionError _info )
 	{
 		Debug.Log( "Could not connect to master server: " + _info );
+	}
+
+	[RPC]
+	private void SendPlayerTeamChangeRPC( NetworkPlayer _player, int _team )
+	{
+		MenuLobby.instance.ChangePlayerType( _player, _team );
 	}
 }

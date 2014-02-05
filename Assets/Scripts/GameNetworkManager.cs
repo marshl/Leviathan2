@@ -3,10 +3,8 @@ using System.Collections;
 
 public class GameNetworkManager : MonoBehaviour
 {
-	// Instance
 	public static GameNetworkManager instance;
-
-	// Editor Variables
+	
 	public GameObject playerPrefab;
 	
 	// Methods
@@ -14,15 +12,21 @@ public class GameNetworkManager : MonoBehaviour
 	{
 		GameNetworkManager.instance = this;
 
-		GameObject obj = Network.Instantiate
+		Network.Instantiate
 		(
-			this.playerPrefab, Vector3.zero, Quaternion.identity, 0
-		) as GameObject;
+			this.playerPrefab, Common.RandomVector3( -10.0f, 10.0f ), Quaternion.identity, 0
+		);
 	}
 
 	private void OnDisconnectedFromServer()
 	{
 		Debug.Log( "Disconnected from server" );
 		Application.LoadLevel( "MenuTest" );
+	}
+
+	private void Update()
+	{
+		if ( Input.GetKeyDown( KeyCode.Escape ) )
+			Debug.Break();
 	}
 }

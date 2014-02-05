@@ -2,17 +2,32 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// The base class for any spin up weapon instance
+/// A spin up weapon is one that increaees in speed as it 
+///    continues to fire until it reaches a speed cap.
+/// </summary>
 public abstract class SpinUpWeapon : WeaponBase
 {
+	/// <summary>
+	/// The descriptor for this weapon type (set elsewhere)
+	/// </summary>
 	[HideInInspector]
 	public SpinUpWeaponDesc spinUpDesc;
+
+	/// <summary>
+	/// A number between 0 and 1 storing how fast the weapon can fire
+	/// </summary>
 	public float currentSpin;
 
 	protected override void Update()
 	{
 		base.Update();
+
+		// If this hasn't shot for long enough
 		if ( this.timeSinceShot > this.spinUpDesc.spinDownDelay )
 		{
+			// Start reducing the spin
 			this.currentSpin = Mathf.Clamp
 			( 
 				 this.currentSpin - (Time.deltaTime / this.spinUpDesc.spinDownTime),
@@ -23,7 +38,6 @@ public abstract class SpinUpWeapon : WeaponBase
 
 	public override bool CanFire()
 	{
-		//Debug.Log( this.GetCurrentFireRate() );
 		return this.timeSinceShot > this.GetCurrentFireRate();
 	}
 
@@ -32,11 +46,11 @@ public abstract class SpinUpWeapon : WeaponBase
 		return Mathf.Lerp( this.spinUpDesc.fireRate, this.spinUpDesc.maxFireRate, this.currentSpin );
 	}
 
-	public override List<BulletBase> Fire ()
+	public override List<BulletBase> Fire()
 	{
 		this.currentSpin = Mathf.Clamp
 		(
-			this.currentSpin + this.GetCurrentFireRate() / this.spinUpDesc.spinDownTime,
+			this.currentSpin + this.GetCurrentFireRate() / this.spinUpDesc.spinUpTime,
 			0.0f, 1.0f
 		);
 		return base.Fire ();

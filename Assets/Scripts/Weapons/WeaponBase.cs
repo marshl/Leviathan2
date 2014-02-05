@@ -4,19 +4,36 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
+/// <summary>
+/// The base class for any weapon instance
+/// </summary>
 public abstract class WeaponBase : MonoBehaviour
 {
-	[HideInInspector]
+	/// <summary>
+	/// The descriptor for this weapon
+	/// </summary>
+	//[HideInInspector]
 	public WeaponDescriptor weaponDesc;
 
+	/// <summary>
+	/// The points from which this weapon will fire
+	/// </summary>
 	public WeaponFirePoint[] firePoints;
+
+	/// <summary>
+	/// The index of the fire pint from which this weapon will fire next
+	/// </summary>
 	public int firePointIndex;
 
+	/// <summary>
+	/// The time since this weapon fired last
+	/// </summary>
 	public float timeSinceShot;
+
 
 	protected virtual void Start()
 	{
-		this.SetupDescriptors();
+		this.InitialiseDescriptors();
 	}
 
 	protected virtual void Update()
@@ -24,9 +41,13 @@ public abstract class WeaponBase : MonoBehaviour
 		this.timeSinceShot += Time.deltaTime;
 	}
 
+	/// <summary>
+	/// Gets the System Type of the descriptor on this weapon
+	/// </summary>
+	/// <returns>The descriptor type.</returns>
 	protected System.Type GetDescriptorType()
 	{
-		object[] attributes = this.GetType().GetCustomAttributes( true );
+		object[] attributes = this.GetType().GetCustomAttributes( true ); // Inherit = true
 		foreach ( object attribute in attributes )
 		{
 			WeaponTypeAttribute typeAttribute = attribute as WeaponTypeAttribute;
@@ -39,14 +60,19 @@ public abstract class WeaponBase : MonoBehaviour
 		return null;
 	}
 
-	protected virtual void SetupDescriptors()
+	/// <summary>
+	/// Initialises all of the descriptors on this weapon, including all inherited weapon types
+	/// </summary>
+	protected virtual void InitialiseDescriptors()
 	{
 		System.Type descType = this.GetDescriptorType();
 		this.weaponDesc = WeaponDescManager.instance.GetDescOfType( descType );
 
+		// Find all fields in this type
 		FieldInfo[] fields = this.GetType().GetFields();
-		foreach ( var field in fields )
+		foreach ( FieldInfo field in fields )
 		{
+			// If that field is a pointer to a type of weapon descriptor, then set it
 			System.Type fieldType = field.FieldType;
 			if ( fieldType.IsSubclassOf( typeof(WeaponDescriptor) ) )
 			{
@@ -57,10 +83,6 @@ public abstract class WeaponBase : MonoBehaviour
 
 	public virtual bool CanFire()
 	{
-		if ( this.weaponDesc == null )
-		{
-			Debug.LogError( "Weapon descriptor on \"" + this.GetType().ToString() + "\" is null.", this );
-		}
 		return this.timeSinceShot > this.weaponDesc.fireRate;
 	}
 
@@ -75,17 +97,21 @@ public abstract class WeaponBase : MonoBehaviour
 		return true;
 	}
 
+	/// <summary>
+	/// Fires a bullet, or a series of bullets if FireInSync = true, and returns a list of them
+	/// </summary>
 	public virtual List<BulletBase> Fire()
 	{
-		this.timeSinceShot = 0.0f;
-
 		if ( this.firePoints.Length == 0 )
 		{
-			Debug.LogError( "No weapon points found on weapon \"" + this.ToString() + "\"", this );
+			Debug.LogError( "No fire points found on weapon \"" + this.ToString() + "\"", this );
 			return null;
 		}
+		this.timeSinceShot = 0.0f;
 
-		List<BulletBase> bulletsFired = new List<BulletBase>();
+		// Create a new list of bullets with capacity equal to number of bullets to be fired
+		List<BulletBase> bulletsFired = new List<BulletBase>( this.weaponDesc.fireInSync ? this.firePoints.Length : 1 );
+
 		if ( this.weaponDesc.fireInSync == true )
 		{
 			for ( int i = 0; i < this.firePoints.Length; ++i )
@@ -98,14 +124,14 @@ public abstract class WeaponBase : MonoBehaviour
 					currentFirePoint.transform.TransformDirection(Vector3.forward), 
 					this.weaponDesc.spread
 				);
-				Debug.Log( currentFirePoint.transform.TransformDirection(Vector3.forward) );
-				if ( bullet == null )
+
+				/*if ( bullet == null )
 				{
 					Debug.LogError( "Error firing weapon \"" + this.GetType().ToString() + "\"", this );
-				}
+				}*/
 				bulletsFired.Add( bullet );
 			}
-			return bulletsFired;
+
 		}
 		else
 		{
@@ -125,8 +151,8 @@ public abstract class WeaponBase : MonoBehaviour
 			this.IncrementFireIndex();
 
 			bulletsFired.Add( bullet );
-			return bulletsFired;
 		}
+		return bulletsFired;
 	}
 
 	protected void IncrementFireIndex()

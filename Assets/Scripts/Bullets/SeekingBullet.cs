@@ -1,10 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// An subclass of the base bullet class that is used to control bullets that can move around
+/// </summary>
 public abstract class SeekingBullet : BulletBase
 {
-	public SeekingBulletDesc seekingDesc;
 	public TargettableObject target;
+
+	/// <summary>
+	/// The descriptor of this bullet, converted into the right subclass (do not set)
+	/// </summary>
+	[HideInInspector]
+	public SeekingBulletDesc seekingDesc;
 
 	public override void Start()
 	{

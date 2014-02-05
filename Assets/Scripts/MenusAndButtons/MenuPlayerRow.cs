@@ -19,13 +19,12 @@ public class MenuPlayerRow : MonoBehaviour
 		}
 		
 		NetworkPlayer player = Network.connections[playerIndex];
-		//MenuLobby.instance.GetPlayerOfIndex( this.playerIndex );
 
 		this.ipText.text = player.ipAddress;
-		this.nameText.text = "Player " + this.playerIndex;
+		this.nameText.text = "Player " + player.ToString();//+ this.playerIndex;
 	}
 
-	private void SetDefaults()
+	public void SetDefaults()
 	{
 		this.nameText.text = "---";
 		this.ipText.text = "---";

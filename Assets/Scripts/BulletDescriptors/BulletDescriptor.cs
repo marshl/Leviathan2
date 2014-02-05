@@ -2,16 +2,37 @@ using UnityEngine;
 using System.Collections;
 using System;
 
+/// <summary>
+/// The Bullet Descriptor class is an abstract class that is subclassed by each bullet type and each individual bullet
+/// These descriptors store information about the bullet in general that does NOT need to be stored
+///    on each individual bullet object.
+/// WHEN SUBCLASSING, add the attribute [BulletTypeAttribute( typeof( <BULLETCLASS> ) )] 
+///    where <BULLETCLASS> is the class of the actual bullet
+/// </summary>
 public abstract class BulletDescriptor : MonoBehaviour
 {
 	private System.Type bulletType;
 	public GameObject prefab;
-	public int count;
-	public float moveSpeed;
-	//public float lifeTime;
-	public float maxDistance;
-	public float spread;
 
+	/// <summary>
+	/// The number of bullet objects that will be initially created in the scene
+	/// </summary>
+	public int count;
+
+	/// <summary>
+	/// The speed at which the bullet travels 
+	/// </summary>
+	public float moveSpeed;
+
+	/// <summary>
+	/// The point at which the bullet will expire
+	/// </summary>
+	public float maxDistance;
+
+	/// <summary>
+	/// Returns the type of the Bullet Base class on the prefab
+	/// </summary>
+	/// <returns>The bullet type.</returns>
 	public System.Type GetBulletType()
 	{
 		if ( this.bulletType == null )

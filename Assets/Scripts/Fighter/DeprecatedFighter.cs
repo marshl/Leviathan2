@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
+[Obsolete]
 public class DeprecatedFighter : MonoBehaviour {
 	
 	enum FighterState

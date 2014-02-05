@@ -44,4 +44,20 @@ public abstract class Common : MonoBehaviour
 		 *          (  2 . o^2  )
 		 */
 	}
+
+	/// Keeps the camera angle in the limits
+	static public float ClampAngleDegrees( float _angle, float _min, float _max )
+	{
+		while ( _angle < -360.0f )
+			_angle += 360.0f;
+		while ( _angle > 360.0f )
+			_angle -= 360.0f;
+		
+		return Mathf.Clamp( _angle, _min, _max );
+	}
+
+	public static int NetworkID( NetworkPlayer _player )
+	{
+		return int.Parse( _player.ToString() );
+	}
 }

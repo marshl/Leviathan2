@@ -4,53 +4,109 @@ using System.Collections.Generic;
 
 public class CapitalShipMovement : MonoBehaviour
 {
-	// Editor Variables
+	/// <summary>
+	/// The transform that is used to mark where the mouse currently is
+	/// </summary>
 	public Transform markerTransform;
-	
-	public GameObject rotationSegmentPrefab;
-	
-	public LineRenderer rotationLine;
-	public LineRenderer tentativePathLine;
-	public LineRenderer actualPathLine;
 
-	public Transform rollSection;
+	/// <summary>
+	/// The prefab used to mark the turning angle around the ship
+	/// </summary>
+	public GameObject rotationSegmentPrefab;
+
+	/// <summary>
+	/// The line used to show where the ship will travel
+	/// </summary>
+	public LineRenderer tentativePathLine;
 
 	/// <summary>
 	/// The number of triangles displayed around the ship in a full circle
 	/// </summary>
-	private const int ROTATION_SEGMENT_COUNT = 16; 
-	private const float TENTATIVE_SEGMENT_UPSCALE = 1.5f;
-	
+	public int rotationSegmentCount; 
+
+	/// <summary>
+	/// The increase in scale for the tentative rotation segments
+	///    (the segments that many degrees the ship would turn if the user clicked)
+	/// </summary>
+	public float tentativeSegmentUpscale;
+
+	/// <summary>
+	/// The radians that ship still has to turn
+	/// </summary>
 	private float currentTurnAmount = 0.0f;
+
+	/// <summary>
+	/// Whether the ship is currently turning
+	/// </summary>
 	private bool isTurning = false;
+
+	/// <summary>
+	/// The direction that the ship is currently turning (-1.0f = left, 1.0f = right)
+	/// </summary>
 	private float currentTurnDirection = 0.0f;
-	
+
+	/// <summary>
+	/// The last position that the player selected
+	/// </summary>
 	private Vector3 lastTargetPosition;
-	
-	private GameObject[] rotationSegmentArrayActual;
+
+	/// <summary>
+	/// The rotational segments that the show where the ship is turning
+	/// </summary>
+	private GameObject[] rotationSegmentsActual;
+	/// <summary>
+	/// The rotational segments that shows where the ship would turn
+	/// </summary>
 	private GameObject[] rotationSegmentsTentative;
-	
-	private Vector3 boundaryOrigin = new Vector3( 0.0f, 0.0f, 0.0f );
-	private const float BOUNDARY_DISTANCE = 50.0f;
+
+	/// <summary>
+	/// The origin point of the positional boundary
+	/// </summary>
+	public Vector3 boundaryOrigin;
+	/// <summary>
+	/// The radius of the boundary circle
+	/// </summary>
+	public float boundaryRadius;
+
+	/// <summary>
+	/// The speed at which the ship is currently moving
+	/// </summary>
 	private float currentMovementSpeed = 5.0f;
 
-	// Constants
-	private const int VERTEX_COUNT = 25;
-	private const float MAX_PATH_DISTANCE = 50.0f;
-	
-	private const float MAXIMUM_ANGLE_PER_METRE = 5.0f;
-	private const float TURN_SPEED = 0.5f; 
-	private const float MOVEMENT_SPEED_MAX = 7.5f;
-	private const float MOVEMENT_SPEED_MIN = 1.0f;
-	private const float MOVEMENT_ACCELERATION = 3.0f;
 
-	private const float ROLL_MAXIMUM = Mathf.PI / 3;
-	private const float ROLL_RATE = 10.0f;
-	
+	/// <summary>
+	/// The vertex count of the path lines
+	/// </summary>
+	public int lineVertexCount;
+
+	/// <summary>
+	/// The maximum length of the display path
+	/// </summary>
+	public float pathLength;
+
+	/// <summary>
+	/// The radians that the ship turns per second
+	/// </summary>
+	public float turnRate;
+
+	/// <summary>
+	/// The maximum speed that the ship can move
+	/// </summary>
+	public float maxMoveSpeed;
+
+	/// <summary>
+	/// The minimum speed that the ship can move
+	/// </summary>
+	public float minMoveSpeed;
+
+	/// <summary>
+	/// The rate of change in speed per second
+	/// </summary>
+	public float moveAcceleration;
+
 	private void Start()
 	{
-		this.tentativePathLine.SetVertexCount( VERTEX_COUNT );
-		this.actualPathLine.SetVertexCount( VERTEX_COUNT );
+		this.tentativePathLine.SetVertexCount( lineVertexCount );
 
 		this.CreateRotationSegments();
 
@@ -61,16 +117,17 @@ public class CapitalShipMovement : MonoBehaviour
 		{
 			float angle = (float)i * Mathf.PI * 2.0f / 100.0f;
 			Vector3 offset = new Vector3( Mathf.Sin( angle ),  0.0f, Mathf.Cos( angle ) );
-			line.SetPosition( i, offset * BOUNDARY_DISTANCE + boundaryOrigin );
+			line.SetPosition( i, offset * boundaryRadius + boundaryOrigin );
 		}
 	}
 	
 	private void Update()
 	{
 		this.UpdateAccelerationInput();
-
 		this.UpdateTurnLine();
 
+		// If the current position + the radius of a turn would place this ship out of bounds,
+		//   start an emergency turn
 		if ( IsPointOutOfBounds(this.transform.position + this.transform.forward * GetTurnRadiusAtSpeed( this.currentMovementSpeed )) )
 		{
 			float angle = Vector3.Dot( transform.right, (boundaryOrigin - this.transform.position).normalized );
@@ -82,10 +139,10 @@ public class CapitalShipMovement : MonoBehaviour
 
 		if ( this.isTurning == true )
 		{
-			this.currentTurnAmount -= Time.deltaTime * TURN_SPEED;
-			this.transform.Rotate( Vector3.up, TURN_SPEED * Time.deltaTime * this.currentTurnDirection * Mathf.Rad2Deg);
+			this.currentTurnAmount -= Time.deltaTime * turnRate;
+			this.transform.Rotate( Vector3.up, turnRate * Time.deltaTime * this.currentTurnDirection * Mathf.Rad2Deg);
 
-			UpdateRotationSegments( this.rotationSegmentArrayActual, this.currentTurnAmount, this.currentTurnDirection );
+			UpdateRotationSegments( this.rotationSegmentsActual, this.currentTurnAmount, this.currentTurnDirection );
 			
 			if ( this.currentTurnAmount <= 0.0f )
 			{
@@ -93,37 +150,36 @@ public class CapitalShipMovement : MonoBehaviour
 				this.isTurning = false;	
 			}	
 		}
-
-		this.UpdateRoll();
 	
-		if ( Input.GetKeyDown( KeyCode.Escape ) )
-			Debug.Break();
+
 
 		this.transform.position += this.transform.forward * this.currentMovementSpeed * Time.deltaTime;
 	}
 
+	/// <summary>
+	/// Instantiates the rotation display segments around the ship
+	/// </summary>
 	private void CreateRotationSegments()
 	{
-		this.rotationSegmentArrayActual = new GameObject[ROTATION_SEGMENT_COUNT];
-		this.rotationSegmentsTentative = new GameObject[ROTATION_SEGMENT_COUNT];
-		for ( int j = 0; j < 2; ++j )
+		this.rotationSegmentsActual = new GameObject[rotationSegmentCount];
+		this.rotationSegmentsTentative = new GameObject[rotationSegmentCount];
+		for ( int j = 0; j < 2; ++j ) // 0=actual, 1=tentative
 		{
-			for ( int i = 0; i < ROTATION_SEGMENT_COUNT; ++i )
+			for ( int i = 0; i < rotationSegmentCount; ++i )
 			{
 				GameObject segmentObj = GameObject.Instantiate( this.rotationSegmentPrefab ) as GameObject;	
-				segmentObj.transform.Rotate( Vector3.up, (float)i / (float)ROTATION_SEGMENT_COUNT * 360.0f );
+				segmentObj.transform.Rotate( Vector3.up, (float)i / (float)rotationSegmentCount * 360.0f );
 				segmentObj.transform.parent = this.transform;
 				segmentObj.transform.localPosition = Vector3.zero;
 				segmentObj.SetActive( false );
 				
 				if ( j == 0 )
 				{
-					this.rotationSegmentArrayActual[i] = segmentObj;
-					segmentObj.transform.localScale = segmentObj.transform.localScale * TENTATIVE_SEGMENT_UPSCALE;
+					this.rotationSegmentsActual[i] = segmentObj;
+					segmentObj.transform.localScale = segmentObj.transform.localScale * tentativeSegmentUpscale;
 				}
 				else
 				{
-					
 					this.rotationSegmentsTentative[i] = segmentObj;
 				}
 			}
@@ -135,20 +191,25 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		if ( Input.GetKey( KeyCode.W ) )
 		{
-			this.currentMovementSpeed += Time.deltaTime * MOVEMENT_ACCELERATION;	
+			this.currentMovementSpeed += Time.deltaTime * moveAcceleration;	
 		}
 		else if ( Input.GetKey( KeyCode.S ) )
 		{
-			this.currentMovementSpeed -= Time.deltaTime * MOVEMENT_ACCELERATION;	
+			this.currentMovementSpeed -= Time.deltaTime * moveAcceleration;	
 		}
-		this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, MOVEMENT_SPEED_MIN, MOVEMENT_SPEED_MAX );
+		this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
 	}
 
+	/// <summary>
+	/// Updates the turn line using the user's cursor position
+	/// </summary>
 	private void UpdateTurnLine()
 	{
 		Vector3 targetPos;
 		bool posFound = Common.MousePositionToPlanePoint( out targetPos, Vector3.zero, Vector3.up );
-		
+
+		// If the mouse cursor is over a valid point, then move the target there
+		// If not, just use the old position
 		if ( posFound == true )
 		{
 			this.lastTargetPosition = targetPos;
@@ -156,7 +217,7 @@ public class CapitalShipMovement : MonoBehaviour
 		}
 		
 		Vector3 vectorToTarget = this.lastTargetPosition - this.transform.position;
-		if ( vectorToTarget.magnitude == 0.0f )
+		if ( vectorToTarget.sqrMagnitude == 0.0f )
 		{
 			Debug.Log( "Preventing div/0" );
 			return;
@@ -171,15 +232,14 @@ public class CapitalShipMovement : MonoBehaviour
 		
 		UpdateRotationSegments( this.rotationSegmentsTentative, amountToTurn, directionToTurn );
 
-		// Set the positions of the line renderer for teh tentative path
-
-		Vector3[] pointArray = new Vector3[VERTEX_COUNT];
+		// Set the positions of the line renderer for the tentative path
+		Vector3[] pointArray = new Vector3[lineVertexCount];
 		GetTravelPathPositions( ref pointArray, 
 		                       this.transform.position, this.transform.forward, 
 		                       this.currentMovementSpeed, amountToTurn, directionToTurn );
 		
 		this.tentativePathLine.enabled = true;
-		for ( int i = 0; i < VERTEX_COUNT; ++i )
+		for ( int i = 0; i < lineVertexCount; ++i )
 		{
 			this.tentativePathLine.SetPosition( i, pointArray[i] );	
 		}
@@ -194,25 +254,11 @@ public class CapitalShipMovement : MonoBehaviour
 		}
 	}
 
-	private void UpdateRoll()
-	{
-		float roll = this.rollSection.localRotation.z;
-		if ( this.isTurning == true )
-		{
-			roll = Mathf.Lerp ( roll, ROLL_MAXIMUM * this.currentTurnDirection, ROLL_RATE * Time.deltaTime );
-		}
-		else //if ( this.rollSection.localRotation.z > ROLL_RATE * Time.deltaTime ) 
-		{
-			roll = Mathf.Lerp ( roll, 0.0f, ROLL_RATE * Time.deltaTime );
-		}
-		this.rollSection.Rotate ( this.rollSection.forward, roll - this.rollSection.localRotation.z, Space.World );
-	}
-	
 	public void DisableRotationSegments()
 	{
-		for ( int i = 0; i < ROTATION_SEGMENT_COUNT; ++i )
+		for ( int i = 0; i < rotationSegmentCount; ++i )
 		{
-			this.rotationSegmentArrayActual[i].SetActive( false );	
+			this.rotationSegmentsActual[i].SetActive( false );	
 		}	
 	}
 
@@ -224,7 +270,7 @@ public class CapitalShipMovement : MonoBehaviour
 		return true; 
 	}
 	
-	public static void GetTravelPathPositions( ref Vector3[] _pointList,
+	public void GetTravelPathPositions( ref Vector3[] _pointList,
 		Vector3 _position, Vector3 _forward,
 		float _moveSpeed,
 		float _turnAmount, float _turnDirection )
@@ -238,9 +284,9 @@ public class CapitalShipMovement : MonoBehaviour
 		// If the ship isn't turning, then draw a straight line out in front
 		if ( _turnAmount == 0.0f )
 		{
-			for ( int i = 0; i < VERTEX_COUNT; ++i )
+			for ( int i = 0; i < this.lineVertexCount; ++i )
 			{
-				_pointList[i] = _position + _forward * (float)i * MAX_PATH_DISTANCE / (float)VERTEX_COUNT;
+				_pointList[i] = _position + _forward * (float)i * this.pathLength / (float)lineVertexCount;
 			}
 			return;
 		}
@@ -253,9 +299,9 @@ public class CapitalShipMovement : MonoBehaviour
 
 		// Every point on the line, ecept the last, is placed ina  circle along the travel curve
 		// The last point is extended out in a straight line from the end of the curve
-		for ( int i = 0; i < VERTEX_COUNT - 1; ++i )
+		for ( int i = 0; i < lineVertexCount - 1; ++i )
 		{
-			float angle = _turnAmount / (float)(VERTEX_COUNT - 1) * (float)i;
+			float angle = _turnAmount / (float)(lineVertexCount - 1) * (float)i;
 			Vector3 pos = GetTravelArcPoint( _position, _forward, arcRadius, angle, _turnDirection );
 			_pointList[i] = pos;
 
@@ -263,31 +309,31 @@ public class CapitalShipMovement : MonoBehaviour
 			{
 				lineLength += (pos - _pointList[i-1]).magnitude;
 
-				if ( lineLength > MAX_PATH_DISTANCE )
+				if ( lineLength > pathLength )
 				{
 					Debug.LogError( "Not enough path length to cover curve. Need at least " + arcRadius * Mathf.PI );
 				}
 			}
 		}
 
-		Vector3 lastDir = _pointList[VERTEX_COUNT-2] - _pointList[VERTEX_COUNT-3];
+		Vector3 lastDir = _pointList[lineVertexCount-2] - _pointList[lineVertexCount-3];
 
 		// If some of the line is still left, push the last point out in a straight line
-		if ( lineLength < MAX_PATH_DISTANCE ) 
+		if ( lineLength < pathLength ) 
 		{
 			lastDir.Normalize();
-			_pointList[VERTEX_COUNT-1] = _pointList[VERTEX_COUNT-2] + lastDir * (MAX_PATH_DISTANCE-lineLength);
+			_pointList[lineVertexCount-1] = _pointList[lineVertexCount-2] + lastDir * (pathLength-lineLength);
 		}
 		else //Otherwise 
 		{
-			_pointList[VERTEX_COUNT-1] = _pointList[VERTEX_COUNT-2] + lastDir;
+			_pointList[lineVertexCount-1] = _pointList[lineVertexCount-2] + lastDir;
 		}
 	}
 	
-	public static void UpdateRotationSegments( GameObject[] _segments, float _turnAmount, float _turnDirection )
+	public void UpdateRotationSegments( GameObject[] _segments, float _turnAmount, float _turnDirection )
 	{
-		int minActiveSegments = 0, maxActiveSegments = ROTATION_SEGMENT_COUNT;
-		int segmentsToActivate =  (int)Mathf.Floor( _turnAmount / Mathf.PI * (float)ROTATION_SEGMENT_COUNT * 0.5f );
+		int minActiveSegments = 0, maxActiveSegments = this.rotationSegmentCount;
+		int segmentsToActivate =  (int)Mathf.Floor( _turnAmount / Mathf.PI * (float)rotationSegmentCount * 0.5f );
 		if ( _turnDirection > 0.0f ) // Turning Right
 		{
 			minActiveSegments = 0;	
@@ -295,26 +341,35 @@ public class CapitalShipMovement : MonoBehaviour
 		}
 		else // Turning Left
 		{
-			minActiveSegments = ROTATION_SEGMENT_COUNT - segmentsToActivate - 1;
-			maxActiveSegments = ROTATION_SEGMENT_COUNT;	
+			minActiveSegments = rotationSegmentCount - segmentsToActivate - 1;
+			maxActiveSegments = rotationSegmentCount;	
 		}
 		
-		for ( int i = 0; i < ROTATION_SEGMENT_COUNT; ++i )
+		for ( int i = 0; i < rotationSegmentCount; ++i )
 		{
 			_segments[i].SetActive( i >= minActiveSegments && i <= maxActiveSegments );	
 		}
 	}
 	
-	public static float GetTurnRadiusAtSpeed( float _moveSpeed )
+	public float GetTurnRadiusAtSpeed( float _moveSpeed )
 	{
-		return _moveSpeed / TURN_SPEED;
+		return _moveSpeed / this.turnRate;
 	}
 
 	public bool IsPointOutOfBounds( Vector3 _pos )
 	{
-		return (_pos - boundaryOrigin).magnitude > BOUNDARY_DISTANCE;
+		return (_pos - boundaryOrigin).magnitude > boundaryRadius;
 	}
 
+	/// <summary>
+	/// Gets the position of a point in the turning circle
+	/// </summary>
+	/// <returns>The travel arc point.</returns>
+	/// <param name="_position">The start position</param>
+	/// <param name="_forward">The direction the ship is facing.</param>
+	/// <param name="_arcRadius">The radius of the turning circle</param>
+	/// <param name="_angle">The angle of the point (0 = ship position)</param>
+	/// <param name="_direction">The direction of the turn( -1=left, 1=right )</param>
 	public static Vector3 GetTravelArcPoint( Vector3 _position, Vector3 _forward, float _arcRadius, float _angle, float _direction )
 	{
 		Vector3 perp = Vector3.Cross( _forward, Vector3.up ) * _direction;
