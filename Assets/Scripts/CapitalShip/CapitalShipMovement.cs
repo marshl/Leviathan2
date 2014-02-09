@@ -4,10 +4,11 @@ using System.Collections.Generic;
 
 public class CapitalShipMovement : MonoBehaviour
 {
+
 	/// <summary>
 	/// The transform that is used to mark where the mouse currently is
 	/// </summary>
-	public Transform markerTransform;
+	//public Transform markerTransform;
 
 	/// <summary>
 	/// The prefab used to mark the turning angle around the ship
@@ -104,6 +105,16 @@ public class CapitalShipMovement : MonoBehaviour
 	/// </summary>
 	public float moveAcceleration;
 
+	private void Awake()
+	{
+		if ( this.networkView != null
+		  && this.networkView.isMine == false )
+		{
+			this.enabled = false;
+			return;
+		}
+	}
+
 	private void Start()
 	{
 		this.tentativePathLine.SetVertexCount( lineVertexCount );
@@ -133,7 +144,7 @@ public class CapitalShipMovement : MonoBehaviour
 			float angle = Vector3.Dot( transform.right, (boundaryOrigin - this.transform.position).normalized );
 			float direction = angle > 0.0f ? 1.0f : -1.0f;
 			
-			Debug.Log( "OUT OF RANGE: " + Time.frameCount + " Turn " + (direction > 0.0f ? "right" : "left") );
+			//Debug.Log( "OUT OF RANGE: " + Time.frameCount + " Turn " + (direction > 0.0f ? "right" : "left") );
 			this.BeginTurn( angle, direction );
 		}
 
@@ -213,7 +224,7 @@ public class CapitalShipMovement : MonoBehaviour
 		if ( posFound == true )
 		{
 			this.lastTargetPosition = targetPos;
-			this.markerTransform.position = this.lastTargetPosition;
+			//TODO: Make a prefab for the this.markerTransform.position = this.lastTargetPosition;
 		}
 		
 		Vector3 vectorToTarget = this.lastTargetPosition - this.transform.position;

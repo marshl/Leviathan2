@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MenuNetworking : MonoBehaviour
 {
@@ -7,12 +8,15 @@ public class MenuNetworking : MonoBehaviour
 	public static MenuNetworking instance;
 
 	// Editor Variables
-	public string gameTypeName = "Leviathan2Game";
-	public int connections = 16;
+	public string gameTypeName;
+	public int connectionLimit;
 
 	// Public Variables
+	[HideInInspector]
 	public string gameName;
+	[HideInInspector]
 	public string gameComment;
+	[HideInInspector]
 	public HostData connectionHost = null;
 	
 	// Private Variables
@@ -40,7 +44,7 @@ public class MenuNetworking : MonoBehaviour
 		NetworkConnectionError result = NetworkConnectionError.NoError;
 		try
 		{ 
-			result = Network.InitializeServer( this.connections, _port, Network.HavePublicAddress() );
+			result = Network.InitializeServer( this.connectionLimit, _port, Network.HavePublicAddress() );
 		}
 		catch 
 		{
@@ -162,26 +166,34 @@ public class MenuNetworking : MonoBehaviour
 		Debug.Log( "Player connected IP:" + _player.ipAddress + " Port;" + _player.port
 		          + " ExtIP:" + _player.externalIP + " ExtPort:" + _player.externalPort );
 
+		int playerID = Common.NetworkID( _player );
+		PLAYER_TYPE playerType = MenuLobby.instance.AddNewPlayer( playerID );
+
+		// If this is the server, tell the new guy who is in each of the teams
 		if ( Network.isServer == true )
 		{
-			MenuLobby.instance.AddNewPlayer( _player );
+			for ( int i = 0; i < Network.connections.Length; ++i )
+			{
+				this.networkView.RPC( "SendPlayerTeamInfo", _player, Common.NetworkID(Network.connections[i]), (int)playerType );
+			}
 		}
-		//MenuLobby.instance.AddPlayer( _player );
 	}
 
 	// Unity Callback: Do not change signature
 	private void OnPlayerDisconnected( NetworkPlayer _player )
 	{
 		Debug.Log( "Player has disconnected IP:" + _player.ipAddress + " Port:" + _player.port );
-		//Network.RemoveRPCs( _player );
-		//Network.DestroyPlayerObjects( _player ); 
-		//MenuLobby.instance.RemovePlayer( _player );
+
+		int playerID = Common.NetworkID( _player );
+		MenuLobby.instance.RemovePlayer( playerID );
 	}
 
 	// Unity Callback: Do not change signature
 	private void OnServerInitialized()
 	{
 		Debug.Log( "Server initialised." );
+		Debug.Log( "MenuLobby: " + MenuLobby.instance, MenuLobby.instance );
+		MenuLobby.instance.AddPlayerOfType( Common.NetworkID( Network.player ), PLAYER_TYPE.COMMANDER1 );
 	}
 
 	public void QuitLobby()
@@ -205,41 +217,25 @@ public class MenuNetworking : MonoBehaviour
 	[RPC]
 	private void LoadLevel( string _level )
 	{
-		//this.lastLevelPrefix = _prefix;
-		
-		// There is no reason to send any more data over the network on the default channel,
-		// because we are about to load the level, thus all those objects will get deleted anyway
-		//Network.SetSendingEnabled( 0, false );	
-		
-		// We need to stop receiving because first the level must be loaded first.
-		// Once the level is loaded, rpc's and other state update attached to objects in the level are allowed to fire
-		//Network.isMessageQueueRunning = false;
-		
-		// All network views loaded from a level will get a prefix into their NetworkViewID.
-		// This will prevent old updates from clients leaking into a newly created scene.
-		//Network.SetLevelPrefix( _prefix );
-
 		GameObject menuInfoObj = new GameObject();
 		DontDestroyOnLoad( menuInfoObj );
 		MenuToGameInfo infoScript = menuInfoObj.AddComponent<MenuToGameInfo>();
-
-		infoScript.
-
+		MenuToGameInfo.instance = infoScript;
+		MenuLobby.instance.CopyInformation( infoScript );
+		infoScript.Print();
 		Application.LoadLevel( _level );
-		//yield return new WaitForSeconds( 1.0f );
-		//yield return new WaitForSeconds( 1.0f );
-		
-		// Allow receiving data again
-		//Network.isMessageQueueRunning = true;
-		// Now the level has been loaded and we can start sending out data to clients
-		//Network.SetSendingEnabled( 0, true );
+	}
+
+	[RPC]
+	private void SendPlayerTeamInfo( int _playerID, int _playerType )
+	{
+		MenuLobby.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
 	}
 
 	[RPC]
 	private void SendLobbyMessageRPC( NetworkViewID _viewID, string _message )
 	{
 		MenuLobby.instance.SendLobbyMessage( _viewID, _message );
-		
 	}
 
 	// Unity Callback: Do not modify signature
@@ -249,8 +245,8 @@ public class MenuNetworking : MonoBehaviour
 	}
 
 	[RPC]
-	private void SendPlayerTeamChangeRPC( NetworkPlayer _player, int _team )
+	private void SendPlayerTeamChangeRPC( int _playerID, PLAYER_TYPE _type )
 	{
-		MenuLobby.instance.ChangePlayerType( _player, _team );
+		MenuLobby.instance.ChangePlayerType( _playerID, _type );
 	}
 }

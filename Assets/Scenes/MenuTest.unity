@@ -83,6 +83,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 38449775}
   - 114: {fileID: 38449776}
+  - 114: {fileID: 38449777}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -125,6 +126,29 @@ MonoBehaviour:
   hostPortField: {fileID: 1167896466}
   hostNameField: {fileID: 185385883}
   hostDescField: {fileID: 1641061795}
+--- !u!114 &38449777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 38449774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d429b0dcb40399140858c6234478b4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameNameText: {fileID: 112249513}
+  gameCommentText: {fileID: 2004767675}
+  messageTextField: {fileID: 1446155452}
+  messageText: {fileID: 134221167}
+  firstPlayerRow: {fileID: 210709639}
+  playerRowOffset: -.075000003
+  playerMessageColours:
+  - FFFFFF
+  - FF00FF
+  - 00FF00
+  - FF0000
+  - 00FFFF
 --- !u!1 &50182098
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,7 +978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354d88cdd34e469458b153e10bf5a64d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1752805063}
+  target: {fileID: 0}
   methodName: OnExitLobbyDown
   value: 
   receiverRequired: 0
@@ -2310,7 +2334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354d88cdd34e469458b153e10bf5a64d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1752805063}
+  target: {fileID: 38449776}
   methodName: OnStartGameDown
   value: 
   receiverRequired: 0
@@ -2639,7 +2663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameTypeName: Leviathan2Game
-  connections: 8
+  connectionLimit: 16
   gameName: 
   gameComment: 
 --- !u!1 &1641061791
@@ -2834,14 +2858,13 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1752805062}
-  - 114: {fileID: 1752805063}
   m_Layer: 0
   m_Name: Lobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1752805062
 Transform:
   m_ObjectHideFlags: 0
@@ -2853,8 +2876,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 708509589}
-  - {fileID: 2032611819}
   - {fileID: 210709638}
+  - {fileID: 2032611819}
   - {fileID: 1431051114}
   - {fileID: 1171128153}
   - {fileID: 112249512}
@@ -2864,29 +2887,6 @@ Transform:
   - {fileID: 2002412711}
   - {fileID: 2004767674}
   m_Father: {fileID: 38449775}
---- !u!114 &1752805063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1752805061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d429b0dcb40399140858c6234478b4d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameNameText: {fileID: 112249513}
-  gameCommentText: {fileID: 2004767675}
-  messageTextField: {fileID: 1446155452}
-  messageText: {fileID: 134221167}
-  firstPlayerRow: {fileID: 210709639}
-  playerRowOffset: -.075000003
-  playerMessageColours:
-  - FFFFFF
-  - FF00FF
-  - 00FF00
-  - FF0000
-  - 00FFFF
 --- !u!1 &1837339627
 GameObject:
   m_ObjectHideFlags: 0
@@ -3149,7 +3149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354d88cdd34e469458b153e10bf5a64d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1752805063}
+  target: {fileID: 0}
   methodName: OnSendMessageDown
   value: 
   receiverRequired: 0

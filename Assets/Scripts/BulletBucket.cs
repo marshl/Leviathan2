@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// The Bullet Bucket objects are created by the Bullet Manager object 
+/// </summary>
 public class BulletBucket : MonoBehaviour
 {
 	public BulletDescriptor bulletDesc;
@@ -21,7 +24,7 @@ public class BulletBucket : MonoBehaviour
 			this.bulletList[i] = bulletScript;
 		}
 	}
-
+	
 	private BulletBase CreateNewBullet( string _name )
 	{
 		GameObject bulletObj = GameObject.Instantiate( this.bulletDesc.prefab ) as GameObject;
@@ -34,6 +37,10 @@ public class BulletBucket : MonoBehaviour
 		return bulletScript;
 	}
 
+	/// <summary>
+	/// Gets the first available bullet, increasing the size of the list if there is not one available
+	/// </summary>
+	/// <returns>The script of the first available bullet</returns>
 	public BulletBase GetAvailableBullet()
 	{
 		int startIndex = currentIndex;
@@ -59,7 +66,7 @@ public class BulletBucket : MonoBehaviour
 				{
 					return this.GetAvailableBullet();
 				}
-				else
+				else // We don't want an infinite loop
 				{
 					return null;
 				}
@@ -67,6 +74,10 @@ public class BulletBucket : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Doubles the size of the bullet contained, creating new bullets to fill out the gap
+	/// </summary>
+	/// <returns><c>true</c>, if bucket size was increased, <c>false</c> otherwise.</returns>
 	private bool IncreaseBucketSize()
 	{
 		int oldLength = this.bulletList.Length;

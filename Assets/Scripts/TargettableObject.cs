@@ -3,5 +3,5 @@ using System.Collections;
 
 public class TargettableObject : MonoBehaviour 
 {
-	public Team team;
+	public int teamID;
 }

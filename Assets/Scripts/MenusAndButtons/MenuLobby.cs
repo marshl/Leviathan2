@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public enum PLAYER_TYPE
+public enum PLAYER_TYPE : int
 {
 	COMMANDER1,
 	COMMANDER2,
@@ -40,23 +40,30 @@ public class MenuLobby : MonoBehaviour
 	private List<LobbyMessage> messages;
 	private List<MenuPlayerRow> playerRows;
 	
-	private Dictionary<NetworkPlayer, PLAYER_TYPE> playerDictionary;
-	private NetworkPlayer commander1;
-	private NetworkPlayer commander2;
+	public Dictionary<int, PLAYER_TYPE> playerDictionary;
+	private int? commander1;
+	private int? commander2;
+	private List<int> team1;
+	private List<int> team2;
 
 	private void Awake ()
 	{
 		MenuLobby.instance = this;
 		this.messages = new List<LobbyMessage>();
-		this.playerRows = new List<MenuPlayerRow>( MenuNetworking.instance.connections );
+		this.playerRows = new List<MenuPlayerRow>();
+		this.playerDictionary = new Dictionary<int, PLAYER_TYPE>();
+		this.team1 = new List<int>();
+		this.team2 = new List<int>();
+	}
 
-		this.playerDictionary = new Dictionary<NetworkPlayer, PLAYER_TYPE>();
+	private void Start()
+	{
 
-		for ( int i = 0; i < MenuNetworking.instance.connections; ++i )
+		for ( int i = 0; i < MenuNetworking.instance.connectionLimit; ++i )
 		{
 			GameObject rowObj = ( i == 0 ) ? this.firstPlayerRow.gameObject 
 				: GameObject.Instantiate( this.firstPlayerRow.gameObject ) as GameObject;
-
+			
 			rowObj.transform.parent = this.firstPlayerRow.transform.parent;
 			rowObj.transform.Translate( 0.0f, (float)i * this.playerRowOffset, 0.0f );
 			rowObj.name = "PlayerRow" + i;
@@ -73,10 +80,11 @@ public class MenuLobby : MonoBehaviour
 
 	public void Reset()
 	{
+		Debug.Log( "Resetting MenuLobby", this );
 		this.playerDictionary.Clear();
 		this.messages.Clear();
 
-		for ( int i = 0; i < MenuNetworking.instance.connections; ++i )
+		for ( int i = 0; i < MenuNetworking.instance.connectionLimit; ++i )
 		{
 			this.playerRows[i].SetDefaults();
 		}
@@ -87,7 +95,7 @@ public class MenuLobby : MonoBehaviour
 		this.gameNameText.text = MenuNetworking.instance.gameName;
 		this.gameCommentText.text = MenuNetworking.instance.gameComment;
 
-		this.Reset();
+		//this.Reset();
 	}
 
 	public void ExitLobby()
@@ -135,21 +143,94 @@ public class MenuLobby : MonoBehaviour
 		}
 	}
 	
-	public void AddNewPlayer( NetworkPlayer _player )
+	public PLAYER_TYPE AddNewPlayer( int _playerID )
 	{
-		this.playerDictionary.Add( _player, 0 );
+		PLAYER_TYPE type;
+		if ( _playerID == Common.NetworkID(Network.player) && Network.isServer )
+		{
+			type = PLAYER_TYPE.COMMANDER1;
+		}
+		else if ( this.team2.Count == 0 )
+		{
+			type = PLAYER_TYPE.COMMANDER2;
+		}
+		else if ( this.team1.Count > this.team2.Count )
+		{
+			type = PLAYER_TYPE.FIGHTER2;
+		}
+		else
+		{
+			type = PLAYER_TYPE.FIGHTER1;
+		}
+		this.AddPlayerOfType( _playerID, type );
+
+		return type;
 	}
 
-	public void RemovePlayer( NetworkPlayer _player )
+	public void AddPlayerOfType( int _playerID, PLAYER_TYPE _type )
 	{
-		this.playerDictionary.Remove( _player );
+		if ( this.playerDictionary.ContainsKey( _playerID ) )
+		{
+			Debug.LogWarning( "Player " + _playerID + " already added", this );
+		}
+
+		this.playerDictionary.Add( _playerID, _type );
+		switch ( _type )
+		{
+		case PLAYER_TYPE.COMMANDER1:
+			if ( this.commander1 != null )
+			{
+				Debug.LogWarning( "Commander role already set", this );
+			}
+			this.commander1 = _playerID;
+			break;
+
+		case PLAYER_TYPE.COMMANDER2:
+			if ( this.commander2 != null )
+			{
+				Debug.LogWarning( "Commander 2 rol already set", this );
+			}
+			this.commander2 = _playerID;
+			break;
+		case PLAYER_TYPE.FIGHTER1:
+			this.team1.Add( _playerID );
+			break;
+		case PLAYER_TYPE.FIGHTER2:
+			this.team2.Add( _playerID );
+			break;
+		default:
+			Debug.LogError( "Uncaught player type " + _type );
+			break;
+		}
+
+		Debug.Log( "Adding player " + _playerID + " to type " + _type );
 	}
 
-	public void ChangePlayerType( NetworkPlayer _player, PLAYER_TYPE _type )
+	public void RemovePlayer( int _playerID )
 	{
-		this.playerDictionary[_player] = _type;
+		PLAYER_TYPE type = this.playerDictionary[_playerID];
+		this.playerDictionary.Remove( _playerID );
+		Debug.Log( "Removing player of type " + type );
 	}
 
+	public void ChangePlayerType( int _playerID, PLAYER_TYPE _type )
+	{
+		this.RemovePlayer( _playerID );
+		this.AddPlayerOfType( _playerID, _type );
+		//this.playerDictionary[_playerID] = _type;
+	}
+
+	public void CopyInformation( MenuToGameInfo _info )
+	{
+		//_info.playerTypeMap = new Dictionary<int, PLAYER_TYPE>( this.playerDictionary);
+		_info.playerTypeMap = new Dictionary<int, PLAYER_TYPE>();
+		foreach ( var pair in this.playerDictionary )
+		{
+			_info.playerTypeMap.Add( pair.Key, pair.Value );
+		}
+
+		_info.Print();
+	}
 
 	/************************************************************
 	 * CALLBACKS */

@@ -129,7 +129,8 @@ public class Fighter : MonoBehaviour {
 		b = 0.0f; // center peak position
 		c = 1.0f; // width of the bell
 		d = +2.0f; // offset
-		
+
+		//TODO: It's e^x not e-x, number tweaking required before fix
 		float gaussian = a * EULER -  (Mathf.Pow ( x - b,2) / ( 2 * Mathf.Pow (c,2))) + d;
 		return gaussian;
 	}
