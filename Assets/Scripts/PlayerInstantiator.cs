@@ -57,7 +57,7 @@ public class PlayerInstantiator : MonoBehaviour
 				shipPos,
 				Quaternion.identity ) as GameObject;
 		}
-		else
+		else // Normal operation
 		{
 			capitalObj = Network.Instantiate(
 				this.capitalShipPrefab,

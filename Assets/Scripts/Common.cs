@@ -108,4 +108,9 @@ public abstract class Common : MonoBehaviour
 	{
 		return int.Parse( _player.ToString() );
 	}
+	
+	public static float SmoothLerp( float _value, float _min, float _max )
+	{
+		return ( (Mathf.Sin((_value-0.5f)*Mathf.PI) * (_max-_min) ) + _max + _min) / 2.0f;
+	}
 }

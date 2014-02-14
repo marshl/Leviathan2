@@ -4,11 +4,7 @@ using System.Collections.Generic;
 
 public class CapitalShipMovement : MonoBehaviour
 {
-
-	/// <summary>
-	/// The transform that is used to mark where the mouse currently is
-	/// </summary>
-	//public Transform markerTransform;
+	public Transform markerTransform;
 
 	/// <summary>
 	/// The prefab used to mark the turning angle around the ship
@@ -73,8 +69,7 @@ public class CapitalShipMovement : MonoBehaviour
 	/// The speed at which the ship is currently moving
 	/// </summary>
 	private float currentMovementSpeed = 5.0f;
-
-
+	
 	/// <summary>
 	/// The vertex count of the path lines
 	/// </summary>
@@ -105,9 +100,36 @@ public class CapitalShipMovement : MonoBehaviour
 	/// </summary>
 	public float moveAcceleration;
 
+	public Transform avoidanceTransform;
+	private CapitalShipMovement otherShip;
+	public float avoidanceAngleRate;
+	public float avoidanceAngleMax;
+
+	public enum AVOIDANCE_STATE
+	{
+		NONE,
+		UP_START,
+		UP_RETURN,
+		DOWN_START,
+		DOWN_RETURN,
+	};
+	private AVOIDANCE_STATE currentAvoidanceState = AVOIDANCE_STATE.NONE;
+	public float avoidanceCeiling;
+	public float avoidanceFloor;
+	public float avoidanceCurveDropRate;
+	private bool followingAvoidanceCurve;
+	private float avoidanceCurveStartHeight;
+	private float avoidanceCurveEndHeight;
+	private float avoidCurveLength;
+	private float currentAvoidCurvePoint;
+
+	private float currentAvoidHeight;
+	private float currentAvoidAngle;
+
 	private void Awake()
 	{
-		if ( this.networkView != null
+		if ( Network.peerType != NetworkPeerType.Disconnected
+		  && this.networkView != null
 		  && this.networkView.isMine == false )
 		{
 			this.enabled = false;
@@ -123,12 +145,23 @@ public class CapitalShipMovement : MonoBehaviour
 
 		GameObject obj = new GameObject();
 		LineRenderer line = obj.AddComponent<LineRenderer>();
-		line.SetVertexCount( 100 );
-		for ( int i = 0; i < 100; ++i )
+		int circleVetices = 100;
+		line.SetVertexCount( circleVetices );
+		for ( int i = 0; i < circleVetices; ++i )
 		{
-			float angle = (float)i * Mathf.PI * 2.0f / 100.0f;
+			float angle = (float)i * Mathf.PI * 2.0f / (float)(circleVetices - 1);
 			Vector3 offset = new Vector3( Mathf.Sin( angle ),  0.0f, Mathf.Cos( angle ) );
 			line.SetPosition( i, offset * boundaryRadius + boundaryOrigin );
+		}
+
+
+		CapitalShipMovement[] otherScripts = GameObject.FindObjectsOfType<CapitalShipMovement>() as CapitalShipMovement[];
+		foreach ( CapitalShipMovement other in otherScripts )
+		{
+			if ( other != this )
+			{
+				this.otherShip = other;
+			}
 		}
 	}
 	
@@ -143,8 +176,7 @@ public class CapitalShipMovement : MonoBehaviour
 		{
 			float angle = Vector3.Dot( transform.right, (boundaryOrigin - this.transform.position).normalized );
 			float direction = angle > 0.0f ? 1.0f : -1.0f;
-			
-			//Debug.Log( "OUT OF RANGE: " + Time.frameCount + " Turn " + (direction > 0.0f ? "right" : "left") );
+
 			this.BeginTurn( angle, direction );
 		}
 
@@ -162,7 +194,7 @@ public class CapitalShipMovement : MonoBehaviour
 			}	
 		}
 	
-
+		this.UpdateAvoidanceControl();
 
 		this.transform.position += this.transform.forward * this.currentMovementSpeed * Time.deltaTime;
 	}
@@ -262,6 +294,211 @@ public class CapitalShipMovement : MonoBehaviour
 			
 			this.currentTurnAmount = amountToTurn;
 			this.isTurning = true;
+		}
+	}
+
+	private void UpdateAvoidanceControl()
+	{
+		if ( this.followingAvoidanceCurve == true )
+		{
+			float oldPos = this.currentAvoidCurvePoint;
+			this.currentAvoidCurvePoint += this.currentMovementSpeed * Time.deltaTime;
+
+			if ( this.currentAvoidCurvePoint >= this.avoidCurveLength ) 
+			{
+				this.EndAvoidanceCurve();
+			}
+			else
+			{
+				float t1 = this.currentAvoidCurvePoint / this.avoidCurveLength;
+				float t2 = oldPos / this.avoidCurveLength;
+
+				float d1 = Common.SmoothLerp( t1, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
+				float d2 = Common.SmoothLerp( t2, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
+				this.currentAvoidHeight = d1;
+				this.currentAvoidAngle = Mathf.Atan2( d2-d1, t1-t2 ) * Mathf.Rad2Deg / 4;
+			}
+		}
+		else
+		{
+			switch ( this.currentAvoidanceState )
+			{
+			case AVOIDANCE_STATE.NONE:
+			{
+				break;
+			}
+			case AVOIDANCE_STATE.DOWN_RETURN:
+			{
+				if ( this.currentAvoidHeight >= 0 )
+				{
+					// Flatten off and finish up
+					this.currentAvoidanceState = AVOIDANCE_STATE.NONE;
+					this.currentAvoidAngle = 0.0f;
+					this.currentAvoidHeight = 0.0f;
+					break;
+				}
+				// If nose is down, bring it back up
+				else if ( this.currentAvoidAngle <= 0.0f )
+				{
+					this.currentAvoidAngle += Time.deltaTime * this.avoidanceAngleRate;
+					this.currentAvoidHeight -= this.GetAvoidanceHeightSpeed() * Time.deltaTime;
+				}
+
+				if ( this.currentAvoidAngle >= 0.0f )
+				{
+					this.StartAvoidanceCurve( 0.0f );
+				}
+				break;
+			}
+			case AVOIDANCE_STATE.DOWN_START:
+			{
+				if ( this.currentAvoidHeight == this.avoidanceFloor )
+				{
+					break;
+				}
+				// If the nose is pointing up, nose down
+				if ( this.currentAvoidAngle < 0.0f )
+				{
+					this.currentAvoidAngle += Time.deltaTime * this.avoidanceAngleRate;
+					this.currentAvoidHeight -= this.GetAvoidanceHeightSpeed() * Time.deltaTime;
+				}
+
+				// If the nose is flat, start curving down
+				if ( this.currentAvoidAngle >= 0.0f )
+				{
+					this.StartAvoidanceCurve( this.avoidanceFloor );
+				}
+				break;
+			}
+			case AVOIDANCE_STATE.UP_RETURN:
+			{
+				// If we are back below normal height
+				if ( this.currentAvoidHeight <= 0 )
+				{
+					// Flatten off and finish up
+					this.currentAvoidanceState = AVOIDANCE_STATE.NONE;
+					this.currentAvoidAngle = 0.0f;
+					this.currentAvoidHeight = 0.0f;
+					break;
+				}
+				// If nose is up, bring it back down
+				else if ( this.currentAvoidAngle >= 0.0f )
+				{
+					this.currentAvoidAngle -= Time.deltaTime * this.avoidanceAngleRate;
+					this.currentAvoidHeight += this.GetAvoidanceHeightSpeed() * Time.deltaTime;
+				}
+				
+				if ( this.currentAvoidAngle <= 0.0f )
+				{
+					this.StartAvoidanceCurve( 0.0f );
+				}
+				break;
+			}
+			case AVOIDANCE_STATE.UP_START:
+			{
+				if ( this.currentAvoidHeight == this.avoidanceCeiling )
+				{
+					break;
+				}
+				// If the nose is pointing down, nose up
+				if ( this.currentAvoidAngle > 0.0f )
+				{
+					this.currentAvoidAngle -= Time.deltaTime * this.avoidanceAngleRate;
+					this.currentAvoidHeight += this.GetAvoidanceHeightSpeed() * Time.deltaTime;
+				}
+				
+				// If the nose is flat, start curving up
+				if ( this.currentAvoidAngle <= 0.0f )
+				{
+					this.StartAvoidanceCurve( this.avoidanceCeiling );
+				}
+				break;
+			}
+			default:
+			{
+				Debug.LogError( "Uncaught state " + this.currentAvoidanceState, this );
+				return;
+			}
+			}
+		}
+		this.avoidanceTransform.localPosition = new Vector3( 0.0f, this.currentAvoidHeight, 0.0f );
+		this.avoidanceTransform.localRotation = Quaternion.Euler( this.currentAvoidAngle, 0.0f, 0.0f );
+	}
+
+	private bool IncreaseAvoidanceAngle()
+	{
+		if ( this.currentAvoidAngle >= this.avoidanceAngleMax )
+		{
+			return true;
+		}
+		this.currentAvoidAngle += Time.deltaTime * this.avoidanceAngleRate;
+		return false;
+	}
+
+	private bool DecreaseAvoidanceAngle()
+	{
+		if ( this.currentAvoidAngle <=- this.avoidanceAngleMax )
+		{
+			return true;
+		}
+		this.currentAvoidAngle -= Time.deltaTime * this.avoidanceAngleRate;
+		return false;
+	}
+
+	public void OnAvoidanceAreaEnter( CapitalShipMovement _otherShip )
+	{
+		this.otherShip = _otherShip;
+
+		if ( this.currentAvoidanceState == AVOIDANCE_STATE.UP_RETURN
+		  || this.currentAvoidanceState == AVOIDANCE_STATE.UP_START )
+		{
+			this.currentAvoidanceState = AVOIDANCE_STATE.UP_START;
+		}
+		else if ( this.currentAvoidanceState == AVOIDANCE_STATE.DOWN_RETURN
+		       || this.currentAvoidanceState == AVOIDANCE_STATE.DOWN_START )
+		{
+			this.currentAvoidanceState = AVOIDANCE_STATE.DOWN_START;
+		}
+		else
+		//if ( this.currentAvoidanceState != AVOIDANCE_STATE.DOWN_START
+		//  && this.currentAvoidanceState != AVOIDANCE_STATE.UP_START )
+		{
+			// Determine which ship is on the left or right of the intercept line
+
+			Vector3 f1 = this.transform.forward;
+			Vector3 f2 = this.otherShip.transform.forward;
+			float direction = Vector3.Cross( f1, f2 ).y;
+
+			if ( direction > 0.0f )
+			{
+				this.currentAvoidanceState = AVOIDANCE_STATE.DOWN_START;
+			}
+			else
+			{
+				this.currentAvoidanceState = AVOIDANCE_STATE.UP_START;
+			}
+		}
+	}
+
+	public void OnAvoidanceAreaExit()
+	{
+		switch ( this.currentAvoidanceState )
+		{
+		case AVOIDANCE_STATE.NONE:
+			break;
+		case AVOIDANCE_STATE.DOWN_RETURN:
+			break;
+		case AVOIDANCE_STATE.UP_RETURN:
+			break;
+		case AVOIDANCE_STATE.UP_START:
+			this.currentAvoidanceState = AVOIDANCE_STATE.UP_RETURN;
+			break;
+		case AVOIDANCE_STATE.DOWN_START:
+			this.currentAvoidanceState = AVOIDANCE_STATE.DOWN_RETURN;
+			break;
+		default:
+			Debug.LogError( "Uncaught state " + this.currentAvoidanceState );
+			break;
 		}
 	}
 
@@ -367,6 +604,11 @@ public class CapitalShipMovement : MonoBehaviour
 		return _moveSpeed / this.turnRate;
 	}
 
+	/// <summary>
+	/// Determines whether the specified point is within the boundary circle
+	/// </summary>
+	/// <returns><c>true</c> if the point lies within the boundary, otherwise <c>false</c>.</returns>
+	/// <param name="_pos">The position to test</param>
 	public bool IsPointOutOfBounds( Vector3 _pos )
 	{
 		return (_pos - boundaryOrigin).magnitude > boundaryRadius;
@@ -387,4 +629,35 @@ public class CapitalShipMovement : MonoBehaviour
 		return _position - perp * _arcRadius
 		                   + Quaternion.AngleAxis( _angle * Mathf.Rad2Deg * _direction, Vector3.up ) * perp * _arcRadius;
 	}
+
+	private float GetAvoidanceHeightSpeed()
+	{
+		// See sine rule
+		float r1 = Mathf.Deg2Rad * this.currentAvoidAngle;
+		float r2 = Mathf.Deg2Rad * ( 90 - this.currentAvoidAngle );
+		if ( Mathf.Sin(r2) == 0.0f )
+		{
+			Debug.LogError( "bad argument" );
+			return 0.0f;
+		}
+		return this.currentMovementSpeed * Mathf.Sin(r1) / Mathf.Sin(r2);;
+	}
+
+	private void StartAvoidanceCurve( float _targetHeight )
+	{
+		Debug.Log( "Starting curve" );
+		this.currentAvoidCurvePoint = 0.0f;
+		this.followingAvoidanceCurve = true;
+		this.avoidanceCurveStartHeight = this.currentAvoidHeight;
+		this.avoidanceCurveEndHeight = _targetHeight;
+		this.avoidCurveLength = Mathf.Abs( this.avoidanceCurveStartHeight - this.avoidanceCurveEndHeight ) / this.avoidanceCurveDropRate;
+	}
+
+	private void EndAvoidanceCurve()
+	{
+		Debug.Log( "Ending avoidance curve" );
+		this.followingAvoidanceCurve = false;
+		this.currentAvoidHeight = this.avoidanceCurveEndHeight;
+		this.currentAvoidAngle = 0.0f;
+	} 
 }

@@ -82,13 +82,25 @@ public abstract class SeekingBullet : BulletBase
 	{
 		if ( this.target.rigidbody != null )
 		{
-			Vector3 targetPos = this.target.transform.position;
+			/*Vector3 targetPos = this.target.transform.position;
 			Vector3 targetVel = this.target.rigidbody.velocity;
 			float targetSpeed = targetVel.magnitude;
-			float flightDurection = ( targetPos - this.transform.position ).magnitude
+			float flightDuration = ( targetPos - this.transform.position ).magnitude
 				/ (this.desc.moveSpeed - targetSpeed );
 
-			return targetPos + targetVel * flightDurection;
+			return targetPos + targetVel * flightDuration;*/
+
+			Vector3 targetPos = this.target.transform.position;
+			Vector3 targetForward = this.target.transform.forward;
+
+			Vector3 vectorFromTarget = this.transform.position - targetPos;
+			Vector3 rayFromTarget = vectorFromTarget.normalized;
+			float angleFromTarget = Vector3.Angle( rayFromTarget, targetForward );
+			float distToTarget = vectorFromTarget.magnitude;
+			float flightDuration = distToTarget * Mathf.Cos( angleFromTarget ) / 2.0f;
+			Vector3 targetVel = this.target.rigidbody.velocity;
+
+			return targetPos + targetVel * flightDuration;
 		}
 		else
 		{
