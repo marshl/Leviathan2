@@ -167,15 +167,24 @@ public class MenuNetworking : MonoBehaviour
 		          + " ExtIP:" + _player.externalIP + " ExtPort:" + _player.externalPort );
 
 		int playerID = Common.NetworkID( _player );
-		PLAYER_TYPE playerType = MenuLobby.instance.AddNewPlayer( playerID );
+	
 
-		// If this is the server, tell the new guy who is in each of the teams
 		if ( Network.isServer == true )
 		{
+			PLAYER_TYPE playerType = MenuLobby.instance.DeterminePlayerType( playerID );
+
+			// If this is the server, tell the new guy who is in each of the teams
 			for ( int i = 0; i < Network.connections.Length; ++i )
 			{
-				this.networkView.RPC( "SendPlayerTeamInfo", _player, Common.NetworkID(Network.connections[i]), (int)playerType );
+				int id = Common.NetworkID( Network.connections[i] );
+				if ( id != playerID )
+				{
+					this.networkView.RPC( "SendPlayerTeamInfo", _player, Common.NetworkID(Network.connections[i]), (int)playerType );
+				}
 			}
+		
+			// Then tell everyone about the new guy
+			this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.Others, playerID, (int)playerType );
 		}
 	}
 

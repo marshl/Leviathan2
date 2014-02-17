@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[WeaponTypeAttribute( typeof(LightLaserWeaponDesc) )]
+//[WeaponTypeAttribute( typeof(LightLaserWeaponDesc) )]
 public class LightLaserWeapon : WeaponBase
 {
 	[HideInInspector]

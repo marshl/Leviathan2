@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[WeaponTypeAttribute(typeof(BurstFireWeaponTestDesc) )]
+//[WeaponTypeAttribute(typeof(BurstFireWeaponTestDesc) )]
 public class BurstFireWeaponTest : BurstFireWeapon
 {
 

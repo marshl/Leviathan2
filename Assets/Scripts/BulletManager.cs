@@ -3,6 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+public enum BULLET_TYPE : int
+{
+	NONE,
+	MISSILE,
+	LIGHT_LASER,
+};
+
+public enum WEAPON_TYPE : int
+{
+	NONE,
+	LIGHT_LASER,
+	HEAVY_LASER,
+	GATLING_LASER,
+	BURST_FIRE_TEST,
+};
+
 /// <summary>
 /// The singleton class that handles the creation and allocation of bullets in the game scene
 /// Bullet descriptors should be attached to this object
@@ -14,7 +30,7 @@ public class BulletManager : MonoBehaviour
 	/// <summary>
 	/// The map of bullet types to bullet bucket
 	/// </summary>
-	private Dictionary<System.Type, BulletBucket> bulletDictionary;
+	private Dictionary<BULLET_TYPE, BulletBucket> bulletDictionary;
 
 	private void Awake()
 	{
@@ -32,7 +48,7 @@ public class BulletManager : MonoBehaviour
 		bulletBucketObj.name = "BulletContainer";
 
 		BulletDescriptor[] descriptors = this.GetComponents<BulletDescriptor>();
-		this.bulletDictionary = new Dictionary<System.Type, BulletBucket>( descriptors.Length );
+		this.bulletDictionary = new Dictionary<BULLET_TYPE, BulletBucket>( descriptors.Length );
 
 		foreach ( BulletDescriptor desc in descriptors )
 		{
@@ -40,7 +56,7 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 	
-	public BulletBase FindAvailableBullet( System.Type _bulletType ) 
+	public BulletBase FindAvailableBullet( BULLET_TYPE _bulletType ) 
 	{
 		BulletBucket bucket = null;
 		bool foundList = this.bulletDictionary.TryGetValue( _bulletType, out bucket );
@@ -61,10 +77,10 @@ public class BulletManager : MonoBehaviour
 	                              Vector3 _pos, Vector3 _forward,
 	                              float _spread = 0.0f, float _rotation = 0.0f )
 	{
-		BulletBase bulletScript = this.FindAvailableBullet( _bulletDesc.GetBulletType() );
+		BulletBase bulletScript = this.FindAvailableBullet( _bulletDesc.bulletType );
 		if ( bulletScript == null )
 		{
-			Debug.LogError( "Error shooting bullet of type \"" + _bulletDesc.GetBulletType().ToString() + "\"" );
+			Debug.LogError( "Error shooting bullet of type \"" + _bulletDesc.bulletType + "\"" );
 			return null;
 		}
 		bulletScript.Reset();
@@ -92,23 +108,23 @@ public class BulletManager : MonoBehaviour
 
 	private void CreateBulletBucket( BulletDescriptor _desc )
 	{
-		BulletBase prefabScript = _desc.prefab.GetComponent<BulletBase>();
-		System.Type bulletType = prefabScript.GetType();
+		//BulletBase prefabScript = _desc.prefab.GetComponent<BulletBase>();
+		//BULLET_TYPE bulletType = _desc.bulletType;
 		
-		if ( this.bulletDictionary.ContainsKey( bulletType ) )
+		if ( this.bulletDictionary.ContainsKey( _desc.bulletType ) )
 		{
-			Debug.LogError( "Bullet type \"" + bulletType.ToString() + "\" already used.", _desc.prefab );
+			Debug.LogError( "Bullet type \"" + _desc.bulletType.ToString() + "\" already used.", _desc.prefab );
 			return;
 		}
 	
 		GameObject bucketObj = new GameObject();
-		bucketObj.name = bulletType.ToString() + "Bucket";
+		bucketObj.name = _desc.bulletType.ToString() + "Bucket";
 		bucketObj.transform.parent = this.transform;
 
 		BulletBucket bulletBucket = bucketObj.AddComponent<BulletBucket>();
 		bulletBucket.bulletDesc = _desc;
 		bulletBucket.CreateBulletList();
 	
-		this.bulletDictionary.Add ( bulletType, bulletBucket );
+		this.bulletDictionary.Add ( _desc.bulletType, bulletBucket );
 	}
 }

@@ -55,16 +55,7 @@ public class CapitalShipMovement : MonoBehaviour
 	/// The rotational segments that shows where the ship would turn
 	/// </summary>
 	private GameObject[] rotationSegmentsTentative;
-
-	/// <summary>
-	/// The origin point of the positional boundary
-	/// </summary>
-	public Vector3 boundaryOrigin;
-	/// <summary>
-	/// The radius of the boundary circle
-	/// </summary>
-	public float boundaryRadius;
-
+	
 	/// <summary>
 	/// The speed at which the ship is currently moving
 	/// </summary>
@@ -143,18 +134,6 @@ public class CapitalShipMovement : MonoBehaviour
 
 		this.CreateRotationSegments();
 
-		GameObject obj = new GameObject();
-		LineRenderer line = obj.AddComponent<LineRenderer>();
-		int circleVetices = 100;
-		line.SetVertexCount( circleVetices );
-		for ( int i = 0; i < circleVetices; ++i )
-		{
-			float angle = (float)i * Mathf.PI * 2.0f / (float)(circleVetices - 1);
-			Vector3 offset = new Vector3( Mathf.Sin( angle ),  0.0f, Mathf.Cos( angle ) );
-			line.SetPosition( i, offset * boundaryRadius + boundaryOrigin );
-		}
-
-
 		CapitalShipMovement[] otherScripts = GameObject.FindObjectsOfType<CapitalShipMovement>() as CapitalShipMovement[];
 		foreach ( CapitalShipMovement other in otherScripts )
 		{
@@ -174,7 +153,7 @@ public class CapitalShipMovement : MonoBehaviour
 		//   start an emergency turn
 		if ( IsPointOutOfBounds(this.transform.position + this.transform.forward * GetTurnRadiusAtSpeed( this.currentMovementSpeed )) )
 		{
-			float angle = Vector3.Dot( transform.right, (boundaryOrigin - this.transform.position).normalized );
+			float angle = Vector3.Dot( transform.right, (GameBoundary.instance.origin - this.transform.position).normalized );
 			float direction = angle > 0.0f ? 1.0f : -1.0f;
 
 			this.BeginTurn( angle, direction );
@@ -611,7 +590,7 @@ public class CapitalShipMovement : MonoBehaviour
 	/// <param name="_pos">The position to test</param>
 	public bool IsPointOutOfBounds( Vector3 _pos )
 	{
-		return (_pos - boundaryOrigin).magnitude > boundaryRadius;
+		return (_pos - GameBoundary.instance.origin).magnitude > GameBoundary.instance.radius;
 	}
 
 	/// <summary>

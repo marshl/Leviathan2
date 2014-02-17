@@ -9,9 +9,10 @@ using System;
 /// WHEN SUBCLASSING, add the attribute [BulletTypeAttribute( typeof( <BULLETCLASS> ) )] 
 ///    where <BULLETCLASS> is the class of the actual bullet
 /// </summary>
-public abstract class BulletDescriptor : MonoBehaviour
+public class BulletDescriptor : MonoBehaviour
 {
-	private System.Type bulletType;
+	public BULLET_TYPE bulletType;
+	//private System.Type bulletType;
 	public GameObject prefab;
 
 	/// <summary>
@@ -33,16 +34,16 @@ public abstract class BulletDescriptor : MonoBehaviour
 	/// Returns the type of the Bullet Base class on the prefab
 	/// </summary>
 	/// <returns>The bullet type.</returns>
-	public System.Type GetBulletType()
+	/*public BULLET_TYPE GetBulletType()
 	{
 		if ( this.bulletType == null )
 		{
 			this.bulletType = this.prefab.GetComponent<BulletBase>().GetType();
 		}
 		return this.bulletType;
-	}
+	}*/
 }
-
+/*
 public class BulletTypeAttribute : Attribute
 {
 	public System.Type bulletType;
@@ -50,4 +51,4 @@ public class BulletTypeAttribute : Attribute
 	{
 		this.bulletType = _bulletType;
 	}
-}
+}*/

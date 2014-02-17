@@ -9,6 +9,7 @@ using System.Collections.Generic;
 /// </summary>
 public abstract class WeaponBase : MonoBehaviour
 {
+	public WEAPON_TYPE weaponType;
 	/// <summary>
 	/// The descriptor for this weapon
 	/// </summary>
@@ -45,7 +46,7 @@ public abstract class WeaponBase : MonoBehaviour
 	/// Gets the System Type of the descriptor on this weapon
 	/// </summary>
 	/// <returns>The descriptor type.</returns>
-	protected System.Type GetDescriptorType()
+	/*protected System.Type GetDescriptorType()
 	{
 		object[] attributes = this.GetType().GetCustomAttributes( true ); // Inherit = true
 		foreach ( object attribute in attributes )
@@ -58,15 +59,15 @@ public abstract class WeaponBase : MonoBehaviour
 		}
 		Debug.LogError( "No Weapon Descriptor found on \"" + this.GetType().ToString() + "\"" );
 		return null;
-	}
+	}*/
 
 	/// <summary>
 	/// Initialises all of the descriptors on this weapon, including all inherited weapon types
 	/// </summary>
 	protected virtual void InitialiseDescriptors()
 	{
-		System.Type descType = this.GetDescriptorType();
-		this.weaponDesc = WeaponDescManager.instance.GetDescOfType( descType );
+		//System.Type descType = this.GetDescriptorType();
+		this.weaponDesc = WeaponDescManager.instance.GetDescOfType( this.weaponType );//descType );
 
 		// Find all fields in this type
 		FieldInfo[] fields = this.GetType().GetFields();

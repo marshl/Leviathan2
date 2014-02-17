@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[BulletTypeAttribute( typeof(HeavyLaserBullet) )]
+//[BulletTypeAttribute( typeof(HeavyLaserBullet) )]
 public class HeavyLaserBulletDesc : BulletDescriptor
 {
 

@@ -113,7 +113,8 @@ public class PlayerInstantiator : MonoBehaviour
 
 		cameraObj.transform.parent = fighterObj.transform;
 
-		fighterObj.GetComponent<TargettableObject>().teamID = _teamID;
+		//TODO:This
+		//fighterObj.GetComponent<TargettableObject>().teamID = _teamID;
 
 		return fighterObj;
 	}

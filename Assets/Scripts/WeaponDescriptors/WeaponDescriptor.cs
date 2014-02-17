@@ -7,6 +7,7 @@ using System;
 /// </summary>
 public abstract class WeaponDescriptor : MonoBehaviour
 {
+	public WEAPON_TYPE weaponType;
 	/// <summary>
 	/// The bullet that is fired by this weapon
 	/// </summary>
@@ -31,7 +32,7 @@ public abstract class WeaponDescriptor : MonoBehaviour
 /// <summary>
 /// The attribute used to store the System Type of the weapon attached to this descriptor
 /// </summary>
-public class WeaponTypeAttribute : Attribute
+/*public class WeaponTypeAttribute : Attribute
 {
 	public System.Type type;
 
@@ -39,4 +40,4 @@ public class WeaponTypeAttribute : Attribute
 	{
 		this.type = _type;
 	}
-}
+}*/

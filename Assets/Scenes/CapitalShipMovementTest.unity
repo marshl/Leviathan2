@@ -506,6 +506,46 @@ Prefab:
   m_RootGameObject: {fileID: 1431047641}
   m_IsPrefabParent: 0
   m_IsExploded: 1
+--- !u!1001 &533062758
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+  m_RootGameObject: {fileID: 1080635721}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &577716559
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,6 +940,82 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &1080635721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+  m_PrefabInternal: {fileID: 533062758}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1080635723}
+  - 114: {fileID: 1080635722}
+  - 120: {fileID: 1080635724}
+  m_Layer: 0
+  m_Name: GameBoundary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1080635722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400000, guid: b4cd6985890093247b7825db2a72a417,
+    type: 2}
+  m_PrefabInternal: {fileID: 533062758}
+  m_GameObject: {fileID: 1080635721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4a1cb70b1f199e4681e90f629d04b72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  origin: {x: 0, y: 0, z: 0}
+  radius: 30
+  lineVertices: 100
+--- !u!4 &1080635723
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+  m_PrefabInternal: {fileID: 533062758}
+  m_GameObject: {fileID: 1080635721}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!120 &1080635724
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 12000000, guid: b4cd6985890093247b7825db2a72a417,
+    type: 2}
+  m_PrefabInternal: {fileID: 533062758}
+  m_GameObject: {fileID: 1080635721}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
+  m_Positions: []
+  m_Parameters:
+    startWidth: 1
+    endWidth: 1
+    m_StartColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_EndColor:
+      serializedVersion: 2
+      rgba: 4294967295
+  m_UseWorldSpace: 1
 --- !u!1 &1208330465
 GameObject:
   m_ObjectHideFlags: 0
@@ -1730,8 +1846,6 @@ MonoBehaviour:
   tentativePathLine: {fileID: 1431047642}
   rotationSegmentCount: 16
   tentativeSegmentUpscale: 1.5
-  boundaryOrigin: {x: 0, y: 0, z: 0}
-  boundaryRadius: 50
   lineVertexCount: 25
   pathLength: 50
   turnRate: .5
@@ -2089,8 +2203,6 @@ MonoBehaviour:
   tentativePathLine: {fileID: 1431047642}
   rotationSegmentCount: 16
   tentativeSegmentUpscale: 1.5
-  boundaryOrigin: {x: 0, y: 0, z: 0}
-  boundaryRadius: 50
   lineVertexCount: 25
   pathLength: 50
   turnRate: .5

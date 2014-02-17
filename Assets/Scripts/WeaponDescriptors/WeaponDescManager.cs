@@ -5,13 +5,12 @@ using System;
 
 /// <summary>
 /// The manager for all weapon descriptors
-/// Used to 
 /// </summary>
 public class WeaponDescManager : MonoBehaviour
 {
 	public static WeaponDescManager instance;
 
-	private Dictionary<System.Type, WeaponDescriptor> descriptorMap;
+	private Dictionary<WEAPON_TYPE, WeaponDescriptor> descriptorMap;
 
 	private void Awake()
 	{
@@ -22,7 +21,7 @@ public class WeaponDescManager : MonoBehaviour
 		}
 		WeaponDescManager.instance = this;
 
-		this.descriptorMap = new Dictionary<Type, WeaponDescriptor>();
+		this.descriptorMap = new Dictionary<WEAPON_TYPE, WeaponDescriptor>();
 		this.FindWeaponDescriptors();
 	}
 
@@ -34,8 +33,8 @@ public class WeaponDescManager : MonoBehaviour
 		WeaponDescriptor[] descArray = this.gameObject.GetComponents<WeaponDescriptor>();
 		foreach ( WeaponDescriptor weaponDesc in descArray )
 		{
-			System.Type descType = weaponDesc.GetType();
-			if ( descriptorMap.ContainsKey( descType ) )
+			//System.Type descType = weaponDesc.GetType();
+			if ( descriptorMap.ContainsKey( weaponDesc.weaponType ) )
 			{
 				Debug.LogWarning( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
 				continue;
@@ -44,7 +43,7 @@ public class WeaponDescManager : MonoBehaviour
 			{
 				Debug.LogWarning( "No Bullet Descriptor set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
 			}
-			this.descriptorMap.Add( descType, weaponDesc );
+			this.descriptorMap.Add( weaponDesc.weaponType, weaponDesc );
 		}
 	}
 
@@ -53,12 +52,12 @@ public class WeaponDescManager : MonoBehaviour
 	/// </summary>
 	/// <returns>The desc of type.</returns>
 	/// <param name="_type">_type.</param>
-	public WeaponDescriptor GetDescOfType( System.Type _type )
+	public WeaponDescriptor GetDescOfType( WEAPON_TYPE _weaponType )//System.Type _type )
 	{
 		WeaponDescriptor desc;
-		if ( this.descriptorMap.TryGetValue( _type, out desc ) == false )
+		if ( this.descriptorMap.TryGetValue( _weaponType, out desc ) == false )
 		{
-			Debug.LogError( "Could not find weapon descriptor for weapon type \"" + _type.ToString() + "\"" );
+			Debug.LogError( "Could not find weapon descriptor for weapon type \"" + _weaponType + "\"" );
 			return null;
 		}
 		return desc;

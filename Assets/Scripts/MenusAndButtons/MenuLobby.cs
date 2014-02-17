@@ -41,8 +41,8 @@ public class MenuLobby : MonoBehaviour
 	private List<MenuPlayerRow> playerRows;
 	
 	public Dictionary<int, PLAYER_TYPE> playerDictionary;
-	private int? commander1;
-	private int? commander2;
+	private int commander1;
+	private int commander2;
 	private List<int> team1;
 	private List<int> team2;
 
@@ -54,6 +54,7 @@ public class MenuLobby : MonoBehaviour
 		this.playerDictionary = new Dictionary<int, PLAYER_TYPE>();
 		this.team1 = new List<int>();
 		this.team2 = new List<int>();
+		this.commander1 = this.commander2 = -1;
 	}
 
 	private void Start()
@@ -142,15 +143,18 @@ public class MenuLobby : MonoBehaviour
 			this.playerRows[i].UpdateGUI();
 		}
 	}
-	
-	public PLAYER_TYPE AddNewPlayer( int _playerID )
+
+	// To be used by the server only
+	public PLAYER_TYPE DeterminePlayerType( int _playerID )
 	{
 		PLAYER_TYPE type;
-		if ( _playerID == Common.NetworkID(Network.player) && Network.isServer )
+		//if ( _playerID == Common.NetworkID(Network.player) )
+		if ( this.commander1 == -1 )
 		{
 			type = PLAYER_TYPE.COMMANDER1;
 		}
-		else if ( this.team2.Count == 0 )
+		else if ( this.commander2 == -1 )
+		//else if ( this.team2.Count == 0 )
 		{
 			type = PLAYER_TYPE.COMMANDER2;
 		}
@@ -178,7 +182,7 @@ public class MenuLobby : MonoBehaviour
 		switch ( _type )
 		{
 		case PLAYER_TYPE.COMMANDER1:
-			if ( this.commander1 != null )
+			if ( this.commander1 != -1 )
 			{
 				Debug.LogWarning( "Commander role already set", this );
 			}
@@ -186,7 +190,7 @@ public class MenuLobby : MonoBehaviour
 			break;
 
 		case PLAYER_TYPE.COMMANDER2:
-			if ( this.commander2 != null )
+			if ( this.commander2 != -1 )
 			{
 				Debug.LogWarning( "Commander 2 rol already set", this );
 			}
