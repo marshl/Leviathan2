@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// The base class for any spin up weapon instance
+/// The class used for any spin up weapon instance
 /// A spin up weapon is one that increaees in speed as it 
 ///    continues to fire until it reaches a speed cap.
 /// </summary>
-public abstract class SpinUpWeapon : WeaponBase
+public class SpinUpWeapon : WeaponBase
 {
 	/// <summary>
 	/// The descriptor for this weapon type (set elsewhere)

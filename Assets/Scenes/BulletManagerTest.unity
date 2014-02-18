@@ -234,7 +234,7 @@ Transform:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1095267667}
@@ -249,7 +249,7 @@ GameObject:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 1095267666}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee19a08d94ab4cc449f4321804b0406f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &1407762493
+--- !u!1001 &1281897112
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -348,7 +348,7 @@ Prefab:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100002, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1600512161}
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400000, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 1600512159}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -379,7 +379,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400002, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 1600512159}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -391,11 +391,11 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400002, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 1600512159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecc5b1c6c4813e744ae4946f4f70b8d5, type: 3}
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletType: 2
@@ -408,11 +408,11 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400004, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 1600512159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a756a555965b87a43a1adf62a4daa09a, type: 3}
+  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletType: 1
@@ -428,7 +428,7 @@ NetworkView:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 14800000, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 1600512159}
   m_Enabled: 1
   m_StateSynchronization: 0
@@ -487,7 +487,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1833711612}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9846965c693059541b590aaf0a9d94a2, type: 3}
+  m_Script: {fileID: 11500000, guid: e6606261175e4734fa7ccdf41fb25899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
@@ -498,7 +498,6 @@ MonoBehaviour:
   timeSinceShot: 0
   spinUpDesc: {fileID: 0}
   currentSpin: 0
-  gatlingLaserDesc: {fileID: 0}
 --- !u!1 &1901936587
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,7 +564,7 @@ Transform:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100006, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 2046191582}
@@ -584,7 +583,7 @@ GameObject:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400006, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 2046191581}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -596,11 +595,11 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400008, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 2046191581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f7828f32ca55e745a03823a4fbc0792, type: 3}
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
@@ -613,11 +612,11 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400010, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 2046191581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f434395e98d98e342ac4c0df5a2636d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
@@ -630,7 +629,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400012, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 2046191581}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -642,11 +641,11 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400014, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
-  m_PrefabInternal: {fileID: 1407762493}
+  m_PrefabInternal: {fileID: 1281897112}
   m_GameObject: {fileID: 2046191581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85d1c006c0df2a84cab4f74ffe3edff2, type: 3}
+  m_Script: {fileID: 11500000, guid: d76124284df936942af5592f7c3a93d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3

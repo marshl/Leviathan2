@@ -78,7 +78,7 @@ public class Fighter : MonoBehaviour {
 		if(Input.GetMouseButton (1))
 		{
 			//WeaponDescManager.instance.GetComponent<BurstFireWeaponTest>().SendFireMessage ();
-			this.GetComponent<BurstFireWeaponTest>().SendFireMessage ();
+			this.GetComponent<WeaponBase>().SendFireMessage();
 		}
 
 		if(Input.GetKey (KeyCode.W))

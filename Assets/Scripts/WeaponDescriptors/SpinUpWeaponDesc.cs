@@ -5,7 +5,7 @@ using System.Collections;
 /// The base descriptor for weapons that have to "spin up",
 ///    firing slowly at first but building up to a certain speed
 /// </summary>
-public abstract class SpinUpWeaponDesc : WeaponDescriptor
+public class SpinUpWeaponDesc : WeaponDescriptor
 {
 	/// <summary>
 	/// The time it takes for the weapon to reach maximum fire rate

@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// An subclass of the base bullet class that is used to control bullets that can move around
 /// </summary>
-public abstract class SeekingBullet : BulletBase
+public class SeekingBullet : BulletBase
 {
 	public TargettableObject target;
 

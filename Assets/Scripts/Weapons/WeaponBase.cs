@@ -7,13 +7,13 @@ using System.Collections.Generic;
 /// <summary>
 /// The base class for any weapon instance
 /// </summary>
-public abstract class WeaponBase : MonoBehaviour
+public class WeaponBase : MonoBehaviour
 {
 	public WEAPON_TYPE weaponType;
+
 	/// <summary>
 	/// The descriptor for this weapon
 	/// </summary>
-	//[HideInInspector]
 	public WeaponDescriptor weaponDesc;
 
 	/// <summary>
@@ -41,25 +41,6 @@ public abstract class WeaponBase : MonoBehaviour
 	{
 		this.timeSinceShot += Time.deltaTime;
 	}
-
-	/// <summary>
-	/// Gets the System Type of the descriptor on this weapon
-	/// </summary>
-	/// <returns>The descriptor type.</returns>
-	/*protected System.Type GetDescriptorType()
-	{
-		object[] attributes = this.GetType().GetCustomAttributes( true ); // Inherit = true
-		foreach ( object attribute in attributes )
-		{
-			WeaponTypeAttribute typeAttribute = attribute as WeaponTypeAttribute;
-			if ( typeAttribute != null )
-			{
-				return typeAttribute.type;
-			}
-		}
-		Debug.LogError( "No Weapon Descriptor found on \"" + this.GetType().ToString() + "\"" );
-		return null;
-	}*/
 
 	/// <summary>
 	/// Initialises all of the descriptors on this weapon, including all inherited weapon types
@@ -126,13 +107,8 @@ public abstract class WeaponBase : MonoBehaviour
 					this.weaponDesc.spread
 				);
 
-				/*if ( bullet == null )
-				{
-					Debug.LogError( "Error firing weapon \"" + this.GetType().ToString() + "\"", this );
-				}*/
 				bulletsFired.Add( bullet );
 			}
-
 		}
 		else
 		{

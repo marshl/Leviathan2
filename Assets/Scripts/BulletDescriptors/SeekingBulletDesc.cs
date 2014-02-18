@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// An abstract bullet descriptor that is used by bullets that can seek out targets
+/// A bullet descriptor that is used by bullets that can seek out targets
 /// </summary>
 public class SeekingBulletDesc : BulletDescriptor
 {

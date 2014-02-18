@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// The base class for any weapon that fires in a burst
+/// The class used for any weapon that fires in a burst
 /// </summary>
-public abstract class BurstFireWeapon : WeaponBase
+public class BurstFireWeapon : WeaponBase
 {
 	/// <summary>
 	/// The descriptor for this weapon (Set elsewhere)
@@ -26,8 +26,7 @@ public abstract class BurstFireWeapon : WeaponBase
 	/// The number of shots that have been fired in the current burst
 	/// </summary>
 	public int shotsFiredInBurst;
-
-
+	
 	public override bool CanFire ()
 	{
 		return this.isFiring == false

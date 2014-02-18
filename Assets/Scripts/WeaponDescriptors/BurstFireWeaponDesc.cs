@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// The base descriptor for any burst fire style weapon
 /// </summary>
-public abstract class BurstFireWeaponDesc : WeaponDescriptor
+public class BurstFireWeaponDesc : WeaponDescriptor
 {
 	/// <summary>
 	/// The time it takes to reload a burst

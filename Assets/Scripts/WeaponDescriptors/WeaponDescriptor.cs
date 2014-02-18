@@ -5,7 +5,7 @@ using System;
 /// <summary>
 /// The base descriptor for any weapon
 /// </summary>
-public abstract class WeaponDescriptor : MonoBehaviour
+public class WeaponDescriptor : MonoBehaviour
 {
 	public WEAPON_TYPE weaponType;
 	/// <summary>
@@ -28,16 +28,3 @@ public abstract class WeaponDescriptor : MonoBehaviour
 	/// </summary>
 	public bool fireInSync;
 }
-
-/// <summary>
-/// The attribute used to store the System Type of the weapon attached to this descriptor
-/// </summary>
-/*public class WeaponTypeAttribute : Attribute
-{
-	public System.Type type;
-
-	public WeaponTypeAttribute( System.Type _type )
-	{
-		this.type = _type;
-	}
-}*/

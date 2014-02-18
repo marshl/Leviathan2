@@ -3,10 +3,10 @@ using System.Collections;
 using System;
 
 /// <summary>
-/// The base bullet class that subclassed and attached to each bullet fired
+/// The base bullet class that is attached to each bullet fired
 /// For non-instance information, see the associated bullet descriptor
 /// </summary>
-public abstract class BulletBase : MonoBehaviour 
+public class BulletBase : MonoBehaviour 
 {
 	/// <summary>
 	/// The distance this bullet has travelled so far (used for deletion)
@@ -21,7 +21,10 @@ public abstract class BulletBase : MonoBehaviour
 
 	public virtual void Start()
 	{
+		// Nothing should be required here as it is only called once
+		// Reset is called every time a bullet is created, use that instead
 
+		// However decriptors can be set up here
 	}
 
 	/// <summary>
@@ -97,29 +100,4 @@ public abstract class BulletBase : MonoBehaviour
 		this.rigidbody.angularVelocity = Vector3.zero;
 	}
 }
-
-/*
-public class BulletStatsAttribute : Attribute
-{
-	public BulletStatsAttribute( int _count, float _moveSpeed )
-	{
-		this.count = _count;
-		this.moveSpeed = _moveSpeed;
-	}
-
-	public int count { get; set; }
-	public float moveSpeed { get; set; }
-};
-*/
-/*
-public class BulletDescAttribute : Attribute
-{
-	public System.Type descType;
-
-	public BulletDescAttribute( System.Type _type )
-	{
-		this.descType = _type;
-	}
-}
-*/
 

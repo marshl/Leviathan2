@@ -33,7 +33,6 @@ public class WeaponDescManager : MonoBehaviour
 		WeaponDescriptor[] descArray = this.gameObject.GetComponents<WeaponDescriptor>();
 		foreach ( WeaponDescriptor weaponDesc in descArray )
 		{
-			//System.Type descType = weaponDesc.GetType();
 			if ( descriptorMap.ContainsKey( weaponDesc.weaponType ) )
 			{
 				Debug.LogWarning( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
