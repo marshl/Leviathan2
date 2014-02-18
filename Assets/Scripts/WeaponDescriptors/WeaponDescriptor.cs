@@ -8,10 +8,12 @@ using System;
 public class WeaponDescriptor : MonoBehaviour
 {
 	public WEAPON_TYPE weaponType;
+
+	public BULLET_TYPE bulletType;
 	/// <summary>
 	/// The bullet that is fired by this weapon
 	/// </summary>
-	public BulletDescriptor bulletDesc;
+	//public BulletDescriptor bulletDesc;
 
 	/// <summary>
 	/// The time between shots

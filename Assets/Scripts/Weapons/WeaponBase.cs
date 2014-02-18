@@ -101,7 +101,7 @@ public class WeaponBase : MonoBehaviour
 				WeaponFirePoint currentFirePoint = this.firePoints[i];
 				BulletBase bullet = BulletManager.instance.ShootBullet
 				(
-					this.weaponDesc.bulletDesc, 
+					this.weaponDesc.bulletType,
 					currentFirePoint.transform.position, 
 					currentFirePoint.transform.TransformDirection(Vector3.forward), 
 					this.weaponDesc.spread
@@ -115,7 +115,7 @@ public class WeaponBase : MonoBehaviour
 			WeaponFirePoint currentFirePoint = this.firePoints[this.firePointIndex];
 			BulletBase bullet = BulletManager.instance.ShootBullet
 			(
-				this.weaponDesc.bulletDesc, 
+				this.weaponDesc.bulletType,
 				currentFirePoint.transform.position, 
 				currentFirePoint.transform.forward, 
 				this.weaponDesc.spread

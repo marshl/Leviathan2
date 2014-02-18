@@ -56,7 +56,7 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 	
-	public BulletBase FindAvailableBullet( BULLET_TYPE _bulletType ) 
+	private BulletBase FindAvailableBullet( BULLET_TYPE _bulletType ) 
 	{
 		BulletBucket bucket = null;
 		bool foundList = this.bulletDictionary.TryGetValue( _bulletType, out bucket );
@@ -67,20 +67,15 @@ public class BulletManager : MonoBehaviour
 		}
 		return bucket.GetAvailableBullet();
 	}
-
-	/*public T FindAvailableBullet<T>() where T : BulletBase
-	{
-		return this.FindAvailableBullet( typeof(T) ) as T;
-	}*/
-
-	public BulletBase ShootBullet( BulletDescriptor _bulletDesc,
+	
+	public BulletBase ShootBullet( BULLET_TYPE _bulletType, 
 	                              Vector3 _pos, Vector3 _forward,
-	                              float _spread = 0.0f, float _rotation = 0.0f )
+	                              float _spread = 0.0f )
 	{
-		BulletBase bulletScript = this.FindAvailableBullet( _bulletDesc.bulletType );
+		BulletBase bulletScript = this.FindAvailableBullet( _bulletType );
 		if ( bulletScript == null )
 		{
-			Debug.LogError( "Error shooting bullet of type \"" + _bulletDesc.bulletType + "\"" );
+			Debug.LogError( "Error shooting bullet of type \"" + _bulletType + "\"", this );
 			return null;
 		}
 		bulletScript.Reset();
@@ -89,6 +84,7 @@ public class BulletManager : MonoBehaviour
 		bulletObj.SetActive( true );
 		bulletObj.transform.position = _pos;
 		bulletObj.transform.rotation = Quaternion.LookRotation( _forward );
+		bulletObj.collider.enabled = true;
 
 		if ( _spread != 0.0f )
 		{
@@ -97,20 +93,46 @@ public class BulletManager : MonoBehaviour
 			perp = bulletObj.transform.TransformDirection( perp );
 			bulletObj.transform.Rotate( perp, UnityEngine.Random.Range( -_spread, _spread ) );
 		}
+
+		if ( GameNetworkManager.instance != null )
+		{
+			GameNetworkManager.instance.SendShootBulletMessage( _bulletType, bulletScript.index, _pos, bulletObj.transform.forward );
+		}
+
 		bulletScript.OnShoot();
 		return bulletScript;
 	}
 
-	public BulletBase ShootWeapon( WeaponDescriptor _weapon )
+	public void CreateDumbBullet( BULLET_TYPE _bulletType, int _index, Vector3 _position, Vector3 _forward )
 	{
-		return this.ShootBullet( _weapon.bulletDesc, _weapon.transform.position, _weapon.transform.forward );
+		BulletBase bulletScript = this.bulletDictionary[_bulletType].bulletList[_index];
+		bulletScript.Reset();
+		
+		GameObject bulletObj = bulletScript.gameObject;
+		bulletObj.SetActive( true );
+		bulletObj.transform.position = _position;
+		bulletObj.transform.rotation = Quaternion.LookRotation( _forward );
+		bulletObj.collider.enabled = false;
+
+		bulletScript.OnShoot();
+	}
+
+
+	public void DestroyActiveBullet( BULLET_TYPE _bulletType, int _index )
+	{
+		BulletBase bulletScript = this.bulletDictionary[_bulletType].bulletList[_index];
+		bulletScript.gameObject.SetActive( false );
+		GameNetworkManager.instance.SendDestroyBulletMessage( _bulletType, _index );
+	}
+
+	public void DestroyInactiveBullet( BULLET_TYPE _bulletType, int _index )
+	{
+		BulletBase bulletScript = this.bulletDictionary[_bulletType].bulletList[_index];
+		bulletScript.gameObject.SetActive( false );
 	}
 
 	private void CreateBulletBucket( BulletDescriptor _desc )
 	{
-		//BulletBase prefabScript = _desc.prefab.GetComponent<BulletBase>();
-		//BULLET_TYPE bulletType = _desc.bulletType;
-		
 		if ( this.bulletDictionary.ContainsKey( _desc.bulletType ) )
 		{
 			Debug.LogError( "Bullet type \"" + _desc.bulletType.ToString() + "\" already used.", _desc.prefab );

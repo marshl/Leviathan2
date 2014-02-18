@@ -21,8 +21,12 @@ public class BulletBucket : MonoBehaviour
 		for ( int i = 0; i < this.bulletDesc.count; ++i )
 		{
 			BulletBase bulletScript = this.CreateNewBullet( this.bulletDesc.name + i.ToString() );
+			bulletScript.index = i;
+			bulletScript.bulletType = this.bulletDesc.bulletType;
 			this.bulletList[i] = bulletScript;
 		}
+
+		this.currentIndex = Random.Range( 0, this.bulletDesc.count );
 	}
 	
 	private BulletBase CreateNewBullet( string _name )

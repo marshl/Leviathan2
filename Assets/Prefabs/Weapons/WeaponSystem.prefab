@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
-  bulletDesc: {fileID: 11400002}
+  bulletType: 2
   fireRate: 0
   spread: 0
   fireInSync: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
-  bulletDesc: {fileID: 11400002}
+  bulletType: 2
   fireRate: .25
   spread: 0
   fireInSync: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
-  bulletDesc: {fileID: 11400004}
+  bulletType: 2
   fireRate: .300000012
   spread: 15
   fireInSync: 0

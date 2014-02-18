@@ -323,18 +323,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 100006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d7609975e875a74d9cdb8326ea5d858, type: 3}
+  m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponDesc: {fileID: 11400010, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  weaponType: 1
+  weaponDesc: {fileID: 0}
   firePoints:
   - {fileID: 11400002}
   firePointIndex: 0
   timeSinceShot: 0
-  burstFireDesc: {fileID: 11400016, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  isFiring: 0
-  timeSinceBurst: 0
-  shotsFiredInBurst: 0
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

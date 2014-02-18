@@ -53,7 +53,7 @@ public class SpinUpWeapon : WeaponBase
 			this.currentSpin + this.GetCurrentFireRate() / this.spinUpDesc.spinUpTime,
 			0.0f, 1.0f
 		);
-		return base.Fire ();
-	}
+		return base.Fire();
+	} 
 }
 

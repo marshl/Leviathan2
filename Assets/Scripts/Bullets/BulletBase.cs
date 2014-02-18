@@ -8,6 +8,9 @@ using System;
 /// </summary>
 public class BulletBase : MonoBehaviour 
 {
+	public int index;
+	public BULLET_TYPE bulletType;
+
 	/// <summary>
 	/// The distance this bullet has travelled so far (used for deletion)
 	/// </summary>
@@ -68,7 +71,7 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public virtual void OnLifetimeExpiration()
 	{
-		this.gameObject.SetActive( false );
+		BulletManager.instance.DestroyActiveBullet( this.bulletType, this.index );
 	}
 
 	/// <summary>
@@ -77,8 +80,7 @@ public class BulletBase : MonoBehaviour
 	/// <param name="_target">_target.</param>
 	public virtual void OnTargetCollision( TargettableObject _target )
 	{
-		this.gameObject.SetActive( false );
-		return;
+		BulletManager.instance.DestroyActiveBullet( this.bulletType, this.index );
 	}
 
 	/// <summary>
@@ -86,7 +88,7 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public virtual void OnEmptyCollision()
 	{
-		this.gameObject.SetActive( false );
+		BulletManager.instance.DestroyActiveBullet( this.bulletType, this.index );
 	}
 
 	/// <summary>

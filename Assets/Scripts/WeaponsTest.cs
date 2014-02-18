@@ -4,6 +4,14 @@ using System.Collections.Generic;
 
 public class WeaponsTest : MonoBehaviour
 {
+	private void Awake()
+	{
+		if ( this.networkView.isMine == false )
+		{
+			this.enabled = false;
+		}
+	}
+
 	private void Update()
 	{
 		if ( Input.GetKey( KeyCode.Space ) )

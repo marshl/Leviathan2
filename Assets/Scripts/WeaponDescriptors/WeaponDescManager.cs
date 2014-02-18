@@ -38,9 +38,10 @@ public class WeaponDescManager : MonoBehaviour
 				Debug.LogWarning( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
 				continue;
 			}
-			if ( weaponDesc.bulletDesc == null )
+			//if ( weaponDesc.bulletDesc == null )
+			if ( weaponDesc.bulletType == BULLET_TYPE.NONE )
 			{
-				Debug.LogWarning( "No Bullet Descriptor set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
+				Debug.LogWarning( "No bullet type set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
 			}
 			this.descriptorMap.Add( weaponDesc.weaponType, weaponDesc );
 		}
@@ -56,10 +57,9 @@ public class WeaponDescManager : MonoBehaviour
 		WeaponDescriptor desc;
 		if ( this.descriptorMap.TryGetValue( _weaponType, out desc ) == false )
 		{
-			Debug.LogError( "Could not find weapon descriptor for weapon type \"" + _weaponType + "\"" );
+			Debug.LogError( "Could not find weapon descriptor for weapon type \"" + _weaponType + "\"", this );
 			return null;
 		}
 		return desc;
 	} 
 }
-
