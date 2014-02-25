@@ -273,6 +273,8 @@ public class CapitalShipMovement : MonoBehaviour
 			
 			this.currentTurnAmount = amountToTurn;
 			this.isTurning = true;
+			//I'll just nick everything here.
+			PassTurnParameters();
 		}
 	}
 
@@ -624,7 +626,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void StartAvoidanceCurve( float _targetHeight )
 	{
-		Debug.Log( "Starting curve" );
+		//Debug.Log( "Starting curve" );
 		this.currentAvoidCurvePoint = 0.0f;
 		this.followingAvoidanceCurve = true;
 		this.avoidanceCurveStartHeight = this.currentAvoidHeight;
@@ -634,9 +636,26 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void EndAvoidanceCurve()
 	{
-		Debug.Log( "Ending avoidance curve" );
+		//Debug.Log( "Ending avoidance curve" );
 		this.followingAvoidanceCurve = false;
 		this.currentAvoidHeight = this.avoidanceCurveEndHeight;
 		this.currentAvoidAngle = 0.0f;
 	} 
+
+	public void PassTurnParameters()
+	{
+		CapitalShipNetworkInfo.CapitalShipNetworkPacket turnParameters = new CapitalShipNetworkInfo.CapitalShipNetworkPacket();
+
+		//In the future we'll pass the movement speed with this method, but that will require a slight rewrite
+		//of the acceleration/deceleration code.
+		//turnParameters.currentMovementSpeed = this.currentMovementSpeed;
+		print("Chucking turn parameters");
+		turnParameters.currentTurnDirection = this.currentTurnDirection;
+		turnParameters.isTurning = this.isTurning;
+		turnParameters.turnAmount = this.currentTurnAmount;
+		turnParameters.lastCommandTime = Time.time;
+
+		this.GetComponent<CapitalShipNetworkInfo>().StateUpdated (turnParameters);
+
+	}
 }

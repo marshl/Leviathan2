@@ -47,6 +47,8 @@ GameObject:
   - 148: {fileID: 14800000}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400010}
+  - 114: {fileID: 11400012}
+  - 114: {fileID: 11400014}
   m_Layer: 0
   m_Name: CapitalShip
   m_TagString: Untagged
@@ -352,6 +354,36 @@ MonoBehaviour:
   timeSinceShot: 0
   spinUpDesc: {fileID: 0}
   currentSpin: 0
+--- !u!114 &11400012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b241963b042148544a8520b466106587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementScript: {fileID: 0}
+--- !u!114 &11400014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b5cc713bc10f9b48aa3f928601f4276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnRate: .5
+  avoidanceTransform: {fileID: 400006}
+  avoidanceAngleRate: 15
+  avoidanceAngleMax: 45
+  avoidanceCeiling: 1
+  avoidanceFloor: -1
+  avoidanceCurveDropRate: .200000003
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1
@@ -360,7 +392,7 @@ NetworkView:
   m_GameObject: {fileID: 100004}
   m_Enabled: 1
   m_StateSynchronization: 1
-  m_Observed: {fileID: 400004}
+  m_Observed: {fileID: 11400012}
   m_ViewID:
     m_ID: 0
     m_Type: 0
