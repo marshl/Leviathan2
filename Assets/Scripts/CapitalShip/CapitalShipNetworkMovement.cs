@@ -13,7 +13,7 @@ public class CapitalShipNetworkMovement : MonoBehaviour {
 	//protected float targetMovementSpeed
 
 	public Transform avoidanceTransform;
-	private CapitalShipMovement otherShip;
+	private CapitalShipNetworkMovement otherShip;
 	public float avoidanceAngleRate;
 	public float avoidanceAngleMax;
 
@@ -35,6 +35,14 @@ public class CapitalShipNetworkMovement : MonoBehaviour {
 
 	//	this.avoidanceTransform.localPosition = new Vector3( 0.0f, this.currentAvoidHeight, 0.0f );
 	//	this.avoidanceTransform.localRotation = Quaternion.Euler( this.currentAvoidAngle, 0.0f, 0.0f );
+		CapitalShipNetworkMovement[] otherScripts = GameObject.FindObjectsOfType<CapitalShipNetworkMovement>() as CapitalShipNetworkMovement[];
+		foreach ( CapitalShipNetworkMovement other in otherScripts )
+		{
+			if ( other != this )
+			{
+				this.otherShip = other;
+			}
+		}
 	
 	}
 
@@ -206,6 +214,83 @@ public class CapitalShipNetworkMovement : MonoBehaviour {
 		this.avoidanceTransform.localRotation = Quaternion.Euler( this.currentAvoidAngle, 0.0f, 0.0f );
 	}
 
+	private bool IncreaseAvoidanceAngle()
+	{
+		if ( this.currentAvoidAngle >= this.avoidanceAngleMax )
+		{
+			return true;
+		}
+		this.currentAvoidAngle += Time.deltaTime * this.avoidanceAngleRate;
+		return false;
+	}
+	
+	private bool DecreaseAvoidanceAngle()
+	{
+		if ( this.currentAvoidAngle <=- this.avoidanceAngleMax )
+		{
+			return true;
+		}
+		this.currentAvoidAngle -= Time.deltaTime * this.avoidanceAngleRate;
+		return false;
+	}
+	
+	public void OnAvoidanceAreaEnter( CapitalShipNetworkMovement _otherShip )
+	{
+		this.otherShip = _otherShip;
+		
+		if ( this.currentAvoidanceState == CapitalShipMovement.AVOIDANCE_STATE.UP_RETURN
+		    || this.currentAvoidanceState == CapitalShipMovement.AVOIDANCE_STATE.UP_START )
+		{
+			this.currentAvoidanceState = CapitalShipMovement.AVOIDANCE_STATE.UP_START;
+		}
+		else if ( this.currentAvoidanceState == CapitalShipMovement.AVOIDANCE_STATE.DOWN_RETURN
+		         || this.currentAvoidanceState == CapitalShipMovement.AVOIDANCE_STATE.DOWN_START )
+		{
+			this.currentAvoidanceState = CapitalShipMovement.AVOIDANCE_STATE.DOWN_START;
+		}
+		else
+			//if ( this.currentAvoidanceState != AVOIDANCE_STATE.DOWN_START
+			//  && this.currentAvoidanceState != AVOIDANCE_STATE.UP_START )
+		{
+			// Determine which ship is on the left or right of the intercept line
+			
+			Vector3 f1 = this.transform.forward;
+			Vector3 f2 = this.otherShip.transform.forward;
+			float direction = Vector3.Cross( f1, f2 ).y;
+			
+			if ( direction > 0.0f )
+			{
+				this.currentAvoidanceState = CapitalShipMovement.AVOIDANCE_STATE.DOWN_START;
+			}
+			else
+			{
+				this.currentAvoidanceState = CapitalShipMovement.AVOIDANCE_STATE.UP_START;
+			}
+		}
+	}
+	
+	public void OnAvoidanceAreaExit()
+	{
+		switch ( this.currentAvoidanceState )
+		{
+		case CapitalShipMovement.AVOIDANCE_STATE.NONE:
+			break;
+		case CapitalShipMovement.AVOIDANCE_STATE.DOWN_RETURN:
+			break;
+		case CapitalShipMovement.AVOIDANCE_STATE.UP_RETURN:
+			break;
+		case CapitalShipMovement.AVOIDANCE_STATE.UP_START:
+			this.currentAvoidanceState = CapitalShipMovement.AVOIDANCE_STATE.UP_RETURN;
+			break;
+		case CapitalShipMovement.AVOIDANCE_STATE.DOWN_START:
+			this.currentAvoidanceState = CapitalShipMovement.AVOIDANCE_STATE.DOWN_RETURN;
+			break;
+		default:
+			Debug.LogError( "Uncaught state " + this.currentAvoidanceState );
+			break;
+		}
+	}
+
 	private float GetAvoidanceHeightSpeed()
 	{
 		// See sine rule
@@ -254,11 +339,14 @@ public class CapitalShipNetworkMovement : MonoBehaviour {
 	}
 
 	//This is called via networking.
-	public void StartNewTurnWithInfo(float amount, bool turning, float direction)
+
+	public void StartNewTurnWithInfo(float amount, bool turning, float direction, Vector3 start, Quaternion rotation)
 	{
 		this.currentTurnDirection = direction;
 		
 		this.currentTurnAmount = amount;
 		this.isTurning = turning;
+		this.transform.position = start;
+		this.transform.rotation = rotation;
 	}
 }

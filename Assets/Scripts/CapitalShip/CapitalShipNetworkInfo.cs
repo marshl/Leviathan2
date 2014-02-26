@@ -8,6 +8,8 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 	protected float currentTurnDirection = 0.0f;
 	protected float currentMovementSpeed = 5.0f;
 	protected float lastCommandTime;
+	protected Vector3 startPosition;
+	protected Quaternion startRotation;
 	public CapitalShipNetworkPacket toSend;
 	public CapitalShipNetworkMovement movementScript;
 
@@ -40,6 +42,8 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 		isTurning = updatedInfo.isTurning;
 		currentTurnDirection = updatedInfo.currentTurnDirection;
 		lastCommandTime = updatedInfo.lastCommandTime;
+		startRotation = this.transform.rotation;
+		startPosition = this.transform.position;
 
 		toSend = updatedInfo;
 
@@ -52,13 +56,15 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 	//	if(this.networkView.isMine)
 	//	{	
 		print("Network RPC called");
-			this.networkView.RPC ("SendNetworkInfo",RPCMode.Others,turnAmount, isTurning, currentTurnDirection, lastCommandTime);
+			this.networkView.RPC ("SendNetworkInfo",RPCMode.Others,turnAmount, isTurning, currentTurnDirection, lastCommandTime
+		                      ,startPosition, startRotation);
 	//	}
 	}
 
 	[RPC]
 	//public void SendNetworkInfo(CapitalShipNetworkPacket newInfo)
-	public void SendNetworkInfo(float newTurnAmt, bool newTurning, float newTurnDir, float lastCmdTime)
+	public void SendNetworkInfo(float newTurnAmt, bool newTurning, float newTurnDir, float lastCmdTime,
+	                            Vector3 newStartPosition, Quaternion newStartRotation)
 	{
 		//We are on the other computers right now. Update their stuff.
 		if(!this.networkView.isMine)
@@ -71,8 +77,10 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 				isTurning = newTurning;
 				currentTurnDirection = newTurnDir;
 				lastCommandTime = lastCmdTime;
+				startPosition = newStartPosition;
+				startRotation = newStartRotation;
 
-				movementScript.StartNewTurnWithInfo(turnAmount,isTurning,currentTurnDirection);
+				movementScript.StartNewTurnWithInfo(turnAmount,isTurning,currentTurnDirection,startPosition,startRotation);
 			}
 		}
 

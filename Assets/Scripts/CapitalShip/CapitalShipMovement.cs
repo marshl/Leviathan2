@@ -269,12 +269,12 @@ public class CapitalShipMovement : MonoBehaviour
 		// If the mouse button is pressed down, set the actual path to the tentative one
 		if ( Input.GetMouseButtonDown( 0 ) == true )
 		{
-			this.currentTurnDirection = directionToTurn;
+			/*this.currentTurnDirection = directionToTurn;
 			
 			this.currentTurnAmount = amountToTurn;
-			this.isTurning = true;
-			//I'll just nick everything here.
-			PassTurnParameters();
+			this.isTurning = true;*/
+			BeginTurn(amountToTurn,directionToTurn); //Consistancy, Liyam
+
 		}
 	}
 
@@ -496,6 +496,8 @@ public class CapitalShipMovement : MonoBehaviour
 		this.isTurning = true;
 		this.currentTurnDirection = _direction;
 		this.currentTurnAmount = _turnAmount;
+		//Bung this info on the network
+		PassTurnParameters();
 		return true; 
 	}
 	
