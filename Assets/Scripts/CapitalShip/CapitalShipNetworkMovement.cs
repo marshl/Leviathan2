@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CapitalShipNetworkMovement : MonoBehaviour {
 
-	//Movement script that runs on other computers than our own. Liam's going to hate me for this.
+	//Movement script that runs on other computers than our own. Liam's going to kill me for this.
 
 	public float turnRate;
 	protected float currentTurnAmount = 0.0f;

@@ -10,7 +10,6 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 	protected float lastCommandTime;
 	protected Vector3 startPosition;
 	protected Quaternion startRotation;
-	public CapitalShipNetworkPacket toSend;
 	public CapitalShipNetworkMovement movementScript;
 
 	public class CapitalShipNetworkPacket
@@ -26,7 +25,6 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 	void Start () {
 
 		lastCommandTime = Time.time;
-	
 		movementScript = this.GetComponent<CapitalShipNetworkMovement>();
 	}
 	
@@ -37,7 +35,7 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 
 	public void StateUpdated(CapitalShipNetworkPacket updatedInfo)
 	{
-		//This is purely for debugging purposes, there's no real reason to use these variables on the player ship
+		//This is the sender's information. It gets sent to everyone else in UpdateNetworkInfo
 		turnAmount = updatedInfo.turnAmount;
 		isTurning = updatedInfo.isTurning;
 		currentTurnDirection = updatedInfo.currentTurnDirection;
@@ -45,24 +43,18 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 		startRotation = this.transform.rotation;
 		startPosition = this.transform.position;
 
-		toSend = updatedInfo;
-
 		this.networkView.RPC ("UpdateNetworkInfo",RPCMode.All);
 	}
 
 	[RPC]
 	public void UpdateNetworkInfo()
 	{
-	//	if(this.networkView.isMine)
-	//	{	
 		print("Network RPC called");
-			this.networkView.RPC ("SendNetworkInfo",RPCMode.Others,turnAmount, isTurning, currentTurnDirection, lastCommandTime
+		this.networkView.RPC ("SendNetworkInfo",RPCMode.Others,turnAmount, isTurning, currentTurnDirection, lastCommandTime
 		                      ,startPosition, startRotation);
-	//	}
 	}
 
 	[RPC]
-	//public void SendNetworkInfo(CapitalShipNetworkPacket newInfo)
 	public void SendNetworkInfo(float newTurnAmt, bool newTurning, float newTurnDir, float lastCmdTime,
 	                            Vector3 newStartPosition, Quaternion newStartRotation)
 	{
