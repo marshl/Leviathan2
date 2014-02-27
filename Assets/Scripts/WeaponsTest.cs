@@ -6,7 +6,7 @@ public class WeaponsTest : MonoBehaviour
 {
 	private void Awake()
 	{
-		if ( this.networkView.isMine == false )
+		if ( this.networkView != null && this.networkView.isMine == false )
 		{
 			this.enabled = false;
 		}

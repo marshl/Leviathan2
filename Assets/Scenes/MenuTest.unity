@@ -84,6 +84,7 @@ GameObject:
   - 4: {fileID: 38449775}
   - 114: {fileID: 38449776}
   - 114: {fileID: 38449777}
+  - 114: {fileID: 38449778}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -149,6 +150,21 @@ MonoBehaviour:
   - 00FF00
   - FF0000
   - 00FFFF
+--- !u!114 &38449778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 38449774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1643606f697064c8944b9fcede44db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstServerRow: {fileID: 798103273}
+  serverTableLength: 5
+  serverRowHeight: .100000001
+  hostRefreshRate: 1
 --- !u!1 &50182098
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,7 +1165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354d88cdd34e469458b153e10bf5a64d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1849209316}
+  target: {fileID: 38449778}
   methodName: OnServerRowDown
   value: 
   receiverRequired: 0
@@ -2622,7 +2638,7 @@ GameObject:
   - 114: {fileID: 1616209720}
   - 148: {fileID: 1616209718}
   m_Layer: 0
-  m_Name: MenuHost
+  m_Name: MenuNetwork
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2945,7 +2961,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1849209315}
-  - 114: {fileID: 1849209316}
   m_Layer: 0
   m_Name: ServerList
   m_TagString: Untagged
@@ -2966,21 +2981,6 @@ Transform:
   - {fileID: 400832892}
   - {fileID: 798103274}
   m_Father: {fileID: 38449775}
---- !u!114 &1849209316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1849209314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b1643606f697064c8944b9fcede44db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstServerRow: {fileID: 798103273}
-  serverTableLength: 5
-  serverRowHeight: .100000001
-  hostRefreshRate: 1
 --- !u!1 &1884434796
 GameObject:
   m_ObjectHideFlags: 0

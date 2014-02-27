@@ -14,15 +14,21 @@ public class SeekingBullet : BulletBase
 	[HideInInspector]
 	public SeekingBulletDesc seekingDesc;
 
-	public override void Start()
+	protected override void Awake()
+	{
+		base.Awake();
+		this.seekingDesc = this.desc as SeekingBulletDesc;
+	}
+
+	protected override void Start()
 	{
 		base.Start();
-		this.seekingDesc = this.desc as SeekingBulletDesc;
 	}
 
 	protected override void Update()
 	{
-		if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
+		//TODO: Uncomment
+		/*if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
 		  && this.target != null )
 		{
 			this.TurnToTarget();
@@ -31,7 +37,10 @@ public class SeekingBullet : BulletBase
 			{
 				//this.target = null;
 			}
-		}
+		}*/
+
+		this.transform.Rotate( this.transform.up, Time.deltaTime * this.seekingDesc.turnRate);
+		this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
 		base.Update();
 	}
 
@@ -107,6 +116,27 @@ public class SeekingBullet : BulletBase
 			return this.target.transform.position;
 		}
 	}
+
+	/*protected virtual void OnSerializeNetworkView( BitStream _stream, NetworkMessageInfo _info )
+	{
+		if ( _stream.isWriting )
+		{
+			Vector3 pos = this.transform.localPosition;
+			Quaternion rot = this.transform.localRotation;
+			_stream.Serialize( ref pos );
+			_stream.Serialize( ref rot );
+		}
+		else
+		{
+			Vector3 pos = Vector3.zero;
+			Quaternion rot = Quaternion.identity;
+			_stream.Serialize( ref pos );
+			_stream.Serialize( ref rot );
+
+			this.transform.localPosition = pos;
+			this.transform.localRotation = rot;
+		}
+	}*/
 
 	private float GetAngleToTarget()
 	{

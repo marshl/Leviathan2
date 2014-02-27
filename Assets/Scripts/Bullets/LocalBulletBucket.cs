@@ -4,15 +4,19 @@ using System.Collections;
 /// <summary>
 /// The Bullet Bucket objects are created by the Bullet Manager object 
 /// </summary>
-public class BulletBucket : MonoBehaviour
+public class LocalBulletBucket : BulletBucket
 {
-	public BulletDescriptor bulletDesc;
-	public BulletBase[] bulletList;
-
+	public int ownerID = -1;
+	private BulletBase[] bulletList;
 	private int currentIndex = 0;
 
-	public void CreateBulletList()
+	public bool networked;
+
+	public void Initialise( BulletDescriptor _desc, bool _networked )
 	{
+		this.bulletDesc = _desc;
+		this.networked = _networked;
+
 		if ( this.bulletDesc.count <= 0 )
 		{
 			Debug.LogError( "Bullet list for " + this.bulletDesc + " has unusable count of " + this.bulletDesc.count, this.bulletDesc );
@@ -20,24 +24,35 @@ public class BulletBucket : MonoBehaviour
 		this.bulletList = new BulletBase[ this.bulletDesc.count ];
 		for ( int i = 0; i < this.bulletDesc.count; ++i )
 		{
-			BulletBase bulletScript = this.CreateNewBullet( this.bulletDesc.name + i.ToString() );
-			bulletScript.index = i;
-			bulletScript.bulletType = this.bulletDesc.bulletType;
+			BulletBase bulletScript = this.CreateNewBullet( i );
 			this.bulletList[i] = bulletScript;
 		}
 
 		this.currentIndex = Random.Range( 0, this.bulletDesc.count );
 	}
 	
-	private BulletBase CreateNewBullet( string _name )
+	private BulletBase CreateNewBullet( int _index )
 	{
-		GameObject bulletObj = GameObject.Instantiate( this.bulletDesc.prefab ) as GameObject;
-		bulletObj.name = _name;
+		//GameObject bulletObj = GameObject.Instantiate( this.bulletDesc.prefab ) as GameObject;
+		GameObject bulletObj;
+		if ( this.networked )
+		{
+			bulletObj = Network.Instantiate( this.bulletDesc.prefab, Vector3.zero, Quaternion.identity, 0 ) as GameObject;
+		}
+		else
+		{
+			bulletObj = GameObject.Instantiate( this.bulletDesc.prefab ) as GameObject;
+		}
+		bulletObj.name = this.bulletDesc.bulletType + "-"+ _index ;
 		bulletObj.transform.parent = this.transform;
 		bulletObj.SetActive( false );
 		
 		BulletBase bulletScript = bulletObj.GetComponent<BulletBase>();
+		bulletScript.index = _index;
+		bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
+		bulletScript.parentBucket = this;
 		bulletScript.desc = this.bulletDesc;
+
 		return bulletScript;
 	}
 
@@ -45,10 +60,21 @@ public class BulletBucket : MonoBehaviour
 	/// Gets the first available bullet, increasing the size of the list if there is not one available
 	/// </summary>
 	/// <returns>The script of the first available bullet</returns>
-	public BulletBase GetAvailableBullet()
+	public override BulletBase GetAvailableBullet( int _index, int _ownerID )
 	{
+		if ( _index != -1 )
+		{
+			//TODO: This could probably be done better (LM:20/02/14)
+			while ( _index >= this.bulletList.Length )
+			{
+				if ( this.DoubleBucketSize() == false )
+					break;
+			}
+			return this.bulletList[_index];
+		}
+
 		int startIndex = currentIndex;
-		while ( true )
+		while ( true ) // This thing isn't infinite, I promise
 		{
 			++currentIndex;
 			// If we go over the end of the list, wrap back around
@@ -57,20 +83,22 @@ public class BulletBucket : MonoBehaviour
 				currentIndex = 0;
 			}
 
+			// Aha, a free one, that'll do
 			if ( this.bulletList[currentIndex].gameObject.activeSelf == false )
 			{
 				return this.bulletList[currentIndex];
 			}
 
-			// If we've wrapped the search, no bullets are free: incrase the bucket size and return a new bullet
+			// If we've wrapped the search, no bullets are free: increase the bucket size and return a new bullet
 			if ( currentIndex == startIndex )
 			{
-				Debug.LogWarning( "Bucket size " + this.bulletList.Length + " for " + this.bulletDesc.name + " was not adequate: increasing bucket size." );
-				if ( this.IncreaseBucketSize() == true )
+				Debug.LogWarning( "Bucket size " + this.bulletList.Length + " for " + this.bulletDesc.bulletType + " was not adequate: increasing bucket size." );
+				// Lets try again, starting from the first of the new bullets
+				if ( this.DoubleBucketSize() == true )
 				{
-					return this.GetAvailableBullet();
+					return this.GetAvailableBullet( -1, -1 );
 				}
-				else // We don't want an infinite loop
+				else // Doubling didn't work, abort!
 				{
 					return null;
 				}
@@ -82,10 +110,10 @@ public class BulletBucket : MonoBehaviour
 	/// Doubles the size of the bullet contained, creating new bullets to fill out the gap
 	/// </summary>
 	/// <returns><c>true</c>, if bucket size was increased, <c>false</c> otherwise.</returns>
-	private bool IncreaseBucketSize()
+	private bool DoubleBucketSize()
 	{
 		int oldLength = this.bulletList.Length;
-
+		// Attempting to double an empty list ain't gonna work so well
 		if ( oldLength == 0 )
 		{
 			Debug.LogError( "Cannot double the size of an empty list" );
@@ -97,7 +125,7 @@ public class BulletBucket : MonoBehaviour
 
 		for ( int i = oldLength; i < newLength; ++i )
 		{
-			BulletBase bulletScript = this.CreateNewBullet( this.bulletDesc.name + i.ToString() );
+			BulletBase bulletScript = this.CreateNewBullet( i );
 			newList[i] = bulletScript;
 		}
 		this.bulletList = newList;

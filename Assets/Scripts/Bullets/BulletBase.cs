@@ -8,8 +8,19 @@ using System;
 /// </summary>
 public class BulletBase : MonoBehaviour 
 {
+	public enum BULLET_STATE
+	{
+		INACTIVE,
+		ACTIVE_OWNED,
+		ACTIVE_NOT_OWNED,
+	};
+	public BULLET_STATE state;
+
 	public int index;
+
 	public BULLET_TYPE bulletType;
+
+	public LocalBulletBucket parentBucket;
 
 	/// <summary>
 	/// The distance this bullet has travelled so far (used for deletion)
@@ -22,12 +33,19 @@ public class BulletBase : MonoBehaviour
 	[HideInInspector]
 	public BulletDescriptor desc;
 
-	public virtual void Start()
+	protected virtual void Awake()
+	{
+		this.desc = BulletDescriptorManager.instance.GetDescOfType( this.bulletType );
+	}
+
+	protected virtual void Start()
 	{
 		// Nothing should be required here as it is only called once
 		// Reset is called every time a bullet is created, use that instead
 
 		// However decriptors can be set up here
+
+
 	}
 
 	/// <summary>
@@ -53,9 +71,9 @@ public class BulletBase : MonoBehaviour
 	/// <summary>
 	/// Unity callback on collision with another object
 	/// </summary>
-	protected virtual void OnCollisionEnter( Collision _collision )
+	protected virtual void OnTriggerEnter( Collider _collider )
 	{
-		TargettableObject target = _collision.gameObject.GetComponent<TargettableObject>();
+		TargettableObject target = _collider.gameObject.GetComponent<TargettableObject>();
 		if ( target != null )
 		{
 			this.OnTargetCollision( target );
@@ -71,24 +89,24 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public virtual void OnLifetimeExpiration()
 	{
-		BulletManager.instance.DestroyActiveBullet( this.bulletType, this.index );
+		BulletManager.instance.DestroyLocalBullet( this );
 	}
 
 	/// <summary>
-	/// Called when this bullet hits an object with a TargettableObject script attached
+	/// Called when this bullet hits an object that has a target attached
 	/// </summary>
 	/// <param name="_target">_target.</param>
 	public virtual void OnTargetCollision( TargettableObject _target )
 	{
-		BulletManager.instance.DestroyActiveBullet( this.bulletType, this.index );
+		BulletManager.instance.DestroyLocalBullet( this );
 	}
 
 	/// <summary>
-	/// Called when this bullet hits an object that is not targettable
+	/// Called when this bullet hits an object that does not have a target attached
 	/// </summary>
 	public virtual void OnEmptyCollision()
 	{
-		BulletManager.instance.DestroyActiveBullet( this.bulletType, this.index );
+		BulletManager.instance.DestroyLocalBullet( this );
 	}
 
 	/// <summary>
@@ -100,6 +118,14 @@ public class BulletBase : MonoBehaviour
 
 		this.rigidbody.velocity = Vector3.zero;
 		this.rigidbody.angularVelocity = Vector3.zero;
+	}
+
+	protected void OnNetworkInstantiate( NetworkMessageInfo _info )
+	{
+		if ( this.networkView.isMine == false )
+		{
+			this.enabled = false;
+		}
 	}
 }
 

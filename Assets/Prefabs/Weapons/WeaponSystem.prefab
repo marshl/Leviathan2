@@ -26,7 +26,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
-  - 148: {fileID: 14800000}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: BulletManager
   m_TagString: Untagged
@@ -115,7 +115,19 @@ MonoBehaviour:
   count: 50
   moveSpeed: 40
   maxDistance: 100
+  smartBullet: 0
 --- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c372ea3693d25694096b134ca98d7c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -128,12 +140,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletType: 1
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
-  count: 10
-  moveSpeed: 5
-  maxDistance: 500
-  turnRate: 90
-  maxDetectionAngle: 30
-  seekingDelayDistance: 0
+  count: 0
+  moveSpeed: 50
+  maxDistance: 50
+  smartBullet: 1
+  turnRate: 15
+  maxDetectionAngle: 15
+  seekingDelayDistance: 25
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -189,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
-  bulletType: 2
+  bulletType: 1
   fireRate: .300000012
   spread: 15
   fireInSync: 0
@@ -197,18 +210,6 @@ MonoBehaviour:
   spinDownTime: 3
   spinDownDelay: 1
   maxFireRate: .100000001
---- !u!148 &14800000
-NetworkView:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_StateSynchronization: 0
-  m_Observed: {fileID: 0}
-  m_ViewID:
-    m_ID: 0
-    m_Type: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

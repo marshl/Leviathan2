@@ -441,11 +441,8 @@ public class CapitalShipMovement : MonoBehaviour
 			this.currentAvoidanceState = AVOIDANCE_STATE.DOWN_START;
 		}
 		else
-		//if ( this.currentAvoidanceState != AVOIDANCE_STATE.DOWN_START
-		//  && this.currentAvoidanceState != AVOIDANCE_STATE.UP_START )
 		{
 			// Determine which ship is on the left or right of the intercept line
-
 			Vector3 f1 = this.transform.forward;
 			Vector3 f2 = this.otherShip.transform.forward;
 			float direction = Vector3.Cross( f1, f2 ).y;

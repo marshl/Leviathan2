@@ -17,9 +17,9 @@ public class GameNetworkManager : MonoBehaviour
 	private void Start()
 	{
 		MenuToGameInfo info = MenuToGameInfo.instance;
-		int networkID = Common.NetworkID( Network.player );
+		int networkID = Common.NetworkID();
 		info.Print();
-		Debug.Log( "NetworkID: " + networkID );
+
 		PLAYER_TYPE state = info.playerTypeMap[networkID];
 		PlayerInstantiator.instance.CreatePlayerObject( state );
 	}
@@ -29,36 +29,43 @@ public class GameNetworkManager : MonoBehaviour
 		Debug.Log( "Disconnected from server" );
 		Application.LoadLevel( "MenuTest" );
 	}
-
-	private void Update()
-	{
-		if ( Input.GetKeyDown( KeyCode.Escape ) )
-			Debug.Break();
-	}
-
+	
 	public void SendShootBulletMessage( BULLET_TYPE _bulletType, 
 	                                   int _index,
 	                                   Vector3 _pos, Vector3 _forward )
 	{
-		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, (int)_bulletType, _index, _pos, _forward );
+		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.NetworkID(), (float)Network.time, (int)_bulletType, _index, _pos, _forward );
 	}
 
 	[RPC]
-	private void OnShootBulletRPC( int _bulletType,
+	private void OnShootBulletRPC( int _ownerID, float _creationTime, int _bulletType,
 	                              int _index,
 	                              Vector3 _pos, Vector3 _forward )
 	{
-		BulletManager.instance.CreateDumbBullet( (BULLET_TYPE)_bulletType, _index, _pos, _forward );
+		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (BULLET_TYPE)_bulletType, _index, _pos, _forward );
 	}
 
-	public void SendDestroyBulletMessage( BULLET_TYPE _bulletType, int _index )
+	public void SendDestroySmartBulletMessage( int _ownerID, BULLET_TYPE _bulletType, int _index )
 	{
-		this.networkView.RPC( "OnDestroyBulletRPC", RPCMode.Others, (int)_bulletType, _index );
+		Debug.Log( "Sending message to destroy" );
+		this.networkView.RPC( "OnDestroySmartBulletRPC", RPCMode.Others, _ownerID, (int)_bulletType, _index );
 	}
 
 	[RPC]
-	private void OnDestroyBulletRPC( int _bulletType, int _index )
+	private void OnDestroySmartBulletRPC( int _ownerID, int _bulletType, int _index )
 	{
-		BulletManager.instance.DestroyInactiveBullet( (BULLET_TYPE)_bulletType, _index );
+		Debug.Log( "Received Destroy Message" );
+		BulletManager.instance.DestroySmartBulletRPC( _ownerID, (BULLET_TYPE)_bulletType, _index );
+	}
+
+	public void SendDestroyDumbBulletMessage( BULLET_TYPE _bulletType, int _index )
+	{
+		this.networkView.RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_bulletType, _index );
+	}
+
+	[RPC]
+	private void OnDestroyDumbBulletRPC( int _bulletType, int _index )
+	{
+		BulletManager.instance.DestroyDumbBulletRPC( (BULLET_TYPE)_bulletType, _index );
 	}
 }

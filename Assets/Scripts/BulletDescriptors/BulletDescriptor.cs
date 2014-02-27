@@ -27,5 +27,7 @@ public class BulletDescriptor : MonoBehaviour
 	/// The point at which the bullet will expire
 	/// </summary>
 	public float maxDistance;
+
+	public bool smartBullet;
 }
 

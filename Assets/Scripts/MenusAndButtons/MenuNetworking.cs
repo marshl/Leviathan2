@@ -250,7 +250,7 @@ public class MenuNetworking : MonoBehaviour
 	// Unity Callback: Do not modify signature
 	private void OnFailedToConnectToMasterServer( NetworkConnectionError _info )
 	{
-		Debug.Log( "Could not connect to master server: " + _info );
+		Debug.LogWarning( "Could not connect to master server: " + _info );
 	}
 
 	[RPC]

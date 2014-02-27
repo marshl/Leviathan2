@@ -47,8 +47,7 @@ public class WeaponBase : MonoBehaviour
 	/// </summary>
 	protected virtual void InitialiseDescriptors()
 	{
-		//System.Type descType = this.GetDescriptorType();
-		this.weaponDesc = WeaponDescManager.instance.GetDescOfType( this.weaponType );//descType );
+		this.weaponDesc = WeaponDescManager.instance.GetDescOfType( this.weaponType );
 
 		// Find all fields in this type
 		FieldInfo[] fields = this.GetType().GetFields();
@@ -99,7 +98,7 @@ public class WeaponBase : MonoBehaviour
 			for ( int i = 0; i < this.firePoints.Length; ++i )
 			{
 				WeaponFirePoint currentFirePoint = this.firePoints[i];
-				BulletBase bullet = BulletManager.instance.ShootBullet
+				BulletBase bullet = BulletManager.instance.CreateBullet
 				(
 					this.weaponDesc.bulletType,
 					currentFirePoint.transform.position, 
@@ -113,7 +112,7 @@ public class WeaponBase : MonoBehaviour
 		else
 		{
 			WeaponFirePoint currentFirePoint = this.firePoints[this.firePointIndex];
-			BulletBase bullet = BulletManager.instance.ShootBullet
+			BulletBase bullet = BulletManager.instance.CreateBullet
 			(
 				this.weaponDesc.bulletType,
 				currentFirePoint.transform.position, 

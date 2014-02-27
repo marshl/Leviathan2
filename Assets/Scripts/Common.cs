@@ -108,6 +108,11 @@ public abstract class Common : MonoBehaviour
 	{
 		return int.Parse( _player.ToString() );
 	}
+
+	public static int NetworkID()
+	{
+		return NetworkID( Network.player );
+	}
 	
 	public static float SmoothLerp( float _value, float _min, float _max )
 	{

@@ -38,7 +38,7 @@ public class WeaponDescManager : MonoBehaviour
 				Debug.LogWarning( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
 				continue;
 			}
-			//if ( weaponDesc.bulletDesc == null )
+
 			if ( weaponDesc.bulletType == BULLET_TYPE.NONE )
 			{
 				Debug.LogWarning( "No bullet type set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
