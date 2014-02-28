@@ -8,6 +8,15 @@ public class MenuToGameInfo : MonoBehaviour
 
 	public Dictionary<int, PLAYER_TYPE> playerTypeMap;
 
+	public void Awake()
+	{
+		this.playerTypeMap = new Dictionary<int, PLAYER_TYPE>();
+	}
+
+	public void UseDefaults()
+	{
+		this.playerTypeMap.Add( -1, PLAYER_TYPE.COMMANDER1 );
+	}
 
 	public void Print()
 	{

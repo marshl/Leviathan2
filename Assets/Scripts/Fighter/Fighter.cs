@@ -38,8 +38,6 @@ public class Fighter : MonoBehaviour {
 		{
 			Destroy( this.rigidbody );
 			this.enabled = false;
-			this.gameObject.GetComponentInChildren<Camera>().enabled = false;
-			this.gameObject.GetComponentInChildren<AudioListener>().enabled = false;
 		}
 	}
 

@@ -143,6 +143,7 @@ MonoBehaviour:
   capitalPathLinePrefab: {fileID: 100000, guid: 97ee7467a0e155b478e63dcc80140dc5,
     type: 2}
   capitalCameraPrefab: {fileID: 100000, guid: 82ddd68b8858ea9449b324333a204b4d, type: 2}
+  testingFighters: 1
 --- !u!1001 &352249227
 Prefab:
   m_ObjectHideFlags: 0
@@ -399,7 +400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
-  bulletType: 2
+  bulletType: 1
   fireRate: .300000012
   spread: 15
   fireInSync: 0
@@ -462,7 +463,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 1386790546}
   - 114: {fileID: 1386790550}
+  - 114: {fileID: 1386790549}
   - 114: {fileID: 1386790548}
+  - 114: {fileID: 1386790547}
   m_Layer: 0
   m_Name: BulletManager
   m_TagString: Untagged
@@ -481,6 +484,27 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1130786093}
+--- !u!114 &1386790547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 1663275575}
+  m_GameObject: {fileID: 1386790545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletType: 1
+  prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
+  count: 0
+  moveSpeed: 50
+  maxDistance: 50
+  smartBullet: 1
+  turnRate: 15
+  maxDetectionAngle: 15
+  seekingDelayDistance: 25
 --- !u!114 &1386790548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +523,18 @@ MonoBehaviour:
   moveSpeed: 40
   maxDistance: 100
   smartBullet: 0
+--- !u!114 &1386790549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400004, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 1663275575}
+  m_GameObject: {fileID: 1386790545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c372ea3693d25694096b134ca98d7c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1386790550
 MonoBehaviour:
   m_ObjectHideFlags: 0

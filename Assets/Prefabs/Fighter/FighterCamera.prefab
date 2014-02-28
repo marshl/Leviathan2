@@ -87,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraDrift: 1
   pullBackFactor: 5
-  fighter: {fileID: 100006, guid: e152e05dbd9d77f42958a061d50fa1ff, type: 2}
+  fighter: {fileID: 0}
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

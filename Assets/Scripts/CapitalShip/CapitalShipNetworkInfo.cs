@@ -23,6 +23,14 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 		public float lastCommandTime;
 	}
 
+	private void Awake()
+	{
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			this.enabled = false;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 

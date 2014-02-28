@@ -95,7 +95,7 @@ public class BulletManager : MonoBehaviour
 		}
 		else 
 		{
-			if ( Network.isClient || Network.isServer )
+			if ( Network.peerType != NetworkPeerType.Disconnected )
 			{
 				bulletObj = Network.Instantiate( desc.prefab, _pos, Quaternion.LookRotation( _forward ), 0) as GameObject;
 				if ( bulletObj.networkView == null )
@@ -128,7 +128,7 @@ public class BulletManager : MonoBehaviour
 			bulletObj.transform.Rotate( perp, UnityEngine.Random.Range( -_spread, _spread ) );
 		}
 
-		if ( desc.smartBullet == false && (Network.isServer || Network.isClient) )
+		if ( desc.smartBullet == false && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			GameNetworkManager.instance.SendShootBulletMessage( _bulletType, bulletScript.index, _pos, bulletObj.transform.forward );
 		}
@@ -168,7 +168,7 @@ public class BulletManager : MonoBehaviour
 		if ( _bullet.desc.smartBullet == true )
 		{
 			//throw new NotImplementedException();
-			if ( Network.isClient || Network.isServer )
+			if ( Network.peerType != NetworkPeerType.Disconnected )
 			{
 				Network.Destroy( _bullet.gameObject );
 			}
@@ -193,14 +193,14 @@ public class BulletManager : MonoBehaviour
 
 			if ( _bullet.state == BulletBase.BULLET_STATE.ACTIVE_OWNED )
 			{
-				if ( Network.isClient || Network.isServer )
+				if ( Network.peerType != NetworkPeerType.Disconnected )
 				{
 					GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.bulletType, _bullet.index );
 				}
 			}
 			else if ( _bullet.state == BulletBase.BULLET_STATE.ACTIVE_NOT_OWNED )
 			{
-				if ( Network.isClient || Network.isServer )
+				if ( Network.peerType != NetworkPeerType.Disconnected )
 				{
 					GameNetworkManager.instance.SendDestroySmartBulletMessage( bulletScript.parentBucket.ownerID, _bullet.bulletType, _bullet.index );
 				}
@@ -223,13 +223,7 @@ public class BulletManager : MonoBehaviour
 		bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
 		Debug.Log( "Dumb bullet destroyed" );
 	}
-
-	/*public void AddNetworkedBullet( BulletBase _bullet )
-	{
-		//if ( Network.isServer || Network.isClient )
-		this.networkedBullets.Add( _bullet.networkView.viewID, _bullet );
-	}*/
-
+	
 	private void CreateBulletBucket( BulletDescriptor _desc )
 	{
 		if ( this.bulletDictionary.ContainsKey( _desc.bulletType ) )

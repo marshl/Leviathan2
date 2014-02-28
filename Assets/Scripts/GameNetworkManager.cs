@@ -20,11 +20,16 @@ public class GameNetworkManager : MonoBehaviour
 
 		if ( info == null )
 		{
-			Debug.LogError( "No MenuToGameInfo object detected. Are you accessing this scene directly? If you are, I hate you" );
+			GameObject obj = new GameObject();
+			info = obj.AddComponent<MenuToGameInfo>();
+			info.UseDefaults();
+
+			Debug.LogWarning( "No menu to game info found. Using default values", info );
 		}
 		int networkID = Common.NetworkID();
 		info.Print();
 
+		Debug.Log( "NetworkID: " + networkID );
 		PLAYER_TYPE state = info.playerTypeMap[networkID];
 		PlayerInstantiator.instance.CreatePlayerObject( state );
 	}
