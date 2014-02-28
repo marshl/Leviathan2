@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Common : MonoBehaviour
+public abstract class Common
 {
 	/// <summary>
 	/// Returns a the value of a hermite curve at point t
@@ -79,6 +79,11 @@ public abstract class Common : MonoBehaviour
 	/// <param name="_base">The minimum value of any point on the curve</param>
 	public static float GaussianCurve( float _x, float _height, float _centre, float _std, float _base = 0.0f )
 	{
+		if ( _std == 0.0f )
+		{
+			throw new System.DivideByZeroException();
+		}
+
 		return _height * Mathf.Exp( - Mathf.Pow( _x - _centre, 2.0f ) / ( 2.0f * _std * _std ) ) + _base;
 		/*_           
 		 *          ( (x - c)^2 )
@@ -89,8 +94,8 @@ public abstract class Common : MonoBehaviour
 
 	public static float GaussianCurveClamped( float _x, float _height, float _centre, float _extents, float _base = 0.0f )
 	{
-		float val = GaussianCurve( _x, _height, _centre, _extents / 3.0f, _base );
-		return Mathf.Clamp( val, _centre - _extents, _centre + _extents );
+		float val = GaussianCurve( _x, _height, _centre, _extents / 3.0f, 0.0f );
+		return val + _base ;//Mathf.Clamp( val, _centre - _extents, _centre + _extents ) + _base;
 	}
 
 	/// Keeps the camera angle in the limits

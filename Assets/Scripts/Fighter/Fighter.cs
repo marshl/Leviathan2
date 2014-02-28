@@ -17,12 +17,23 @@ public class Fighter : MonoBehaviour {
 	//public float currentSpeed = 0.0f;
 	//public float desiredSpeed = 0.0f;
 	//public float maxSpeed = 10.0f; //Potentially used as a hard limit
+	
+	/// <summary>
+	/// The distance from the centre of the screen at which the turn amout will be maximum
+	/// Example: A value of 1/3 means that the the mouse outside an ellipse with extentes 1/3 
+	/// of the screen size will hav maximum turn rate,
+	/// gradually leading down to zero in the centre of the screen
+	/// </summary>
+	public float turnExtents;
 
+	/// <summary>
+	/// The turn base.
+	/// </summary>
+	//public float turnBase;
+	 
 	// Unity Callback: Do not modify signature
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		Debug.Log( "Checking ownership status", this );
-
 		if ( this.networkView.isMine == false )
 		{
 			Destroy( this.rigidbody );
@@ -30,16 +41,6 @@ public class Fighter : MonoBehaviour {
 			this.gameObject.GetComponentInChildren<Camera>().enabled = false;
 			this.gameObject.GetComponentInChildren<AudioListener>().enabled = false;
 		}
-	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
 	void LateUpdate()
@@ -51,33 +52,30 @@ public class Fighter : MonoBehaviour {
 
 	void CheckFlightControls()
 	{
-		if(Input.GetMouseButton(0))
+		if ( Input.GetMouseButton(0) ) // Left click
 		{
-			Vector3 transformedMousePos = new Vector3(Input.mousePosition.x - Screen.width / 2,
-			                                          Input.mousePosition.y - Screen.height / 2,
-			                                          0);
+			Vector2 transformedMousePos = new Vector3(Input.mousePosition.x / Screen.width * 2.0f - 1.0f,
+			                                          Input.mousePosition.y / Screen.height * 2.0f - 1.0f);
 
-			Vector3 torqueValue = Vector3.zero;
+			transformedMousePos.x = Mathf.Clamp( transformedMousePos.x, -1.0f, 1.0f );
+			transformedMousePos.y = Mathf.Clamp( transformedMousePos.y, -1.0f, 1.0f );
+
 			//Set the desired rotation based on mouse position.
-			
-			transformedMousePos.y /= Screen.height / 2;
-			transformedMousePos.x /= Screen.width / 2;
+			transformedMousePos.x = Mathf.Sign( transformedMousePos.x ) * Common.GaussianCurveClamped(
+				transformedMousePos.x, -1.0f, 0.0f, this.turnExtents, 1.0f );
+			transformedMousePos.y = Mathf.Sign( transformedMousePos.y ) * Common.GaussianCurveClamped(
+				transformedMousePos.y, -1.0f, 0.0f, this.turnExtents, 1.0f );
 
-			transformedMousePos.y *= Gaussian(transformedMousePos.y);
-			transformedMousePos.x *= Gaussian(transformedMousePos.x);
+			Vector3 torqueValue = new Vector3(
+				-transformedMousePos.y * Time.deltaTime * turnSpeed,
+				transformedMousePos.x * Time.deltaTime * turnSpeed,
+				0.0f );
 
-			torqueValue.x = transformedMousePos.y * Time.deltaTime * turnSpeed;
-			torqueValue.y = -transformedMousePos.x * Time.deltaTime * turnSpeed;
-
-			this.rigidbody.AddRelativeTorque(torqueValue);
-
-		//	print("Torque vector: " + torqueValue);
-			
+			this.rigidbody.AddRelativeTorque( torqueValue );
 		}
 
 		if(Input.GetMouseButton (1))
 		{
-			//WeaponDescManager.instance.GetComponent<BurstFireWeaponTest>().SendFireMessage ();
 			this.GetComponent<WeaponBase>().SendFireMessage();
 		}
 
@@ -121,20 +119,6 @@ public class Fighter : MonoBehaviour {
 		this.rigidbody.AddRelativeTorque (angularVeloc - transform.InverseTransformDirection(rigidbody.angularVelocity));
 	}
 
-	float Gaussian(float x)
-	{
-		float a, b, c, d;
-		
-		a = -1.0f; // peak height
-		b = 0.0f; // center peak position
-		c = 1.0f; // width of the bell
-		d = +2.0f; // offset
-
-		//TODO: It's e^x not e-x, number tweaking required before fix
-		float gaussian = a * EULER -  (Mathf.Pow ( x - b,2) / ( 2 * Mathf.Pow (c,2))) + d;
-		return gaussian;
-	}
-
 	void OnCollisionEnter(Collision collision)
 	{
 		/*Vector3 averagePoint = Vector3.zero;
@@ -148,8 +132,8 @@ public class Fighter : MonoBehaviour {
 
 		averagePoint /= counter;*/
 
-		Vector3 bounceForce = (collision.contacts[0].normal * 
-		                       this.rigidbody.velocity.magnitude * bounceVelocityModifier) 
+		Vector3 bounceForce = (collision.contacts[0].normal *
+		                       this.rigidbody.velocity.magnitude * bounceVelocityModifier)
 			+ (minimumBounce * collision.contacts[0].normal.normalized);
 
 		print(bounceForce);

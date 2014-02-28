@@ -17,6 +17,11 @@ public class GameNetworkManager : MonoBehaviour
 	private void Start()
 	{
 		MenuToGameInfo info = MenuToGameInfo.instance;
+
+		if ( info == null )
+		{
+			Debug.LogError( "No MenuToGameInfo object detected. Are you accessing this scene directly? If you are, I hate you" );
+		}
 		int networkID = Common.NetworkID();
 		info.Print();
 
