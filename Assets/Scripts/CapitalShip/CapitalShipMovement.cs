@@ -117,6 +117,8 @@ public class CapitalShipMovement : MonoBehaviour
 	private float currentAvoidHeight;
 	private float currentAvoidAngle;
 
+	private CapitalShipNetworkInfo netInfo;
+
 	private void Awake()
 	{
 		if ( Network.peerType != NetworkPeerType.Disconnected
@@ -142,6 +144,8 @@ public class CapitalShipMovement : MonoBehaviour
 				this.otherShip = other;
 			}
 		}
+
+		netInfo = this.GetComponent<CapitalShipNetworkInfo>();
 	}
 	
 	private void Update()
@@ -211,6 +215,8 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void UpdateAccelerationInput()
 	{
+		float oldMoveSpeed = this.currentMovementSpeed;
+
 		if ( Input.GetKey( KeyCode.W ) )
 		{
 			this.currentMovementSpeed += Time.deltaTime * moveAcceleration;	
@@ -219,7 +225,12 @@ public class CapitalShipMovement : MonoBehaviour
 		{
 			this.currentMovementSpeed -= Time.deltaTime * moveAcceleration;	
 		}
-		this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
+
+		if(oldMoveSpeed != currentMovementSpeed)
+		{
+			this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
+			netInfo.SpeedUpdated (this.currentMovementSpeed);
+		}
 	}
 
 	/// <summary>
@@ -654,7 +665,7 @@ public class CapitalShipMovement : MonoBehaviour
 		turnParameters.turnAmount = this.currentTurnAmount;
 		turnParameters.lastCommandTime = Time.time;
 
-		this.GetComponent<CapitalShipNetworkInfo>().StateUpdated (turnParameters);
+		netInfo.StateUpdated (turnParameters);
 
 	}
 }

@@ -11,6 +11,8 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 	protected Vector3 startPosition;
 	protected Quaternion startRotation;
 	public CapitalShipNetworkMovement movementScript;
+	/*public float sendRate = 333/1000;
+	private float sendCounter = 0;*/
 
 	public class CapitalShipNetworkPacket
 	{
@@ -30,6 +32,13 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		/*sendCounter += Time.deltaTime;
+		if(sendCounter >= sendRate)
+		{
+			sendCounter -= 1;
+
+		}*/
 	
 	}
 
@@ -43,19 +52,43 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 		startRotation = this.transform.rotation;
 		startPosition = this.transform.position;
 
-		this.networkView.RPC ("UpdateNetworkInfo",RPCMode.All);
+		this.networkView.RPC ("UpdatePositionInfo",RPCMode.All);
+	}
+	public void SpeedUpdated(float newSpeed)
+	{
+		currentMovementSpeed = newSpeed;
+		lastCommandTime = Time.time;
 	}
 
 	[RPC]
-	public void UpdateNetworkInfo()
+	public void UpdatePositionInfo()
 	{
-		print("Network RPC called");
-		this.networkView.RPC ("SendNetworkInfo",RPCMode.Others,turnAmount, isTurning, currentTurnDirection, lastCommandTime
+	//	print("Network RPC called");
+		this.networkView.RPC ("SendPositionInfo",RPCMode.Others,turnAmount, isTurning, currentTurnDirection, lastCommandTime
 		                      ,startPosition, startRotation);
 	}
 
 	[RPC]
-	public void SendNetworkInfo(float newTurnAmt, bool newTurning, float newTurnDir, float lastCmdTime,
+	public void UpdateSpeedInfo()
+	{
+		this.networkView.RPC ("SendSpeedInfo",RPCMode.Others,currentMovementSpeed, lastCommandTime);
+	}
+
+	[RPC]
+	public void SendSpeedInfo(float newSpeed, float lastCmdTime)
+	{
+		if(!this.networkView.isMine)
+		{
+			if(lastCmdTime > lastCommandTime)
+			{
+				currentMovementSpeed = newSpeed;
+				movementScript.SetSpeed (currentMovementSpeed);
+			}
+		}
+	}
+
+	[RPC]
+	public void SendPositionInfo(float newTurnAmt, bool newTurning, float newTurnDir, float lastCmdTime,
 	                            Vector3 newStartPosition, Quaternion newStartRotation)
 	{
 		//We are on the other computers right now. Update their stuff.
@@ -64,7 +97,7 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 
 			if(lastCmdTime > lastCommandTime)
 			{
-				print("Received RPC with valid time");
+				//print("Received RPC with valid time");
 				turnAmount = newTurnAmt;
 				isTurning = newTurning;
 				currentTurnDirection = newTurnDir;

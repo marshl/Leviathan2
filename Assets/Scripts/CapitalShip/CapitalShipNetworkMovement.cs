@@ -349,4 +349,9 @@ public class CapitalShipNetworkMovement : MonoBehaviour {
 		this.transform.position = start;
 		this.transform.rotation = rotation;
 	}
+
+	public void SetSpeed(float newSpeed)
+	{
+		this.currentMovementSpeed = newSpeed;
+	}
 }
