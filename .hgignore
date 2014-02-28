@@ -6,3 +6,5 @@ Temp
 *.userprefs
 *.csproj
 *.orig
+*.png
+*.png.meta
