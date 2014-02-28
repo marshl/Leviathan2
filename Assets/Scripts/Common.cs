@@ -93,9 +93,16 @@ public abstract class Common
 	}
 
 	public static float GaussianCurveClamped( float _x, float _height, float _centre, float _extents, float _base = 0.0f )
-	{
-		float val = GaussianCurve( _x, _height, _centre, _extents / 3.0f, 0.0f );
-		return val + _base ;//Mathf.Clamp( val, _centre - _extents, _centre + _extents ) + _base;
+	{ 
+		if ( _x < _centre - _extents || _x > _centre + _extents )
+		{
+			return _base;
+		}
+		else
+		{
+			float val = GaussianCurve( _x, _height, _centre, _extents / 3.0f, 0.0f );
+			return val + _base ;
+		}
 	}
 
 	/// Keeps the camera angle in the limits
