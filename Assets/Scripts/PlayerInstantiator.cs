@@ -11,6 +11,8 @@ public class PlayerInstantiator : MonoBehaviour
 	public GameObject capitalPathLinePrefab;
 	public GameObject capitalCameraPrefab;
 
+	public bool testingFighters;
+
 	private void Awake()
 	{
 		PlayerInstantiator.instance = this;
@@ -18,15 +20,22 @@ public class PlayerInstantiator : MonoBehaviour
 
 	public GameObject CreatePlayerObject( PLAYER_TYPE _playerType )
 	{
-		System.Console.Write("foobarbaz" );
 		switch ( _playerType )
 		{
 			case PLAYER_TYPE.COMMANDER1:
 			{
+				if ( this.testingFighters )
+				{
+				    return this.CreateFighter( 1 );
+			    }
 				return this.CreateCapitalShip( 1 );
 			}
 			case PLAYER_TYPE.COMMANDER2:
 			{
+				if ( this.testingFighters )
+				{
+					return this.CreateFighter( 2 );
+				}
 				return this.CreateCapitalShip( 2 );
 			}
 			case PLAYER_TYPE.FIGHTER1:
@@ -45,9 +54,9 @@ public class PlayerInstantiator : MonoBehaviour
 		}
 	}
 
-	public GameObject CreateCapitalShip( int _teamID )
+	private GameObject CreateCapitalShip( int _teamID )
 	{
-		Vector3 shipPos = Common.RandomVector3( new Vector3(-10.0f, 0.0f, 10.0f ), new Vector3(-10.0f, 0.0f, 10.0f ) );
+		Vector3 shipPos = _teamID == 1 ? new Vector3( -10.0f, 0.0f, 0.0f ) : new Vector3( 10.0f, 0.0f, 0.0f );
 		GameObject capitalObj;
 		// Used for testing scenes
 		if ( Network.peerType == NetworkPeerType.Disconnected )
@@ -85,7 +94,7 @@ public class PlayerInstantiator : MonoBehaviour
 		return capitalObj;
 	}
 
-	public GameObject CreateFighter( int _teamID )
+	private GameObject CreateFighter( int _teamID )
 	{
 		Vector3 fighterPos = Common.RandomVector3( -25.0f, 25.0f );
 		GameObject fighterObj;
@@ -111,11 +120,8 @@ public class PlayerInstantiator : MonoBehaviour
 			fighterObj.transform.position,
 			Quaternion.identity ) as GameObject;
 
-		cameraObj.transform.parent = fighterObj.transform;
-
-		//TODO:This
-		//fighterObj.GetComponent<TargettableObject>().teamID = _teamID;
-
+		FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
+		cameraScript.fighter = fighterObj; 
 		return fighterObj;
 	}
 }

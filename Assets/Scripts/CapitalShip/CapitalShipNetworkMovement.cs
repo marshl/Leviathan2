@@ -49,8 +49,8 @@ public class CapitalShipNetworkMovement : MonoBehaviour {
 	private void Awake()
 	{
 		if ( Network.peerType != NetworkPeerType.Disconnected
-		    && this.networkView != null
-		    && this.networkView.isMine == true )
+		    || this.networkView != null
+		    || this.networkView.isMine == true )
 		{
 			this.enabled = false;
 			return;

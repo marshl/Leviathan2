@@ -68,6 +68,7 @@ GameObject:
   - 135: {fileID: 13500000}
   - 148: {fileID: 14800000}
   - 114: {fileID: 11400004}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Untagged
@@ -280,7 +281,7 @@ BoxCollider:
   m_GameObject: {fileID: 100006}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -333,6 +334,19 @@ MonoBehaviour:
   - {fileID: 11400002}
   firePointIndex: 0
   timeSinceShot: 0
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6289df16c1b660e46b2b71bffbf82f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerp: 1
+  lerpRate: 5
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -341,7 +355,7 @@ SphereCollider:
   m_GameObject: {fileID: 100006}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 1.01999998
   m_Center: {x: 0, y: .310000002, z: 0}
@@ -353,7 +367,7 @@ NetworkView:
   m_GameObject: {fileID: 100006}
   m_Enabled: 1
   m_StateSynchronization: 2
-  m_Observed: {fileID: 400006}
+  m_Observed: {fileID: 11400006}
   m_ViewID:
     m_ID: 0
     m_Type: 0

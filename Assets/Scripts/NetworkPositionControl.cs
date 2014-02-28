@@ -37,8 +37,8 @@ public class NetworkPositionControl : MonoBehaviour
 	{
 		// Various reasons why this script is not needed
 		if ( this.networkView == null
-		|| networkView.isMine == true
-		|| ( Network.isClient == false && Network.isServer == false ) )
+		  || networkView.isMine == true 
+		  || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			this.enabled = false;
 			return;

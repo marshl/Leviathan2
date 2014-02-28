@@ -235,7 +235,6 @@ public class CapitalShipMovement : MonoBehaviour
 		if ( posFound == true )
 		{
 			this.lastTargetPosition = targetPos;
-			//TODO: Make a prefab for the this.markerTransform.position = this.lastTargetPosition;
 		}
 		
 		Vector3 vectorToTarget = this.lastTargetPosition - this.transform.position;
@@ -269,12 +268,7 @@ public class CapitalShipMovement : MonoBehaviour
 		// If the mouse button is pressed down, set the actual path to the tentative one
 		if ( Input.GetMouseButtonDown( 0 ) == true )
 		{
-			/*this.currentTurnDirection = directionToTurn;
-			
-			this.currentTurnAmount = amountToTurn;
-			this.isTurning = true;*/
-			BeginTurn(amountToTurn,directionToTurn); //Consistancy, Liyam
-
+			BeginTurn(amountToTurn,directionToTurn);
 		}
 	}
 
@@ -643,6 +637,11 @@ public class CapitalShipMovement : MonoBehaviour
 
 	public void PassTurnParameters()
 	{
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			return;
+		} 
+
 		CapitalShipNetworkInfo.CapitalShipNetworkPacket turnParameters = new CapitalShipNetworkInfo.CapitalShipNetworkPacket();
 
 		//In the future we'll pass the movement speed with this method, but that will require a slight rewrite

@@ -11,7 +11,7 @@ public class NetworkBulletBucket : BulletBucket
 		this.bulletDesc = _desc;
 		this.buckets = new Dictionary<int, LocalBulletBucket>();
 
-		if ( Network.isClient == false && Network.isServer == false )
+		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			this.CreateBucket( -1 );
 		}
@@ -40,7 +40,7 @@ public class NetworkBulletBucket : BulletBucket
 
 	public override BulletBase GetAvailableBullet( int _index, int _ownerID )
 	{
-		if ( _ownerID == -1 && ( Network.isClient || Network.isServer ) )
+		if ( _ownerID == -1 && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			_ownerID = Common.NetworkID();
 		}
