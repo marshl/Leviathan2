@@ -7,3 +7,13 @@ Temp
 *.csproj
 *.orig
 *.png
+*.jpg
+*.jpeg
+*.tga
+*.bmp
+*.gif
+*.obj
+*.3ds
+*.wav
+*.mp3
+*.ogg
