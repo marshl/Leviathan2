@@ -143,7 +143,7 @@ MonoBehaviour:
   capitalPathLinePrefab: {fileID: 100000, guid: 97ee7467a0e155b478e63dcc80140dc5,
     type: 2}
   capitalCameraPrefab: {fileID: 100000, guid: 82ddd68b8858ea9449b324333a204b4d, type: 2}
-  testingFighters: 1
+  testingFighters: 0
 --- !u!1001 &352249227
 Prefab:
   m_ObjectHideFlags: 0

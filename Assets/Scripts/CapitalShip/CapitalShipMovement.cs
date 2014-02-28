@@ -227,8 +227,7 @@ public class CapitalShipMovement : MonoBehaviour
 		}
 
 		if(oldMoveSpeed != currentMovementSpeed)
-		{
-			this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
+		{	this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
 			netInfo.SpeedUpdated (this.currentMovementSpeed);
 		}
 	}

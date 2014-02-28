@@ -66,6 +66,7 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 	{
 		currentMovementSpeed = newSpeed;
 		lastCommandTime = Time.time;
+		UpdateSpeedInfo();
 	}
 
 	[RPC]
@@ -79,12 +80,14 @@ public class CapitalShipNetworkInfo : MonoBehaviour {
 	[RPC]
 	public void UpdateSpeedInfo()
 	{
+		print("Sending updated speed info");
 		this.networkView.RPC ("SendSpeedInfo",RPCMode.Others,currentMovementSpeed, lastCommandTime);
 	}
 
 	[RPC]
 	public void SendSpeedInfo(float newSpeed, float lastCmdTime)
 	{
+		print("Received speed information packet with " + newSpeed + " speed and command time of " + lastCmdTime + ", compared to " + lastCommandTime);
 		if(!this.networkView.isMine)
 		{
 			if(lastCmdTime > lastCommandTime)
