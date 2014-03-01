@@ -6,7 +6,7 @@ public class BulletDescriptorManager : MonoBehaviour
 {
 	public static BulletDescriptorManager instance = null;
 	
-	private Dictionary<BULLET_TYPE, BulletDescriptor> descMap;
+	public Dictionary<BULLET_TYPE, BulletDescriptor> descMap;
 
 	private void Awake()
 	{

@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum PLAYER_TYPE : int
+{
+	COMMANDER1,
+	COMMANDER2,
+	FIGHTER1,
+	FIGHTER2,
+};
+
 public abstract class Common
 {
 	/// <summary>

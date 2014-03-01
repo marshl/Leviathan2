@@ -16,16 +16,16 @@ public class MainMenuButtons : MonoBehaviour
 	public GUITextField hostNameField;
 	public GUITextField hostDescField;
 	
-	private enum STATE
+	/*private enum STATE
 	{
 		MAIN,
 		SERVERS,
 		HOST,
 		GAME_LOBBY,
 		CONNECTING,
-	}
+	}*/
 
-	private MainMenuButtons.STATE currentState = MainMenuButtons.STATE.MAIN;
+	//private MainMenuButtons.STATE currentState = MainMenuButtons.STATE.MAIN;
 
 	private void Awake()
 	{
@@ -33,6 +33,7 @@ public class MainMenuButtons : MonoBehaviour
 		this.mainPanelObj.SetActive( true );
 	}
 
+	/*
 	private void Update()
 	{
 		switch ( this.currentState )
@@ -64,17 +65,17 @@ public class MainMenuButtons : MonoBehaviour
 		}
 		}
 	}
-
+    */
 	private void OnHostButtonDown()
 	{
-		this.currentState = STATE.HOST;
+		//this.currentState = STATE.HOST;
 		this.mainPanelObj.SetActive( false );
 		this.hostPanelObj.SetActive( true );
 	}
 
 	private void OnReturnToMainDown()
 	{
-		this.currentState = STATE.MAIN;
+		//this.currentState = STATE.MAIN;
 		this.mainPanelObj.SetActive( true );
 		this.hostPanelObj.SetActive( false );
 		this.serverPanelObj.SetActive( false );
@@ -95,7 +96,7 @@ public class MainMenuButtons : MonoBehaviour
 
 	public void OpenGameLobby()
 	{
-		this.currentState = STATE.GAME_LOBBY;
+		//this.currentState = STATE.GAME_LOBBY;
 		this.connectingPanelObj.SetActive( false );
 		this.lobbyPanelObj.SetActive( true );
 		MenuLobby.instance.StartLobby();
@@ -109,7 +110,7 @@ public class MainMenuButtons : MonoBehaviour
 
 	public void OpenConnectingWindow()
 	{
-		this.currentState = STATE.CONNECTING;
+		//this.currentState = STATE.CONNECTING;
 		this.connectingPanelObj.SetActive( true );
 		this.serverPanelObj.SetActive( false );
 	}
@@ -144,5 +145,11 @@ public class MainMenuButtons : MonoBehaviour
 		this.hostPanelObj.SetActive( false );
 		this.lobbyPanelObj.SetActive( true );
 		MenuLobby.instance.StartLobby();
+	}
+
+	public void OnConnectionFailure( NetworkConnectionError _info )
+	{
+		this.connectingPanelObj.SetActive( false );
+		this.mainPanelObj.SetActive( true );
 	}
 }

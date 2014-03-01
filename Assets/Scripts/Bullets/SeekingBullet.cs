@@ -28,7 +28,7 @@ public class SeekingBullet : BulletBase
 	protected override void Update()
 	{
 		//TODO: Uncomment
-		/*if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
+		if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
 		  && this.target != null )
 		{
 			this.TurnToTarget();
@@ -37,9 +37,9 @@ public class SeekingBullet : BulletBase
 			{
 				//this.target = null;
 			}
-		}*/
+		}
 
-		this.transform.Rotate( this.transform.up, Time.deltaTime * this.seekingDesc.turnRate);
+		//this.transform.Rotate( this.transform.up, Time.deltaTime * this.seekingDesc.turnRate);
 		this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
 		base.Update();
 	}

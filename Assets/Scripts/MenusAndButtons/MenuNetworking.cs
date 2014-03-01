@@ -158,6 +158,8 @@ public class MenuNetworking : MonoBehaviour
 			break;
 		}
 		}
+
+		MainMenuButtons.instance.OnConnectionFailure( _info );
 	}
 
 	// Unity Callback: Do not change signature
@@ -244,7 +246,7 @@ public class MenuNetworking : MonoBehaviour
 	[RPC]
 	private void SendLobbyMessageRPC( NetworkViewID _viewID, string _message )
 	{
-		MenuLobby.instance.SendLobbyMessage( _viewID, _message );
+		MenuLobby.instance.ReceiveTextMessage( _viewID, _message );
 	}
 
 	// Unity Callback: Do not modify signature

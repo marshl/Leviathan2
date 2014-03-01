@@ -3,14 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public enum PLAYER_TYPE : int
-{
-	COMMANDER1,
-	COMMANDER2,
-	FIGHTER1,
-	FIGHTER2,
-};
-
 public class MenuLobby : MonoBehaviour
 {
 	// Instance
@@ -30,6 +22,7 @@ public class MenuLobby : MonoBehaviour
 	public GUIText gameCommentText;
 	public GUITextField messageTextField;
 	public GUIText messageText;
+	public int messageLimit;
 
 	public MenuPlayerRow firstPlayerRow;
 	public float playerRowOffset;
@@ -40,7 +33,7 @@ public class MenuLobby : MonoBehaviour
 	private List<LobbyMessage> messages;
 	private List<MenuPlayerRow> playerRows;
 	
-	public Dictionary<int, PLAYER_TYPE> playerDictionary;
+	private Dictionary<int, PLAYER_TYPE> playerDictionary;
 	private int commander1;
 	private int commander2;
 	private List<int> team1;
@@ -59,7 +52,6 @@ public class MenuLobby : MonoBehaviour
 
 	private void Start()
 	{
-
 		for ( int i = 0; i < MenuNetworking.instance.connectionLimit; ++i )
 		{
 			GameObject rowObj = ( i == 0 ) ? this.firstPlayerRow.gameObject 
@@ -95,8 +87,6 @@ public class MenuLobby : MonoBehaviour
 	{
 		this.gameNameText.text = MenuNetworking.instance.gameName;
 		this.gameCommentText.text = MenuNetworking.instance.gameComment;
-
-		//this.Reset();
 	}
 
 	public void ExitLobby()
@@ -105,7 +95,7 @@ public class MenuLobby : MonoBehaviour
 		MainMenuButtons.instance.ExitLobby();
 	}
 	
-	public void SendLobbyMessage( NetworkViewID _viewID, string _message )
+	public void ReceiveTextMessage( NetworkViewID _viewID, string _message )
 	{
 		LobbyMessage message = new LobbyMessage();
 		message.message = _message;
@@ -113,12 +103,13 @@ public class MenuLobby : MonoBehaviour
 		message.playerName = _viewID.owner.ipAddress;
 		message.timeReceived = DateTime.Now;
 		message.sender = _viewID.owner;
-		
-		
-		this.messages.Add( message );
-		this.messages.RemoveAt( this.messages.Count - 1 );
 
-		
+		this.messages.Add( message );
+		if ( this.messages.Count > this.messageLimit )
+		{
+			this.messages.RemoveAt( 0 );
+		}
+
 		this.UpdateMessageGUI();
 	}
 
@@ -128,14 +119,18 @@ public class MenuLobby : MonoBehaviour
 		for ( int i = this.messages.Count - 1; i >= 0; --i )
 		{
 			LobbyMessage message = this.messages[i];
-			str += message.sender.ipAddress + " ("
-				+ message.timeReceived + "): " + this.messages[i].message + "\n";
+
+			int playerID = Common.NetworkID( message.sender );
+			playerID = playerID % this.playerMessageColours.Length;
+
+			string colour = this.playerMessageColours[ playerID ];
+
+			str += "<color=" + colour + ">" + message.sender.ipAddress + " ("
+				+ message.timeReceived + "): " + this.messages[i].message + "</color>\n";
 		}
 		this.messageText.text = str;
 	}
-
-
-
+	
 	private void UpdatePlayerListGUI()
 	{
 		for ( int i = 0; i < this.playerRows.Count; ++i )
@@ -148,13 +143,12 @@ public class MenuLobby : MonoBehaviour
 	public PLAYER_TYPE DeterminePlayerType( int _playerID )
 	{
 		PLAYER_TYPE type;
-		//if ( _playerID == Common.NetworkID(Network.player) )
+
 		if ( this.commander1 == -1 )
 		{
 			type = PLAYER_TYPE.COMMANDER1;
 		}
 		else if ( this.commander2 == -1 )
-		//else if ( this.team2.Count == 0 )
 		{
 			type = PLAYER_TYPE.COMMANDER2;
 		}
@@ -221,12 +215,10 @@ public class MenuLobby : MonoBehaviour
 	{
 		this.RemovePlayer( _playerID );
 		this.AddPlayerOfType( _playerID, _type );
-		//this.playerDictionary[_playerID] = _type;
 	}
 
 	public void CopyInformation( MenuToGameInfo _info )
 	{
-		//_info.playerTypeMap = new Dictionary<int, PLAYER_TYPE>( this.playerDictionary);
 		_info.playerTypeMap = new Dictionary<int, PLAYER_TYPE>();
 		foreach ( var pair in this.playerDictionary )
 		{
@@ -237,7 +229,7 @@ public class MenuLobby : MonoBehaviour
 	}
 
 	/************************************************************
-	 * CALLBACKS */
+	 * BUTTON CALLBACKS */
 
 	private void OnStartGameDown()
 	{

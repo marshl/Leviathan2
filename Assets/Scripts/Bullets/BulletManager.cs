@@ -14,7 +14,7 @@ public enum WEAPON_TYPE : int
 {
 	NONE,
 	LIGHT_LASER,
-	HEAVY_LASER,
+	MISSILE_LAUNCHER,
 	GATLING_LASER,
 	BURST_FIRE_TEST,
 };
@@ -32,10 +32,11 @@ public class BulletManager : MonoBehaviour
 	/// </summary>
 	private Dictionary<BULLET_TYPE, BulletBucket> bulletDictionary;
 
-	/*private Dictionary<NetworkViewID, BulletBase> networkedBullets;
+	private Dictionary<NetworkViewID, BulletBase> networkedBullets;
+	/*
 #if UNITY_EDITOR
 	private int networkBulletID = 0;
-#endif*/
+#endif*/ 
 
 	private void Awake()
 	{
@@ -51,26 +52,18 @@ public class BulletManager : MonoBehaviour
 	{
 		GameObject bulletBucketObj = new GameObject();
 		bulletBucketObj.name = "BulletContainer";
-
-		BulletDescriptor[] descriptors = this.GetComponents<BulletDescriptor>();
+	
 		this.bulletDictionary = new Dictionary<BULLET_TYPE, BulletBucket>();
-
-		//this.networkedBullets = new Dictionary<NetworkViewID, BulletBase>();
-
-		foreach ( BulletDescriptor desc in descriptors )
-		{
-			if ( desc.smartBullet == false )
+	
+		foreach ( KeyValuePair<BULLET_TYPE, BulletDescriptor> pair in BulletDescriptorManager.instance.descMap )
+		{ 
+			if ( pair.Value.smartBullet == false )
 			{
-				this.CreateBulletBucket( desc );
+				this.CreateBulletBucket( pair.Value );
 			}
 		}
 	}
-	
-	private BulletBase GetBulletOfType( BULLET_TYPE _bulletType ) 
-	{
-		return this.bulletDictionary[ _bulletType ].GetAvailableBullet( -1, -1 );
-	} 
-	 
+
 	public BulletBase CreateBullet( BULLET_TYPE _bulletType, 
 	                              Vector3 _pos, Vector3 _forward,
 	                              float _spread = 0.0f )
@@ -81,7 +74,7 @@ public class BulletManager : MonoBehaviour
 		GameObject bulletObj = null;
 		if ( desc.smartBullet == false )
 		{
-			bulletScript = this.GetBulletOfType( _bulletType );
+			bulletScript = this.bulletDictionary[ _bulletType ].GetAvailableBullet( -1, -1 );
 
 			if ( bulletScript == null )
 			{
@@ -108,14 +101,11 @@ public class BulletManager : MonoBehaviour
 				bulletObj = GameObject.Instantiate( desc.prefab, _pos, Quaternion.LookRotation( _forward ) ) as GameObject;
 			}
 			bulletScript = bulletObj.GetComponent<BulletBase>();
-			//NetworkViewID viewID = bulletObj.networkView.viewID;
-			//Debug.Log( "ViewID: " + viewID );
-
-			//this.networkedBullets.Add( viewID, bulletScript );
 		}
 		            
 		bulletScript.Reset();
 		bulletScript.state = BulletBase.BULLET_STATE.ACTIVE_OWNED;
+		bulletScript.enabled = true;
 
 		bulletObj.SetActive( true );
 		bulletObj.collider.enabled = true;
@@ -137,6 +127,15 @@ public class BulletManager : MonoBehaviour
 		return bulletScript;
 	}
 
+	/// <summary>
+	/// Called by the network manager to create a dumb local bullet, until it is destroyed by a similar call
+	/// </summary>
+	/// <param name="_ownerID">The owner of the bullet</param>
+	/// <param name="_creationTime">_creation time.</param>
+	/// <param name="_bulletType">_bullet type.</param>
+	/// <param name="_index">_index.</param>
+	/// <param name="_position">_position.</param>
+	/// <param name="_forward">The forward direction of the bullet</param>
 	public void CreateBulletRPC( int _ownerID, float _creationTime, BULLET_TYPE _bulletType, int _index, Vector3 _position, Vector3 _forward )
 	{
 		BulletBase bulletScript = this.bulletDictionary[_bulletType].GetAvailableBullet( _index, _ownerID );
@@ -159,7 +158,6 @@ public class BulletManager : MonoBehaviour
 			Vector3 offset = bulletObj.transform.forward * bulletScript.desc.moveSpeed * delta;
 			bulletObj.transform.Translate( offset );
 		}
-		 
 		bulletScript.OnShoot();
 	}
 
@@ -167,10 +165,16 @@ public class BulletManager : MonoBehaviour
 	{
 		if ( _bullet.desc.smartBullet == true )
 		{
-			//throw new NotImplementedException();
 			if ( Network.peerType != NetworkPeerType.Disconnected )
 			{
-				Network.Destroy( _bullet.gameObject );
+				if ( _bullet.networkView.isMine )
+				{
+					Network.Destroy( _bullet.gameObject );
+				}
+				else
+				{
+					//TODO: Tell the owner to nuke this bullet
+				}
 			}
 			else
 			{
@@ -179,7 +183,6 @@ public class BulletManager : MonoBehaviour
 		}
 		else
 		{
-
 			if ( _bullet.state == BulletBase.BULLET_STATE.INACTIVE
 			  || _bullet.gameObject.activeSelf == false )
 			{
@@ -238,16 +241,16 @@ public class BulletManager : MonoBehaviour
 
 		if ( _desc.smartBullet == true )
 		{
-			NetworkBulletBucket networkBucket = bucketObj.AddComponent<NetworkBulletBucket>();
-			networkBucket.Initialise( _desc );
+			//NetworkBulletBucket networkBucket = bucketObj.AddComponent<NetworkBulletBucket>();
+			//networkBucket.Initialise( _desc );
 			//this.networkBuckets.Add( _desc.bulletType, networkBucket );
-			this.bulletDictionary.Add( _desc.bulletType, networkBucket );
+			//this.bulletDictionary.Add( _desc.bulletType, networkBucket );  
 		}
 		else
 		{
 			LocalBulletBucket bulletBucket = bucketObj.AddComponent<LocalBulletBucket>();
 			bulletBucket.Initialise( _desc, false );
 			this.bulletDictionary.Add ( _desc.bulletType, bulletBucket );
-		}
+		}  
 	}
 }

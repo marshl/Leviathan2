@@ -26,18 +26,16 @@ public class Fighter : MonoBehaviour {
 	/// </summary>
 	public float turnExtents;
 
-	/// <summary>
-	/// The turn base.
-	/// </summary>
-	//public float turnBase;
+	public WeaponBase laserWeapon;
+	public WeaponBase missileWeapon;
 	 
 	// Unity Callback: Do not modify signature
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		if ( this.networkView.isMine == false )
 		{
-			Destroy( this.rigidbody );
 			this.enabled = false;
+			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		}
 	}
 
@@ -72,9 +70,14 @@ public class Fighter : MonoBehaviour {
 			this.rigidbody.AddRelativeTorque( torqueValue );
 		}
 
-		if(Input.GetMouseButton (1))
+		if ( Input.GetMouseButton( 1 ) ) // Right click
 		{
-			this.GetComponent<WeaponBase>().SendFireMessage();
+			this.laserWeapon.SendFireMessage();
+		}
+		 
+		if ( Input.GetKey( KeyCode.Space ) )
+		{
+			this.missileWeapon.SendFireMessage();
 		}
 
 		if(Input.GetKey (KeyCode.W))

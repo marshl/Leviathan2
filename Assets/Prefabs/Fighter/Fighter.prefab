@@ -28,7 +28,7 @@ GameObject:
   - 4: {fileID: 400002}
   - 114: {fileID: 11400002}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,6 +69,7 @@ GameObject:
   - 148: {fileID: 14800000}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400006}
+  - 114: {fileID: 11400008}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Untagged
@@ -306,6 +307,8 @@ MonoBehaviour:
   minimumBounce: 500
   bounceVelocityModifier: 50
   turnExtents: .5
+  laserWeapon: {fileID: 11400004}
+  missileWeapon: {fileID: 11400008}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -347,6 +350,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerp: 1
   lerpRate: 5
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 2
+  weaponDesc: {fileID: 0}
+  firePoints:
+  - {fileID: 11400002}
+  firePointIndex: 0
+  timeSinceShot: 0
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
