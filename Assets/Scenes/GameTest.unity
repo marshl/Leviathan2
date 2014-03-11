@@ -143,7 +143,7 @@ MonoBehaviour:
   capitalPathLinePrefab: {fileID: 100000, guid: 97ee7467a0e155b478e63dcc80140dc5,
     type: 2}
   capitalCameraPrefab: {fileID: 100000, guid: 82ddd68b8858ea9449b324333a204b4d, type: 2}
-  testingFighters: 0
+  testingFighters: 1
 --- !u!1001 &352249227
 Prefab:
   m_ObjectHideFlags: 0
@@ -178,6 +178,10 @@ Prefab:
     - target: {fileID: 400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
+      propertyPath: radius
+      value: 140
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b4cd6985890093247b7825db2a72a417, type: 2}
@@ -327,7 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0, z: 0}
-  radius: 30
+  radius: 140
   lineVertices: 100
 --- !u!4 &828339176
 Transform:
