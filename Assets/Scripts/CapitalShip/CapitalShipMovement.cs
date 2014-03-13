@@ -228,7 +228,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 		if(oldMoveSpeed != currentMovementSpeed)
 		{	this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
-			netInfo.SpeedUpdated (this.currentMovementSpeed);
+//			netInfo.SpeedUpdated (this.currentMovementSpeed);
 		}
 	}
 
@@ -498,7 +498,7 @@ public class CapitalShipMovement : MonoBehaviour
 		this.currentTurnDirection = _direction;
 		this.currentTurnAmount = _turnAmount;
 		//Bung this info on the network
-		PassTurnParameters();
+//		PassTurnParameters();
 		return true; 
 	}
 	
@@ -645,7 +645,7 @@ public class CapitalShipMovement : MonoBehaviour
 		this.currentAvoidAngle = 0.0f;
 	} 
 
-	public void PassTurnParameters()
+/*	public void PassTurnParameters()
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
@@ -665,5 +665,5 @@ public class CapitalShipMovement : MonoBehaviour
 
 		netInfo.StateUpdated (turnParameters);
 
-	}
+	}*/
 }
