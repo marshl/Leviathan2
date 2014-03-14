@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerp: 1
-  lerpRate: 2
+  lerpRate: 5
 --- !u!23 &1671166660
 Renderer:
   m_ObjectHideFlags: 0
@@ -316,10 +316,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   other: {fileID: 1671166659}
-  turnSpeed: 90
-  moveSpeed: 20
+  turnSpeed: 25
+  moveSpeed: 10
   twistSpeed: 0
-  latency: .159999996
+  latency: .5
+  sendRate: .100000001
 --- !u!23 &2008328282
 Renderer:
   m_ObjectHideFlags: 0

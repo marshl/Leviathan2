@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class NetworkPositionControl : MonoBehaviour
 {
 	/// A position and rotation point sent over the network
-	private struct DataPoint
+	public struct DataPoint
 	{
 		public Vector3 position;
 		public Quaternion rotation;
@@ -76,6 +76,12 @@ public class NetworkPositionControl : MonoBehaviour
 	/// <param name="_time">The time at which the pos and rot were sent</param>
 	public void StoreData( Vector3 _pos, Quaternion _rot, double _time )
 	{
+		if ( _time < this.newerData.timeStamp )
+		{
+			Debug.Log( "receiving early packet" );
+			return;
+		}
+
 		this.olderData.rotation = this.newerData.rotation;
 		this.olderData.position = this.newerData.position;
 		this.olderData.timeStamp = this.newerData.timeStamp;
