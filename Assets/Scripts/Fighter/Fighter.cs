@@ -48,7 +48,7 @@ public class Fighter : MonoBehaviour {
 
 	void CheckFlightControls()
 	{
-		if ( Input.GetMouseButton(0) ) // Left click
+		if ( Input.GetMouseButton(0) ) // Left click - Turn the ship
 		{
 			Vector2 transformedMousePos = new Vector3(Input.mousePosition.x / Screen.width * 2.0f - 1.0f,
 			                                          Input.mousePosition.y / Screen.height * 2.0f - 1.0f);
@@ -70,17 +70,17 @@ public class Fighter : MonoBehaviour {
 			this.rigidbody.AddRelativeTorque( torqueValue );
 		}
 
-		if ( Input.GetMouseButton( 1 ) ) // Right click
+		if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
 		{
 			this.laserWeapon.SendFireMessage();
 		}
 		 
-		if ( Input.GetKey( KeyCode.Space ) )
+		if ( Input.GetKey( KeyCode.Space ) ) // Space bar - Fire missile
 		{
 			this.missileWeapon.SendFireMessage();
 		}
 
-		if(Input.GetKey (KeyCode.W))
+		if(Input.GetKey (KeyCode.W)) // Accelerate
 		{
 			desiredSpeed += acceleration * Time.deltaTime;
 			if(desiredSpeed > maxSpeed)
@@ -88,7 +88,7 @@ public class Fighter : MonoBehaviour {
 				desiredSpeed = maxSpeed;
 			}
 		}
-		if(Input.GetKey (KeyCode.S))
+		if(Input.GetKey (KeyCode.S)) // Deccelerate
 		{
 			//this.rigidbody.AddForce (-this.transform.forward * acceleration * Time.deltaTime);
 			desiredSpeed -= acceleration * Time.deltaTime;
@@ -98,13 +98,22 @@ public class Fighter : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetKey (KeyCode.Q))
+		if(Input.GetKey (KeyCode.Q)) // Rotate left
 		{
 			this.rigidbody.AddRelativeTorque (new Vector3(0,0,rollSpeed));
 		}
-		if(Input.GetKey (KeyCode.E))
+		if(Input.GetKey (KeyCode.E)) // Rotate right
 		{
 			this.rigidbody.AddRelativeTorque (new Vector3(0,0,-rollSpeed));
+		}
+
+		if(Input.GetKey (KeyCode.Backspace)) // Stop
+		{
+			desiredSpeed = 0.0f;
+		}
+		if(Input.GetKey (KeyCode.Tab)) // Thrusters (not a special)
+		{
+			desiredSpeed += (acceleration * 2 * Time.deltaTime);
 		}
 	}
 

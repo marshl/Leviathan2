@@ -299,8 +299,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnSpeed: 35
   rollSpeed: 2
-  acceleration: 1800
-  maxSpeed: 4000
+  acceleration: 4000
+  maxSpeed: 10000
   desiredSpeed: 0
   minSpeed: -400
   rollDamping: .300000012
