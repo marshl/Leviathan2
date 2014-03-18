@@ -28,6 +28,8 @@ public class BulletDescriptor : MonoBehaviour
 	/// </summary>
 	public float maxDistance;
 
+	public float damage;
+
 	public bool smartBullet;
 }
 

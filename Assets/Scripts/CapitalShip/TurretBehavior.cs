@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class TurretBehavior : MonoBehaviour {
 	
 	public GameObject target;
-	public List<PunchingBag> targetList;
+	public List<FighterHealth> targetList;
 
 	public Transform joint;
 	public Transform arm;
@@ -24,17 +24,15 @@ public class TurretBehavior : MonoBehaviour {
 	public int teamNumber = 0;
 	
 	public float minimumPitchAngle = 180;
-
-	// Use this for initialization
-	void Start () {
-
+	
+	void Start()
+	{
 		TargetManager manager = GameObject.FindObjectOfType (typeof(TargetManager)) as TargetManager;
-		targetList = manager.RedFighters;
-	
+		targetList = manager.team1Fighters;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void Update()
+	{
 
 		FindClosestTarget();
 
@@ -46,9 +44,9 @@ public class TurretBehavior : MonoBehaviour {
 	void FindClosestTarget()
 	{
 		float minDistance = float.PositiveInfinity;
-		PunchingBag newTarget = target.GetComponent<PunchingBag>();
+		BaseHealth newTarget = target.GetComponent<BaseHealth>();
 
-		foreach (PunchingBag fighter in targetList)
+		foreach (FighterHealth fighter in targetList)
 		{
 			distance = Vector3.Magnitude (fighter.transform.position - transform.position) ;
 			if(distance < minDistance)
@@ -56,7 +54,6 @@ public class TurretBehavior : MonoBehaviour {
 				newTarget = fighter;
 				minDistance = distance;
 			}
-			 
 		}
 		target = newTarget.gameObject;
 	}

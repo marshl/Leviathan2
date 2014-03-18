@@ -173,6 +173,7 @@ GameObject:
   - 23: {fileID: 144726868}
   - 54: {fileID: 144726867}
   - 114: {fileID: 144726866}
+  - 114: {fileID: 144726872}
   m_Layer: 0
   m_Name: Punchingbag
   m_TagString: Untagged
@@ -186,7 +187,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 144726865}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd1a3588ccc6cc9499c9c0381340685b, type: 3}
   m_Name: 
@@ -258,6 +259,20 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &144726872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 144726865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 0
+  isIndestructible: 0
 --- !u!1 &220872019
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,6 +430,7 @@ MonoBehaviour:
   currentSpeed: 0
   acceleration: 2
   maxSpeed: 10
+  useGaussianSmoothing: 0
 --- !u!54 &267707064
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -643,46 +659,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 510523457}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &520391039
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 520391041}
-  - 114: {fileID: 520391040}
-  m_Layer: 0
-  m_Name: TargetManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &520391040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 520391039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aee74e3c85223d6498d39c58b85d09e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RedFighters: []
-  YellowFighters: []
---- !u!4 &520391041
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 520391039}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.37981224, y: -3.44227839, z: -13.335289}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
 --- !u!1 &522625605
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +778,7 @@ GameObject:
   - 23: {fileID: 827495908}
   - 54: {fileID: 827495907}
   - 114: {fileID: 827495906}
+  - 114: {fileID: 827495912}
   m_Layer: 0
   m_Name: Punchingbag 2
   m_TagString: Untagged
@@ -815,7 +792,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 827495905}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd1a3588ccc6cc9499c9c0381340685b, type: 3}
   m_Name: 
@@ -887,6 +864,20 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &827495912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 827495905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 0
+  isIndestructible: 0
 --- !u!1 &885001527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,6 +1038,46 @@ SkinnedMeshRenderer:
     m_Center: {x: 2.86102295e-06, y: 15.371707, z: -4.76837158e-06}
     m_Extent: {x: 28.5000038, y: 15.3717089, z: 28.5000076}
   m_DirtyAABB: 0
+--- !u!1 &1054377033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1054377035}
+  - 114: {fileID: 1054377034}
+  m_Layer: 0
+  m_Name: TargetManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1054377034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1054377033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee74e3c85223d6498d39c58b85d09e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team1Fighters: []
+  team2Fighters: []
+--- !u!4 &1054377035
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1054377033}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.30541945, y: 18.2595558, z: 5.05354977}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
 --- !u!1 &1099097686
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,6 +1118,7 @@ GameObject:
   - 23: {fileID: 1185057227}
   - 54: {fileID: 1185057230}
   - 114: {fileID: 1185057231}
+  - 114: {fileID: 1185057232}
   m_Layer: 0
   m_Name: Punchingbag 3
   m_TagString: Untagged
@@ -1166,12 +1198,26 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1185057225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd1a3588ccc6cc9499c9c0381340685b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamNumber: 0
+--- !u!114 &1185057232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1185057225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 0
+  isIndestructible: 0
 --- !u!1 &1270223348
 GameObject:
   m_ObjectHideFlags: 0

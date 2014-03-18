@@ -44,8 +44,6 @@ public class BulletBase : MonoBehaviour
 		// Reset is called every time a bullet is created, use that instead
 
 		// However decriptors can be set up here
-
-
 	}
 
 	/// <summary>
@@ -73,10 +71,10 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	protected virtual void OnTriggerEnter( Collider _collider )
 	{
-		TargettableObject target = _collider.gameObject.GetComponent<TargettableObject>();
-		if ( target != null )
+		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
+		if ( health != null )
 		{
-			this.OnTargetCollision( target );
+			this.OnTargetCollision( health );
 		}
 		else
 		{
@@ -96,8 +94,10 @@ public class BulletBase : MonoBehaviour
 	/// Called when this bullet hits an object that has a target attached
 	/// </summary>
 	/// <param name="_target">_target.</param>
-	public virtual void OnTargetCollision( TargettableObject _target )
+	public virtual void OnTargetCollision( BaseHealth _health )
 	{
+		_health.DealDamage( this.desc.damage );
+
 		BulletManager.instance.DestroyLocalBullet( this );
 	}
 

@@ -126,6 +126,7 @@ public abstract class Common
 
 	public static int NetworkID( NetworkPlayer _player )
 	{
+		//TODO: There has to be a better way to to this LM:18/03/14
 		return int.Parse( _player.ToString() );
 	}
 
