@@ -142,7 +142,7 @@ MonoBehaviour:
   count: 0
   moveSpeed: 80
   maxDistance: 50
-  damage: 0
+  damage: 50
   smartBullet: 1
   turnRate: 15
   maxDetectionAngle: 15
@@ -163,7 +163,7 @@ MonoBehaviour:
   count: 50
   moveSpeed: 120
   maxDistance: 100
-  damage: 0
+  damage: 10
   smartBullet: 0
 --- !u!114 &11400006
 MonoBehaviour:

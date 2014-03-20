@@ -937,6 +937,7 @@ GameObject:
   - 114: {fileID: 935807975}
   - 114: {fileID: 935807974}
   - 114: {fileID: 935807973}
+  - 114: {fileID: 935807980}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Untagged
@@ -1081,6 +1082,21 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &935807980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400014, guid: e152e05dbd9d77f42958a061d50fa1ff,
+    type: 2}
+  m_PrefabInternal: {fileID: 20599303}
+  m_GameObject: {fileID: 935807971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 100
+  maxHealth: 100
+  isIndestructible: 0
 --- !u!1001 &977810849
 Prefab:
   m_ObjectHideFlags: 0
@@ -1788,3 +1804,43 @@ Transform:
   m_LocalScale: {x: .0286532938, y: .0448430516, z: .00403047027}
   m_Children: []
   m_Father: {fileID: 673008425}
+--- !u!1 &2085318311
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2085318313}
+  - 114: {fileID: 2085318312}
+  m_Layer: 0
+  m_Name: TargetManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2085318312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2085318311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee74e3c85223d6498d39c58b85d09e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team1Fighters: []
+  team2Fighters: []
+--- !u!4 &2085318313
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2085318311}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.1091518, y: -9.06598663, z: -39.6420059}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}

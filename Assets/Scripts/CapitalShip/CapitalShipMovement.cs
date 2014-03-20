@@ -117,7 +117,7 @@ public class CapitalShipMovement : MonoBehaviour
 	private float currentAvoidHeight;
 	private float currentAvoidAngle;
 
-	private CapitalShipNetworkInfo netInfo;
+	//private CapitalShipNetworkInfo netInfo;  
 
 	private void Awake()
 	{
@@ -147,7 +147,7 @@ public class CapitalShipMovement : MonoBehaviour
 			}
 		}
 
-		netInfo = this.GetComponent<CapitalShipNetworkInfo>();
+		//netInfo = this.GetComponent<CapitalShipNetworkInfo>();
 	}
 	
 	private void Update()

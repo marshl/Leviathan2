@@ -101,6 +101,11 @@ public class BulletBase : MonoBehaviour
 	{
 		_health.DealDamage( this.desc.damage );
 
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			TargetManager.instance.DealDamageNetwork( _health.networkView.viewID, this.desc.damage );
+		}
+
 		BulletManager.instance.DestroyLocalBullet( this );
 	}
 

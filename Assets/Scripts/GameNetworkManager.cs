@@ -78,4 +78,15 @@ public class GameNetworkManager : MonoBehaviour
 	{
 		BulletManager.instance.DestroyDumbBulletRPC( (BULLET_TYPE)_bulletType, _index );
 	}
+
+	public void SendDealDamageMessage( NetworkViewID _id, float _damage )
+	{
+		this.networkView.RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage );
+	}
+
+	[RPC]
+	private void OnDealDamageRPC( NetworkViewID _id, float _damage )
+	{
+		TargetManager.instance.OnDealDamage( _id, _damage );
+	}
 }
