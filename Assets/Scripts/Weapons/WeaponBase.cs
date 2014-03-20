@@ -33,6 +33,11 @@ public class WeaponBase : MonoBehaviour
 	public float timeSinceShot;
 
 
+	//TODO: This will be used to determine who fired the shot that killed something and so on, 
+	// but will have to be changed to a generic class tha covers all damage sources
+	public Fighter source;
+
+
 	protected virtual void Start()
 	{
 		this.InitialiseDescriptors();
@@ -101,6 +106,7 @@ public class WeaponBase : MonoBehaviour
 				WeaponFirePoint currentFirePoint = this.firePoints[i];
 				BulletBase bullet = BulletManager.instance.CreateBullet
 				(
+					this.source,
 					this.weaponDesc.bulletType,
 					currentFirePoint.transform.position, 
 					currentFirePoint.transform.TransformDirection(Vector3.forward), 
@@ -115,6 +121,7 @@ public class WeaponBase : MonoBehaviour
 			WeaponFirePoint currentFirePoint = this.firePoints[this.firePointIndex];
 			BulletBase bullet = BulletManager.instance.CreateBullet
 			(
+				this.source,
 				this.weaponDesc.bulletType,
 				currentFirePoint.transform.position, 
 				currentFirePoint.transform.forward, 

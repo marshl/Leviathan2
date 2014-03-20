@@ -64,7 +64,7 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 
-	public BulletBase CreateBullet( BULLET_TYPE _bulletType, 
+	public BulletBase CreateBullet( Fighter _source, BULLET_TYPE _bulletType, 
 	                              Vector3 _pos, Vector3 _forward,
 	                              float _spread = 0.0f )
 	{
@@ -109,7 +109,9 @@ public class BulletManager : MonoBehaviour
 
 		bulletObj.SetActive( true );
 		bulletObj.collider.enabled = true;
-
+		bulletScript.source = _source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
+		Physics.IgnoreCollision( bulletObj.collider, _source.collider );
+		    
 		if ( _spread != 0.0f )
 		{
 			Vector3 perp = new Vector3( UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f );
@@ -239,18 +241,9 @@ public class BulletManager : MonoBehaviour
 		bucketObj.name = _desc.bulletType.ToString() + "Bucket";
 		bucketObj.transform.parent = this.transform;
 
-		if ( _desc.smartBullet == true )
-		{
-			//NetworkBulletBucket networkBucket = bucketObj.AddComponent<NetworkBulletBucket>();
-			//networkBucket.Initialise( _desc );
-			//this.networkBuckets.Add( _desc.bulletType, networkBucket );
-			//this.bulletDictionary.Add( _desc.bulletType, networkBucket );  
-		}
-		else
-		{
-			LocalBulletBucket bulletBucket = bucketObj.AddComponent<LocalBulletBucket>();
-			bulletBucket.Initialise( _desc, false );
-			this.bulletDictionary.Add ( _desc.bulletType, bulletBucket );
-		}  
+		LocalBulletBucket bulletBucket = bucketObj.AddComponent<LocalBulletBucket>();
+		bulletBucket.Initialise( _desc, false );
+		this.bulletDictionary.Add ( _desc.bulletType, bulletBucket );
+
 	}
 }

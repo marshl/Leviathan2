@@ -117,6 +117,7 @@ MonoBehaviour:
   bulletType: 2
   parentBucket: {fileID: 0}
   distanceTravelled: 0
+  source: {fileID: 0}
   desc: {fileID: 0}
 --- !u!136 &13600000
 CapsuleCollider:

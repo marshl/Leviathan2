@@ -59,7 +59,7 @@ public class CapitalShipMovement : MonoBehaviour
 	/// <summary>
 	/// The speed at which the ship is currently moving
 	/// </summary>
-	private float currentMovementSpeed = 5.0f;
+	private float currentMovementSpeed;
 	
 	/// <summary>
 	/// The vertex count of the path lines
@@ -132,6 +132,8 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void Start()
 	{
+		this.currentMovementSpeed = (this.maxMoveSpeed + this.minMoveSpeed) / 2;
+
 		this.tentativePathLine.SetVertexCount( lineVertexCount );
 
 		this.CreateRotationSegments();
@@ -556,7 +558,7 @@ public class CapitalShipMovement : MonoBehaviour
 			lastDir.Normalize();
 			_pointList[lineVertexCount-1] = _pointList[lineVertexCount-2] + lastDir * (pathLength-lineLength);
 		}
-		else //Otherwise 
+		else
 		{
 			_pointList[lineVertexCount-1] = _pointList[lineVertexCount-2] + lastDir;
 		}
@@ -564,8 +566,9 @@ public class CapitalShipMovement : MonoBehaviour
 	
 	public void UpdateRotationSegments( GameObject[] _segments, float _turnAmount, float _turnDirection )
 	{
+		Debug.Log( Time.frameCount + ": TurnAmount:" + _turnAmount + " TurnDirection:" + _turnDirection );
 		int minActiveSegments = 0, maxActiveSegments = this.rotationSegmentCount;
-		int segmentsToActivate =  (int)Mathf.Floor( _turnAmount / Mathf.PI * (float)rotationSegmentCount * 0.5f );
+		int segmentsToActivate = (int)Mathf.Floor( _turnAmount / Mathf.PI * (float)rotationSegmentCount * 0.5f );
 		if ( _turnDirection > 0.0f ) // Turning Right
 		{
 			minActiveSegments = 0;	
@@ -576,8 +579,8 @@ public class CapitalShipMovement : MonoBehaviour
 			minActiveSegments = rotationSegmentCount - segmentsToActivate - 1;
 			maxActiveSegments = rotationSegmentCount;	
 		}
-		
-		for ( int i = 0; i < rotationSegmentCount; ++i )
+		Debug.Log( Time.frameCount + " Min:"+minActiveSegments + " Max:"+maxActiveSegments );
+		for ( int i = 0; i < this.rotationSegmentCount; ++i )
 		{
 			_segments[i].SetActive( i >= minActiveSegments && i <= maxActiveSegments );	
 		}
@@ -629,7 +632,6 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void StartAvoidanceCurve( float _targetHeight )
 	{
-		//Debug.Log( "Starting curve" );
 		this.currentAvoidCurvePoint = 0.0f;
 		this.followingAvoidanceCurve = true;
 		this.avoidanceCurveStartHeight = this.currentAvoidHeight;
@@ -639,7 +641,6 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void EndAvoidanceCurve()
 	{
-		//Debug.Log( "Ending avoidance curve" );
 		this.followingAvoidanceCurve = false;
 		this.currentAvoidHeight = this.avoidanceCurveEndHeight;
 		this.currentAvoidAngle = 0.0f;

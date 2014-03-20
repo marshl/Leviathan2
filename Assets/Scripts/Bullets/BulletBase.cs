@@ -27,6 +27,9 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public float distanceTravelled;
 
+	//TODO: Make more generic
+	public Fighter source;
+
 	/// <summary>
 	/// The associated bullet desciptor (set elsewhere)
 	/// </summary>
@@ -63,7 +66,7 @@ public class BulletBase : MonoBehaviour
 		if ( this.distanceTravelled >= this.desc.maxDistance )
 		{
 			this.OnLifetimeExpiration();
-		}
+		} 
 	}
 
 	/// <summary>

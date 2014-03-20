@@ -1,7 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
+[Obsolete]
 public class NetworkBulletBucket : BulletBucket
 {
 	public Dictionary<int, LocalBulletBucket> buckets;
@@ -18,11 +20,6 @@ public class NetworkBulletBucket : BulletBucket
 		else
 		{
 			this.CreateBucket( Common.NetworkID() );
-
-			/*foreach ( NetworkPlayer player in Network.connections )
-			{
-				this.CreateBucket( Common.NetworkID(player) );
-			}*/
 		}
 	}
 

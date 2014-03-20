@@ -803,10 +803,10 @@ MonoBehaviour:
   rotationSegmentCount: 16
   tentativeSegmentUpscale: 1.5
   lineVertexCount: 25
-  pathLength: 50
-  turnRate: .5
-  maxMoveSpeed: 7.5
-  minMoveSpeed: 1
+  pathLength: 800
+  turnRate: .100000001
+  maxMoveSpeed: 30
+  minMoveSpeed: 15
   moveAcceleration: 3
   avoidanceTransform: {fileID: 400002}
   avoidanceAngleRate: 15

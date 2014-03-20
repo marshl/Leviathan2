@@ -15,8 +15,12 @@ ModelImporter:
     400006: LT_Arm2_Joint
     400008: //RootNode
     400010: LT_Base_Joint
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: Light_Laser
+    4300002: Gun_Animation_Light_Laser
     7400000: Take 001
+    7400002: Default Take
     11100000: //RootNode
     13700000: LT_Base_Joint
     13700002: Light_Laser

@@ -17,7 +17,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 87bb330bbfec1a94faeba892c11f7f31, type: 3}
+          m_Texture: {fileID: 2800000, guid: d2bdcc00334df794b923185768b005b1, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -48,12 +48,12 @@ Material:
         second: .5
       data:
         first:
-          name: _Shininess
-        second: .078125
-      data:
-        first:
           name: _InvFade
         second: 1
+      data:
+        first:
+          name: _Shininess
+        second: .078125
     m_Colors:
       data:
         first:
