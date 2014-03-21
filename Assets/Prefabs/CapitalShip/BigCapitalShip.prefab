@@ -4517,9 +4517,9 @@ MonoBehaviour:
   tentativeSegmentUpscale: 1.5
   lineVertexCount: 25
   pathLength: 800
-  turnRate: .100000001
-  maxMoveSpeed: 30
-  minMoveSpeed: 15
+  turnRate: .0500000007
+  maxMoveSpeed: 15
+  minMoveSpeed: 7
   moveAcceleration: 3
   avoidanceTransform: {fileID: 400002}
   avoidanceAngleRate: 15
@@ -4582,7 +4582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerp: 1
-  lerpRate: 5000
+  lerpRate: 4
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1

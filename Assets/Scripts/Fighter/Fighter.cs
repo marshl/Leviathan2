@@ -146,13 +146,7 @@ public class Fighter : MonoBehaviour {
 	{
 		if(Input.GetKey (KeyCode.Space))
 		{
-			docked = false;
-			currentSlot.occupied = false;
-			currentSlot.landedFighter = null;
-			desiredSpeed = (maxSpeed * 0.75f);
-			undocking = true;
-			undockingTimer = undockingDelay;
-			this.transform.parent = null;
+			Undock();
 		}
 	}
 
@@ -191,4 +185,34 @@ public class Fighter : MonoBehaviour {
 		this.rigidbody.AddForce (bounceForce);
 		//this.rigidbody.AddForce (averagePoint * this.rigidbody.velocity.magnitude * bounciness); //bounciness);
 	}
+
+	public void Dock(DockingBay.DockingSlot slot)
+	{
+		desiredSpeed = 0;
+		rigidbody.velocity = Vector3.zero;
+		rigidbody.angularVelocity = Vector3.zero;
+		transform.position = slot.landedPosition.position;
+		transform.rotation = slot.landedPosition.rotation;
+		currentSlot = slot;
+		docked = true;
+		transform.parent = slot.landedPosition;
+		//networkView.RPC ("SendDockedInfo",RPCMode.Others,slot);
+	}
+
+	public void Undock()
+	{
+		docked = false;
+	    currentSlot.occupied = false;
+	    currentSlot.landedFighter = null;
+	    desiredSpeed = (maxSpeed * 0.75f);
+	    undocking = true;
+	    undockingTimer = undockingDelay;
+
+	//	rigidbody.AddForce (this.transform.root.forward * this.transform.root.GetComponent<CapitalShipMovement
+
+	    this.transform.parent = null;
+		//networkView.RPC ("SendUnDockedInfo",RPCMode.Others);
+	}
+
+
 }

@@ -53,15 +53,7 @@ public class DockingBay : MonoBehaviour {
 		{
 			if(!friendlySlot.occupied)
 			{
-				_fighter.desiredSpeed = 0;
-				_fighter.rigidbody.velocity = Vector3.zero;
-				_fighter.rigidbody.angularVelocity = Vector3.zero;
-				_fighter.transform.position = friendlySlot.landedPosition.position;
-				_fighter.transform.rotation = friendlySlot.landedPosition.rotation;
-				_fighter.currentSlot = friendlySlot;
-				_fighter.docked = true;
-				_fighter.transform.parent = friendlySlot.landedPosition;
-
+				_fighter.Dock (friendlySlot);
 				friendlySlot.occupied = true;
 				friendlySlot.landedFighter = _fighter;
 				break;
