@@ -14,6 +14,7 @@ public class Fighter : MonoBehaviour {
 	public float rollDamping = 0.3f;
 	public float minimumBounce = 10.0f;
 	public float bounceVelocityModifier = 300.0f;
+	public int team = 1;
 	//public float currentSpeed = 0.0f;
 	//public float desiredSpeed = 0.0f;
 	//public float maxSpeed = 10.0f; //Potentially used as a hard limit
@@ -25,6 +26,13 @@ public class Fighter : MonoBehaviour {
 	/// gradually leading down to zero in the centre of the screen
 	/// </summary>
 	public float turnExtents;
+
+	public bool docked = false;
+	public bool undocking = false;
+	public float undockingTimer = 0.0f;
+	public float undockingDelay = 3.0f;
+
+	public DockingBay.DockingSlot currentSlot;
 
 	public WeaponBase laserWeapon;
 	public WeaponBase missileWeapon;
@@ -42,7 +50,24 @@ public class Fighter : MonoBehaviour {
 	void LateUpdate()
 	{
 		this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
-		CheckFlightControls();
+		if(!docked)
+		{
+			CheckFlightControls();
+		}
+		else
+		{
+			CheckDockedControls();
+		}
+
+		if(undockingTimer > 0)
+		{
+			undockingTimer -= Time.deltaTime;
+			if(undockingTimer < 0)
+			{
+				undockingTimer = 0;
+				undocking = false;
+			}
+		}
 		ApplyDrag();
 	}
 
@@ -114,6 +139,20 @@ public class Fighter : MonoBehaviour {
 		if(Input.GetKey (KeyCode.Tab)) // Thrusters (not a special)
 		{
 			desiredSpeed += (acceleration * 2 * Time.deltaTime);
+		}
+	}
+
+	void CheckDockedControls()
+	{
+		if(Input.GetKey (KeyCode.Space))
+		{
+			docked = false;
+			currentSlot.occupied = false;
+			currentSlot.landedFighter = null;
+			desiredSpeed = (maxSpeed * 0.75f);
+			undocking = true;
+			undockingTimer = undockingDelay;
+			this.transform.parent = null;
 		}
 	}
 

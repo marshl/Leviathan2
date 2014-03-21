@@ -195,7 +195,7 @@ MonoBehaviour:
   capitalPathLinePrefab: {fileID: 100000, guid: 97ee7467a0e155b478e63dcc80140dc5,
     type: 2}
   capitalCameraPrefab: {fileID: 100000, guid: 82ddd68b8858ea9449b324333a204b4d, type: 2}
-  testingFighters: 1
+  testingFighters: 0
 --- !u!1 &152174496
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
   count: 0
   moveSpeed: 80
   maxDistance: 50
-  damage: 0
+  damage: 50
   smartBullet: 1
   turnRate: 15
   maxDetectionAngle: 15
@@ -560,7 +560,7 @@ MonoBehaviour:
   count: 50
   moveSpeed: 120
   maxDistance: 100
-  damage: 0
+  damage: 10
   smartBullet: 0
 --- !u!114 &375129947
 MonoBehaviour:
@@ -1063,7 +1063,16 @@ MonoBehaviour:
   rollDamping: .300000012
   minimumBounce: 500
   bounceVelocityModifier: 50
+  team: 1
   turnExtents: .5
+  docked: 0
+  undocking: 0
+  undockingTimer: 0
+  undockingDelay: 3
+  currentSlot:
+    landedPosition: {fileID: 0}
+    landedFighter: {fileID: 0}
+    occupied: 0
   laserWeapon: {fileID: 935807975}
   missileWeapon: {fileID: 935807973}
 --- !u!54 &935807979
