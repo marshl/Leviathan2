@@ -52,8 +52,8 @@ public class NetworkPositionControl : MonoBehaviour
 	{
 		if ( _stream.isWriting == true ) 
 		{
-			Vector3 pos = this.transform.position;//.localPosition;
-			Quaternion rot = this.transform.rotation;//localRotation;
+			Vector3 pos = this.transform.localPosition;
+			Quaternion rot = this.transform.localRotation;
 			_stream.Serialize( ref pos );
 			_stream.Serialize( ref rot );
 		}

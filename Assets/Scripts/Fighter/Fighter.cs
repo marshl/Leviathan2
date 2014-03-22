@@ -197,6 +197,7 @@ public class Fighter : MonoBehaviour {
 		docked = true;
 		transform.parent = slot.landedPosition;
 		//networkView.RPC ("SendDockedInfo",RPCMode.Others,slot);
+		GameNetworkManager.instance.SendDockedMessage ( this.networkView, slot );
 	}
 
 	public void Undock()
@@ -211,7 +212,8 @@ public class Fighter : MonoBehaviour {
 	//	rigidbody.AddForce (this.transform.root.forward * this.transform.root.GetComponent<CapitalShipMovement
 
 	    this.transform.parent = null;
-		//networkView.RPC ("SendUnDockedInfo",RPCMode.Others);
+		GameNetworkManager.instance.SendUndockedMessage ( this.networkView, currentSlot );
+		currentSlot = null;
 	}
 
 

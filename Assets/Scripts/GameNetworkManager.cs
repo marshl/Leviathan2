@@ -89,4 +89,35 @@ public class GameNetworkManager : MonoBehaviour
 	{
 		TargetManager.instance.OnDealDamage( _id, _damage );
 	}
+
+	public void SendDockedMessage( NetworkView _id, DockingBay.DockingSlot landedSlot )
+	{
+		this.networkView.RPC ( "OnFighterDockedRPC", RPCMode.Others, _id, landedSlot );
+	}
+
+	[RPC]
+	private void OnFighterDockedRPC( NetworkView _id, DockingBay.DockingSlot landedSlot )
+	{
+		//_id.gameObject.transform.position = landedSlot.landedPosition.transform.position;
+		//_id.gameObject.transform.rotation = landedSlot.landedPosition.transform.rotation;
+		_id.gameObject.transform.parent = landedSlot.landedPosition;
+		_id.transform.localPosition = Vector3.zero;
+		_id.transform.rotation = landedSlot.landedPosition.transform.rotation;
+		landedSlot.landedFighter = _id.GetComponent<Fighter>();
+
+		print("Received docked RPC");
+	}
+
+	public void SendUndockedMessage( NetworkView _id, DockingBay.DockingSlot landedSlot )
+	{
+		this.networkView.RPC ( "OnFighterUndockedRPC", RPCMode.Others, _id, landedSlot );
+	}
+	
+	[RPC]
+	private void OnFighterUndockedRPC( NetworkView _id, DockingBay.DockingSlot landedSlot )
+	{
+		_id.gameObject.transform.parent = null;
+		landedSlot.landedFighter = null;
+	}
+
 }
