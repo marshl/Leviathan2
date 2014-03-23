@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class CapitalShipMovement : MonoBehaviour
 {
-	public Transform markerTransform;
-
 	/// <summary>
 	/// The prefab used to mark the turning angle around the ship
 	/// </summary>
@@ -19,7 +17,7 @@ public class CapitalShipMovement : MonoBehaviour
 	/// <summary>
 	/// The number of triangles displayed around the ship in a full circle
 	/// </summary>
-	public int rotationSegmentCount; 
+	public int rotationSegmentCount;
 
 	/// <summary>
 	/// The increase in scale for the tentative rotation segments
@@ -55,12 +53,12 @@ public class CapitalShipMovement : MonoBehaviour
 	/// The rotational segments that shows where the ship would turn
 	/// </summary>
 	private GameObject[] rotationSegmentsTentative;
-	
+
 	/// <summary>
 	/// The speed at which the ship is currently moving
 	/// </summary>
 	private float currentMovementSpeed;
-	
+
 	/// <summary>
 	/// The vertex count of the path lines
 	/// </summary>
@@ -117,7 +115,9 @@ public class CapitalShipMovement : MonoBehaviour
 	private float currentAvoidHeight;
 	private float currentAvoidAngle;
 
-	//private CapitalShipNetworkInfo netInfo;  
+	public float avoidanceAngleMultiplier;
+
+	//private CapitalShipNetworkInfo netInfo;
 
 	private void Awake()
 	{
@@ -149,7 +149,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 		//netInfo = this.GetComponent<CapitalShipNetworkInfo>();
 	}
-	
+
 	private void Update()
 	{
 		this.UpdateAccelerationInput();
@@ -171,14 +171,14 @@ public class CapitalShipMovement : MonoBehaviour
 			this.transform.Rotate( Vector3.up, turnRate * Time.deltaTime * this.currentTurnDirection * Mathf.Rad2Deg);
 
 			UpdateRotationSegments( this.rotationSegmentsActual, this.currentTurnAmount, this.currentTurnDirection );
-			
+
 			if ( this.currentTurnAmount <= 0.0f )
 			{
 				this.DisableRotationSegments();
-				this.isTurning = false;	
-			}	
+				this.isTurning = false;
+			}
 		}
-	
+
 		this.UpdateAvoidanceControl();
 
 		this.transform.position += this.transform.forward * this.currentMovementSpeed * Time.deltaTime;
@@ -195,12 +195,12 @@ public class CapitalShipMovement : MonoBehaviour
 		{
 			for ( int i = 0; i < rotationSegmentCount; ++i )
 			{
-				GameObject segmentObj = GameObject.Instantiate( this.rotationSegmentPrefab ) as GameObject;	
+				GameObject segmentObj = GameObject.Instantiate( this.rotationSegmentPrefab ) as GameObject;
 				segmentObj.transform.Rotate( Vector3.up, (float)i / (float)rotationSegmentCount * 360.0f );
 				segmentObj.transform.parent = this.transform;
 				segmentObj.transform.localPosition = Vector3.zero;
 				segmentObj.SetActive( false );
-				
+
 				if ( j == 0 )
 				{
 					this.rotationSegmentsActual[i] = segmentObj;
@@ -221,11 +221,11 @@ public class CapitalShipMovement : MonoBehaviour
 
 		if ( Input.GetKey( KeyCode.W ) )
 		{
-			this.currentMovementSpeed += Time.deltaTime * moveAcceleration;	
+			this.currentMovementSpeed += Time.deltaTime * moveAcceleration;
 		}
 		else if ( Input.GetKey( KeyCode.S ) )
 		{
-			this.currentMovementSpeed -= Time.deltaTime * moveAcceleration;	
+			this.currentMovementSpeed -= Time.deltaTime * moveAcceleration;
 		}
 
 		if(oldMoveSpeed != currentMovementSpeed)
@@ -248,33 +248,33 @@ public class CapitalShipMovement : MonoBehaviour
 		{
 			this.lastTargetPosition = targetPos;
 		}
-		
+
 		Vector3 vectorToTarget = this.lastTargetPosition - this.transform.position;
 		if ( vectorToTarget.sqrMagnitude == 0.0f )
 		{
-			Debug.Log( "Preventing div/0" );
+			Debug.Log( Time.frameCount + " Preventing div/0" );
 			return;
 		}
 		Vector3 rayToTarget = vectorToTarget.normalized;
-		
+
 		float angleToTarget = Vector3.Angle( transform.forward, rayToTarget);
 		float amountToTurn = Mathf.Abs( angleToTarget ) * Mathf.Deg2Rad;
 
-		// Left = -1.0f Right = 1.0f 
+		// Left = -1.0f Right = 1.0f
 		float directionToTurn = Vector3.Dot( this.transform.right, rayToTarget ) > 0 ? 1.0f : -1.0f;
-		
+
 		UpdateRotationSegments( this.rotationSegmentsTentative, amountToTurn, directionToTurn );
 
 		// Set the positions of the line renderer for the tentative path
 		Vector3[] pointArray = new Vector3[lineVertexCount];
-		GetTravelPathPositions( ref pointArray, 
-		                       this.transform.position, this.transform.forward, 
+		GetTravelPathPositions( ref pointArray,
+		                       this.transform.position, this.transform.forward,
 		                       this.currentMovementSpeed, amountToTurn, directionToTurn );
-		
+
 		this.tentativePathLine.enabled = true;
 		for ( int i = 0; i < lineVertexCount; ++i )
 		{
-			this.tentativePathLine.SetPosition( i, pointArray[i] );	
+			this.tentativePathLine.SetPosition( i, pointArray[i] );
 		}
 
 		// If the mouse button is pressed down, set the actual path to the tentative one
@@ -291,7 +291,7 @@ public class CapitalShipMovement : MonoBehaviour
 			float oldPos = this.currentAvoidCurvePoint;
 			this.currentAvoidCurvePoint += this.currentMovementSpeed * Time.deltaTime;
 
-			if ( this.currentAvoidCurvePoint >= this.avoidCurveLength ) 
+			if ( this.currentAvoidCurvePoint >= this.avoidCurveLength )
 			{
 				this.EndAvoidanceCurve();
 			}
@@ -303,7 +303,7 @@ public class CapitalShipMovement : MonoBehaviour
 				float d1 = Common.SmoothLerp( t1, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
 				float d2 = Common.SmoothLerp( t2, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
 				this.currentAvoidHeight = d1;
-				this.currentAvoidAngle = Mathf.Atan2( d2-d1, t1-t2 ) * Mathf.Rad2Deg / 4;
+				this.currentAvoidAngle = Mathf.Atan2( d2-d1, t1-t2 ) * this.avoidanceAngleMultiplier;
 			}
 		}
 		else
@@ -374,7 +374,7 @@ public class CapitalShipMovement : MonoBehaviour
 					this.currentAvoidAngle -= Time.deltaTime * this.avoidanceAngleRate;
 					this.currentAvoidHeight += this.GetAvoidanceHeightSpeed() * Time.deltaTime;
 				}
-				
+
 				if ( this.currentAvoidAngle <= 0.0f )
 				{
 					this.StartAvoidanceCurve( 0.0f );
@@ -393,7 +393,7 @@ public class CapitalShipMovement : MonoBehaviour
 					this.currentAvoidAngle -= Time.deltaTime * this.avoidanceAngleRate;
 					this.currentAvoidHeight += this.GetAvoidanceHeightSpeed() * Time.deltaTime;
 				}
-				
+
 				// If the nose is flat, start curving up
 				if ( this.currentAvoidAngle <= 0.0f )
 				{
@@ -490,8 +490,8 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		for ( int i = 0; i < rotationSegmentCount; ++i )
 		{
-			this.rotationSegmentsActual[i].SetActive( false );	
-		}	
+			this.rotationSegmentsActual[i].SetActive( false );
+		}
 	}
 
 	public bool BeginTurn( float _turnAmount, float _direction )
@@ -501,9 +501,9 @@ public class CapitalShipMovement : MonoBehaviour
 		this.currentTurnAmount = _turnAmount;
 		//Bung this info on the network
 //		PassTurnParameters();
-		return true; 
+		return true;
 	}
-	
+
 	public void GetTravelPathPositions( ref Vector3[] _pointList,
 		Vector3 _position, Vector3 _forward,
 		float _moveSpeed,
@@ -553,7 +553,7 @@ public class CapitalShipMovement : MonoBehaviour
 		Vector3 lastDir = _pointList[lineVertexCount-2] - _pointList[lineVertexCount-3];
 
 		// If some of the line is still left, push the last point out in a straight line
-		if ( lineLength < pathLength ) 
+		if ( lineLength < pathLength )
 		{
 			lastDir.Normalize();
 			_pointList[lineVertexCount-1] = _pointList[lineVertexCount-2] + lastDir * (pathLength-lineLength);
@@ -563,29 +563,28 @@ public class CapitalShipMovement : MonoBehaviour
 			_pointList[lineVertexCount-1] = _pointList[lineVertexCount-2] + lastDir;
 		}
 	}
-	
+
 	public void UpdateRotationSegments( GameObject[] _segments, float _turnAmount, float _turnDirection )
 	{
-		Debug.Log( Time.frameCount + ": TurnAmount:" + _turnAmount + " TurnDirection:" + _turnDirection );
 		int minActiveSegments = 0, maxActiveSegments = this.rotationSegmentCount;
 		int segmentsToActivate = (int)Mathf.Floor( _turnAmount / Mathf.PI * (float)rotationSegmentCount * 0.5f );
 		if ( _turnDirection > 0.0f ) // Turning Right
 		{
-			minActiveSegments = 0;	
+			minActiveSegments = 0;
 			maxActiveSegments = segmentsToActivate;
 		}
 		else // Turning Left
 		{
 			minActiveSegments = rotationSegmentCount - segmentsToActivate - 1;
-			maxActiveSegments = rotationSegmentCount;	
+			maxActiveSegments = rotationSegmentCount;
 		}
-		Debug.Log( Time.frameCount + " Min:"+minActiveSegments + " Max:"+maxActiveSegments );
+
 		for ( int i = 0; i < this.rotationSegmentCount; ++i )
 		{
-			_segments[i].SetActive( i >= minActiveSegments && i <= maxActiveSegments );	
+			_segments[i].SetActive( i >= minActiveSegments && i <= maxActiveSegments );
 		}
 	}
-	
+
 	public float GetTurnRadiusAtSpeed( float _moveSpeed )
 	{
 		return _moveSpeed / this.turnRate;
@@ -644,14 +643,14 @@ public class CapitalShipMovement : MonoBehaviour
 		this.followingAvoidanceCurve = false;
 		this.currentAvoidHeight = this.avoidanceCurveEndHeight;
 		this.currentAvoidAngle = 0.0f;
-	} 
+	}
 
 /*	public void PassTurnParameters()
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			return;
-		} 
+		}
 
 		CapitalShipNetworkInfo.CapitalShipNetworkPacket turnParameters = new CapitalShipNetworkInfo.CapitalShipNetworkPacket();
 

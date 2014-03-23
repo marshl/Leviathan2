@@ -3,17 +3,19 @@ using System.Collections;
 
 public class FighterWeapons : MonoBehaviour
 {
-	public WeaponBase[] weapons;
-
-	public int currentWeaponIndex = 0;
+	public WeaponBase laserWeapon;
+	public WeaponBase missileWeapon;
 
 	private void Update()
 	{
-		if ( Input.GetKeyDown( KeyCode.Space ) )
+		if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
 		{
-			WeaponBase weapon = this.weapons[this.currentWeaponIndex];
-
-			weapon.SendFireMessage();
+			this.laserWeapon.SendFireMessage();
+		}
+		
+		if ( Input.GetKey( KeyCode.Space ) ) // Space bar - Fire missile
+		{
+			this.missileWeapon.SendFireMessage();
 		}
 	}
 }

@@ -49,25 +49,12 @@ public class CapitalShipCamera : MonoBehaviour
 	/// </summary>
 	private float y = 0.0f;
 
-	public bool bigShip = false;
-
 	public void Awake ()
 	{
 	    Vector3 angles = this.transform.eulerAngles;
 	    this.x = angles.y;
 	    this.y = angles.x;
-
-		if(bigShip)
-		{
-			distanceMax *= 50.0f;
-			distanceMin *= 25.0f;
-			//ySpeed *= 100.0f;
-			currentDistance *= 50.0f;
-			scrollRate *= 25.0f;
-		}
-
 	}
-	
 
 	public void LateUpdate()
 	{

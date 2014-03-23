@@ -62,9 +62,10 @@ GameObject:
   - 114: {fileID: 11400000}
   - 135: {fileID: 13500000}
   - 148: {fileID: 14800000}
-  - 114: {fileID: 11400004}
   - 114: {fileID: 11400006}
+  - 114: {fileID: 11400004}
   - 114: {fileID: 11400008}
+  - 114: {fileID: 11400016}
   - 114: {fileID: 11400014}
   m_Layer: 0
   m_Name: Fighter
@@ -351,9 +352,16 @@ MonoBehaviour:
   rollDamping: .300000012
   minimumBounce: 500
   bounceVelocityModifier: 50
+  team: 1
   turnExtents: .5
-  laserWeapon: {fileID: 11400004}
-  missileWeapon: {fileID: 11400008}
+  docked: 0
+  undocking: 0
+  undockingTimer: 0
+  undockingDelay: 3
+  currentSlot:
+    landedPosition: {fileID: 0}
+    landedFighter: {fileID: 0}
+    occupied: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -451,6 +459,19 @@ MonoBehaviour:
   currentHealth: 100
   maxHealth: 100
   isIndestructible: 0
+--- !u!114 &11400016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57798d38267b00a4eadde6d24737fc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laserWeapon: {fileID: 11400004}
+  missileWeapon: {fileID: 11400008}
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

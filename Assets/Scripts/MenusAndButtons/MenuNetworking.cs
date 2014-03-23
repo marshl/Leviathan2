@@ -14,8 +14,10 @@ public class MenuNetworking : MonoBehaviour
 	// Public Variables
 	[HideInInspector]
 	public string gameName;
+
 	[HideInInspector]
 	public string gameComment;
+
 	[HideInInspector]
 	public HostData connectionHost = null;
 	
@@ -24,7 +26,6 @@ public class MenuNetworking : MonoBehaviour
 
 	private void Awake()
 	{
-		//DontDestroyOnLoad( this );
 		MenuNetworking.instance = this;
 		MasterServer.RequestHostList( this.gameTypeName );
 	}

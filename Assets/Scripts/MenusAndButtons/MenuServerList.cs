@@ -53,11 +53,9 @@ public class MenuServerList : MonoBehaviour
 
 	private void RefreshServerList()
 	{
-		//Debug.Log( "Refreshing server list." );
 		MenuNetworking.instance.UpdateHostList();
 		for ( int i = 0; i < this.serverTableLength; ++i )
 		{
-			//this.serverRows[i].hostData = MenuNetworking.instance.GetHostData( i );
 			if ( MenuNetworking.instance.GetHostData(i) != null )
 			{
 				this.serverRows[i].hostDataIndex = i;

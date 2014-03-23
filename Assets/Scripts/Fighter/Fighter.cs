@@ -33,10 +33,7 @@ public class Fighter : MonoBehaviour {
 	public float undockingDelay = 3.0f;
 
 	public DockingBay.DockingSlot currentSlot;
-
-	public WeaponBase laserWeapon;
-	public WeaponBase missileWeapon;
-	 
+	
 	// Unity Callback: Do not modify signature
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
@@ -95,15 +92,7 @@ public class Fighter : MonoBehaviour {
 			this.rigidbody.AddRelativeTorque( torqueValue );
 		}
 
-		if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
-		{
-			this.laserWeapon.SendFireMessage();
-		}
-		 
-		if ( Input.GetKey( KeyCode.Space ) ) // Space bar - Fire missile
-		{
-			this.missileWeapon.SendFireMessage();
-		}
+
 
 		if(Input.GetKey (KeyCode.W)) // Accelerate
 		{

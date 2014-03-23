@@ -141,7 +141,7 @@ MonoBehaviour:
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
   count: 0
   moveSpeed: 80
-  maxDistance: 50
+  maxDistance: 250
   damage: 50
   smartBullet: 1
   turnRate: 15
