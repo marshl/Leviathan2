@@ -20,3 +20,6 @@ Temp
 *.ttf
 *.fbx
 *.pdn
+
+*.orig
+*.orig.meta
