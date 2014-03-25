@@ -61,6 +61,7 @@ GameObject:
   - 114: {fileID: 11400010}
   - 114: {fileID: 11400008}
   - 114: {fileID: 11400014}
+  - 114: {fileID: 11400016}
   m_Layer: 0
   m_Name: WeaponDescriptors
   m_TagString: Untagged
@@ -141,12 +142,13 @@ MonoBehaviour:
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
   count: 0
   moveSpeed: 80
-  maxDistance: 250
+  maxDistance: 1000
   damage: 50
   smartBullet: 1
-  turnRate: 15
+  turnRate: 35
+  canAngleOut: 0
   maxDetectionAngle: 15
-  seekingDelayDistance: 25
+  seekingDelayDistance: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,6 +241,24 @@ MonoBehaviour:
   spinDownTime: 3
   spinDownDelay: 1
   maxFireRate: .100000001
+--- !u!114 &11400016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88974183b4398c245862faca40cdcdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 5
+  bulletType: 2
+  fireRate: 1
+  spread: 0
+  fireInSync: 0
+  chargeUpTime: 2
+  depleteOnPrerelease: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

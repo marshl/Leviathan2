@@ -67,6 +67,7 @@ GameObject:
   - 114: {fileID: 11400008}
   - 114: {fileID: 11400016}
   - 114: {fileID: 11400014}
+  - 114: {fileID: 11400018}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Untagged
@@ -391,7 +392,7 @@ MonoBehaviour:
   - {fileID: 11400012}
   firePointIndex: 0
   timeSinceShot: 0
-  source: {fileID: 11400000}
+  source: {fileID: 11400016}
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -422,7 +423,7 @@ MonoBehaviour:
   - {fileID: 11400002}
   firePointIndex: 0
   timeSinceShot: 0
-  source: {fileID: 11400000}
+  source: {fileID: 11400016}
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -456,6 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamNumber: 1
   currentHealth: 100
   maxHealth: 100
   isIndestructible: 0
@@ -472,6 +474,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laserWeapon: {fileID: 11400004}
   missileWeapon: {fileID: 11400008}
+  chargeUpWeapon: {fileID: 11400018}
+  maxTargetDistance: 500
+  maxTargetAngle: 15
+--- !u!114 &11400018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce45eca3c510d7b4daabc8ca5b280440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 5
+  weaponDesc: {fileID: 0}
+  firePoints:
+  - {fileID: 11400002}
+  firePointIndex: 0
+  timeSinceShot: 0
+  source: {fileID: 11400016}
+  chargeUpDesc: {fileID: 0}
+  currentCharge: 0
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -35,7 +35,7 @@ public class WeaponBase : MonoBehaviour
 
 	//TODO: This will be used to determine who fired the shot that killed something and so on, 
 	// but will have to be changed to a generic class tha covers all damage sources
-	public Fighter source;
+	public FighterWeapons source;
 
 
 	protected virtual void Start()

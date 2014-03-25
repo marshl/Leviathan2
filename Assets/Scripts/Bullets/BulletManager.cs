@@ -17,6 +17,7 @@ public enum WEAPON_TYPE : int
 	MISSILE_LAUNCHER,
 	GATLING_LASER,
 	BURST_FIRE_TEST,
+	CHARGE_UP_TEST,
 };
 
 /// <summary>
@@ -64,7 +65,7 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 
-	public BulletBase CreateBullet( Fighter _source, BULLET_TYPE _bulletType, 
+	public BulletBase CreateBullet( FighterWeapons _source, BULLET_TYPE _bulletType, 
 	                              Vector3 _pos, Vector3 _forward,
 	                              float _spread = 0.0f )
 	{
@@ -109,6 +110,7 @@ public class BulletManager : MonoBehaviour
 
 		bulletObj.SetActive( true );
 		bulletObj.collider.enabled = true;
+
 		bulletScript.source = _source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
 		Physics.IgnoreCollision( bulletObj.collider, _source.collider );
 		    
@@ -126,6 +128,7 @@ public class BulletManager : MonoBehaviour
 		}
 
 		bulletScript.OnShoot();
+		_source.OnBulletCreated( bulletScript );
 		return bulletScript;
 	}
 
@@ -188,7 +191,7 @@ public class BulletManager : MonoBehaviour
 			if ( _bullet.state == BulletBase.BULLET_STATE.INACTIVE
 			  || _bullet.gameObject.activeSelf == false )
 			{
-				Debug.LogError( "Attempting to disable non active bullet", _bullet );
+				Debug.LogWarning( "Attempting to disable non active bullet", _bullet );
 				return;
 			}
 

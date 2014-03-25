@@ -6,7 +6,8 @@ using System.Collections;
 /// </summary>
 public class SeekingBullet : BulletBase
 {
-	public TargettableObject target;
+	//public TargettableObject target;
+	public BaseHealth target;
 
 	/// <summary>
 	/// The descriptor of this bullet, converted into the right subclass (do not set)
@@ -27,19 +28,18 @@ public class SeekingBullet : BulletBase
 
 	protected override void Update()
 	{
-		//TODO: Uncomment
 		if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
 		  && this.target != null )
 		{
 			this.TurnToTarget();
 			float angleToTarget = this.GetAngleToTarget();
-			if ( angleToTarget >= this.seekingDesc.maxDetectionAngle )
+			if ( this.seekingDesc.canAngleOut
+			  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
 			{
-				//this.target = null;
+				this.target = null;
 			}
 		}
 
-		//this.transform.Rotate( this.transform.up, Time.deltaTime * this.seekingDesc.turnRate);
 		this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
 		base.Update();
 	}

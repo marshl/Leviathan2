@@ -10,7 +10,9 @@ public class TargetManager : MonoBehaviour
 	public List<FighterHealth> team2Fighters;
 
 	public Dictionary<NetworkViewID, FighterHealth> fighterIDMap;
-	 
+
+	public List<BaseHealth> targets;
+
 	private void Awake()
 	{
 		if ( TargetManager.instance != null )
@@ -23,6 +25,8 @@ public class TargetManager : MonoBehaviour
 
 		this.team1Fighters = new List<FighterHealth>();
 		this.team2Fighters = new List<FighterHealth>();
+
+		this.targets = new List<BaseHealth>( GameObject.FindObjectsOfType<BaseHealth>() ); 
 	}
 	   
 	public void AddFighter( FighterHealth _target, int _team )
@@ -55,6 +59,35 @@ public class TargetManager : MonoBehaviour
 			Debug.LogError( "Bad team argument " + _team, _target );
 			return;
 		}
+	}
+
+	public int GetTargetsFromPlayer( ref List<BaseHealth> _list, Transform _transform, float _angle, float _distance, int _teamNumber = -1 )
+	{
+		int targetsFound = 0;
+		foreach ( BaseHealth target in this.targets )
+		{
+			Vector3 v = target.transform.position - _transform.position;
+			if ( v.sqrMagnitude > _distance * _distance )
+			{
+				continue;
+			}
+
+			float angle = Vector3.Angle( _transform.forward, v.normalized );
+
+			if ( angle >= _angle )
+			{
+				continue;
+			}
+
+			if ( _teamNumber != -1 && target.teamNumber != _teamNumber )
+			{
+				continue;
+			}
+
+			_list.Add( target );
+			targetsFound++;
+		}
+		return targetsFound;
 	}
 
 	public void DealDamageNetwork( NetworkViewID _id, float _damage )

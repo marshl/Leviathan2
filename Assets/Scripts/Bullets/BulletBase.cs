@@ -28,7 +28,7 @@ public class BulletBase : MonoBehaviour
 	public float distanceTravelled;
 
 	//TODO: Make more generic
-	public Fighter source;
+	public FighterWeapons source;
 
 	/// <summary>
 	/// The associated bullet desciptor (set elsewhere)
@@ -74,6 +74,11 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	protected virtual void OnTriggerEnter( Collider _collider )
 	{
+		if ( this.gameObject.activeSelf == false )
+		{
+			return;
+		}
+
 		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
 		if ( health != null )
 		{

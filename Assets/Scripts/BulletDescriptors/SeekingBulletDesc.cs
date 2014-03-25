@@ -7,7 +7,8 @@ using System.Collections;
 public class SeekingBulletDesc : BulletDescriptor
 {
 	public float turnRate;
-	public float maxDetectionAngle;
-	public float seekingDelayDistance;
+	public bool canAngleOut;
+	public float maxDetectionAngle; 
+	public float seekingDelayDistance; 
 }
 
