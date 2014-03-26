@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[System.Obsolete]
 public class PunchingBag : MonoBehaviour {
 
 	public int teamNumber;

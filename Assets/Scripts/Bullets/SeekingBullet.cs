@@ -50,8 +50,9 @@ public class SeekingBullet : BulletBase
 	/// <returns><c>true</c>, if the target is directly direct <c>false</c> otherwise.</returns>
 	protected virtual bool TurnToTarget()
 	{
-		Vector3 vectorToTarget = target.transform.position - this.transform.position;
-
+		Vector3 targetPos = Common.GetTargetLeadPosition( this.transform, this.target.transform, this.seekingDesc.moveSpeed );
+		Vector3 vectorToTarget = targetPos - this.transform.position;
+		  
 		// Return true if there is no distance to the target
 		if ( vectorToTarget.sqrMagnitude == 0.0f )
 		{
@@ -75,7 +76,7 @@ public class SeekingBullet : BulletBase
 		float angle = Vector3.Angle( this.transform.forward, rayToTarget );
 		Vector3 perp = Vector3.Cross( this.transform.forward, rayToTarget );
 		float amountToTurn = this.seekingDesc.turnRate * Time.deltaTime;
-
+		 
 		bool facingTarget = false;
 		// If there is less than a frame to turn in, rotate on the angle directly to prevent stuttering
 		if ( amountToTurn > angle )
@@ -87,6 +88,7 @@ public class SeekingBullet : BulletBase
 		return facingTarget;
 	}
 
+	/*
 	private Vector3 GetTargetLeadPosition()
 	{
 		if ( this.target.rigidbody != null )
@@ -97,7 +99,7 @@ public class SeekingBullet : BulletBase
 			float flightDuration = ( targetPos - this.transform.position ).magnitude
 				/ (this.desc.moveSpeed - targetSpeed );
 
-			return targetPos + targetVel * flightDuration;*/
+			return targetPos + targetVel * flightDuration;* /
 
 			Vector3 targetPos = this.target.transform.position;
 			Vector3 targetForward = this.target.transform.forward;
@@ -116,28 +118,7 @@ public class SeekingBullet : BulletBase
 			return this.target.transform.position;
 		}
 	}
-
-	/*protected virtual void OnSerializeNetworkView( BitStream _stream, NetworkMessageInfo _info )
-	{
-		if ( _stream.isWriting )
-		{
-			Vector3 pos = this.transform.localPosition;
-			Quaternion rot = this.transform.localRotation;
-			_stream.Serialize( ref pos );
-			_stream.Serialize( ref rot );
-		}
-		else
-		{
-			Vector3 pos = Vector3.zero;
-			Quaternion rot = Quaternion.identity;
-			_stream.Serialize( ref pos );
-			_stream.Serialize( ref rot );
-
-			this.transform.localPosition = pos;
-			this.transform.localRotation = rot;
-		}
-	}*/
-
+*/
 	private float GetAngleToTarget()
 	{
 		return Vector3.Angle( this.transform.forward,

@@ -139,4 +139,22 @@ public abstract class Common
 	{
 		return ( (Mathf.Sin((_value-0.5f)*Mathf.PI) * (_max-_min) ) + _max + _min) / 2.0f;
 	}
+
+	public static Vector3 GetTargetLeadPosition( Transform _origin, Transform _target, float _speed )
+	{
+		if ( _target.rigidbody != null )
+		{
+			Vector3 targetPos = _target.position;
+			Vector3 targetVel = _target.rigidbody.velocity;
+			float targetSpeed = targetVel.magnitude;
+			float flightDuration = ( targetPos - _origin.position ).magnitude
+				/ (_speed - targetSpeed );
+
+			return targetPos + targetVel * flightDuration;
+		}
+		else
+		{
+			return _target.position;
+		}
+	}   
 }

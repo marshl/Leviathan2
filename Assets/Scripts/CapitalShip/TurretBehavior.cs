@@ -28,6 +28,8 @@ public class TurretBehavior : BaseWeaponManager {
 
 	public WeaponBase weapon; 
 
+	public Transform dummy;
+
 	void Start()
 	{
 		//TargetManager manager = GameObject.FindObjectOfType (typeof(TargetManager)) as TargetManager;
@@ -73,9 +75,11 @@ public class TurretBehavior : BaseWeaponManager {
 		shotVelocity = this.GetComponent<WeaponHandler>().projectileSpeed;
 		shotMagnitude = Vector3.Magnitude(this.transform.forward * shotVelocity) * Time.deltaTime;
 
+
+		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponDesc.bulletType ).moveSpeed;
 		//Predict the target's location ahead based on the shot speed and current velocity
-		direction = ((target.transform.position + (target.rigidbody.velocity * distance / shotMagnitude) ) - transform.position).normalized;
-		
+		direction = (Common.GetTargetLeadPosition( this.transform, this.target.transform, speed ) - transform.position).normalized;
+		this.dummy.position = Common.GetTargetLeadPosition( this.transform, this.target.transform, speed );
 		//create the rotation we need to be in to look at the target
 		lookRotation = Quaternion.LookRotation(direction);
 		

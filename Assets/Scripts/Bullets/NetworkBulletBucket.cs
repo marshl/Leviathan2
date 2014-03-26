@@ -1,9 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
-[Obsolete]
+[System.Obsolete]
 public class NetworkBulletBucket : BulletBucket
 {
 	public Dictionary<int, LocalBulletBucket> buckets;
