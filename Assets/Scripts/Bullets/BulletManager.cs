@@ -65,7 +65,7 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 
-	public BulletBase CreateBullet( FighterWeapons _source, BULLET_TYPE _bulletType, 
+	public BulletBase CreateBullet( BaseWeaponManager _source, BULLET_TYPE _bulletType, 
 	                              Vector3 _pos, Vector3 _forward,
 	                              float _spread = 0.0f )
 	{
@@ -113,7 +113,7 @@ public class BulletManager : MonoBehaviour
 
 		bulletScript.source = _source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
 		Physics.IgnoreCollision( bulletObj.collider, _source.collider );
-		    
+		  
 		if ( _spread != 0.0f )
 		{
 			Vector3 perp = new Vector3( UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f );

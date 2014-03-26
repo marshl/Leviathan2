@@ -26,9 +26,8 @@ public class BulletBase : MonoBehaviour
 	/// The distance this bullet has travelled so far (used for deletion)
 	/// </summary>
 	public float distanceTravelled;
-
-	//TODO: Make more generic
-	public FighterWeapons source;
+	
+	public BaseWeaponManager source;
 
 	/// <summary>
 	/// The associated bullet desciptor (set elsewhere)

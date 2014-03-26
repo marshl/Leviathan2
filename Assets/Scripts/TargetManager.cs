@@ -4,6 +4,20 @@ using System.Collections.Generic;
 
 public class TargetManager : MonoBehaviour
 {
+	public struct Target
+	{
+		public Target( BaseHealth _health, float _angle, float _distance )
+		{
+			this.health = _health;
+			this.angle = _angle;
+			this.distance = _distance;
+		}
+
+		public BaseHealth health;
+		public float angle;
+		public float distance;
+	};
+
 	public static TargetManager instance;
 
 	public List<FighterHealth> team1Fighters;
@@ -11,7 +25,7 @@ public class TargetManager : MonoBehaviour
 
 	public Dictionary<NetworkViewID, FighterHealth> fighterIDMap;
 
-	public List<BaseHealth> targets;
+	public List<BaseHealth> targetList;
 
 	private void Awake()
 	{
@@ -26,7 +40,13 @@ public class TargetManager : MonoBehaviour
 		this.team1Fighters = new List<FighterHealth>();
 		this.team2Fighters = new List<FighterHealth>();
 
-		this.targets = new List<BaseHealth>( GameObject.FindObjectsOfType<BaseHealth>() ); 
+		this.targetList = new List<BaseHealth>( GameObject.FindObjectsOfType<BaseHealth>() ); 
+	}
+
+	public void AddTarget( BaseHealth _target )
+	{
+		this.targetList.Add( _target );
+		//TODO: Add fighter specific code
 	}
 	   
 	public void AddFighter( FighterHealth _target, int _team )
@@ -61,33 +81,56 @@ public class TargetManager : MonoBehaviour
 		}
 	}
 
-	public int GetTargetsFromPlayer( ref List<BaseHealth> _list, Transform _transform, float _angle, float _distance, int _teamNumber = -1 )
+	public int GetTargetsFromPlayer( ref List<Target> _list, Transform _transform, float _maxAngle, float _maxDistance, int _teamNumber = -1 )
 	{
 		int targetsFound = 0;
-		foreach ( BaseHealth target in this.targets )
+		foreach ( BaseHealth health in this.targetList )
 		{
-			Vector3 v = target.transform.position - _transform.position;
-			if ( v.sqrMagnitude > _distance * _distance )
+			Vector3 v = health.transform.position - _transform.position;
+			float dist = v.magnitude;
+			if ( _maxDistance > 0.0f && dist > _maxDistance )
 			{
 				continue;
 			}
 
 			float angle = Vector3.Angle( _transform.forward, v.normalized );
 
-			if ( angle >= _angle )
+			if ( _maxAngle > 0.0f && angle >= _maxAngle )
 			{
 				continue;
 			}
 
-			if ( _teamNumber != -1 && target.teamNumber != _teamNumber )
+			if ( _teamNumber != -1 && health.teamNumber != _teamNumber )
 			{
 				continue;
 			}
 
-			_list.Add( target );
+			Target t = new Target( health, angle, dist );
+
+			_list.Add( t );
 			targetsFound++;
 		}
 		return targetsFound;
+	}
+
+	public BaseHealth GetBestTarget( Transform _transform, float _maxAngle, float _maxDistance, int _teamNumber = -1 )
+	{
+		List<Target> targets = new List<Target>();
+
+		this.GetTargetsFromPlayer( ref targets, _transform, _maxAngle, _maxDistance, _teamNumber );
+
+		if ( targets.Count == 0 )
+		{
+			return null;
+		}
+
+		//TODO: Rather inefficient, better change
+		targets.Sort( delegate( Target t1, Target t2)
+		{  
+			return t1.angle.CompareTo( t2.angle );
+		} );
+
+		return targets[0].health;
 	}
 
 	public void DealDamageNetwork( NetworkViewID _id, float _damage )

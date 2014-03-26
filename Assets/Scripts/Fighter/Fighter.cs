@@ -168,7 +168,7 @@ public class Fighter : MonoBehaviour {
 		                       this.rigidbody.velocity.magnitude * bounceVelocityModifier)
 			+ (minimumBounce * collision.contacts[0].normal.normalized);
 
-		print(bounceForce);
+		//print(bounceForce);
 
 
 		this.rigidbody.AddForce (bounceForce);

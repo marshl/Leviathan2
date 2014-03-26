@@ -2,20 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class FighterWeapons : MonoBehaviour
+public class FighterWeapons : BaseWeaponManager
 {
 	public WeaponBase laserWeapon;
 	public WeaponBase missileWeapon;
 	public ChargeUpWeapon chargeUpWeapon;
 
-	private List<BaseHealth> possibleTargets;
 
 	public float maxTargetDistance;
 	public float maxTargetAngle;
 
-	private void Awake()
+	protected override void Awake()
 	{
-		this.possibleTargets = new List<BaseHealth>();
+		base.Awake();
 	}
 
 	private void Update()
@@ -39,15 +38,5 @@ public class FighterWeapons : MonoBehaviour
 
 		//TODO: Determine team
 		TargetManager.instance.GetTargetsFromPlayer( ref this.possibleTargets, this.transform, this.maxTargetAngle, this.maxTargetDistance, 2 );
-	}
-
-	public void OnBulletCreated( BulletBase _bullet )
-	{
-		SeekingBullet seeking = _bullet as SeekingBullet;
-		if ( seeking != null )
-		{
-			BaseHealth target = this.possibleTargets.Count == 0 ? null : this.possibleTargets[0];
-			seeking.target = target;
-		}
 	}
 }

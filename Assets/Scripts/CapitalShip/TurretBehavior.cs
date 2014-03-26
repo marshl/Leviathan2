@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Obsolete]
-public class TurretBehavior : MonoBehaviour {
-	
-	public GameObject target;
-	public List<FighterHealth> targetList;
+public class TurretBehavior : BaseWeaponManager {
+
+	//public GameObject target;
+	public BaseHealth target;
+	//public List<FighterHealth> targetList;
 
 	public Transform joint;
 	public Transform arm;
@@ -24,24 +25,29 @@ public class TurretBehavior : MonoBehaviour {
 	public int teamNumber = 0;
 	
 	public float minimumPitchAngle = 180;
-	
+
+	public WeaponBase weapon; 
+
 	void Start()
 	{
-		TargetManager manager = GameObject.FindObjectOfType (typeof(TargetManager)) as TargetManager;
-		targetList = manager.team1Fighters;
+		//TargetManager manager = GameObject.FindObjectOfType (typeof(TargetManager)) as TargetManager;
+		//targetList = manager.team1Fighters;
 	}
 
 	void Update()
 	{
+		//FindClosestTarget();
 
-		FindClosestTarget();
+		this.target = TargetManager.instance.GetBestTarget( this.arm, -1, -1, 1 );
 
-		TurretAim();
-		this.gameObject.GetComponent<WeaponHandler>().Fire();
-			
+		if ( this.target != null )
+		{
+			this.TurretAim();
+			this.gameObject.GetComponent<WeaponBase>().SendFireMessage();
+		}
 	}
 
-	void FindClosestTarget()
+	/*void FindClosestTarget()
 	{
 		float minDistance = float.PositiveInfinity;
 		BaseHealth newTarget = target.GetComponent<BaseHealth>();
@@ -56,7 +62,7 @@ public class TurretBehavior : MonoBehaviour {
 			}
 		}
 		target = newTarget.gameObject;
-	}
+	}*/
 
 	void TurretAim()
 	{

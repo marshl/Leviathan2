@@ -31,12 +31,8 @@ public class WeaponBase : MonoBehaviour
 	/// The time since this weapon fired last
 	/// </summary>
 	public float timeSinceShot;
-
-
-	//TODO: This will be used to determine who fired the shot that killed something and so on, 
-	// but will have to be changed to a generic class tha covers all damage sources
-	public FighterWeapons source;
-
+	
+	public BaseWeaponManager source;
 
 	protected virtual void Start()
 	{
