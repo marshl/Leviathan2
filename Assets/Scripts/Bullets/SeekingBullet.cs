@@ -50,7 +50,7 @@ public class SeekingBullet : BulletBase
 	/// <returns><c>true</c>, if the target is directly direct <c>false</c> otherwise.</returns>
 	protected virtual bool TurnToTarget()
 	{
-		Vector3 targetPos = Common.GetTargetLeadPosition( this.transform, this.target.transform, this.seekingDesc.moveSpeed );
+		Vector3 targetPos = Common.GetTargetLeadPosition( this.transform.position, this.target.transform, this.seekingDesc.moveSpeed );
 		Vector3 vectorToTarget = targetPos - this.transform.position;
 		  
 		// Return true if there is no distance to the target

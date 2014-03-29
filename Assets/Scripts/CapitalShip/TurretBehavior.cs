@@ -2,44 +2,28 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Obsolete]
-public class TurretBehavior : BaseWeaponManager {
-
-	//public GameObject target;
+public class TurretBehavior : BaseWeaponManager
+{
 	public BaseHealth target;
-	//public List<FighterHealth> targetList;
-
+	
 	public Transform joint;
 	public Transform arm;
 	public float rotationSpeed;
 	
-	Vector3 direction;
-	Quaternion lookRotation;
-	Quaternion newRot;
-	float distance;
-	float shotVelocity;
-	float shotMagnitude;
+	private Vector3 direction;
+	private Quaternion lookRotation;
+	private Quaternion newRot;
+	private float shotVelocity;
 
-	public bool chrisTurret =  false;
+	public bool chrisTurret = false;
 	public float pitchOffset = 0;
-	public int teamNumber = 0;
 	
 	public float minimumPitchAngle = 180;
 
 	public WeaponBase weapon; 
 
-	public Transform dummy;
-
-	void Start()
+	private void Update()
 	{
-		//TargetManager manager = GameObject.FindObjectOfType (typeof(TargetManager)) as TargetManager;
-		//targetList = manager.team1Fighters;
-	}
-
-	void Update()
-	{
-		//FindClosestTarget();
-
 		this.target = TargetManager.instance.GetBestTarget( this.arm, -1, -1, 1 );
 
 		if ( this.target != null )
@@ -68,18 +52,11 @@ public class TurretBehavior : BaseWeaponManager {
 
 	void TurretAim()
 	{
-		//find the vector pointing from our position to the target
-		distance = Vector3.Magnitude(target.transform.position - transform.position);
-
-		//Work out the time it will take a bullet to reach the target
-		shotVelocity = this.GetComponent<WeaponHandler>().projectileSpeed;
-		shotMagnitude = Vector3.Magnitude(this.transform.forward * shotVelocity) * Time.deltaTime;
-
-
 		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponDesc.bulletType ).moveSpeed;
+
 		//Predict the target's location ahead based on the shot speed and current velocity
-		direction = (Common.GetTargetLeadPosition( this.transform, this.target.transform, speed ) - transform.position).normalized;
-		this.dummy.position = Common.GetTargetLeadPosition( this.transform, this.target.transform, speed );
+		direction = (Common.GetTargetLeadPosition( this.transform.position, this.target.transform, speed ) - transform.position).normalized;
+
 		//create the rotation we need to be in to look at the target
 		lookRotation = Quaternion.LookRotation(direction);
 		
@@ -89,23 +66,21 @@ public class TurretBehavior : BaseWeaponManager {
 		//Wrapping code
 		float threshold = lookRotation.eulerAngles.x;
 		
-		if(threshold > 180)
+		if ( threshold > 180 )
 		{
 			threshold -= 360 ;
 		}
 		
 		//Turret pitch clamp
-		if(threshold > minimumPitchAngle)
+		if ( threshold > minimumPitchAngle )
 		{
 			newRot = Quaternion.Euler(minimumPitchAngle,lookRotation.eulerAngles.y,lookRotation.eulerAngles.z);
 		}
 		
-		if(chrisTurret)
+		if ( chrisTurret )
 		{
 			Quaternion yRot = Quaternion.Euler (new Vector3(0,newRot.eulerAngles.y,0));
 			
-			//Transform joint = GameObject.Find ("Light_Laser/Light_Laser_Turret/LT_Base_Joint").transform;
-			//Transform arm = GameObject.Find ("Light_Laser/Light_Laser_Turret/LT_Base_Joint/LT_Arm_Joint").transform;
 			joint.rotation = Quaternion.Slerp(joint.rotation, yRot, Time.deltaTime * rotationSpeed);
 			
 			Quaternion zRot = Quaternion.Euler (new Vector3(newRot.eulerAngles.x,joint.rotation.eulerAngles.y,joint.rotation.eulerAngles.z));
@@ -114,7 +89,6 @@ public class TurretBehavior : BaseWeaponManager {
 		else
 		{
 			transform.rotation = Quaternion.Slerp(transform.rotation, newRot, Time.deltaTime * rotationSpeed);
-			
 		}
 	}
 }

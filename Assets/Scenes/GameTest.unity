@@ -1055,62 +1055,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 1377882914}
   m_GameObject: {fileID: 673008424}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &719115803
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 719115804}
-  - 33: {fileID: 719115807}
-  - 23: {fileID: 719115805}
-  m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &719115804
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 719115803}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.01883698, y: 13.4393101, z: -34.2213058}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
---- !u!23 &719115805
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 719115803}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_SortingLayerID: 0
---- !u!33 &719115807
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 719115803}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &822101619
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,10 +1851,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 5
-  bulletType: 2
   fireRate: 1
   spread: 0
   fireInSync: 0
+  bulletType: 2
   chargeUpTime: 2
   depleteOnPrerelease: 1
 --- !u!114 &1271608246
@@ -1926,10 +1870,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
-  bulletType: 2
   fireRate: .300000012
   spread: 15
   fireInSync: 0
+  bulletType: 2
   spinUpTime: 2
   spinDownTime: 3
   spinDownDelay: 1
@@ -1947,10 +1891,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
-  bulletType: 1
   fireRate: .5
   spread: 0
   fireInSync: 0
+  bulletType: 1
 --- !u!114 &1271608248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1964,10 +1908,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
-  bulletType: 2
   fireRate: .25
   spread: 0
   fireInSync: 0
+  bulletType: 2
 --- !u!114 &1271608249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2196,10 +2140,8 @@ MonoBehaviour:
   rotationSpeed: 5
   chrisTurret: 1
   pitchOffset: 0
-  teamNumber: 0
   minimumPitchAngle: 0
   weapon: {fileID: 1425003186}
-  dummy: {fileID: 719115804}
 --- !u!111 &1425003185
 Animation:
   m_ObjectHideFlags: 0
@@ -2651,7 +2593,7 @@ Prefab:
     - target: {fileID: 11400002, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: dummy
       value: 
-      objectReference: {fileID: 719115804}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
   m_RootGameObject: {fileID: 1425003180}

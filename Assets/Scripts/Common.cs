@@ -140,21 +140,25 @@ public abstract class Common
 		return ( (Mathf.Sin((_value-0.5f)*Mathf.PI) * (_max-_min) ) + _max + _min) / 2.0f;
 	}
 
-	public static Vector3 GetTargetLeadPosition( Transform _origin, Transform _target, float _speed )
+	/// <summary>
+	/// Gets the position where two objects will meet if the target stays on a constant heading and speed
+	/// </summary>
+	/// <returns>The intersection point</returns>
+	/// <param name="_origin">The point where the target is </param>
+	/// <param name="_target">_target.</param>
+	/// <param name="_speed">_speed.</param>
+	public static Vector3 GetTargetLeadPosition( Vector3 _origin, Transform _target, float _speed )
 	{
 		if ( _target.rigidbody != null )
 		{
-			Vector3 targetPos = _target.position;
-			Vector3 targetVel = _target.rigidbody.velocity;
-			float targetSpeed = targetVel.magnitude;
-			float flightDuration = ( targetPos - _origin.position ).magnitude
-				/ (_speed - targetSpeed );
-
-			return targetPos + targetVel * flightDuration;
-		}
-		else
-		{
+			Debug.LogError( "No rigidbody found on target " + _target.gameObject.name, _target );
 			return _target.position;
 		}
+
+		//TODO: This will return a point behind the target if the shot isn't travelling fast enough LM:28/03/14
+		float flightDuration = ( _target.position - _origin ).magnitude
+			/ ( _speed - _target.rigidbody.velocity.magnitude );
+
+		return _target.position + _target.rigidbody.velocity * flightDuration;
 	}   
 }
