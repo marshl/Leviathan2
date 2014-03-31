@@ -149,11 +149,11 @@ public abstract class Common
 	/// <param name="_speed">_speed.</param>
 	public static Vector3 GetTargetLeadPosition( Vector3 _origin, Transform _target, float _speed )
 	{
-		if ( _target.rigidbody != null )
+		if ( _target.rigidbody == null )
 		{
 			Debug.LogError( "No rigidbody found on target " + _target.gameObject.name, _target );
 			return _target.position;
-		}
+		} 
 
 		//TODO: This will return a point behind the target if the shot isn't travelling fast enough LM:28/03/14
 		float flightDuration = ( _target.position - _origin ).magnitude
