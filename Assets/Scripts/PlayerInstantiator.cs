@@ -24,18 +24,18 @@ public class PlayerInstantiator : MonoBehaviour
 		{
 			case PLAYER_TYPE.COMMANDER1:
 			{
-				if ( this.testingFighters )
+				/*if ( this.testingFighters )
 				{
 				    return this.CreateFighter( 1 );
-			    }
+			    }*/
 				return this.CreateCapitalShip( 1 );
 			}
 			case PLAYER_TYPE.COMMANDER2:
 			{
-				if ( this.testingFighters )
+				/*if ( this.testingFighters )
 				{
 					return this.CreateFighter( 2 );
-				}
+				}*/
 				return this.CreateCapitalShip( 2 );
 			}
 			case PLAYER_TYPE.FIGHTER1:

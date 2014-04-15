@@ -152,4 +152,33 @@ public class MainMenuButtons : MonoBehaviour
 		this.connectingPanelObj.SetActive( false );
 		this.mainPanelObj.SetActive( true );
 	}
+
+	public void OnForceStartCondition(int condition)
+	{
+		//Quick and dirty code here
+
+		switch(condition)
+		{
+		case 1: //Capital team 1
+			MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.COMMANDER1);
+			print("Successfully changed to commander 1");
+			break;
+		case 2: //Fighter team 1
+			MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.FIGHTER1);
+			print("Successfully changed to fighter 1");
+			break;
+		case 3: //Capital team 2
+			MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.COMMANDER2);
+			print("Successfully changed to commander 2");
+			break;
+		case 4: //Fighter team 2
+			MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.FIGHTER2);
+			print("Successfully changed to fighter 2");
+			break;
+		default: MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.FIGHTER1);
+			print("Successfully changed to fighter 1");
+			break;
+		}
+
+	}
 }
