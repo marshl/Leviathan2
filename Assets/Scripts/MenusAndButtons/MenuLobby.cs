@@ -208,6 +208,18 @@ public class MenuLobby : MonoBehaviour
 	{
 		PLAYER_TYPE type = this.playerDictionary[_playerID];
 		this.playerDictionary.Remove( _playerID );
+	
+		if ( this.commander1 == _playerID )
+		{
+			this.commander1 = -1;
+			Debug.Log( "Removing commander1" );
+		}
+		else if ( this.commander2 == _playerID )
+		{
+			this.commander2 = -1;
+			Debug.Log( "Removing commander2" );
+		}
+
 		Debug.Log( "Removing player of type " + type );
 	}
 
