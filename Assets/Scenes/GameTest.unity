@@ -892,7 +892,7 @@ SkinnedMeshRenderer:
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
-  m_Mesh: {fileID: 4300000, guid: 7c5ff4514df4db94a8610565db4c061a, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 50599ca895ba08340b4cb1114c0d8232, type: 3}
   m_Bones:
   - {fileID: 575963898}
   - {fileID: 219064530}
@@ -2573,7 +2573,7 @@ Prefab:
     - target: {fileID: 13700002, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: 7c5ff4514df4db94a8610565db4c061a, type: 3}
+      objectReference: {fileID: 4300000, guid: 50599ca895ba08340b4cb1114c0d8232, type: 3}
     - target: {fileID: 100014, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: m_Layer
       value: 0
