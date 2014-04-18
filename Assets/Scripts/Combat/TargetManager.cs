@@ -23,6 +23,9 @@ public class TargetManager : MonoBehaviour
 	public List<FighterHealth> team1Fighters;
 	public List<FighterHealth> team2Fighters;
 
+	public CapitalHealth team1Capital;
+	public CapitalHealth team2Capital;
+
 	public Dictionary<NetworkViewID, FighterHealth> fighterIDMap;
 
 	public List<BaseHealth> targetList;
@@ -73,6 +76,29 @@ public class TargetManager : MonoBehaviour
 		else if ( _team == 2 )
 		{
 			this.team2Fighters.Add( _target );
+		}
+		else
+		{
+			Debug.LogError( "Bad team argument " + _team, _target );
+			return;
+		}
+	}
+
+	public void AddCapital( CapitalHealth _target, int _team )
+	{
+		if ( _target.networkView == null )
+		{
+			Debug.LogError( "Invalid target " + _target, _target );
+			return;
+		}
+		
+		if ( _team == 1 )
+		{
+			this.team1Capital = _target;
+		}
+		else if ( _team == 2 )
+		{
+			this.team2Capital = _target;
 		}
 		else
 		{
@@ -148,5 +174,26 @@ public class TargetManager : MonoBehaviour
 		}
 
 		target.DealDamage( _damage );
+	}
+
+	public DockingBay.DockingSlot GetDockingSlotByID( int _id )
+	{
+
+		//This is a terrible, quick and dirty method. Grabs every docking bay in the scene,
+		//asks each bay if they have a slot of the ID. Each bay will return null if they do not
+		//or the bay ID if they do.
+		DockingBay[] allBays = GameObject.FindObjectsOfType<DockingBay>();
+
+		foreach( DockingBay bay in allBays )
+		{
+			DockingBay.DockingSlot slotByID = bay.GetSlotByID ( _id );
+			if(slotByID != null)
+			{
+				return slotByID;
+			}
+		}
+
+		print("No slot of ID " + _id + " found");
+		return null;
 	}
 }

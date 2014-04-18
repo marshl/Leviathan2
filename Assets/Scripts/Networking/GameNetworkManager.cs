@@ -90,33 +90,52 @@ public class GameNetworkManager : MonoBehaviour
 		TargetManager.instance.OnDealDamage( _id, _damage );
 	}
 
-	public void SendDockedMessage( NetworkView _id, DockingBay.DockingSlot landedSlot )
+	public void SendDockedMessage( NetworkViewID _id, int landedSlot )
 	{
 		this.networkView.RPC ( "OnFighterDockedRPC", RPCMode.Others, _id, landedSlot );
 	}
 
 	[RPC]
-	private void OnFighterDockedRPC( NetworkView _id, DockingBay.DockingSlot landedSlot )
+	private void OnFighterDockedRPC( NetworkViewID _id, int landedSlotID )
 	{
 		//_id.gameObject.transform.position = landedSlot.landedPosition.transform.position;
 		//_id.gameObject.transform.rotation = landedSlot.landedPosition.transform.rotation;
-		_id.gameObject.transform.parent = landedSlot.landedPosition;
-		_id.transform.localPosition = Vector3.zero;
-		_id.transform.rotation = landedSlot.landedPosition.transform.rotation;
-		landedSlot.landedFighter = _id.GetComponent<Fighter>();
+
+		NetworkView dockingFighterView = NetworkView.Find (_id);
+
+		GameObject dockingFighter = dockingFighterView.gameObject;
+
+		DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
+
+		dockingFighter.transform.position = landedSlot.landedPosition.transform.position;
+		dockingFighter.transform.parent = landedSlot.landedPosition;
+
+		dockingFighter.transform.rotation = landedSlot.landedPosition.transform.rotation;
+		dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+		dockingFighter.GetComponent<NetworkPositionControl>().enabled = false;
+		landedSlot.landedFighter = dockingFighter.GetComponent<Fighter>();
 
 		print("Received docked RPC");
 	}
 
-	public void SendUndockedMessage( NetworkView _id, DockingBay.DockingSlot landedSlot )
+	public void SendUndockedMessage( NetworkViewID _id, int landedSlot )
 	{
 		this.networkView.RPC ( "OnFighterUndockedRPC", RPCMode.Others, _id, landedSlot );
 	}
 	
 	[RPC]
-	private void OnFighterUndockedRPC( NetworkView _id, DockingBay.DockingSlot landedSlot )
+	private void OnFighterUndockedRPC( NetworkViewID _id, int landedSlotID )
 	{
-		_id.gameObject.transform.parent = null;
+		NetworkView dockingFighterView = NetworkView.Find (_id);
+		
+		GameObject dockingFighter = dockingFighterView.gameObject;
+
+		DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
+
+		dockingFighter.transform.parent = null;
+		dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+		dockingFighter.GetComponent<NetworkPositionControl>().enabled = true;
+		//dockingFighter.GetComponent<NetworkPositionControl>().lerp = true;
 		landedSlot.landedFighter = null;
 	}
 

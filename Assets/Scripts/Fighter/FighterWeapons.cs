@@ -19,21 +19,23 @@ public class FighterWeapons : BaseWeaponManager
 
 	private void Update()
 	{
-		if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
+		if( this.networkView.isMine )
 		{
-			this.laserWeapon.SendFireMessage();
-		}
-		
-		if ( Input.GetKey( KeyCode.Space ) ) // Space bar - Fire missile
-		{
-			this.missileWeapon.SendFireMessage();
-		}
+			if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
+			{
+				this.laserWeapon.SendFireMessage();
+			}
+			
+			if ( Input.GetKey( KeyCode.Space ) ) // Space bar - Fire missile
+			{
+				this.missileWeapon.SendFireMessage();
+			}
 
-		if ( Input.GetKey( KeyCode.LeftControl ) )
-		{
-			this.chargeUpWeapon.SendFireMessage();
-		} 
-
+			if ( Input.GetKey( KeyCode.LeftControl ) )
+			{
+				this.chargeUpWeapon.SendFireMessage();
+			} 
+		}
 		this.possibleTargets.Clear();
 
 		//TODO: Determine team

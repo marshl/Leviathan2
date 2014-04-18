@@ -12,6 +12,7 @@ public class PlayerInstantiator : MonoBehaviour
 	public GameObject capitalCameraPrefab;
 
 	public bool testingFighters;
+	public bool overrideSelection;
 
 	private void Awake()
 	{
@@ -24,18 +25,18 @@ public class PlayerInstantiator : MonoBehaviour
 		{
 			case PLAYER_TYPE.COMMANDER1:
 			{
-				/*if ( this.testingFighters )
+				if ( this.testingFighters && this.overrideSelection )
 				{
 				    return this.CreateFighter( 1 );
-			    }*/
+			    }
 				return this.CreateCapitalShip( 1 );
 			}
 			case PLAYER_TYPE.COMMANDER2:
 			{
-				/*if ( this.testingFighters )
+				if ( this.testingFighters && this.overrideSelection )
 				{
 					return this.CreateFighter( 2 );
-				}*/
+				}
 				return this.CreateCapitalShip( 2 );
 			}
 			case PLAYER_TYPE.FIGHTER1:
@@ -56,7 +57,7 @@ public class PlayerInstantiator : MonoBehaviour
 
 	private GameObject CreateCapitalShip( int _teamID )
 	{
-		Vector3 shipPos = _teamID == 1 ? new Vector3( -10.0f, 0.0f, 0.0f ) : new Vector3( 10.0f, 0.0f, 0.0f );
+		Vector3 shipPos = _teamID == 1 ? new Vector3( -500.0f, 0.0f, 0.0f ) : new Vector3( 500.0f, 0.0f, 0.0f );
 		GameObject capitalObj;
 		// Used for testing scenes
 		if ( Network.peerType == NetworkPeerType.Disconnected )

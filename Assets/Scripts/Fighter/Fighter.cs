@@ -168,10 +168,16 @@ public class Fighter : MonoBehaviour {
 		                       this.rigidbody.velocity.magnitude * bounceVelocityModifier)
 			+ (minimumBounce * collision.contacts[0].normal.normalized);
 
+		if(collision.rigidbody != null)
+		{
+			bounceForce *= (collision.rigidbody.velocity.magnitude * bounceVelocityModifier);
+		}
+
 		//print(bounceForce);
 
 
 		this.rigidbody.AddForce (bounceForce);
+		this.rigidbody.AddTorque (Vector3.Cross(new Vector3(bounceForce.z, bounceForce.y, bounceForce.x), this.transform.rotation.eulerAngles));
 		//this.rigidbody.AddForce (averagePoint * this.rigidbody.velocity.magnitude * bounciness); //bounciness);
 	}
 
@@ -186,7 +192,8 @@ public class Fighter : MonoBehaviour {
 		docked = true;
 		transform.parent = slot.landedPosition;
 		//networkView.RPC ("SendDockedInfo",RPCMode.Others,slot);
-		GameNetworkManager.instance.SendDockedMessage ( this.networkView, slot );
+		GameNetworkManager.instance.SendDockedMessage ( this.networkView.viewID, slot.slotID );
+		this.GetComponent<FighterWeapons>().enabled = false;
 	}
 
 	public void Undock()
@@ -199,10 +206,11 @@ public class Fighter : MonoBehaviour {
 	    undockingTimer = undockingDelay;
 
 	//	rigidbody.AddForce (this.transform.root.forward * this.transform.root.GetComponent<CapitalShipMovement
-
 	    this.transform.parent = null;
-		GameNetworkManager.instance.SendUndockedMessage ( this.networkView, currentSlot );
+		this.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+		GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, currentSlot.slotID );
 		currentSlot = null;
+		this.GetComponent<FighterWeapons>().enabled = true;
 	}
 
 

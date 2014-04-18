@@ -382,6 +382,7 @@ MonoBehaviour:
   methodName: 
   value: 
   receiverRequired: 0
+  parseAsInt: 0
 --- !u!114 &185385883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,6 +635,7 @@ MonoBehaviour:
   methodName: OnReturnToMainDown
   value: 
   receiverRequired: 0
+  parseAsInt: 0
   mode: 5
 --- !u!114 &400832896
 MonoBehaviour:
@@ -715,6 +717,7 @@ MonoBehaviour:
   methodName: 
   value: 
   receiverRequired: 0
+  parseAsInt: 0
 --- !u!114 &494522507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,6 +866,7 @@ MonoBehaviour:
   methodName: OnHostButtonDown
   value: 
   receiverRequired: 1
+  parseAsInt: 0
   mode: 0
 --- !u!114 &576008031
 MonoBehaviour:
@@ -999,6 +1003,7 @@ MonoBehaviour:
   methodName: OnExitLobbyDown
   value: 
   receiverRequired: 0
+  parseAsInt: 0
   mode: 5
 --- !u!114 &708509593
 MonoBehaviour:
@@ -1079,6 +1084,7 @@ MonoBehaviour:
   methodName: OnForceStartCondition
   value: 3
   receiverRequired: 0
+  parseAsInt: 1
   mode: 0
 --- !u!132 &734053926
 GUIText:
@@ -1237,6 +1243,7 @@ MonoBehaviour:
   methodName: OnServerRowDown
   value: 
   receiverRequired: 0
+  parseAsInt: 0
   mode: 0
 --- !u!1 &821708129
 GameObject:
@@ -1656,6 +1663,7 @@ MonoBehaviour:
   methodName: OnJoinButtonDown
   value: 
   receiverRequired: 0
+  parseAsInt: 0
   mode: 0
 --- !u!132 &1163542319
 GUIText:
@@ -1776,6 +1784,7 @@ MonoBehaviour:
   methodName: 
   value: 
   receiverRequired: 0
+  parseAsInt: 0
 --- !u!1 &1170826912
 GameObject:
   m_ObjectHideFlags: 0
@@ -1953,6 +1962,7 @@ MonoBehaviour:
   methodName: OnStartServerDown
   value: 
   receiverRequired: 0
+  parseAsInt: 0
   mode: 5
 --- !u!114 &1174665096
 MonoBehaviour:
@@ -2049,6 +2059,7 @@ MonoBehaviour:
   methodName: OnReturnToMainDown
   value: 
   receiverRequired: 0
+  parseAsInt: 0
   mode: 5
 --- !u!132 &1192588111
 GUIText:
@@ -2229,6 +2240,7 @@ MonoBehaviour:
   methodName: OnStartGameDown
   value: 
   receiverRequired: 0
+  parseAsInt: 0
   mode: 5
 --- !u!114 &1431051118
 MonoBehaviour:
@@ -2349,6 +2361,7 @@ MonoBehaviour:
   methodName: 
   value: 
   receiverRequired: 0
+  parseAsInt: 0
 --- !u!1 &1449129370
 GameObject:
   m_ObjectHideFlags: 0
@@ -2505,6 +2518,7 @@ MonoBehaviour:
   methodName: OnForceStartCondition
   value: 1
   receiverRequired: 0
+  parseAsInt: 1
   mode: 0
 --- !u!1 &1609161535
 GameObject:
@@ -2689,6 +2703,7 @@ MonoBehaviour:
   methodName: 
   value: 
   receiverRequired: 0
+  parseAsInt: 0
 --- !u!114 &1641061795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2914,6 +2929,7 @@ MonoBehaviour:
   methodName: OnForceStartCondition
   value: 4
   receiverRequired: 0
+  parseAsInt: 1
   mode: 0
 --- !u!1 &1837339627
 GameObject:
@@ -3165,6 +3181,7 @@ MonoBehaviour:
   methodName: OnSendMessageDown
   value: 
   receiverRequired: 0
+  parseAsInt: 0
   mode: 5
 --- !u!114 &2002412715
 MonoBehaviour:
@@ -3295,6 +3312,7 @@ MonoBehaviour:
   methodName: OnForceStartCondition
   value: 2
   receiverRequired: 0
+  parseAsInt: 1
   mode: 0
 --- !u!132 &2029159436
 GUIText:

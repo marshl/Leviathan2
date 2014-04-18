@@ -7,6 +7,7 @@ public class GUIMessage : MonoBehaviour
 	public string methodName;
 	public string value;
 	public SendMessageOptions receiverRequired;
+	public bool parseAsInt = false;
 	private int integerResult;
 
 	protected void EventTrigger()
@@ -25,7 +26,7 @@ public class GUIMessage : MonoBehaviour
 			return;
 		}
 
-		if(int.TryParse(value, out integerResult))
+		if(int.TryParse(value, out integerResult) && this.parseAsInt)
 		{
 			this.target.SendMessage( methodName, integerResult,this.receiverRequired );
 		}

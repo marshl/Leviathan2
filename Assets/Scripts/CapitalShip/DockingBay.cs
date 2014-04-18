@@ -14,13 +14,22 @@ public class DockingBay : MonoBehaviour {
 		public Transform landedPosition;
 		public Fighter landedFighter;
 		public bool occupied;
+		public int slotID;
 	}
 
 	public DockingSlot[] slots = new DockingSlot[4];
 
 	public int team = 1;
+	public int bayID;
 	// Use this for initialization
 	void Start () {
+
+		int idCounter = (team * 1000) + (bayID * 10 + 1);
+		foreach(DockingSlot newSlot in slots)
+		{
+			newSlot.slotID = idCounter;
+			idCounter++;
+		}
 	
 
 	}
@@ -59,6 +68,19 @@ public class DockingBay : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	public DockingSlot GetSlotByID( int _id )
+	{
+		foreach ( DockingSlot slot in slots )
+		{
+			if( slot.slotID == _id)
+			{
+				return slot;
+			}
+		}
+		print("Slot search in bay " + bayID + " for id " + _id + " returned no results");
+		return null;
 	}
 
 	void EnemyDockingProcedure(Fighter _fighter)

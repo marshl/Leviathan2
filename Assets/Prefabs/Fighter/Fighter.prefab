@@ -460,6 +460,10 @@ MonoBehaviour:
   teamNumber: 1
   currentHealth: 100
   maxHealth: 100
+  currentShield: 100
+  maxShield: 100
+  shieldRegen: .25
+  shieldRegenDelay: 1
   isIndestructible: 0
 --- !u!114 &11400016
 MonoBehaviour:

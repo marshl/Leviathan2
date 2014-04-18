@@ -2116,7 +2116,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: .300000012
-  far clip plane: 1000
+  far clip plane: 10000
   field of view: 60
   orthographic: 0
   orthographic size: 100
@@ -2155,7 +2155,7 @@ MonoBehaviour:
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 50
   moveSpeed: 120
-  maxDistance: 100
+  maxDistance: 500
   damage: 10
   smartBullet: 0
 --- !u!114 &597263314
@@ -2174,12 +2174,13 @@ MonoBehaviour:
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
   count: 0
   moveSpeed: 80
-  maxDistance: 50
+  maxDistance: 1000
   damage: 50
   smartBullet: 1
-  turnRate: 15
+  turnRate: 35
+  canAngleOut: 0
   maxDetectionAngle: 15
-  seekingDelayDistance: 25
+  seekingDelayDistance: 0
 --- !u!1 &609000231
 GameObject:
   m_ObjectHideFlags: 0
@@ -4446,6 +4447,7 @@ GameObject:
   - 114: {fileID: 1160885697}
   - 114: {fileID: 1160885696}
   - 114: {fileID: 1160885695}
+  - 114: {fileID: 1160885694}
   m_Layer: 0
   m_Name: WeaponDescriptors
   m_TagString: Untagged
@@ -4453,6 +4455,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1160885694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400016, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 665067210}
+  m_GameObject: {fileID: 1160885693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88974183b4398c245862faca40cdcdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 5
+  fireRate: 1
+  spread: 0
+  fireInSync: 0
+  bulletType: 2
+  chargeUpTime: 2
+  depleteOnPrerelease: 1
 --- !u!114 &1160885695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4466,10 +4487,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
-  bulletType: 2
   fireRate: .300000012
   spread: 15
   fireInSync: 0
+  bulletType: 2
   spinUpTime: 2
   spinDownTime: 3
   spinDownDelay: 1
@@ -4487,10 +4508,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
-  bulletType: 1
   fireRate: .5
   spread: 0
   fireInSync: 0
+  bulletType: 1
 --- !u!114 &1160885697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4504,10 +4525,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
-  bulletType: 2
   fireRate: .25
   spread: 0
   fireInSync: 0
+  bulletType: 2
 --- !u!114 &1160885698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8709,10 +8730,12 @@ GameObject:
   - 114: {fileID: 1988041918}
   - 135: {fileID: 1988041916}
   - 148: {fileID: 1988041921}
-  - 114: {fileID: 1988041920}
   - 114: {fileID: 1988041922}
+  - 114: {fileID: 1988041920}
   - 114: {fileID: 1988041919}
+  - 114: {fileID: 1988041924}
   - 114: {fileID: 1988041915}
+  - 114: {fileID: 1988041923}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Untagged
@@ -8780,8 +8803,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamNumber: 1
   currentHealth: 100
   maxHealth: 100
+  currentShield: 100
+  maxShield: 100
+  shieldRegen: .25
+  shieldRegenDelay: 1
   isIndestructible: 0
 --- !u!135 &1988041916
 SphereCollider:
@@ -8843,8 +8871,6 @@ MonoBehaviour:
     landedPosition: {fileID: 0}
     landedFighter: {fileID: 0}
     occupied: 0
-  laserWeapon: {fileID: 1988041920}
-  missileWeapon: {fileID: 1988041919}
 --- !u!114 &1988041919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8863,7 +8889,7 @@ MonoBehaviour:
   - {fileID: 1221379736}
   firePointIndex: 0
   timeSinceShot: 0
-  source: {fileID: 1988041918}
+  source: {fileID: 1988041924}
 --- !u!114 &1988041920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8883,7 +8909,7 @@ MonoBehaviour:
   - {fileID: 1345717096}
   firePointIndex: 0
   timeSinceShot: 0
-  source: {fileID: 1988041918}
+  source: {fileID: 1988041924}
 --- !u!148 &1988041921
 NetworkView:
   m_ObjectHideFlags: 0
@@ -8911,6 +8937,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerp: 1
   lerpRate: 5
+--- !u!114 &1988041923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400018, guid: e152e05dbd9d77f42958a061d50fa1ff,
+    type: 2}
+  m_PrefabInternal: {fileID: 1926998062}
+  m_GameObject: {fileID: 1988041911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce45eca3c510d7b4daabc8ca5b280440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 5
+  weaponDesc: {fileID: 0}
+  firePoints:
+  - {fileID: 1221379736}
+  firePointIndex: 0
+  timeSinceShot: 0
+  source: {fileID: 1988041924}
+  chargeUpDesc: {fileID: 0}
+  currentCharge: 0
+--- !u!114 &1988041924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400016, guid: e152e05dbd9d77f42958a061d50fa1ff,
+    type: 2}
+  m_PrefabInternal: {fileID: 1926998062}
+  m_GameObject: {fileID: 1988041911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57798d38267b00a4eadde6d24737fc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laserWeapon: {fileID: 1988041920}
+  missileWeapon: {fileID: 1988041919}
+  chargeUpWeapon: {fileID: 1988041923}
+  maxTargetDistance: 500
+  maxTargetAngle: 15
 --- !u!1 &1991713409
 GameObject:
   m_ObjectHideFlags: 0

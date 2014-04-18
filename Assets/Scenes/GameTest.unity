@@ -241,7 +241,8 @@ MonoBehaviour:
   capitalPathLinePrefab: {fileID: 100000, guid: 97ee7467a0e155b478e63dcc80140dc5,
     type: 2}
   capitalCameraPrefab: {fileID: 100000, guid: 82ddd68b8858ea9449b324333a204b4d, type: 2}
-  testingFighters: 1
+  testingFighters: 0
+  overrideSelection: 0
 --- !u!1001 &128193894
 Prefab:
   m_ObjectHideFlags: 0
@@ -1192,6 +1193,10 @@ MonoBehaviour:
   teamNumber: 1
   currentHealth: 100
   maxHealth: 100
+  currentShield: 0
+  maxShield: 0
+  shieldRegen: 0
+  shieldRegenDelay: 0
   isIndestructible: 0
 --- !u!23 &864014376
 Renderer:
@@ -1481,6 +1486,10 @@ MonoBehaviour:
   teamNumber: 1
   currentHealth: 100
   maxHealth: 100
+  currentShield: 100
+  maxShield: 100
+  shieldRegen: .25
+  shieldRegenDelay: 1
   isIndestructible: 0
 --- !u!114 &935807981
 MonoBehaviour:
@@ -2190,6 +2199,10 @@ MonoBehaviour:
   teamNumber: 2
   currentHealth: 150
   maxHealth: 150
+  currentShield: 0
+  maxShield: 0
+  shieldRegen: 0
+  shieldRegenDelay: 0
   isIndestructible: 0
 --- !u!1 &1469277917
 GameObject:
@@ -2719,6 +2732,8 @@ MonoBehaviour:
   team1Fighters: []
   team2Fighters:
   - {fileID: 864014375}
+  team1Capital: {fileID: 0}
+  team2Capital: {fileID: 0}
   targetList: []
 --- !u!4 &2085318313
 Transform:
