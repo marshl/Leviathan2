@@ -183,9 +183,16 @@ public class Fighter : MonoBehaviour {
 
 	public void Dock(DockingBay.DockingSlot slot)
 	{
+		if(docked || undocking)
+		{
+
+			return;
+		}
+
 		desiredSpeed = 0;
 		rigidbody.velocity = Vector3.zero;
 		rigidbody.angularVelocity = Vector3.zero;
+		rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		transform.position = slot.landedPosition.position;
 		transform.rotation = slot.landedPosition.rotation;
 		currentSlot = slot;
@@ -198,16 +205,26 @@ public class Fighter : MonoBehaviour {
 
 	public void Undock()
 	{
+		//Nick the velocity of the capital ship's rigidbody
+		Vector3 inheritedVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.velocity;
+		Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
+
+
 		docked = false;
 	    currentSlot.occupied = false;
 	    currentSlot.landedFighter = null;
 	    desiredSpeed = (maxSpeed * 0.75f);
 	    undocking = true;
 	    undockingTimer = undockingDelay;
-
+		rigidbody.constraints = RigidbodyConstraints.None;
 	//	rigidbody.AddForce (this.transform.root.forward * this.transform.root.GetComponent<CapitalShipMovement
 	    this.transform.parent = null;
 		this.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+
+		//Apply force of the capital ship so we don't move relative
+		this.rigidbody.AddForce (inheritedVelocity * 5);
+		this.rigidbody.AddTorque (inheritedAngularVelocity);
+
 		GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, currentSlot.slotID );
 		currentSlot = null;
 		this.GetComponent<FighterWeapons>().enabled = true;

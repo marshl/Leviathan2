@@ -26,11 +26,14 @@ public class NetworkPositionControl : MonoBehaviour
 	/// Will this object lerp its position towards the guesstimate?
 	/// </summary>
 	public bool lerp;
-
+	
 	/// <summary>
 	/// If it is, how fast will it move
 	/// </summary>
 	public float lerpRate;
+
+	// Are we going to try to maintain our networked position?
+	private bool readNewPositionData = true;
 
 	// Unity Callback: Do not change signature
 	private void Awake()
@@ -118,7 +121,8 @@ public class NetworkPositionControl : MonoBehaviour
 		// We need two or more points for this to work
 		//TODO: A basic move using only one point (LM:21/02/14)
 		if ( olderData.timeStamp == 0.0f 
-		    || newerData.timeStamp == 0.0f )
+		    || newerData.timeStamp == 0.0f
+		    || !readNewPositionData)
 		{
 			return;
 		}
@@ -142,6 +146,12 @@ public class NetworkPositionControl : MonoBehaviour
 			this.transform.localPosition = targetPosition;
 			this.transform.localRotation = targetRotation;
 		}
+	}
+
+	public void TogglePositionUpdates( bool _toggle )
+	{
+		print("Toggled position updating to " + _toggle);
+		readNewPositionData = _toggle;
 	}
 	
 }

@@ -363,6 +363,7 @@ MonoBehaviour:
     landedPosition: {fileID: 0}
     landedFighter: {fileID: 0}
     occupied: 0
+    slotID: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -404,7 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6289df16c1b660e46b2b71bffbf82f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerp: 1
+  lerp: 0
   lerpRate: 5
 --- !u!114 &11400008
 MonoBehaviour:

@@ -111,8 +111,10 @@ public class GameNetworkManager : MonoBehaviour
 		dockingFighter.transform.parent = landedSlot.landedPosition;
 
 		dockingFighter.transform.rotation = landedSlot.landedPosition.transform.rotation;
-		dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
-		dockingFighter.GetComponent<NetworkPositionControl>().enabled = false;
+		//dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+
+		dockingFighter.GetComponent<NetworkPositionControl>().TogglePositionUpdates( false );
+
 		landedSlot.landedFighter = dockingFighter.GetComponent<Fighter>();
 
 		print("Received docked RPC");
@@ -129,12 +131,13 @@ public class GameNetworkManager : MonoBehaviour
 		NetworkView dockingFighterView = NetworkView.Find (_id);
 		
 		GameObject dockingFighter = dockingFighterView.gameObject;
-
+		dockingFighter.GetComponent<NetworkPositionControl>().enabled = true;
 		DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
 
 		dockingFighter.transform.parent = null;
 		dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
-		dockingFighter.GetComponent<NetworkPositionControl>().enabled = true;
+
+		dockingFighter.GetComponent<NetworkPositionControl>().TogglePositionUpdates( true );
 		//dockingFighter.GetComponent<NetworkPositionControl>().lerp = true;
 		landedSlot.landedFighter = null;
 	}
