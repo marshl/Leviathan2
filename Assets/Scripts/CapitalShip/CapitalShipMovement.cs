@@ -115,6 +115,9 @@ public class CapitalShipMovement : MonoBehaviour
 	private float currentAvoidHeight;
 	private float currentAvoidAngle;
 
+	private GameObject rotationSegmentsParent;
+	private Quaternion previousShipRotation;
+
 	public float avoidanceAngleMultiplier;
 
 	//private CapitalShipNetworkInfo netInfo;
@@ -132,6 +135,10 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void Start()
 	{
+		this.previousShipRotation = this.transform.rotation;
+
+		this.CreateRotationSegmentParent ();
+
 		this.currentMovementSpeed = (this.maxMoveSpeed + this.minMoveSpeed) / 2;
 
 		this.tentativePathLine.SetVertexCount( lineVertexCount );
@@ -154,7 +161,7 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		this.UpdateAccelerationInput();
 		this.UpdateTurnLine();
-
+		print("Previous ship rotation: " + previousShipRotation.eulerAngles);
 		// If the current position + the radius of a turn would place this ship out of bounds,
 		//   start an emergency turn
 		if ( IsPointOutOfBounds(this.transform.position + this.transform.forward * GetTurnRadiusAtSpeed( this.currentMovementSpeed )) )
@@ -196,22 +203,34 @@ public class CapitalShipMovement : MonoBehaviour
 			for ( int i = 0; i < rotationSegmentCount; ++i )
 			{
 				GameObject segmentObj = GameObject.Instantiate( this.rotationSegmentPrefab ) as GameObject;
-				segmentObj.transform.Rotate( Vector3.up, (float)i / (float)rotationSegmentCount * 360.0f );
-				segmentObj.transform.parent = this.transform;
-				segmentObj.transform.localPosition = Vector3.zero;
+				//segmentObj.transform.Rotate( Vector3.up, (float)i / (float)rotationSegmentCount * 360.0f );
+
 				segmentObj.SetActive( false );
 
 				if ( j == 0 )
 				{
+					segmentObj.transform.Rotate( Vector3.down, (float)i / (float)rotationSegmentCount * 360.0f );
+					segmentObj.transform.parent = this.rotationSegmentsParent.transform;
+					segmentObj.transform.localPosition = Vector3.zero;
 					this.rotationSegmentsActual[i] = segmentObj;
 					segmentObj.transform.localScale = segmentObj.transform.localScale * tentativeSegmentUpscale;
 				}
 				else
 				{
+					segmentObj.transform.Rotate( Vector3.up, (float)i / (float)rotationSegmentCount * 360.0f );
+					segmentObj.transform.parent = this.transform;
+					segmentObj.transform.localPosition = Vector3.zero;
 					this.rotationSegmentsTentative[i] = segmentObj;
 				}
 			}
 		}
+	}
+
+	private void CreateRotationSegmentParent()
+	{
+		this.rotationSegmentsParent = new GameObject("Turn segment parent");
+		this.rotationSegmentsParent.transform.parent = this.transform;
+		this.rotationSegmentsParent.transform.localPosition = Vector3.zero;
 	}
 
 
@@ -499,6 +518,8 @@ public class CapitalShipMovement : MonoBehaviour
 		this.isTurning = true;
 		this.currentTurnDirection = _direction;
 		this.currentTurnAmount = _turnAmount;
+		this.previousShipRotation = this.transform.rotation;
+		print("Previous ship rotation updated");
 		//Bung this info on the network
 //		PassTurnParameters();
 		return true;
@@ -568,6 +589,7 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		int minActiveSegments = 0, maxActiveSegments = this.rotationSegmentCount;
 		int segmentsToActivate = (int)Mathf.Floor( _turnAmount / Mathf.PI * (float)rotationSegmentCount * 0.5f );
+		print("SegmentsToActivate: " + segmentsToActivate);
 		if ( _turnDirection > 0.0f ) // Turning Right
 		{
 			minActiveSegments = 0;
@@ -579,10 +601,37 @@ public class CapitalShipMovement : MonoBehaviour
 			maxActiveSegments = rotationSegmentCount;
 		}
 
+	/*	for ( int i = 0; i < this.rotationSegmentCount; ++i )
+		{
+			bool activation;
+
+			if(i >= minActiveSegments && i <= maxActiveSegments)
+			{
+				activation = true;
+			}
+			else
+			{
+				activation = false;
+			}
+			_segments[i].SetActive(  activation );
+		}*/
+
 		for ( int i = 0; i < this.rotationSegmentCount; ++i )
 		{
-			_segments[i].SetActive( i >= minActiveSegments && i <= maxActiveSegments );
+			bool activation;
+			
+			if( i >= minActiveSegments && i <= maxActiveSegments )
+			{
+				activation = true;
+			}
+			else
+			{
+				activation = false;
+			}
+			_segments[i].SetActive(  activation );
 		}
+
+		this.rotationSegmentsParent.transform.localRotation = Quaternion.Inverse(this.transform.rotation) * (this.previousShipRotation * Quaternion.Euler (0,90,0));
 	}
 
 	public float GetTurnRadiusAtSpeed( float _moveSpeed )
