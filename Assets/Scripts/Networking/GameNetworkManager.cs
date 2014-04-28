@@ -37,12 +37,20 @@ public class GameNetworkManager : MonoBehaviour
 
 	private void Update()
 	{
-		if ( Network.isServer && !this.gameHasStarted
+
+		if (Network.peerType != NetworkPeerType.Disconnected 
+		    && Network.isServer && !this.gameHasStarted
 		  && Network.time - this.timeStarted > this.startPauseDuration )
 		{
 			this.gameHasStarted = true;
 
 			this.networkView.RPC( "OnGameStartedRPC", RPCMode.All );
+		}
+
+		if(Network.peerType == NetworkPeerType.Disconnected && !this.gameHasStarted)
+		{
+			this.gameHasStarted = true;
+			LocalGameStart();
 		}
 	}
 
@@ -176,6 +184,15 @@ public class GameNetworkManager : MonoBehaviour
 		dockingFighter.GetComponent<NetworkPositionControl>().TogglePositionUpdates( true );
 		//dockingFighter.GetComponent<NetworkPositionControl>().lerp = true;
 		landedSlot.landedFighter = null;
+	}
+
+	private void LocalGameStart()
+	{
+
+		GamePlayerManager.instance.AddPlayer(-1,PLAYER_TYPE.COMMANDER1);
+		GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( Network.player );
+		
+		PlayerInstantiator.instance.CreatePlayerObject( player );
 	}
 
 }

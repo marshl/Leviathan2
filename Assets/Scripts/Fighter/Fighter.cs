@@ -3,6 +3,14 @@ using System.Collections;
 
 public class Fighter : MonoBehaviour {
 
+	public enum FIGHTERSTATE
+	{
+		DOCKED,
+		UNDOCKING,
+		FLYING,
+		DEAD
+	};
+
 	const float EULER = 2.71828f;
 
 	public float turnSpeed = 35.0f;
@@ -15,6 +23,7 @@ public class Fighter : MonoBehaviour {
 	public float minimumBounce = 10.0f;
 	public float bounceVelocityModifier = 300.0f;
 	public int team = 1;
+	public FIGHTERSTATE state = FIGHTERSTATE.FLYING;
 	//public float currentSpeed = 0.0f;
 	//public float desiredSpeed = 0.0f;
 	//public float maxSpeed = 10.0f; //Potentially used as a hard limit
@@ -27,8 +36,8 @@ public class Fighter : MonoBehaviour {
 	/// </summary>
 	public float turnExtents;
 
-	public bool docked = false;
-	public bool undocking = false;
+	//public bool docked = false;
+	//public bool undocking = false;
 	public float undockingTimer = 0.0f;
 	public float undockingDelay = 3.0f;
 
@@ -46,26 +55,44 @@ public class Fighter : MonoBehaviour {
 
 	void LateUpdate()
 	{
-		this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
-		if(!docked)
+
+		switch(state)
 		{
+		case FIGHTERSTATE.FLYING:
+			{
+				this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
+				CheckFlightControls();
+				ApplyDrag();
+			};
+			break;
+
+		case FIGHTERSTATE.DOCKED:
+			{
+			//	print("Docked update");
+				CheckDockedControls();
+			};
+			break;
+
+		case FIGHTERSTATE.UNDOCKING:
+			{
+			this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
 			CheckFlightControls();
-		}
-		else
-		{
-			CheckDockedControls();
+			ApplyDrag();
+				if(undockingTimer > 0)
+				{
+					undockingTimer -= Time.deltaTime;
+					if(undockingTimer < 0)
+					{
+						undockingTimer = 0;
+						state = FIGHTERSTATE.FLYING;
+					}
+				}
+			};
+			break;
 		}
 
-		if(undockingTimer > 0)
-		{
-			undockingTimer -= Time.deltaTime;
-			if(undockingTimer < 0)
-			{
-				undockingTimer = 0;
-				undocking = false;
-			}
-		}
-		ApplyDrag();
+
+
 	}
 
 	void CheckFlightControls()
@@ -135,6 +162,7 @@ public class Fighter : MonoBehaviour {
 	{
 		if(Input.GetKey (KeyCode.Space))
 		{
+			print("Space was pressed");
 			Undock();
 		}
 	}
@@ -183,11 +211,13 @@ public class Fighter : MonoBehaviour {
 
 	public void Dock(DockingBay.DockingSlot slot)
 	{
-		if(docked || undocking)
+		if(state == FIGHTERSTATE.UNDOCKING )
 		{
-
+			print("Skipping dock");
 			return;
 		}
+
+		print("Proceeding with dock");
 
 		desiredSpeed = 0;
 		rigidbody.velocity = Vector3.zero;
@@ -196,7 +226,7 @@ public class Fighter : MonoBehaviour {
 		transform.position = slot.landedPosition.position;
 		transform.rotation = slot.landedPosition.rotation;
 		currentSlot = slot;
-		docked = true;
+		state = FIGHTERSTATE.DOCKED;
 		transform.parent = slot.landedPosition;
 		//networkView.RPC ("SendDockedInfo",RPCMode.Others,slot);
 		GameNetworkManager.instance.SendDockedMessage ( this.networkView.viewID, slot.slotID );
@@ -205,16 +235,16 @@ public class Fighter : MonoBehaviour {
 
 	public void Undock()
 	{
+		print("Undocking");
 		//Nick the velocity of the capital ship's rigidbody
 		Vector3 inheritedVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.velocity;
 		Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
 
 
-		docked = false;
+		state = FIGHTERSTATE.UNDOCKING;
 	    currentSlot.occupied = false;
 	    currentSlot.landedFighter = null;
 	    desiredSpeed = (maxSpeed * 0.75f);
-	    undocking = true;
 	    undockingTimer = undockingDelay;
 		rigidbody.constraints = RigidbodyConstraints.None;
 	//	rigidbody.AddForce (this.transform.root.forward * this.transform.root.GetComponent<CapitalShipMovement
@@ -228,6 +258,22 @@ public class Fighter : MonoBehaviour {
 		GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, currentSlot.slotID );
 		currentSlot = null;
 		this.GetComponent<FighterWeapons>().enabled = true;
+	}
+
+	public void Respawn()
+	{
+		//Find an empty spot on the friendly capital ship and dock there
+		/*state = FIGHTERSTATE.DOCKED;
+
+		switch(this.team)
+		{
+		case 1:
+			TargetManager.instance.team1Capital.gameObject.GetComponent<
+			break;
+		case 2:
+			break;
+		}*/
+
 	}
 
 

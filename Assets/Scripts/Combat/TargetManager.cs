@@ -94,7 +94,7 @@ public class TargetManager : MonoBehaviour
 		
 		if ( _team == 1 )
 		{
-			this.team1Capital = _target;
+			this.team1Capital = _target;//.networkView.viewID;
 		}
 		else if ( _team == 2 )
 		{

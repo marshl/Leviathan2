@@ -44,8 +44,9 @@ public class DockingBay : MonoBehaviour {
 		if(other.GetComponent<Fighter>() != null)
 		{
 			Fighter fighter = other.GetComponent<Fighter>();
-			if(fighter.team == this.team && !fighter.undocking) //If we're on the same team
+			if(fighter.team == this.team && fighter.state == Fighter.FIGHTERSTATE.FLYING) //If we're on the same team
 			{
+				print("Fighter received");
 				FriendlyDockingProcedure(fighter); //You may dock
 			}
 			else
