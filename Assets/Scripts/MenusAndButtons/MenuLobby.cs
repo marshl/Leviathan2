@@ -231,12 +231,7 @@ public class MenuLobby : MonoBehaviour
 
 	public void CopyInformation( MenuToGameInfo _info )
 	{
-		_info.playerTypeMap = new Dictionary<int, PLAYER_TYPE>();
-		foreach ( var pair in this.playerDictionary )
-		{
-			_info.playerTypeMap.Add( pair.Key, pair.Value );
-		}
-
+		_info.playerType = this.playerDictionary[ Common.NetworkID() ];
 		_info.Print();
 	}
 

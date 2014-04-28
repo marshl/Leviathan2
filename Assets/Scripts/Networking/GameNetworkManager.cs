@@ -4,11 +4,11 @@ using System.Collections;
 public class GameNetworkManager : MonoBehaviour
 {
 	public static GameNetworkManager instance;
+
+	public double startPauseDuration;
+	private double timeStarted;
+	private bool gameHasStarted = false;
 	
-	//public GameObject fighterPrefab;
-	//public GameObject capitalShipPrefab;
-	
-	// Methods
 	private void Awake()
 	{
 		GameNetworkManager.instance = this;
@@ -16,6 +16,8 @@ public class GameNetworkManager : MonoBehaviour
 
 	private void Start()
 	{
+		this.timeStarted = Network.time;
+
 		MenuToGameInfo info = MenuToGameInfo.instance;
 
 		if ( info == null )
@@ -26,18 +28,52 @@ public class GameNetworkManager : MonoBehaviour
 
 			Debug.LogWarning( "No menu to game info found. Using default values", info );
 		}
-		int networkID = Common.NetworkID();
-		info.Print();
 
-		Debug.Log( "NetworkID: " + networkID );
-		PLAYER_TYPE state = info.playerTypeMap[networkID];
-		PlayerInstantiator.instance.CreatePlayerObject( state );
+		//TODO: This may have issues LM 28/04/14
+		this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.NetworkID(), (int)info.playerType );
+
+		info.Print();
 	}
 
+	private void Update()
+	{
+		if ( Network.isServer && !this.gameHasStarted
+		  && Network.time - this.timeStarted > this.startPauseDuration )
+		{
+			this.gameHasStarted = true;
+
+			this.networkView.RPC( "OnGameStartedRPC", RPCMode.All );
+		}
+	}
+
+	// Unity Callback
 	private void OnDisconnectedFromServer()
 	{
 		Debug.Log( "Disconnected from server" );
 		Application.LoadLevel( "MenuTest" );
+	}
+
+	// Unity Callback
+	private void OnPlayerDisconnected( NetworkPlayer _player )
+	{
+		Debug.Log( _player.ipAddress + " has disconnected" );
+		GamePlayerManager.instance.DisconnectPlayer( _player );
+	}
+
+	[RPC]
+	private void OnConnectedToGameRPC( int _playerID, int _playerType )
+	{ 
+		GamePlayerManager.instance.AddPlayer( _playerID, (PLAYER_TYPE)_playerType );
+	}
+
+	[RPC] 
+	private void OnGameStartedRPC()
+	{
+		//int id = Common.NetworkID();
+		//PLAYER_TYPE state = MenuToGameInfo.instance.playerTypeMap[ id ];
+		GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( Network.player );
+
+		PlayerInstantiator.instance.CreatePlayerObject( player );
 	}
 	
 	public void SendShootBulletMessage( BULLET_TYPE _bulletType, 

@@ -1,14 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum PLAYER_TYPE : int
-{
-	COMMANDER1,
-	COMMANDER2,
-	FIGHTER1,
-	FIGHTER2,
-};
-
 public abstract class Common
 {
 	/// <summary>
@@ -159,6 +151,15 @@ public abstract class Common
 		float flightDuration = ( _target.position - _origin ).magnitude
 			/ ( _speed - _target.rigidbody.velocity.magnitude );
 
-		return _target.position + _target.rigidbody.velocity * flightDuration;
+		if ( flightDuration <= 0.0f )
+		{
+			//TODO: Quash this warning once tested LM:2/04/2014
+			Debug.LogWarning( "Projectile cannot catch up to target " + _target.gameObject.name, _target );
+			return _target.position;
+		}
+		else
+		{
+			return _target.position + _target.rigidbody.velocity * flightDuration;
+		}
 	}   
 }

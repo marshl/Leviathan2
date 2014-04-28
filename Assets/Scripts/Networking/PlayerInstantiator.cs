@@ -19,43 +19,43 @@ public class PlayerInstantiator : MonoBehaviour
 		PlayerInstantiator.instance = this;
 	}
 
-	public GameObject CreatePlayerObject( PLAYER_TYPE _playerType )
+	public GameObject CreatePlayerObject( GamePlayer _player )
 	{
-		switch ( _playerType )
+		switch ( _player.playerType )
 		{
-			case PLAYER_TYPE.COMMANDER1:
+		case PLAYER_TYPE.COMMANDER1:
+		{
+			if ( this.testingFighters && this.overrideSelection )
 			{
-				if ( this.testingFighters && this.overrideSelection )
-				{
-				    return this.CreateFighter( 1 );
-			    }
-				return this.CreateCapitalShip( 1 );
-			}
-			case PLAYER_TYPE.COMMANDER2:
+			    return this.CreateFighter( _player, 1 );
+		    }
+			return this.CreateCapitalShip( _player, 1 );
+		}
+		case PLAYER_TYPE.COMMANDER2:
+		{
+			if ( this.testingFighters && this.overrideSelection )
 			{
-				if ( this.testingFighters && this.overrideSelection )
-				{
-					return this.CreateFighter( 2 );
-				}
-				return this.CreateCapitalShip( 2 );
+				return this.CreateFighter( _player, 2 );
 			}
-			case PLAYER_TYPE.FIGHTER1:
-			{
-				return this.CreateFighter( 1 );
-			}
-			case PLAYER_TYPE.FIGHTER2:
-			{
-				return this.CreateFighter( 2 );
-			}
-			default:
-			{
-				Debug.LogError( "Uncaught player type " + _playerType );
-				return null;
-			}
+			return this.CreateCapitalShip( _player, 2 );
+		}
+		case PLAYER_TYPE.FIGHTER1:
+		{
+			return this.CreateFighter( _player, 1 );
+		}
+		case PLAYER_TYPE.FIGHTER2:
+		{
+			return this.CreateFighter( _player, 2 );
+		}
+		default:
+		{
+			Debug.LogError( "Uncaught player type " + _player.playerType );
+			return null;
+		}
 		}
 	}
 
-	private GameObject CreateCapitalShip( int _teamID )
+	private GameObject CreateCapitalShip( GamePlayer _player, int _teamID )
 	{
 		Vector3 shipPos = _teamID == 1 ? new Vector3( -500.0f, 0.0f, 0.0f ) : new Vector3( 500.0f, 0.0f, 0.0f );
 		GameObject capitalObj;
@@ -95,7 +95,7 @@ public class PlayerInstantiator : MonoBehaviour
 		return capitalObj;
 	}
 
-	private GameObject CreateFighter( int _teamID )
+	private GameObject CreateFighter( GamePlayer _player, int _teamID )
 	{
 		Vector3 fighterPos = Common.RandomVector3( -25.0f, 25.0f );
 		GameObject fighterObj;
@@ -120,6 +120,8 @@ public class PlayerInstantiator : MonoBehaviour
 			this.fighterCameraPrefab,
 			fighterObj.transform.position,
 			Quaternion.identity ) as GameObject;
+
+		_player.fighter = fighterObj.GetComponent<Fighter>();
 
 		FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
 		cameraScript.fighter = fighterObj; 
