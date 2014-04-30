@@ -15,17 +15,6 @@ public class MainMenuButtons : MonoBehaviour
 	public GUITextField hostPortField;
 	public GUITextField hostNameField;
 	public GUITextField hostDescField;
-	
-	/*private enum STATE
-	{
-		MAIN,
-		SERVERS,
-		HOST,
-		GAME_LOBBY,
-		CONNECTING,
-	}*/
-
-	//private MainMenuButtons.STATE currentState = MainMenuButtons.STATE.MAIN;
 
 	private void Awake()
 	{
@@ -33,49 +22,14 @@ public class MainMenuButtons : MonoBehaviour
 		this.mainPanelObj.SetActive( true );
 	}
 
-	/*
-	private void Update()
-	{
-		switch ( this.currentState )
-		{
-		case STATE.MAIN:
-		{
-			break;
-		}
-		case STATE.HOST:
-		{
-			break;
-		}
-		case STATE.SERVERS:
-		{
-			break;
-		}
-		case STATE.GAME_LOBBY:
-		{
-			break;
-		}
-		case STATE.CONNECTING:
-		{
-			break;
-		}
-		default:
-		{
-			Debug.Log( "Uncaught state: " + this.currentState, this );
-			break;
-		}
-		}
-	}
-    */
 	private void OnHostButtonDown()
 	{
-		//this.currentState = STATE.HOST;
 		this.mainPanelObj.SetActive( false );
 		this.hostPanelObj.SetActive( true );
 	}
 
 	private void OnReturnToMainDown()
 	{
-		//this.currentState = STATE.MAIN;
 		this.mainPanelObj.SetActive( true );
 		this.hostPanelObj.SetActive( false );
 		this.serverPanelObj.SetActive( false );
@@ -96,7 +50,6 @@ public class MainMenuButtons : MonoBehaviour
 
 	public void OpenGameLobby()
 	{
-		//this.currentState = STATE.GAME_LOBBY;
 		this.connectingPanelObj.SetActive( false );
 		this.lobbyPanelObj.SetActive( true );
 		MenuLobby.instance.StartLobby();
@@ -110,7 +63,6 @@ public class MainMenuButtons : MonoBehaviour
 
 	public void OpenConnectingWindow()
 	{
-		//this.currentState = STATE.CONNECTING;
 		this.connectingPanelObj.SetActive( true );
 		this.serverPanelObj.SetActive( false );
 	}
@@ -153,32 +105,22 @@ public class MainMenuButtons : MonoBehaviour
 		this.mainPanelObj.SetActive( true );
 	}
 
-	public void OnForceStartCondition(int condition)
+	public void OnForceStartCondition( int _playerType )
 	{
-		//Quick and dirty code here
-
-		switch(condition)
+		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
 		{
-		case 1: //Capital team 1
-			MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.COMMANDER1);
-			print("Successfully changed to commander 1");
-			break;
-		case 2: //Fighter team 1
-			MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.FIGHTER1);
-			print("Successfully changed to fighter 1");
-			break;
-		case 3: //Capital team 2
-			MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.COMMANDER2);
-			print("Successfully changed to commander 2");
-			break;
-		case 4: //Fighter team 2
-			MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.FIGHTER2);
-			print("Successfully changed to fighter 2");
-			break;
-		default: MenuLobby.instance.ChangePlayerType(Common.NetworkID (),PLAYER_TYPE.FIGHTER1);
-			print("Successfully changed to fighter 1");
-			break;
+			Debug.LogError( "Unknown PLAYER_TYPE condicion " + _playerType );
 		}
+		else
+		{
+			PLAYER_TYPE type = (PLAYER_TYPE)_playerType;
+			MenuLobby.instance.ChangePlayerType( Common.MyNetworkID(), type );
+		}
+	}
 
+	private void OnExitGameDown()
+	{
+		Application.Quit();
+		Debug.LogWarning( "Quitting application" );
 	}
 }

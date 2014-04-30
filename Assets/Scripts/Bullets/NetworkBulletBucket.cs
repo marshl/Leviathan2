@@ -18,7 +18,7 @@ public class NetworkBulletBucket : BulletBucket
 		}
 		else
 		{
-			this.CreateBucket( Common.NetworkID() );
+			this.CreateBucket( Common.MyNetworkID() );
 		}
 	}
 
@@ -38,7 +38,7 @@ public class NetworkBulletBucket : BulletBucket
 	{
 		if ( _ownerID == -1 && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			_ownerID = Common.NetworkID();
+			_ownerID = Common.MyNetworkID();
 		}
 
 		if ( this.buckets.ContainsKey( _ownerID ) == false )

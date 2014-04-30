@@ -30,9 +30,9 @@ public class GameNetworkManager : MonoBehaviour
 		}
 
 		//TODO: This may have issues LM 28/04/14
-		this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.NetworkID(), (int)info.playerType );
+		this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.MyNetworkID(), (int)info.playerType );
 
-		info.Print();
+		//info.Print();
 	}
 
 	private void Update()
@@ -88,7 +88,7 @@ public class GameNetworkManager : MonoBehaviour
 	                                   int _index,
 	                                   Vector3 _pos, Vector3 _forward )
 	{
-		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.NetworkID(), (float)Network.time, (int)_bulletType, _index, _pos, _forward );
+		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.MyNetworkID(), (float)Network.time, (int)_bulletType, _index, _pos, _forward );
 	}
 
 	[RPC]

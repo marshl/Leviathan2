@@ -122,7 +122,7 @@ public abstract class Common
 		return int.Parse( _player.ToString() );
 	}
 
-	public static int NetworkID()
+	public static int MyNetworkID()
 	{
 		return NetworkID( Network.player );
 	}

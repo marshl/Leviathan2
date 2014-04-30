@@ -52,18 +52,18 @@ public class MenuServerList : MonoBehaviour
 	}
 
 	private void RefreshServerList()
-	{
+	{ 
 		MenuNetworking.instance.UpdateHostList();
 		for ( int i = 0; i < this.serverTableLength; ++i )
 		{
-			if ( MenuNetworking.instance.GetHostData(i) != null )
+			if ( MenuNetworking.instance.IsValidHostIndex( i ) )
 			{
 				this.serverRows[i].hostDataIndex = i;
 			}
 			else
 			{
 				this.serverRows[i].hostDataIndex = -1;
-			}
+			} 
 		}
 		this.RefreshGUI();
 	}

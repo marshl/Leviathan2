@@ -26,18 +26,20 @@ public class MenuLobby : MonoBehaviour
 
 	public MenuPlayerRow firstPlayerRow;
 	public float playerRowOffset;
-	
+
 	public string[] playerMessageColours;
 
 	// Private Variables
 	private List<LobbyMessage> messages;
 	private List<MenuPlayerRow> playerRows;
-	
-	private Dictionary<int, PLAYER_TYPE> playerDictionary;
+
+	public Dictionary<int, PLAYER_TYPE> playerDictionary;
 	private int commander1;
 	private int commander2;
 	private List<int> team1;
 	private List<int> team2;
+
+	private bool playerListNeedsUpdating = true;
 
 	private void Awake ()
 	{
@@ -54,21 +56,29 @@ public class MenuLobby : MonoBehaviour
 	{
 		for ( int i = 0; i < MenuNetworking.instance.connectionLimit; ++i )
 		{
-			GameObject rowObj = ( i == 0 ) ? this.firstPlayerRow.gameObject 
+			GameObject rowObj = ( i == 0 ) ? this.firstPlayerRow.gameObject
 				: GameObject.Instantiate( this.firstPlayerRow.gameObject ) as GameObject;
-			
+
 			rowObj.transform.parent = this.firstPlayerRow.transform.parent;
-			rowObj.transform.Translate( 0.0f, (float)i * this.playerRowOffset, 0.0f );
+
+			foreach ( GUIText text in rowObj.GetComponentsInChildren<GUIText>( true ) )
+			{
+				text.pixelOffset += new Vector2( 0.0f, (float)i * this.playerRowOffset );
+			}
+
 			rowObj.name = "PlayerRow" + i;
 			MenuPlayerRow rowScript = rowObj.GetComponent<MenuPlayerRow>();
-			rowScript.playerIndex = i;
+			//rowScript.playerIndex = i;
 			this.playerRows.Add( rowScript );
 		}
 	}
 
 	private void Update()
 	{
-		this.UpdatePlayerListGUI();
+		if ( this.playerListNeedsUpdating == true )
+		{
+			this.UpdatePlayerListGUI();
+		}
 	}
 
 	public void Reset()
@@ -77,10 +87,7 @@ public class MenuLobby : MonoBehaviour
 		this.playerDictionary.Clear();
 		this.messages.Clear();
 
-		for ( int i = 0; i < MenuNetworking.instance.connectionLimit; ++i )
-		{
-			this.playerRows[i].SetDefaults();
-		}
+		playerListNeedsUpdating = true;
 	}
 
 	public void StartLobby()
@@ -94,7 +101,7 @@ public class MenuLobby : MonoBehaviour
 		MenuNetworking.instance.QuitLobby();
 		MainMenuButtons.instance.ExitLobby();
 	}
-	
+
 	public void ReceiveTextMessage( NetworkViewID _viewID, string _message )
 	{
 		LobbyMessage message = new LobbyMessage();
@@ -127,46 +134,54 @@ public class MenuLobby : MonoBehaviour
 
 			str += "<color=" + colour + ">" + message.sender.ipAddress + " ("
 				+ message.timeReceived + "): " + this.messages[i].message + "</color>\n";
+			//TODO: Improve this significantly LM 30/4/14
 		}
 		this.messageText.text = str;
 	}
-	
+
 	private void UpdatePlayerListGUI()
 	{
-		for ( int i = 0; i < this.playerRows.Count; ++i )
+		Debug.Log( "Updating Player List GUI" );
+
+		int index = 0;
+		foreach ( KeyValuePair<int, PLAYER_TYPE> pair in this.playerDictionary )
 		{
-			this.playerRows[i].UpdateGUI();
+			this.playerRows[index].UpdateGUI( pair.Key, pair.Value );
+			++index;
+		} 
+
+		for ( ; index < this.playerRows.Count; ++index )
+		{
+			this.playerRows[index].SetDefaults();
 		}
+		  
+		this.playerListNeedsUpdating = false;
 	}
 
 	// To be used by the server only
-	public PLAYER_TYPE DeterminePlayerType( int _playerID )
+	public PLAYER_TYPE GetNextFreePlayerType()
 	{
-		PLAYER_TYPE type;
-
 		if ( this.commander1 == -1 )
 		{
-			type = PLAYER_TYPE.COMMANDER1;
+			return PLAYER_TYPE.COMMANDER1;
 		}
 		else if ( this.commander2 == -1 )
 		{
-			type = PLAYER_TYPE.COMMANDER2;
+			return PLAYER_TYPE.COMMANDER2;
 		}
 		else if ( this.team1.Count > this.team2.Count )
 		{
-			type = PLAYER_TYPE.FIGHTER2;
+			return PLAYER_TYPE.FIGHTER2;
 		}
 		else
 		{
-			type = PLAYER_TYPE.FIGHTER1;
+			return PLAYER_TYPE.FIGHTER1;
 		}
-		this.AddPlayerOfType( _playerID, type );
-
-		return type;
 	}
 
 	public void AddPlayerOfType( int _playerID, PLAYER_TYPE _type )
 	{
+		Debug.Log( "Adding player " + _playerID + " to " + _type );
 		if ( this.playerDictionary.ContainsKey( _playerID ) )
 		{
 			Debug.LogWarning( "Player " + _playerID + " already added", this );
@@ -176,39 +191,54 @@ public class MenuLobby : MonoBehaviour
 		switch ( _type )
 		{
 		case PLAYER_TYPE.COMMANDER1:
+		{
 			if ( this.commander1 != -1 )
 			{
 				Debug.LogWarning( "Commander role already set", this );
 			}
 			this.commander1 = _playerID;
+			Debug.Log( "Set commander 1 to " + _playerID );
 			break;
-
+		}
 		case PLAYER_TYPE.COMMANDER2:
+		{
 			if ( this.commander2 != -1 )
 			{
 				Debug.LogWarning( "Commander 2 rol already set", this );
 			}
 			this.commander2 = _playerID;
+			Debug.Log( "Set commander 2 to " + _playerID );
 			break;
+		}
 		case PLAYER_TYPE.FIGHTER1:
+		{
 			this.team1.Add( _playerID );
 			break;
+		}
 		case PLAYER_TYPE.FIGHTER2:
+		{
 			this.team2.Add( _playerID );
 			break;
+		}
 		default:
+		{
 			Debug.LogError( "Uncaught player type " + _type );
 			break;
 		}
+		}
 
-		Debug.Log( "Adding player " + _playerID + " to type " + _type );
+		this.playerListNeedsUpdating = true;
+		Debug.Log( "Added player " + _playerID + " to type " + _type );
 	}
 
 	public void RemovePlayer( int _playerID )
 	{
 		PLAYER_TYPE type = this.playerDictionary[_playerID];
-		this.playerDictionary.Remove( _playerID );
-	
+		if ( !this.playerDictionary.Remove( _playerID ) )
+		{
+			Debug.LogError( "Failed to remove player " + _playerID );
+		}
+
 		if ( this.commander1 == _playerID )
 		{
 			this.commander1 = -1;
@@ -220,19 +250,28 @@ public class MenuLobby : MonoBehaviour
 			Debug.Log( "Removing commander2" );
 		}
 
-		Debug.Log( "Removing player of type " + type );
+		Debug.Log( "Removed player " + _playerID + " from " + type );
+		this.playerListNeedsUpdating = true;
 	}
 
 	public void ChangePlayerType( int _playerID, PLAYER_TYPE _type )
 	{
 		this.RemovePlayer( _playerID );
 		this.AddPlayerOfType( _playerID, _type );
+
+		this.playerListNeedsUpdating = true;
 	}
 
-	public void CopyInformation( MenuToGameInfo _info )
+	public void CopyInformationIntoGameInfo( MenuToGameInfo _info )
 	{
-		_info.playerType = this.playerDictionary[ Common.NetworkID() ];
-		_info.Print();
+		if ( this.playerDictionary.ContainsKey( Common.MyNetworkID() ) )
+		{
+			_info.playerType = this.playerDictionary[ Common.MyNetworkID() ];
+		}
+		else
+		{
+			Debug.LogError( "Could not find player type in map " + Common.MyNetworkID() );
+		}
 	}
 
 	/************************************************************
@@ -242,10 +281,12 @@ public class MenuLobby : MonoBehaviour
 	{
 		MenuNetworking.instance.StartGame();
 	}
-	
+
 	private void OnExitLobbyDown()
 	{
 		MainMenuButtons.instance.ExitLobby();
+
+		MenuNetworking.instance.DisconnectFromLobby();
 	}
 
 	private void OnSendMessageDown()
@@ -255,7 +296,7 @@ public class MenuLobby : MonoBehaviour
 		{
 			return;
 		}
-		
+
 		MenuNetworking.instance.networkView.RPC
 		(
 			"SendLobbyMessageRPC",
@@ -263,7 +304,7 @@ public class MenuLobby : MonoBehaviour
 			MenuNetworking.instance.networkView.viewID,
 			text
 		);
-		
+
 		this.messageTextField.GetComponent<GUITextField>().text = "";
 	}
 }
