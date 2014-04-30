@@ -141,8 +141,6 @@ public class MenuLobby : MonoBehaviour
 
 	private void UpdatePlayerListGUI()
 	{
-		Debug.Log( "Updating Player List GUI" );
-
 		int index = 0;
 		foreach ( KeyValuePair<int, PLAYER_TYPE> pair in this.playerDictionary )
 		{

@@ -27,7 +27,7 @@ public abstract class Common
 	/// <param name="_planeNormal">The normal of the plane</param>
 	public static bool MousePositionToPlanePoint( out Vector3 _outPos, Vector3 _planePos, Vector3 _planeNormal )
 	{
-		return MousePositionToPlanePoint( out _outPos, new Plane( _planeNormal, _planePos ) );	
+		return MousePositionToPlanePoint( out _outPos, new Plane( _planeNormal, _planePos ) );
 	}
 
 	/// <summary>
@@ -40,7 +40,7 @@ public abstract class Common
 	{
 		Ray mouseRay = Camera.main.ScreenPointToRay( Input.mousePosition );
 		float dist;
-		
+
 		bool hit = _plane.Raycast( mouseRay, out dist );
 		_outPos = mouseRay.GetPoint( dist );
 		return hit;
@@ -85,7 +85,7 @@ public abstract class Common
 		}
 
 		return _height * Mathf.Exp( - Mathf.Pow( _x - _centre, 2.0f ) / ( 2.0f * _std * _std ) ) + _base;
-		/*_           
+		/*_
 		 *          ( (x - c)^2 )
 		 * h . e ^ -( --------_ ) + b
 		 *          (  2 . o^2  )
@@ -93,7 +93,7 @@ public abstract class Common
 	}
 
 	public static float GaussianCurveClamped( float _x, float _height, float _centre, float _extents, float _base = 0.0f )
-	{ 
+	{
 		if ( _x < _centre - _extents || _x > _centre + _extents )
 		{
 			return _base;
@@ -112,7 +112,7 @@ public abstract class Common
 			_angle += 360.0f;
 		while ( _angle > 360.0f )
 			_angle -= 360.0f;
-		
+
 		return Mathf.Clamp( _angle, _min, _max );
 	}
 
@@ -126,7 +126,7 @@ public abstract class Common
 	{
 		return NetworkID( Network.player );
 	}
-	
+
 	public static float SmoothLerp( float _value, float _min, float _max )
 	{
 		return ( (Mathf.Sin((_value-0.5f)*Mathf.PI) * (_max-_min) ) + _max + _min) / 2.0f;
@@ -145,7 +145,7 @@ public abstract class Common
 		{
 			Debug.LogError( "No rigidbody found on target " + _target.gameObject.name, _target );
 			return _target.position;
-		} 
+		}
 
 		//TODO: This will return a point behind the target if the shot isn't travelling fast enough LM:28/03/14
 		float flightDuration = ( _target.position - _origin ).magnitude
@@ -161,5 +161,10 @@ public abstract class Common
 		{
 			return _target.position + _target.rigidbody.velocity * flightDuration;
 		}
-	}   
+	}
+
+	public static float SmoothPingPong( float _x, float _min, float _max, float _interval )
+	{
+		return ( Mathf.Sin( _x * Mathf.PI / _interval) * (_max - _min) + _max + _min) / 2;
+	}
 }
