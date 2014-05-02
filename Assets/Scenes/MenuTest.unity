@@ -127,6 +127,7 @@ MonoBehaviour:
   hostPortField: {fileID: 1167896466}
   hostNameField: {fileID: 185385883}
   hostDescField: {fileID: 1641061795}
+  currentState: 0
 --- !u!114 &38449777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,7 +545,7 @@ GUIText:
   m_GameObject: {fileID: 361327779}
   m_Enabled: 1
   serializedVersion: 3
-  m_Text: 81
+  m_Text: 
   m_Anchor: 0
   m_Alignment: 0
   m_PixelOffset: {x: -120, y: 8}
@@ -1215,6 +1216,7 @@ GameObject:
   - 4: {fileID: 734053924}
   - 132: {fileID: 734053926}
   - 114: {fileID: 734053925}
+  - 114: {fileID: 734053927}
   m_Layer: 0
   m_Name: ForceCapital2Button
   m_TagString: Untagged
@@ -1259,7 +1261,7 @@ GUIText:
   m_Enabled: 1
   serializedVersion: 3
   m_Text: Force Capital Team 2
-  m_Anchor: 2
+  m_Anchor: 4
   m_Alignment: 0
   m_PixelOffset: {x: 350, y: -60}
   m_LineSpacing: 1
@@ -1273,6 +1275,19 @@ GUIText:
     rgba: 4283651071
   m_PixelCorrect: 1
   m_RichText: 1
+--- !u!114 &734053927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 734053923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdbdc4bcac317b341927ac69637fe695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSize: 25
+  scaleRate: 20
 --- !u!1 &745702173
 GameObject:
   m_ObjectHideFlags: 0
@@ -2492,7 +2507,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1431051113}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .889999986, y: .119999997, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1752805062}
@@ -2567,7 +2582,7 @@ GUIText:
   m_Text: Start Game
   m_Anchor: 4
   m_Alignment: 0
-  m_PixelOffset: {x: 0, y: 0}
+  m_PixelOffset: {x: 100, y: 25}
   m_LineSpacing: 1
   m_TabSize: 4
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
@@ -2579,6 +2594,48 @@ GUIText:
     rgba: 4294967295
   m_PixelCorrect: 1
   m_RichText: 0
+--- !u!1 &1435433307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1435433309}
+  - 114: {fileID: 1435433308}
+  m_Layer: 0
+  m_Name: PlayerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1435433308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1435433307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e6fd43154596142b7df3d9ee7d96ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commander1: 0
+  commander2: 0
+  team1: 
+  team2: 
+--- !u!4 &1435433309
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1435433307}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.11637187, y: 3.02867317, z: -4.92678833}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
 --- !u!1 &1446155450
 GameObject:
   m_ObjectHideFlags: 0
@@ -2763,6 +2820,7 @@ GameObject:
   - 4: {fileID: 1608880253}
   - 132: {fileID: 1608880254}
   - 114: {fileID: 1608880255}
+  - 114: {fileID: 1608880256}
   m_Layer: 0
   m_Name: ForceCapital1Button
   m_TagString: Untagged
@@ -2790,7 +2848,7 @@ GUIText:
   m_Enabled: 1
   serializedVersion: 3
   m_Text: Force Capital Team 1
-  m_Anchor: 2
+  m_Anchor: 4
   m_Alignment: 0
   m_PixelOffset: {x: 350, y: -20}
   m_LineSpacing: 1
@@ -2821,6 +2879,19 @@ MonoBehaviour:
   receiverRequired: 0
   parseAsInt: 1
   mode: 0
+--- !u!114 &1608880256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1608880252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdbdc4bcac317b341927ac69637fe695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSize: 25
+  scaleRate: 20
 --- !u!1 &1609161535
 GameObject:
   m_ObjectHideFlags: 0
@@ -3237,6 +3308,7 @@ GameObject:
   - 4: {fileID: 1809974128}
   - 132: {fileID: 1809974129}
   - 114: {fileID: 1809974130}
+  - 114: {fileID: 1809974131}
   m_Layer: 0
   m_Name: ForceFighter2Button
   m_TagString: Untagged
@@ -3264,7 +3336,7 @@ GUIText:
   m_Enabled: 1
   serializedVersion: 3
   m_Text: Force Fighter Team 2
-  m_Anchor: 2
+  m_Anchor: 4
   m_Alignment: 0
   m_PixelOffset: {x: 350, y: -40}
   m_LineSpacing: 1
@@ -3295,6 +3367,19 @@ MonoBehaviour:
   receiverRequired: 0
   parseAsInt: 1
   mode: 0
+--- !u!114 &1809974131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1809974127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdbdc4bcac317b341927ac69637fe695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSize: 25
+  scaleRate: 20
 --- !u!1 &1837339627
 GameObject:
   m_ObjectHideFlags: 0
@@ -3469,6 +3554,44 @@ GUITexture:
   m_RightBorder: 0
   m_TopBorder: 0
   m_BottomBorder: 0
+--- !u!1 &1929418785
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1929418787}
+  - 114: {fileID: 1929418786}
+  m_Layer: 0
+  m_Name: MessageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1929418786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1929418785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07486f7c47b0cbf45a12244cb402e28b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1929418787
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1929418785}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.11637187, y: 3.02867317, z: -4.92678833}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
 --- !u!1 &2002412710
 GameObject:
   m_ObjectHideFlags: 0
@@ -3643,6 +3766,7 @@ GameObject:
   - 4: {fileID: 2029159434}
   - 132: {fileID: 2029159436}
   - 114: {fileID: 2029159435}
+  - 114: {fileID: 2029159437}
   m_Layer: 0
   m_Name: ForceFighter1Button
   m_TagString: Untagged
@@ -3687,7 +3811,7 @@ GUIText:
   m_Enabled: 1
   serializedVersion: 3
   m_Text: Force Fighter Team 1
-  m_Anchor: 2
+  m_Anchor: 4
   m_Alignment: 0
   m_PixelOffset: {x: 350, y: 0}
   m_LineSpacing: 1
@@ -3701,6 +3825,19 @@ GUIText:
     rgba: 4283651071
   m_PixelCorrect: 1
   m_RichText: 1
+--- !u!114 &2029159437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2029159433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdbdc4bcac317b341927ac69637fe695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSize: 25
+  scaleRate: 20
 --- !u!1 &2066020125
 GameObject:
   m_ObjectHideFlags: 0

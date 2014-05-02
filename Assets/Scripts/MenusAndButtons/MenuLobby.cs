@@ -9,13 +9,13 @@ public class MenuLobby : MonoBehaviour
 	public static MenuLobby instance;
 
 	// Private Structures
-	private class LobbyMessage
+	/*private class LobbyMessage
 	{
 		public NetworkPlayer sender;
 		public string message;
 		public string playerName;
 		public DateTime timeReceived;
-	};
+	};*/
 
 	// Editor Variables
 	public GUIText gameNameText;
@@ -30,26 +30,23 @@ public class MenuLobby : MonoBehaviour
 	public string[] playerMessageColours;
 
 	// Private Variables
-	private List<LobbyMessage> messages;
+	//private List<LobbyMessage> messages;
 	private List<MenuPlayerRow> playerRows;
 
-	public Dictionary<int, PLAYER_TYPE> playerDictionary;
-	private int commander1;
-	private int commander2;
-	private List<int> team1;
-	private List<int> team2;
+	//public Dictionary<int, PLAYER_TYPE> playerDictionary;
+
 
 	private bool playerListNeedsUpdating = true;
 
 	private void Awake ()
 	{
 		MenuLobby.instance = this;
-		this.messages = new List<LobbyMessage>();
+		//this.messages = new List<LobbyMessage>();
 		this.playerRows = new List<MenuPlayerRow>();
-		this.playerDictionary = new Dictionary<int, PLAYER_TYPE>();
-		this.team1 = new List<int>();
-		this.team2 = new List<int>();
-		this.commander1 = this.commander2 = -1;
+		//this.playerDictionary = new Dictionary<int, PLAYER_TYPE>();
+		//this.team1 = new List<int>();
+		//this.team2 = new List<int>();
+		//this.commander1 = this.commander2 = -1;
 	}
 
 	private void Start()
@@ -75,17 +72,20 @@ public class MenuLobby : MonoBehaviour
 
 	private void Update()
 	{
-		if ( this.playerListNeedsUpdating == true )
+		if ( MainMenuButtons.instance.currentState == MainMenuButtons.STATE.LOBBY )
 		{
 			this.UpdatePlayerListGUI();
+			this.UpdateMessageGUI();
 		}
 	}
 
 	public void Reset()
 	{
 		Debug.Log( "Resetting MenuLobby", this );
-		this.playerDictionary.Clear();
-		this.messages.Clear();
+		//this.playerDictionary.Clear();
+		//this.messages.Clear();
+
+		GamePlayerManager.instance.Reset();
 
 		playerListNeedsUpdating = true;
 	}
@@ -102,7 +102,7 @@ public class MenuLobby : MonoBehaviour
 		MainMenuButtons.instance.ExitLobby();
 	}
 
-	public void ReceiveTextMessage( NetworkViewID _viewID, string _message )
+	/*public void ReceiveTextMessage( NetworkViewID _viewID, string _message )
 	{
 		LobbyMessage message = new LobbyMessage();
 		message.message = _message;
@@ -118,23 +118,28 @@ public class MenuLobby : MonoBehaviour
 		}
 
 		this.UpdateMessageGUI();
-	}
+	}*/
 
 	private void UpdateMessageGUI()
 	{
 		string str = "";
-		for ( int i = this.messages.Count - 1; i >= 0; --i )
+		//for ( int i = this.messages.Count - 1; i >= 0; --i )
+		for ( int i = MessageManager.instance.messages.Count - 1; i >= 0; --i )
 		{
-			LobbyMessage message = this.messages[i];
+			//LobbyMessage message = this.messages[i];
+			Message msg = MessageManager.instance.messages[i];
 
-			int playerID = Common.NetworkID( message.sender );
-			playerID = playerID % this.playerMessageColours.Length;
+			//GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( msg.senderID );
 
-			string colour = this.playerMessageColours[ playerID ];
+			//int playerID = Common.NetworkID( message.sender );
+			//playerID = playerID % this.playerMessageColours.Length;
+			int colourID = msg.senderID % this.playerMessageColours.Length;
+			string colour = this.playerMessageColours[ colourID ];
 
-			str += "<color=" + colour + ">" + message.sender.ipAddress + " ("
-				+ message.timeReceived + "): " + this.messages[i].message + "</color>\n";
+			str += "<color=" + colour + "> Player " + msg.senderID + " ("
+				+ msg.timeReceived + "): " + msg.message + "</color>\n";
 			//TODO: Improve this significantly LM 30/4/14
+			//TODO: Escape formatting tags LM 02/05/14
 		}
 		this.messageText.text = str;
 	}
@@ -142,9 +147,10 @@ public class MenuLobby : MonoBehaviour
 	private void UpdatePlayerListGUI()
 	{
 		int index = 0;
-		foreach ( KeyValuePair<int, PLAYER_TYPE> pair in this.playerDictionary )
+		//foreach ( KeyValuePair<int, PLAYER_TYPE> pair in this.playerDictionary )
+		foreach ( KeyValuePair<int, GamePlayer> pair in GamePlayerManager.instance.playerMap )
 		{
-			this.playerRows[index].UpdateGUI( pair.Key, pair.Value );
+			this.playerRows[index].UpdateGUI( pair.Value );
 			++index;
 		} 
 
@@ -155,122 +161,8 @@ public class MenuLobby : MonoBehaviour
 		  
 		this.playerListNeedsUpdating = false;
 	}
+	
 
-	// To be used by the server only
-	public PLAYER_TYPE GetNextFreePlayerType()
-	{
-		if ( this.commander1 == -1 )
-		{
-			return PLAYER_TYPE.COMMANDER1;
-		}
-		else if ( this.commander2 == -1 )
-		{
-			return PLAYER_TYPE.COMMANDER2;
-		}
-		else if ( this.team1.Count > this.team2.Count )
-		{
-			return PLAYER_TYPE.FIGHTER2;
-		}
-		else
-		{
-			return PLAYER_TYPE.FIGHTER1;
-		}
-	}
-
-	public void AddPlayerOfType( int _playerID, PLAYER_TYPE _type )
-	{
-		Debug.Log( "Adding player " + _playerID + " to " + _type );
-		if ( this.playerDictionary.ContainsKey( _playerID ) )
-		{
-			Debug.LogWarning( "Player " + _playerID + " already added", this );
-		}
-
-		this.playerDictionary.Add( _playerID, _type );
-		switch ( _type )
-		{
-		case PLAYER_TYPE.COMMANDER1:
-		{
-			if ( this.commander1 != -1 )
-			{
-				Debug.LogWarning( "Commander role already set", this );
-			}
-			this.commander1 = _playerID;
-			Debug.Log( "Set commander 1 to " + _playerID );
-			break;
-		}
-		case PLAYER_TYPE.COMMANDER2:
-		{
-			if ( this.commander2 != -1 )
-			{
-				Debug.LogWarning( "Commander 2 rol already set", this );
-			}
-			this.commander2 = _playerID;
-			Debug.Log( "Set commander 2 to " + _playerID );
-			break;
-		}
-		case PLAYER_TYPE.FIGHTER1:
-		{
-			this.team1.Add( _playerID );
-			break;
-		}
-		case PLAYER_TYPE.FIGHTER2:
-		{
-			this.team2.Add( _playerID );
-			break;
-		}
-		default:
-		{
-			Debug.LogError( "Uncaught player type " + _type );
-			break;
-		}
-		}
-
-		this.playerListNeedsUpdating = true;
-		Debug.Log( "Added player " + _playerID + " to type " + _type );
-	}
-
-	public void RemovePlayer( int _playerID )
-	{
-		PLAYER_TYPE type = this.playerDictionary[_playerID];
-		if ( !this.playerDictionary.Remove( _playerID ) )
-		{
-			Debug.LogError( "Failed to remove player " + _playerID );
-		}
-
-		if ( this.commander1 == _playerID )
-		{
-			this.commander1 = -1;
-			Debug.Log( "Removing commander1" );
-		}
-		else if ( this.commander2 == _playerID )
-		{
-			this.commander2 = -1;
-			Debug.Log( "Removing commander2" );
-		}
-
-		Debug.Log( "Removed player " + _playerID + " from " + type );
-		this.playerListNeedsUpdating = true;
-	}
-
-	public void ChangePlayerType( int _playerID, PLAYER_TYPE _type )
-	{
-		this.RemovePlayer( _playerID );
-		this.AddPlayerOfType( _playerID, _type );
-
-		this.playerListNeedsUpdating = true;
-	}
-
-	public void CopyInformationIntoGameInfo( MenuToGameInfo _info )
-	{
-		if ( this.playerDictionary.ContainsKey( Common.MyNetworkID() ) )
-		{
-			_info.playerType = this.playerDictionary[ Common.MyNetworkID() ];
-		}
-		else
-		{
-			Debug.LogError( "Could not find player type in map " + Common.MyNetworkID() );
-		}
-	}
 
 	/************************************************************
 	 * BUTTON CALLBACKS */
@@ -295,11 +187,11 @@ public class MenuLobby : MonoBehaviour
 			return;
 		}
 
-		MenuNetworking.instance.networkView.RPC
-		(
+		MenuNetworking.instance.networkView.RPC (
 			"SendLobbyMessageRPC",
 			RPCMode.All,
-			MenuNetworking.instance.networkView.viewID,
+			Common.MyNetworkID(),
+			//MenuNetworking.instance.networkView.viewID,
 			text
 		);
 

@@ -1,15 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class MenuPlayer : MonoBehaviour {
+[System.Obsolete]
+public class MenuPlayer : BasePlayer
+{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

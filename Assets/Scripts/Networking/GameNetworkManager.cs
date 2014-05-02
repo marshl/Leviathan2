@@ -1,21 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameNetworkManager : MonoBehaviour
+public class GameNetworkManager : BaseNetworkManager
 {
 	public static GameNetworkManager instance;
 
 	public double startPauseDuration;
 	private double timeStarted;
 	private bool gameHasStarted = false;
+
+	public PLAYER_TYPE defaultPlayerType;
 	
-	private void Awake()
+	protected void Awake()
 	{
+		base.Awake();
 		GameNetworkManager.instance = this;
 	}
 
-	private void Start()
+	protected void Start()
 	{
+		base.Start();
+
 		this.timeStarted = Network.time;
 
 		MenuToGameInfo info = MenuToGameInfo.instance;
@@ -29,17 +34,19 @@ public class GameNetworkManager : MonoBehaviour
 			Debug.LogWarning( "No menu to game info found. Using default values", info );
 		}
 
-		//TODO: This may have issues LM 28/04/14
-		this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.MyNetworkID(), (int)info.playerType );
-
-		//info.Print();
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			//TODO: This may have issues with laggy players LM 28/04/14
+			this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Network.player, (int)info.playerType );
+		}
 	}
 
-	private void Update()
+	protected void Update()
 	{
+		base.Start();
 
-		if (Network.peerType != NetworkPeerType.Disconnected 
-		    && Network.isServer && !this.gameHasStarted
+		if ( Network.peerType != NetworkPeerType.Disconnected 
+		  && Network.isServer && !this.gameHasStarted
 		  && Network.time - this.timeStarted > this.startPauseDuration )
 		{
 			this.gameHasStarted = true;
@@ -55,23 +62,29 @@ public class GameNetworkManager : MonoBehaviour
 	}
 
 	// Unity Callback
-	private void OnDisconnectedFromServer()
+	protected override void OnDisconnectedFromServer( NetworkDisconnection _info )
 	{
 		Debug.Log( "Disconnected from server" );
 		Application.LoadLevel( "MenuTest" );
 	}
 
 	// Unity Callback
-	private void OnPlayerDisconnected( NetworkPlayer _player )
+	protected override void OnPlayerDisconnected( NetworkPlayer _player )
 	{
 		Debug.Log( _player.ipAddress + " has disconnected" );
 		GamePlayerManager.instance.DisconnectPlayer( _player );
 	}
 
 	[RPC]
+	//private void OnConnectedToGameRPC( NetworkPlayer _netPlayer, int _playerType )
 	private void OnConnectedToGameRPC( int _playerID, int _playerType )
 	{ 
-		GamePlayerManager.instance.AddPlayer( _playerID, (PLAYER_TYPE)_playerType );
+		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
+		{
+			Debug.LogError( "Player type " + _playerType + " not defined" );
+		}
+		GamePlayerManager.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
+		//GamePlayerManager.instance.AddPlayerOfType( _netPlayer, (PLAYER_TYPE)_playerType );
 	}
 
 	[RPC] 
@@ -188,10 +201,11 @@ public class GameNetworkManager : MonoBehaviour
 
 	private void LocalGameStart()
 	{
-
-		GamePlayerManager.instance.AddPlayer(-1,PLAYER_TYPE.COMMANDER1);
+		//GamePlayerManager.instance.AddPlayer( -1, PLAYER_TYPE.COMMANDER1);
+		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
+		//GamePlayerManager.instance.AddPlayerOfType( Network.player, this.defaultPlayerType );
 		GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( Network.player );
-		
+		 
 		PlayerInstantiator.instance.CreatePlayerObject( player );
 	}
 

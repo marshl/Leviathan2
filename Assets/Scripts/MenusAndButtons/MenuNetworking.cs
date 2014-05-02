@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class MenuNetworking : MonoBehaviour
+public class MenuNetworking : BaseNetworkManager
 {
 	// Static Variables
 	public static MenuNetworking instance;
@@ -27,8 +27,10 @@ public class MenuNetworking : MonoBehaviour
 	// Private Variables
 	private HostData[] gameHosts;
 
-	private void Awake()
+	protected void Awake()
 	{
+		base.Start();
+
 		MenuNetworking.instance = this;
 		MasterServer.RequestHostList( this.gameTypeName );
 	}
@@ -118,7 +120,7 @@ public class MenuNetworking : MonoBehaviour
 	}
 
 	// Unity Callback: Do not change signature
-	private void OnDisconnectedFromServer( NetworkDisconnection _info )
+	protected override void OnDisconnectedFromServer( NetworkDisconnection _info )
 	{
 		if ( Network.isServer )
 		{
@@ -167,36 +169,41 @@ public class MenuNetworking : MonoBehaviour
 		{
 			int playerID = Common.NetworkID( _player );
 
-			PLAYER_TYPE playerType = MenuLobby.instance.GetNextFreePlayerType();//( playerID );
+			PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();//MenuLobby.instance.GetNextFreePlayerType();//( playerID );
 
 			// If this is the server, tell the new guy who is in each of the teams
 			//for ( int i = 0; i < Network.connections.Length; ++i )
-			foreach ( KeyValuePair<int, PLAYER_TYPE> pair in MenuLobby.instance.playerDictionary )
+			//foreach ( KeyValuePair<int, PLAYER_TYPE> pair in MenuLobby.instance.playerDictionary )
+			foreach ( KeyValuePair<int, GamePlayer> pair in GamePlayerManager.instance.playerMap )
 			{
 				//int id = Common.NetworkID( Network.connections[i] );
 				//if ( id != playerID )
 				//if ( pair.Value != playerID )
-				if ( pair.Key != playerID )
+				if ( pair.Key != playerID ) // Info about the player is sent further down
 				{
-					Debug.Log( "Telling " + playerID + " about " + pair.Key + ":" + pair.Value );
+					Debug.Log( "Telling " + playerID + " about " + pair.Key + ":" + pair.Value.playerType );
 					//this.networkView.RPC( "SendPlayerTeamInfo", _player, Common.NetworkID( Network.connections[i]), (int)playerType );
-					this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value );
+					this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value.playerType );
+					//this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Value.netPlayer, (int)pair.Value.playerType );
 				}
 			}
 		
 			Debug.Log( "Telling everyone else about " + playerID + ":" + playerType );
 			// Then tell everyone about the new guy
 			this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
+			//this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, _player, (int)playerType );
 		}
 	}
 
 	// Unity Callback: Do not change signature
-	private void OnPlayerDisconnected( NetworkPlayer _player )
+	protected override void OnPlayerDisconnected( NetworkPlayer _player )
 	{
 		Debug.Log( "Player has disconnected IP:" + _player.ipAddress + " Port:" + _player.port );
 
 		int playerID = Common.NetworkID( _player );
-		MenuLobby.instance.RemovePlayer( playerID );
+		//MenuLobby.instance.RemovePlayer( playerID );
+		//GamePlayerManager.instance.RemovePlayer( _player );
+		GamePlayerManager.instance.RemovePlayer( playerID );
 
 		this.networkView.RPC( "OnRemovePlayerRPC", RPCMode.Others, playerID );
 	}
@@ -205,14 +212,23 @@ public class MenuNetworking : MonoBehaviour
 	private void OnServerInitialized()
 	{
 		Debug.Log( "Server initialised." );
-		PLAYER_TYPE playerType = MenuLobby.instance.GetNextFreePlayerType();
-		MenuLobby.instance.AddPlayerOfType( Common.NetworkID( Network.player ), playerType );
+		//PLAYER_TYPE playerType = MenuLobby.instance.GetNextFreePlayerType();
+		PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();
+		//MenuLobby.instance.AddPlayerOfType( Common.NetworkID( Network.player ), playerType );
+		//GamePlayerManager.instance.AddPlayerOfType( Network.player, playerType );
+		GamePlayerManager.instance.AddPlayerOfType( Common.MyNetworkID(), playerType );
 	}
 
 	// Unity Callback: Do not modify signature
 	private void OnFailedToConnectToMasterServer( NetworkConnectionError _info )
 	{
 		Debug.LogWarning( "Could not connect to master server: " + _info );
+	}
+
+	private void OnMasterServerEvent( MasterServerEvent _event )
+	{
+		Debug.Log( "Master Server event " + _event.ToString() );
+		//TODO: Implement cases found here http://docs.unity3d.com/Documentation/ScriptReference/MasterServerEvent.html LM 01/05/14
 	}
 
 	public void QuitLobby()
@@ -240,7 +256,8 @@ public class MenuNetworking : MonoBehaviour
 		DontDestroyOnLoad( menuInfoObj );
 		MenuToGameInfo infoScript = menuInfoObj.AddComponent<MenuToGameInfo>();
 		MenuToGameInfo.instance = infoScript;
-		MenuLobby.instance.CopyInformationIntoGameInfo( infoScript );
+		//MenuLobby.instance.CopyInformationIntoGameInfo( infoScript );
+		GamePlayerManager.instance.CopyInformationIntoGameInfo( infoScript );
 
 		Application.LoadLevel( _level );
 	}
@@ -252,19 +269,27 @@ public class MenuNetworking : MonoBehaviour
 		{
 			Debug.LogError( "Player type " + _playerType + " not defined" );
 		}
-		MenuLobby.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
+		//MenuLobby.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
+		GamePlayerManager.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
+		//GamePlayerManager.instance.AddPlayerOfType( _netPlayer, (PLAYER_TYPE)_playerType );
 	}
 
 	[RPC]
-	private void SendLobbyMessageRPC( NetworkViewID _viewID, string _message )
+	private void SendLobbyMessageRPC( int _playerID, string _message )
 	{
-		MenuLobby.instance.ReceiveTextMessage( _viewID, _message );
+		//MenuLobby.instance.ReceiveTextMessage( _viewID, _message );
+		MessageManager.instance.AddMessage( _playerID, _message );
 	}
 	
 	[RPC]
-	private void SendPlayerTeamChangeRPC( int _playerID, PLAYER_TYPE _type )
+	private void SendPlayerTeamChangeRPC( int _playerID, int _playerType )
 	{
-		MenuLobby.instance.ChangePlayerType( _playerID, _type );
+		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
+		{
+			Debug.LogError( "Player type " + _playerType + " not defined" );
+		}
+		//MenuLobby.instance.ChangePlayerType( _playerID, _type );
+		GamePlayerManager.instance.ChangePlayerType( _playerID, (PLAYER_TYPE)_playerType );
 	}
 
 	/*
@@ -282,6 +307,7 @@ public class MenuNetworking : MonoBehaviour
 	[RPC]
 	private void OnRemovePlayerRPC( int _playerID )
 	{
-		MenuLobby.instance.RemovePlayer( _playerID );
+		//MenuLobby.instance.RemovePlayer( _playerID );
+		GamePlayerManager.instance.RemovePlayer( _playerID );
 	}
 }

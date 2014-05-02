@@ -16,16 +16,29 @@ public class MainMenuButtons : MonoBehaviour
 	public GUITextField hostNameField;
 	public GUITextField hostDescField;
 
+	public enum STATE
+	{
+		MAIN,
+		LOBBY,
+		CREATE_GAME,
+		SERVER_LIST,
+		CONNECTING,
+	};
+
+	public STATE currentState;
+
 	private void Awake()
 	{
 		MainMenuButtons.instance = this;
 		this.mainPanelObj.SetActive( true );
+		this.currentState = STATE.MAIN;
 	}
 
 	private void OnHostButtonDown()
 	{
 		this.mainPanelObj.SetActive( false );
 		this.hostPanelObj.SetActive( true );
+		this.currentState = STATE.CREATE_GAME;
 	}
 
 	private void OnReturnToMainDown()
@@ -33,11 +46,13 @@ public class MainMenuButtons : MonoBehaviour
 		this.mainPanelObj.SetActive( true );
 		this.hostPanelObj.SetActive( false );
 		this.serverPanelObj.SetActive( false );
+		this.currentState = STATE.MAIN;
 	}
 
 	private void OnQuitLobbyDown()
 	{
 		MenuNetworking.instance.QuitLobby();
+		this.currentState = STATE.MAIN;
 	}
 
 	private void OnJoinButtonDown()
@@ -46,6 +61,7 @@ public class MainMenuButtons : MonoBehaviour
 		this.serverPanelObj.SetActive( true );
 
 		MenuServerList.instance.StartJoinMenu();
+		this.currentState = STATE.SERVER_LIST;
 	}
 
 	public void OpenGameLobby()
@@ -53,18 +69,22 @@ public class MainMenuButtons : MonoBehaviour
 		this.connectingPanelObj.SetActive( false );
 		this.lobbyPanelObj.SetActive( true );
 		MenuLobby.instance.StartLobby();
+
+		this.currentState = STATE.LOBBY;
 	}
 
 	public void ExitLobby()
 	{
 		this.mainPanelObj.SetActive( true );
 		this.lobbyPanelObj.SetActive( false );
+		this.currentState = STATE.MAIN;
 	}
 
 	public void OpenConnectingWindow()
 	{
 		this.connectingPanelObj.SetActive( true );
 		this.serverPanelObj.SetActive( false );
+		this.currentState = STATE.CONNECTING;
 	}
 
 	private void OnStartServerDown()
@@ -97,12 +117,16 @@ public class MainMenuButtons : MonoBehaviour
 		this.hostPanelObj.SetActive( false );
 		this.lobbyPanelObj.SetActive( true );
 		MenuLobby.instance.StartLobby();
+
+		this.currentState = STATE.LOBBY;
 	}
 
 	public void OnConnectionFailure( NetworkConnectionError _info )
 	{
 		this.connectingPanelObj.SetActive( false );
 		this.mainPanelObj.SetActive( true );
+
+		this.currentState = STATE.MAIN;
 	}
 
 	public void OnForceStartCondition( int _playerType )
@@ -114,7 +138,8 @@ public class MainMenuButtons : MonoBehaviour
 		else
 		{
 			PLAYER_TYPE type = (PLAYER_TYPE)_playerType;
-			MenuLobby.instance.ChangePlayerType( Common.MyNetworkID(), type );
+			//MenuLobby.instance.ChangePlayerType( Common.MyNetworkID(), type );
+			GamePlayerManager.instance.ChangePlayerType( Common.MyNetworkID(), type );
 		}
 	}
 

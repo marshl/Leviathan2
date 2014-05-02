@@ -42,12 +42,15 @@ public class MenuServerList : MonoBehaviour
 
 	private void Update()
 	{
-		this.hostRefreshTimer += Time.deltaTime;
-
-		if ( this.hostRefreshTimer >= this.hostRefreshRate )
+		if ( MainMenuButtons.instance.currentState == MainMenuButtons.STATE.SERVER_LIST )
 		{
-			this.hostRefreshTimer = 0.0f;
-			this.RefreshServerList();
+			this.hostRefreshTimer += Time.deltaTime;
+
+			if ( this.hostRefreshTimer >= this.hostRefreshRate )
+			{
+				this.hostRefreshTimer = 0.0f;
+				this.RefreshServerList();
+			}
 		}
 	}
 

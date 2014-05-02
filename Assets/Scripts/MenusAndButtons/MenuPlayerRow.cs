@@ -11,7 +11,7 @@ public class MenuPlayerRow : MonoBehaviour
 	// Public Variables
 	//public int playerIndex;
 
-	public void UpdateGUI( int _playerID, PLAYER_TYPE _playerType )
+	public void UpdateGUI( GamePlayer _player )
 	{
 		/*if ( this.playerIndex >= Network.connections.Length )
 		{
@@ -21,17 +21,17 @@ public class MenuPlayerRow : MonoBehaviour
 		
 		//NetworkPlayer player = MenuLobby.instance//Network.connections[playerIndex];
 		//TODO: have to store NetworkPlayer somewhere (use MenuPlayer class) LM 30/04/14
-		NetworkPlayer player = Network.player; // TODO: Gotta be a better way to default LM 30/04/14
+		/*NetworkPlayer player = Network.player; // TODO: Gotta be a better way to default LM 30/04/14
 		for ( int i = 0; i < Network.connections.Length; ++i )
 		{
 			if ( Common.NetworkID( Network.connections[i] ) == _playerID )
 			{
 				player = Network.connections[i];
 			}
-		}
+		}*/
 
-		this.ipText.text = player.ipAddress;
-		this.nameText.text = "Player " + _playerID;
+		this.ipText.text = "<TODO>";//_player.netPlayer.ipAddress;//player.ipAddress;
+		this.nameText.text = "Player " + _player.id;//_playerID;
 	}
 
 	public void SetDefaults()
