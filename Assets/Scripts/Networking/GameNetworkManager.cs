@@ -25,6 +25,8 @@ public class GameNetworkManager : BaseNetworkManager
 
 		MenuToGameInfo info = MenuToGameInfo.instance;
 
+		startPauseDuration = 0.1;
+
 		if ( info == null )
 		{
 			GameObject obj = new GameObject();

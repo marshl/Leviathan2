@@ -236,28 +236,32 @@ public class Fighter : MonoBehaviour {
 	public void Undock()
 	{
 		print("Undocking");
-		//Nick the velocity of the capital ship's rigidbody
-		Vector3 inheritedVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.velocity;
+		rigidbody.constraints = RigidbodyConstraints.None;
+
+		Vector3 inheritedVelocity = this.transform.root.forward;
 		Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
 
+		//print("Inherited velocity: " + inheritedVelocity);
 
 		state = FIGHTERSTATE.UNDOCKING;
 	    currentSlot.occupied = false;
 	    currentSlot.landedFighter = null;
 	    desiredSpeed = (maxSpeed * 0.75f);
 	    undockingTimer = undockingDelay;
-		rigidbody.constraints = RigidbodyConstraints.None;
+
 	//	rigidbody.AddForce (this.transform.root.forward * this.transform.root.GetComponent<CapitalShipMovement
 	    this.transform.parent = null;
 		this.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
 
 		//Apply force of the capital ship so we don't move relative
-		this.rigidbody.AddForce (inheritedVelocity * 5);
-		this.rigidbody.AddTorque (inheritedAngularVelocity);
+
 
 		GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, currentSlot.slotID );
 		currentSlot = null;
 		this.GetComponent<FighterWeapons>().enabled = true;
+
+		this.rigidbody.AddRelativeForce (inheritedVelocity * 5);
+		this.rigidbody.AddRelativeTorque (inheritedAngularVelocity);
 	}
 
 	public void Respawn()

@@ -1248,7 +1248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 38449776}
   methodName: OnForceStartCondition
-  value: 1
+  value: 2
   receiverRequired: 0
   parseAsInt: 1
   mode: 0
@@ -2875,7 +2875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 38449776}
   methodName: OnForceStartCondition
-  value: 0
+  value: 10
   receiverRequired: 0
   parseAsInt: 1
   mode: 0
@@ -3363,7 +3363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 38449776}
   methodName: OnForceStartCondition
-  value: 3
+  value: 4
   receiverRequired: 0
   parseAsInt: 1
   mode: 0
@@ -3798,7 +3798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 38449776}
   methodName: OnForceStartCondition
-  value: 2
+  value: 3
   receiverRequired: 0
   parseAsInt: 1
   mode: 0
