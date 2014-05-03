@@ -25,22 +25,6 @@ public class GamePlayerManager : MonoBehaviour
 		this.team2 = new List<int>();
 	}
 
-	/*public void AddPlayer( int _id, PLAYER_TYPE _playerType )
-	{
-		GamePlayer gamePlayer = new GamePlayer();
-		gamePlayer.playerType = _playerType;
-
-		if ( this.playerMap.ContainsKey( _id ) )
-		{
-			Debug.LogError( "Duplicate player " + _id);
-			return; 
-		}
-		else
-		{
-			this.playerMap.Add( _id, gamePlayer );
-		}
-	}*/
-
 	public void DisconnectPlayer( NetworkPlayer _player )
 	{
 		this.GetNetworkPlayer( _player ).isConnected = false;
@@ -85,11 +69,9 @@ public class GamePlayerManager : MonoBehaviour
 			return PLAYER_TYPE.FIGHTER1;
 		}
 	}
-
-	//public void AddPlayerOfType( NetworkPlayer _netPlayer, PLAYER_TYPE _type )
+	
 	public void AddPlayerOfType( int _playerID, PLAYER_TYPE _playerType )
 	{
-		//int playerID = Common.NetworkID( _netPlayer );
 		Debug.Log( "Adding player " + _playerID + " to " + _playerType );
 		if ( this.playerMap.ContainsKey( _playerID ) )
 		{
@@ -98,48 +80,8 @@ public class GamePlayerManager : MonoBehaviour
 
 		GamePlayer newPlayer = new GamePlayer();
 		newPlayer.id = _playerID;
-		//newPlayer.playerType = _type;
 
 		this.playerMap.Add( newPlayer.id, newPlayer );
-
-		/*switch ( _type )
-		{
-		case PLAYER_TYPE.COMMANDER1:
-		{
-			if ( this.commander1 != -1 )
-			{
-				Debug.LogWarning( "Commander role already set", this );
-			}
-			this.commander1 = playerID;
-			Debug.Log( "Set commander 1 to " + playerID );
-			break;
-		}
-		case PLAYER_TYPE.COMMANDER2:
-		{
-			if ( this.commander2 != -1 )
-			{
-				Debug.LogWarning( "Commander 2 rol already set", this );
-			}
-			this.commander2 = playerID;
-			Debug.Log( "Set commander 2 to " + playerID );
-			break;
-		}
-		case PLAYER_TYPE.FIGHTER1:
-		{
-			this.team1.Add( playerID );
-			break;
-		}
-		case PLAYER_TYPE.FIGHTER2:
-		{
-			this.team2.Add( playerID );
-			break;
-		}
-		default:
-		{
-			Debug.LogError( "Uncaught player type " + _type );
-			break;
-		}
-		}*/
 
 		this.ChangePlayerType( newPlayer.id, _playerType );
 		Debug.Log( "Added player " + newPlayer.id + " to type " + _playerType );
@@ -174,11 +116,6 @@ public class GamePlayerManager : MonoBehaviour
 
 	public void ChangePlayerType( int _playerID, PLAYER_TYPE _newType )
 	{
-		/*if ( this.RemovePlayer( _playerID, ref netPlayer ) )
-		{
-			this.AddPlayerOfType( netPlayer, _type );
-		}*/
-
 		if ( !this.playerMap.ContainsKey( _playerID ) )
 		{
 			Debug.LogError( "Unknown player ID " + _playerID );

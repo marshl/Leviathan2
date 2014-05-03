@@ -9,6 +9,8 @@ public class Message
 	public int receiverID; // TODO: Stuff with this
 	public string message;
 	public DateTime timeReceived;
+
+
 };
 
 public class MessageManager : MonoBehaviour
@@ -17,12 +19,12 @@ public class MessageManager : MonoBehaviour
 
 	public List<Message> messages;
 
-	//public bool messagesUpdated;
+	private string[] playerMessageColours = { "#FFFFFFFF", "#FF00FFFF", "#FFFF00FF", "#00FFFFFF" };
 
 	private void Awake()
 	{
 		MessageManager.instance = this;
-
+		 
 		this.messages = new List<Message>();
 	}
 
@@ -34,8 +36,22 @@ public class MessageManager : MonoBehaviour
 		msg.timeReceived = DateTime.Now;
 
 		this.messages.Add( msg );
+	}
 
-		//this.messagesUpdated = true;
+	public string GetFormattedMessage( int _messageIndex )
+	{
+		if ( _messageIndex < 0 && _messageIndex >= this.messages.Count )
+		{
+			Debug.LogError( "bad message index " + _messageIndex );
+			return "ERROR";
+		}
+
+		Message msg = this.messages[_messageIndex];
+		int colourID = msg.senderID % this.playerMessageColours.Length;
+		string colour = this.playerMessageColours[ colourID ];
+		
+		return "<color=" + colour + "> Player " + msg.senderID + " ("
+			+ msg.timeReceived + "): " + msg.message + "</color>\n";
 	}
 
 	public void Reset()

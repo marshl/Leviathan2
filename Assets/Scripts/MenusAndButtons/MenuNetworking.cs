@@ -22,8 +22,8 @@ public class MenuNetworking : BaseNetworkManager
 	public HostData connectionHost = null;
 
 	[HideInInspector]
-	public int portNumber; 
-	
+	public int portNumber;
+
 	// Private Variables
 	private HostData[] gameHosts;
 
@@ -38,7 +38,7 @@ public class MenuNetworking : BaseNetworkManager
 		MasterServer.RequestHostList( this.gameTypeName );
 		this.gameHosts = MasterServer.PollHostList();
 	}
-	
+
 	public NetworkConnectionError StartServer( int _port, string _gameName, string _comment )
 	{
 		this.gameName = _gameName;
@@ -48,15 +48,15 @@ public class MenuNetworking : BaseNetworkManager
 		Debug.Log( "Starting server Port:" + this.portNumber + " GameName:" + this.gameName + " Comment:"+ this.gameComment );
 		NetworkConnectionError result = NetworkConnectionError.NoError;
 		try
-		{ 
+		{
 			result = Network.InitializeServer( this.connectionLimit, _port, Network.HavePublicAddress() );
 		}
-		catch 
+		catch
 		{
 			Debug.Log( "Error starting server: " + result.ToString() );
 			return result;
 		}
-		Debug.Log( "Start Server result: " + result.ToString() ); 
+		Debug.Log( "Start Server result: " + result.ToString() );
 		Debug.Log( "Registering master server: " + this.gameTypeName );
 		MasterServer.RegisterHost( this.gameTypeName, this.gameName, this.gameComment );
 
@@ -100,8 +100,8 @@ public class MenuNetworking : BaseNetworkManager
 		else
 		{
 			Debug.LogWarning( "Invalid host index" );
-			return null;  
-		} 
+			return null;
+		}
 	}
 
 	public void DisconnectFromLobby()
@@ -170,26 +170,18 @@ public class MenuNetworking : BaseNetworkManager
 			PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();//MenuLobby.instance.GetNextFreePlayerType();//( playerID );
 
 			// If this is the server, tell the new guy who is in each of the teams
-			//for ( int i = 0; i < Network.connections.Length; ++i )
-			//foreach ( KeyValuePair<int, PLAYER_TYPE> pair in MenuLobby.instance.playerDictionary )
 			foreach ( KeyValuePair<int, GamePlayer> pair in GamePlayerManager.instance.playerMap )
 			{
-				//int id = Common.NetworkID( Network.connections[i] );
-				//if ( id != playerID )
-				//if ( pair.Value != playerID )
 				if ( pair.Key != playerID ) // Info about the player is sent further down
 				{
 					Debug.Log( "Telling " + playerID + " about " + pair.Key + ":" + pair.Value.playerType );
-					//this.networkView.RPC( "SendPlayerTeamInfo", _player, Common.NetworkID( Network.connections[i]), (int)playerType );
 					this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value.playerType );
-					//this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Value.netPlayer, (int)pair.Value.playerType );
 				}
 			}
-		
+
 			Debug.Log( "Telling everyone else about " + playerID + ":" + playerType );
 			// Then tell everyone about the new guy
 			this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
-			//this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, _player, (int)playerType );
 		}
 	}
 
@@ -199,8 +191,6 @@ public class MenuNetworking : BaseNetworkManager
 		Debug.Log( "Player has disconnected IP:" + _player.ipAddress + " Port:" + _player.port );
 
 		int playerID = Common.NetworkID( _player );
-		//MenuLobby.instance.RemovePlayer( playerID );
-		//GamePlayerManager.instance.RemovePlayer( _player );
 		GamePlayerManager.instance.RemovePlayer( playerID );
 
 		this.networkView.RPC( "OnRemovePlayerRPC", RPCMode.Others, playerID );
@@ -210,10 +200,7 @@ public class MenuNetworking : BaseNetworkManager
 	private void OnServerInitialized()
 	{
 		Debug.Log( "Server initialised." );
-		//PLAYER_TYPE playerType = MenuLobby.instance.GetNextFreePlayerType();
 		PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();
-		//MenuLobby.instance.AddPlayerOfType( Common.NetworkID( Network.player ), playerType );
-		//GamePlayerManager.instance.AddPlayerOfType( Network.player, playerType );
 		GamePlayerManager.instance.AddPlayerOfType( Common.MyNetworkID(), playerType );
 	}
 
@@ -254,7 +241,6 @@ public class MenuNetworking : BaseNetworkManager
 		DontDestroyOnLoad( menuInfoObj );
 		MenuToGameInfo infoScript = menuInfoObj.AddComponent<MenuToGameInfo>();
 		MenuToGameInfo.instance = infoScript;
-		//MenuLobby.instance.CopyInformationIntoGameInfo( infoScript );
 		GamePlayerManager.instance.CopyInformationIntoGameInfo( infoScript );
 
 		Application.LoadLevel( _level );
@@ -267,18 +253,15 @@ public class MenuNetworking : BaseNetworkManager
 		{
 			Debug.LogError( "Player type " + _playerType + " not defined" );
 		}
-		//MenuLobby.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
 		GamePlayerManager.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
-		//GamePlayerManager.instance.AddPlayerOfType( _netPlayer, (PLAYER_TYPE)_playerType );
 	}
 
 	[RPC]
 	private void SendLobbyMessageRPC( int _playerID, string _message )
 	{
-		//MenuLobby.instance.ReceiveTextMessage( _viewID, _message );
 		MessageManager.instance.AddMessage( _playerID, _message );
 	}
-	
+
 	[RPC]
 	private void SendPlayerTeamChangeRPC( int _playerID, int _playerType )
 	{
@@ -286,26 +269,13 @@ public class MenuNetworking : BaseNetworkManager
 		{
 			Debug.LogError( "Player type " + _playerType + " not defined" );
 		}
-		//MenuLobby.instance.ChangePlayerType( _playerID, _type );
+
 		GamePlayerManager.instance.ChangePlayerType( _playerID, (PLAYER_TYPE)_playerType );
 	}
 
-	/*
-	[RPC]
-	private void RequestPlayerListRPC( NetworkPlayer _player )
-	{
-		Debug.Log( "Player " + _player + " has requested player list" );
-
-		foreach ( KeyValuePair<int, PLAYER_TYPE> pair in MenuLobby.instance.playerDictionary )
-		{
-			this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value );
-		}
-	}
-*/
 	[RPC]
 	private void OnRemovePlayerRPC( int _playerID )
 	{
-		//MenuLobby.instance.RemovePlayer( _playerID );
 		GamePlayerManager.instance.RemovePlayer( _playerID );
 	}
 }
