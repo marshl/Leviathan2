@@ -29,8 +29,6 @@ public class MenuNetworking : BaseNetworkManager
 
 	protected void Awake()
 	{
-		base.Start();
-
 		MenuNetworking.instance = this;
 		MasterServer.RequestHostList( this.gameTypeName );
 	}

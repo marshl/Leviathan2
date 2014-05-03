@@ -13,14 +13,11 @@ public class GameNetworkManager : BaseNetworkManager
 	
 	protected void Awake()
 	{
-		base.Awake();
 		GameNetworkManager.instance = this;
 	}
 
 	protected void Start()
 	{
-		base.Start();
-
 		this.timeStarted = Network.time;
 
 		MenuToGameInfo info = MenuToGameInfo.instance;
@@ -39,14 +36,12 @@ public class GameNetworkManager : BaseNetworkManager
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
 			//TODO: This may have issues with laggy players LM 28/04/14
-			this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Network.player, (int)info.playerType );
+			this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.MyNetworkID(), (int)info.playerType );
 		}
 	}
 
 	protected void Update()
 	{
-		base.Start();
-
 		if ( Network.peerType != NetworkPeerType.Disconnected 
 		  && Network.isServer && !this.gameHasStarted
 		  && Network.time - this.timeStarted > this.startPauseDuration )

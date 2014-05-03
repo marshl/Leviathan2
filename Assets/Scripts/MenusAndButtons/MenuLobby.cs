@@ -35,9 +35,6 @@ public class MenuLobby : MonoBehaviour
 
 	//public Dictionary<int, PLAYER_TYPE> playerDictionary;
 
-
-	private bool playerListNeedsUpdating = true;
-
 	private void Awake ()
 	{
 		MenuLobby.instance = this;
@@ -86,8 +83,6 @@ public class MenuLobby : MonoBehaviour
 		//this.messages.Clear();
 
 		GamePlayerManager.instance.Reset();
-
-		playerListNeedsUpdating = true;
 	}
 
 	public void StartLobby()
@@ -157,9 +152,7 @@ public class MenuLobby : MonoBehaviour
 		for ( ; index < this.playerRows.Count; ++index )
 		{
 			this.playerRows[index].SetDefaults();
-		}
-		  
-		this.playerListNeedsUpdating = false;
+		} 
 	}
 	
 
