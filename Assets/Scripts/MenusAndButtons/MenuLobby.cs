@@ -126,14 +126,9 @@ public class MenuLobby : MonoBehaviour
 		if ( text == "" )
 		{
 			return;
-		}
+		}   
 
-		MenuNetworking.instance.networkView.RPC (
-			"SendLobbyMessageRPC",
-			RPCMode.All,
-			Common.MyNetworkID(),
-			text
-		);
+		MenuNetworking.instance.SendLobbyMessage( text );
 
 		this.messageTextField.GetComponent<GUITextField>().text = "";
 	}

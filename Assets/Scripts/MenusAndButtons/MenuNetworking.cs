@@ -257,12 +257,6 @@ public class MenuNetworking : BaseNetworkManager
 	}
 
 	[RPC]
-	private void SendLobbyMessageRPC( int _playerID, string _message )
-	{
-		MessageManager.instance.AddMessage( _playerID, _message );
-	}
-
-	[RPC]
 	private void SendPlayerTeamChangeRPC( int _playerID, int _playerType )
 	{
 		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )

@@ -47,7 +47,7 @@ public class MessageManager : MonoBehaviour
 		}
 
 		Message msg = this.messages[_messageIndex];
-		int colourID = msg.senderID % this.playerMessageColours.Length;
+		int colourID = msg.senderID > 0 ? msg.senderID % this.playerMessageColours.Length : 0;
 		string colour = this.playerMessageColours[ colourID ];
 		
 		return "<color=" + colour + "> Player " + msg.senderID + " ("
