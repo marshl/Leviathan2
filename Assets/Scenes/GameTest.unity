@@ -2127,6 +2127,14 @@ Prefab:
       propertyPath: defaultPlayerType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: testingFighters
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: overrideSelection
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
   m_RootGameObject: {fileID: 122270339}

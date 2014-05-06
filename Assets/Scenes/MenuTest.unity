@@ -146,12 +146,6 @@ MonoBehaviour:
   messageLimit: 10
   firstPlayerRow: {fileID: 210709639}
   playerRowOffset: -15
-  playerMessageColours:
-  - '#FFFFFF'
-  - '#FF00FF'
-  - '#00FF00'
-  - '#FF0000'
-  - '#00FFFF'
 --- !u!114 &38449778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2875,7 +2869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 38449776}
   methodName: OnForceStartCondition
-  value: 10
+  value: 1
   receiverRequired: 0
   parseAsInt: 1
   mode: 0

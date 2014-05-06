@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Fighter : MonoBehaviour {
@@ -61,7 +61,10 @@ public class Fighter : MonoBehaviour {
 		case FIGHTERSTATE.FLYING:
 			{
 				this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
-				CheckFlightControls();
+				if(!GameMessages.typing)
+				{
+					CheckFlightControls();
+				}
 				ApplyDrag();
 			};
 			break;
@@ -69,24 +72,28 @@ public class Fighter : MonoBehaviour {
 		case FIGHTERSTATE.DOCKED:
 			{
 			//	print("Docked update");
+			if(!GameMessages.typing)
 				CheckDockedControls();
 			};
 			break;
 
 		case FIGHTERSTATE.UNDOCKING:
 			{
-			this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
-			CheckFlightControls();
-			ApplyDrag();
-				if(undockingTimer > 0)
+				this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
+				if(!GameMessages.typing)
 				{
-					undockingTimer -= Time.deltaTime;
-					if(undockingTimer < 0)
-					{
-						undockingTimer = 0;
-						state = FIGHTERSTATE.FLYING;
-					}
+					CheckFlightControls();
 				}
+				ApplyDrag();
+					if(undockingTimer > 0)
+					{
+						undockingTimer -= Time.deltaTime;
+						if(undockingTimer < 0)
+						{
+							undockingTimer = 0;
+							state = FIGHTERSTATE.FLYING;
+						}
+					}
 			};
 			break;
 		}

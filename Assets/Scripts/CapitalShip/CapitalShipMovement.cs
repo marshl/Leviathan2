@@ -218,14 +218,16 @@ public class CapitalShipMovement : MonoBehaviour
 	private void UpdateAccelerationInput()
 	{
 		float oldMoveSpeed = this.currentMovementSpeed;
-
-		if ( Input.GetKey( KeyCode.W ) )
+		if(!GameMessages.typing)
 		{
-			this.currentMovementSpeed += Time.deltaTime * moveAcceleration;
-		}
-		else if ( Input.GetKey( KeyCode.S ) )
-		{
-			this.currentMovementSpeed -= Time.deltaTime * moveAcceleration;
+			if ( Input.GetKey( KeyCode.W ) )
+			{
+				this.currentMovementSpeed += Time.deltaTime * moveAcceleration;
+			}
+			else if ( Input.GetKey( KeyCode.S ) )
+			{
+				this.currentMovementSpeed -= Time.deltaTime * moveAcceleration;
+			}
 		}
 
 		if(oldMoveSpeed != currentMovementSpeed)
