@@ -159,19 +159,22 @@ public class GameNetworkManager : BaseNetworkManager
 
 		GameObject dockingFighter = dockingFighterView.gameObject;
 
-		DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
+		if(!dockingFighterView.isMine)
+		{
+			DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
 
-		dockingFighter.transform.position = landedSlot.landedPosition.transform.position;
-		dockingFighter.transform.parent = landedSlot.landedPosition;
+			dockingFighter.transform.position = landedSlot.landedPosition.transform.position;
+			dockingFighter.transform.parent = landedSlot.landedPosition;
 
-		dockingFighter.transform.rotation = landedSlot.landedPosition.transform.rotation;
-		//dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+			dockingFighter.transform.rotation = landedSlot.landedPosition.transform.rotation;
+			//dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
 
-		dockingFighter.GetComponent<NetworkPositionControl>().TogglePositionUpdates( false );
+			dockingFighter.GetComponent<NetworkPositionControl>().TogglePositionUpdates( false );
 
-		landedSlot.landedFighter = dockingFighter.GetComponent<Fighter>();
+			landedSlot.landedFighter = dockingFighter.GetComponent<Fighter>();
 
-		print("Received docked RPC");
+			print("Received docked RPC");
+		}
 	}
 
 	public void SendUndockedMessage( NetworkViewID _id, int landedSlot )

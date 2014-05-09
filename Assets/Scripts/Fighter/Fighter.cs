@@ -245,8 +245,10 @@ public class Fighter : MonoBehaviour {
 		print("Undocking");
 		rigidbody.constraints = RigidbodyConstraints.None;
 
-		Vector3 inheritedVelocity = this.transform.root.forward;
-		Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
+		Vector3 inheritedVelocity = this.transform.root.GetComponent<NetworkPositionControl>().CalculateVelocity ();
+		//Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
+
+
 
 		//print("Inherited velocity: " + inheritedVelocity);
 
@@ -267,8 +269,10 @@ public class Fighter : MonoBehaviour {
 		currentSlot = null;
 		this.GetComponent<FighterWeapons>().enabled = true;
 
-		this.rigidbody.AddRelativeForce (inheritedVelocity * 5);
-		this.rigidbody.AddRelativeTorque (inheritedAngularVelocity);
+		print(inheritedVelocity);
+
+		this.rigidbody.AddForce (inheritedVelocity * 90);
+		//this.rigidbody.AddRelativeTorque (inheritedAngularVelocity);
 	}
 
 	public void Respawn()

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class NetworkPositionControl : MonoBehaviour
 {
 	/// A position and rotation point sent over the network
@@ -11,6 +12,7 @@ public class NetworkPositionControl : MonoBehaviour
 		public Quaternion rotation;
 		public double timeStamp;
 	};
+	
 
 	// Two points of data to be used to guess the future position
 	private DataPoint olderData;
@@ -152,6 +154,26 @@ public class NetworkPositionControl : MonoBehaviour
 	{
 		print("Toggled position updating to " + _toggle);
 		readNewPositionData = _toggle;
+	}
+
+	public Vector3 CalculateVelocity()
+	{
+		//First up, we need to know the two most recent position data points.
+		//These are used to calculate the distance moved in that time.
+
+		Vector3 travelledVector = this.newerData.position - this.olderData.position;
+
+		//Next we scale this vector up using the time difference to work out one second of velocity.
+		//I really badly wish you could overload Vector3 operators for this.
+
+		travelledVector.x = travelledVector.x * (float)(1 / timeDiff ) ;
+		travelledVector.y = travelledVector.y * (float)(1 / timeDiff ) ;
+		travelledVector.z = travelledVector.z * (float)(1 / timeDiff ) ;
+
+		//This will not be perfect, but it should be good enough to be useful.
+
+		return travelledVector;
+
 	}
 	
 }

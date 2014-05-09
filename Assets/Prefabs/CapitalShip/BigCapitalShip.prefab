@@ -5072,7 +5072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerp: 1
-  lerpRate: 4
+  lerpRate: 8
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
