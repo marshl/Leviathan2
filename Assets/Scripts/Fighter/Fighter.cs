@@ -42,15 +42,24 @@ public class Fighter : MonoBehaviour {
 	public float undockingDelay = 3.0f;
 
 	public DockingBay.DockingSlot currentSlot;
+
+	private float screenRatio = 1.0f;
 	
 	// Unity Callback: Do not modify signature
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
+
 		if ( this.networkView.isMine == false )
 		{
 			this.enabled = false;
 			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		}
+
+	}
+
+	private void Start()
+	{
+		screenRatio = (float)Screen.width / (float)Screen.height;
 	}
 
 	void LateUpdate()
@@ -104,6 +113,7 @@ public class Fighter : MonoBehaviour {
 
 	void CheckFlightControls()
 	{
+		//print("Screen ratio " + screenRatio);
 		if ( Input.GetMouseButton(0) ) // Left click - Turn the ship
 		{
 			Vector2 transformedMousePos = new Vector3(Input.mousePosition.x / Screen.width * 2.0f - 1.0f,
@@ -114,9 +124,9 @@ public class Fighter : MonoBehaviour {
 
 			//Set the desired rotation based on mouse position.
 			transformedMousePos.x = Mathf.Sign( transformedMousePos.x ) * Common.GaussianCurveClamped(
-				transformedMousePos.x, -1.0f, 0.0f, this.turnExtents, 1.0f );
+				transformedMousePos.x, -1.0f, 0.0f, this.turnExtents , 1.0f );
 			transformedMousePos.y = Mathf.Sign( transformedMousePos.y ) * Common.GaussianCurveClamped(
-				transformedMousePos.y, -1.0f, 0.0f, this.turnExtents, 1.0f );
+				transformedMousePos.y, -1.0f, 0.0f, this.turnExtents * screenRatio, 1.0f );
 
 			Vector3 torqueValue = new Vector3(
 				-transformedMousePos.y * Time.deltaTime * turnSpeed,

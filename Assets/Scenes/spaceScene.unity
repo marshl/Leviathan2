@@ -9044,7 +9044,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2936f4242dcdfd046ab7b9168eccbede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnSpeed: 35
+  turnSpeed: 90
   rollSpeed: 2
   acceleration: 4000
   maxSpeed: 10000
@@ -9055,7 +9055,7 @@ MonoBehaviour:
   bounceVelocityModifier: 50
   team: 1
   state: 2
-  turnExtents: .5
+  turnExtents: .699999988
   undockingTimer: 0
   undockingDelay: 3
   currentSlot:
