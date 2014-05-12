@@ -41,6 +41,8 @@ public class Fighter : MonoBehaviour {
 
 	public DockingBay.DockingSlot currentSlot;
 
+	private float screenRatio;
+
 	// Unity Callback: Do not modify signature
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
@@ -57,15 +59,12 @@ public class Fighter : MonoBehaviour {
 	}
 
 	private void Start()
-	private void LateUpdate()
 	{
 		screenRatio = (float)Screen.width / (float)Screen.height;
 	}
 
 	void LateUpdate()
 	{
-
-		switch(state)
 		switch( state )
 		{
 		case FIGHTERSTATE.FLYING:
@@ -126,7 +125,7 @@ public class Fighter : MonoBehaviour {
 			transformedMousePos.x = Mathf.Sign( transformedMousePos.x ) * Common.GaussianCurveClamped(
 				transformedMousePos.x, -1.0f, 0.0f, this.turnExtents, 1.0f );
 			transformedMousePos.y = Mathf.Sign( transformedMousePos.y ) * Common.GaussianCurveClamped(
-				transformedMousePos.y, -1.0f, 0.0f, this.turnExtents, 1.0f );
+				transformedMousePos.y, -1.0f, 0.0f, this.turnExtents * this.screenRatio, 1.0f );
 
 			Vector3 torqueValue = new Vector3(
 				-transformedMousePos.y * Time.deltaTime * turnSpeed,
