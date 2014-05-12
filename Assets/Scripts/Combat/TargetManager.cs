@@ -19,16 +19,8 @@ public class TargetManager : MonoBehaviour
 	};
 
 	public static TargetManager instance;
-
-	public List<FighterHealth> team1Fighters;
-	public List<FighterHealth> team2Fighters;
-
-	public CapitalHealth team1Capital;
-	public CapitalHealth team2Capital;
-
-	public Dictionary<NetworkViewID, FighterHealth> fighterIDMap;
-
-	public List<BaseHealth> targetList;
+	
+	public Dictionary<NetworkViewID, BaseHealth> healthMap;
 
 	private void Awake()
 	{
@@ -38,80 +30,38 @@ public class TargetManager : MonoBehaviour
 		}
 		TargetManager.instance = this;
 
-		this.fighterIDMap = new Dictionary<NetworkViewID, FighterHealth>();
-
-		this.team1Fighters = new List<FighterHealth>();
-		this.team2Fighters = new List<FighterHealth>();
-
-		this.targetList = new List<BaseHealth>( GameObject.FindObjectsOfType<BaseHealth>() ); 
+		this.healthMap = new Dictionary<NetworkViewID, BaseHealth>();
 	}
 
-	public void AddTarget( BaseHealth _target )
+	public void AddTarget( NetworkViewID _viewID, BaseHealth _health )
 	{
-		this.targetList.Add( _target );
-		//TODO: Add fighter specific code
-	}
-	   
-	public void AddFighter( FighterHealth _target, int _team )
-	{
-		if ( _target.networkView == null )
+		if ( this.healthMap.ContainsKey( _viewID ) )
 		{
-			Debug.LogError( "Invalid target " + _target, _target );
-			return;
-		}
-		NetworkViewID id = _target.networkView.viewID;
-
-		if ( this.fighterIDMap.ContainsKey( id ) )
-		{
-			Debug.LogWarning( "Duplicate target " + _target, _target );
+			Debug.LogWarning( "Target Manager already contains " + _viewID + "(" + _health.gameObject.name + ")", _health );
 			return;
 		}
 
-		this.fighterIDMap.Add( id, _target );
-
-		if ( _team == 1 )
-		{
-			this.team1Fighters.Add( _target );
-		}
-		else if ( _team == 2 )
-		{
-			this.team2Fighters.Add( _target );
-		}
-		else
-		{
-			Debug.LogError( "Bad team argument " + _team, _target );
-			return;
-		}
+		Debug.Log( "Adding target " + _viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
+		this.healthMap.Add( _viewID, _health );
 	}
 
-	public void AddCapital( CapitalHealth _target, int _team )
+	public BaseHealth GetTargetWithID( NetworkViewID _viewID )
 	{
-		if ( _target.networkView == null )
+		BaseHealth target = null;
+		if ( this.healthMap.TryGetValue( _viewID, out target ) )
 		{
-			Debug.LogError( "Invalid target " + _target, _target );
-			return;
+			return target;
 		}
-		
-		if ( _team == 1 )
-		{
-			this.team1Capital = _target;//.networkView.viewID;
-		}
-		else if ( _team == 2 )
-		{
-			this.team2Capital = _target;
-		}
-		else
-		{
-			Debug.LogError( "Bad team argument " + _team, _target );
-			return;
-		}
+		Debug.LogWarning( "Could not find target with ID " + _viewID );
+		return null;
 	}
 
 	public int GetTargetsFromPlayer( ref List<Target> _list, Transform _transform, float _maxAngle, float _maxDistance, int _teamNumber = -1 )
 	{
 		int targetsFound = 0;
-		foreach ( BaseHealth health in this.targetList )
+		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.healthMap )
 		{
+			BaseHealth health = pair.Value;
 			Vector3 v = health.transform.position - _transform.position;
 			float dist = v.magnitude;
 			if ( _maxDistance > 0.0f && dist > _maxDistance )
@@ -134,7 +84,7 @@ public class TargetManager : MonoBehaviour
 			Target t = new Target( health, angle, dist );
 
 			_list.Add( t );
-			targetsFound++;
+			++targetsFound;
 		}
 		return targetsFound;
 	}
@@ -164,18 +114,19 @@ public class TargetManager : MonoBehaviour
 		GameNetworkManager.instance.SendDealDamageMessage( _id, _damage );
 	}
 
-	public void OnDealDamage( NetworkViewID _id, float _damage )
+	public void OnNetworkDamageMessage( NetworkViewID _id, float _damage ) 
 	{
-		FighterHealth target;
-		if ( this.fighterIDMap.TryGetValue( _id, out target ) == false )
+		BaseHealth target;
+		if ( !this.healthMap.TryGetValue( _id, out target ) )
 		{
-			Debug.LogWarning( "Unknown target " + _id );
+			Debug.LogError( "Cannot find target with ID " + _id );
 			return;
 		}
-
-		target.DealDamage( _damage );
+		target.DealDamage( _damage, false );
+		Debug.Log( target.gameObject.name + " has been dealt " + _damage, target );
 	}
 
+	//TODO: Shift this into its own script on the capital ship LM 07/05/14
 	public DockingBay.DockingSlot GetDockingSlotByID( int _id )
 	{
 

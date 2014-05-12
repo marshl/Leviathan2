@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 111: {fileID: 11100002}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light_Laser_Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,7 +24,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400002}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Gun_Animation:LT_Left_Joint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,9 +41,11 @@ GameObject:
   - 4: {fileID: 400004}
   - 111: {fileID: 11100000}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400000}
   - 135: {fileID: 13500000}
-  m_Layer: 10
+  - 148: {fileID: 14800000}
+  - 114: {fileID: 11400006}
+  - 114: {fileID: 11400008}
+  m_Layer: 11
   m_Name: Light_Laser
   m_TagString: Turret
   m_Icon: {fileID: 0}
@@ -58,7 +60,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400006}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: shot control
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +75,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400008}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Gun_Animation:LT_Right_Joint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +91,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400010}
   - 137: {fileID: 13700000}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Gun_Animation:LT_GUNATTACH_Joint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +106,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400012}
-  m_Layer: 10
+  - 114: {fileID: 11400000}
+  m_Layer: 11
   m_Name: Barrel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +122,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400014}
-  m_Layer: 10
+  - 114: {fileID: 11400004}
+  m_Layer: 11
   m_Name: Barrel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +138,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400018}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Gun_Animation:Light_Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +154,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400020}
   - 111: {fileID: 11100004}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light_Laser_Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +169,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400022}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LT_Arm2_Joint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +184,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400024}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LT_Arm_Joint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +200,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400026}
   - 137: {fileID: 13700002}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LT_Base_Joint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +215,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400028}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Base_Curve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +230,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400030}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light_Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +269,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.6199589, y: -4.67073345, z: -11.3901558}
+  m_LocalPosition: {x: 0, y: 0, z: 159.494629}
   m_LocalScale: {x: .100000001, y: .100000001, z: .100000001}
   m_Children:
   - {fileID: 400020}
@@ -312,7 +316,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100012}
-  m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -323,7 +327,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100014}
-  m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -462,21 +466,12 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
+  m_GameObject: {fileID: 100012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d97dd47a489c8474ea71f5d75f2f320e, type: 3}
+  m_Script: {fileID: 11500000, guid: ee19a08d94ab4cc449f4321804b0406f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 100000, guid: ebf8f12c0d7905f4eaddd73b9d2f7fd2, type: 2}
-  firePoint: {fileID: 400024}
-  refireTime: .5
-  fireAngleVariance: {x: 0, y: 0, z: 0}
-  projectileSpeed: 500
-  projectileLifetime: 5
-  weaponName: 
-  damage: 0
-  shotQuantity: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -489,14 +484,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  targetList: []
   joint: {fileID: 400026}
   arm: {fileID: 400024}
   rotationSpeed: 5
   chrisTurret: 1
   pitchOffset: 0
-  teamNumber: 0
   minimumPitchAngle: 0
+  weapon: {fileID: 11400006}
+  health: {fileID: 11400008}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee19a08d94ab4cc449f4321804b0406f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 1
+  weaponDesc: {fileID: 0}
+  firePoints:
+  - {fileID: 11400004}
+  - {fileID: 11400000}
+  firePointIndex: 0
+  timeSinceShot: 0
+  source: {fileID: 11400002}
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamNumber: 0
+  currentHealth: 100
+  maxHealth: 100
+  currentShield: 50
+  maxShield: 50
+  shieldRegen: 15
+  shieldRegenDelay: 3
+  isIndestructible: 0
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -580,6 +624,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 2.86102295e-06, y: 15.371707, z: -4.76837158e-06}
     m_Extent: {x: 28.5000038, y: 15.3717089, z: 28.5000076}
   m_DirtyAABB: 0
+--- !u!148 &14800000
+NetworkView:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_StateSynchronization: 1
+  m_Observed: {fileID: 11400002}
+  m_ViewID:
+    m_ID: 0
+    m_Type: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

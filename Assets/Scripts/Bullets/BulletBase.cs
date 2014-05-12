@@ -78,6 +78,12 @@ public class BulletBase : MonoBehaviour
 			return;
 		}
 
+		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
+		if ( this.source.collider == _collider )
+		{
+			return;
+		}
+
 		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
 		if ( health != null )
 		{
@@ -103,12 +109,7 @@ public class BulletBase : MonoBehaviour
 	/// <param name="_target">_target.</param>
 	public virtual void OnTargetCollision( BaseHealth _health )
 	{
-		_health.DealDamage( this.desc.damage );
-
-		if ( Network.peerType != NetworkPeerType.Disconnected )
-		{
-			TargetManager.instance.DealDamageNetwork( _health.networkView.viewID, this.desc.damage );
-		}
+		_health.DealDamage( this.desc.damage, true );
 
 		BulletManager.instance.DestroyLocalBullet( this );
 	}

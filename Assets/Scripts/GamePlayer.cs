@@ -23,7 +23,7 @@ public class GamePlayer// : BasePlayer
 	public int assists; // This one could be tricky to implement
 	public int deaths;
 
-	//public NetworkPlayer netPlayer;
+	public int team;  
 
 	public Fighter fighter;
 	public CapitalShipMovement capitalShip; // TODO: Make a base CapitalShip class

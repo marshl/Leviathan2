@@ -117,7 +117,17 @@ public class CapitalShipMovement : MonoBehaviour
 
 	public float avoidanceAngleMultiplier;
 
-	//private CapitalShipNetworkInfo netInfo;
+	private void OnNetworkInstantiate( NetworkMessageInfo _info )
+	{
+		int playerID = Common.NetworkID( this.networkView.owner );
+		GamePlayer owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
+		if ( owner.capitalShip != null )
+		{
+			Debug.LogWarning( "Capital ship already set for " + playerID );
+		}
+		owner.capitalShip = this; 
+		Debug.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
+	}
 
 	private void Awake()
 	{
@@ -146,8 +156,6 @@ public class CapitalShipMovement : MonoBehaviour
 				this.otherShip = other;
 			}
 		}
-
-		//netInfo = this.GetComponent<CapitalShipNetworkInfo>();
 	}
 
 	private void Update()
@@ -180,8 +188,9 @@ public class CapitalShipMovement : MonoBehaviour
 		}
 
 		this.UpdateAvoidanceControl();
-
+		   
 		this.transform.position += this.transform.forward * this.currentMovementSpeed * Time.deltaTime;
+		//this.rigidbody.velocity = this.transform.forward * this.currentMovementSpeed;
 	}
 
 	/// <summary>
@@ -217,8 +226,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void UpdateAccelerationInput()
 	{
-		float oldMoveSpeed = this.currentMovementSpeed;
-		if(!GameMessages.typing)
+		if ( !GameMessages.typing )
 		{
 			if ( Input.GetKey( KeyCode.W ) )
 			{
@@ -230,10 +238,7 @@ public class CapitalShipMovement : MonoBehaviour
 			}
 		}
 
-		if(oldMoveSpeed != currentMovementSpeed)
-		{	this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
-//			netInfo.SpeedUpdated (this.currentMovementSpeed);
-		}
+		this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
 	}
 
 	/// <summary>
@@ -501,8 +506,6 @@ public class CapitalShipMovement : MonoBehaviour
 		this.isTurning = true;
 		this.currentTurnDirection = _direction;
 		this.currentTurnAmount = _turnAmount;
-		//Bung this info on the network
-//		PassTurnParameters();
 		return true;
 	}
 
@@ -615,7 +618,8 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		Vector3 perp = Vector3.Cross( _forward, Vector3.up ) * _direction;
 		return _position - perp * _arcRadius
-		                   + Quaternion.AngleAxis( _angle * Mathf.Rad2Deg * _direction, Vector3.up ) * perp * _arcRadius;
+			  + Quaternion.AngleAxis( _angle * Mathf.Rad2Deg * _direction, Vector3.up )
+				* perp * _arcRadius;
 	}
 
 	private float GetAvoidanceHeightSpeed()
@@ -646,26 +650,4 @@ public class CapitalShipMovement : MonoBehaviour
 		this.currentAvoidHeight = this.avoidanceCurveEndHeight;
 		this.currentAvoidAngle = 0.0f;
 	}
-
-/*	public void PassTurnParameters()
-	{
-		if ( Network.peerType == NetworkPeerType.Disconnected )
-		{
-			return;
-		}
-
-		CapitalShipNetworkInfo.CapitalShipNetworkPacket turnParameters = new CapitalShipNetworkInfo.CapitalShipNetworkPacket();
-
-		//In the future we'll pass the movement speed with this method, but that will require a slight rewrite
-		//of the acceleration/deceleration code.
-		//turnParameters.currentMovementSpeed = this.currentMovementSpeed;
-		print("Chucking turn parameters");
-		turnParameters.currentTurnDirection = this.currentTurnDirection;
-		turnParameters.isTurning = this.isTurning;
-		turnParameters.turnAmount = this.currentTurnAmount;
-		turnParameters.lastCommandTime = Time.time;
-
-		netInfo.StateUpdated (turnParameters);
-
-	}*/
 }

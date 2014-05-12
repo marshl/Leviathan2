@@ -124,7 +124,7 @@ public class BulletManager : MonoBehaviour
 
 		if ( desc.smartBullet == false && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendShootBulletMessage( _bulletType, bulletScript.index, _pos, bulletObj.transform.forward );
+			GameNetworkManager.instance.SendShootBulletMessage( _bulletType, bulletScript.index, _pos, bulletObj.transform.rotation );//bulletObj.transform.forward );
 		}
 
 		bulletScript.OnShoot();
@@ -141,8 +141,8 @@ public class BulletManager : MonoBehaviour
 	/// <param name="_index">_index.</param>
 	/// <param name="_position">_position.</param>
 	/// <param name="_forward">The forward direction of the bullet</param>
-	public void CreateBulletRPC( int _ownerID, float _creationTime, BULLET_TYPE _bulletType, int _index, Vector3 _position, Vector3 _forward )
-	{
+	public void CreateBulletRPC( int _ownerID, float _creationTime, BULLET_TYPE _bulletType, int _index, Vector3 _position, Quaternion _rot )//Vector3 _forward )
+	{  
 		BulletBase bulletScript = this.bulletDictionary[_bulletType].GetAvailableBullet( _index, _ownerID );
 
 		bulletScript.Reset();
@@ -151,8 +151,8 @@ public class BulletManager : MonoBehaviour
 		GameObject bulletObj = bulletScript.gameObject;
 		bulletObj.SetActive( true );
 		bulletObj.transform.position = _position;
-		bulletObj.transform.rotation = Quaternion.LookRotation( _forward );
-
+		bulletObj.transform.rotation = _rot;//Quaternion.LookRotation( _forward );
+		 
 		bulletScript.enabled = false;
 
 		if ( bulletScript.desc.smartBullet == false )

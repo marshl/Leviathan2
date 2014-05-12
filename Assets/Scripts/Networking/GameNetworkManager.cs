@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class GameNetworkManager : BaseNetworkManager
@@ -10,7 +10,7 @@ public class GameNetworkManager : BaseNetworkManager
 	private bool gameHasStarted = false;
 
 	public PLAYER_TYPE defaultPlayerType;
-	
+
 	protected void Awake()
 	{
 		GameNetworkManager.instance = this;
@@ -21,8 +21,6 @@ public class GameNetworkManager : BaseNetworkManager
 		this.timeStarted = Network.time;
 
 		MenuToGameInfo info = MenuToGameInfo.instance;
-
-		startPauseDuration = 0.1;
 
 		if ( info == null )
 		{
@@ -42,7 +40,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	protected void Update()
 	{
-		if ( Network.peerType != NetworkPeerType.Disconnected 
+		if ( Network.peerType != NetworkPeerType.Disconnected
 		  && Network.isServer && !this.gameHasStarted
 		  && Network.time - this.timeStarted > this.startPauseDuration )
 		{
@@ -51,11 +49,17 @@ public class GameNetworkManager : BaseNetworkManager
 			this.networkView.RPC( "OnGameStartedRPC", RPCMode.All );
 		}
 
-		if(Network.peerType == NetworkPeerType.Disconnected && !this.gameHasStarted)
+		if ( Network.peerType == NetworkPeerType.Disconnected
+		  && !this.gameHasStarted )
 		{
 			this.gameHasStarted = true;
 			LocalGameStart();
 		}
+	}
+
+	private void OnGUI()
+	{
+		GUI.Label( new Rect( Screen.width - 50, 25, 50, 25 ), "Player " + Common.MyNetworkID() );  
 	}
 
 	// Unity Callback
@@ -73,40 +77,38 @@ public class GameNetworkManager : BaseNetworkManager
 	}
 
 	[RPC]
-	//private void OnConnectedToGameRPC( NetworkPlayer _netPlayer, int _playerType )
 	private void OnConnectedToGameRPC( int _playerID, int _playerType )
-	{ 
+	{
 		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
 		{
 			Debug.LogError( "Player type " + _playerType + " not defined" );
 		}
 		GamePlayerManager.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
-		//GamePlayerManager.instance.AddPlayerOfType( _netPlayer, (PLAYER_TYPE)_playerType );
 	}
 
-	[RPC] 
+	[RPC]
 	private void OnGameStartedRPC()
 	{
 		//int id = Common.NetworkID();
 		//PLAYER_TYPE state = MenuToGameInfo.instance.playerTypeMap[ id ];
-		GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( Network.player );
+		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( Common.MyNetworkID() );
 
 		PlayerInstantiator.instance.CreatePlayerObject( player );
+		this.gameHasStarted = true;
 	}
-	
-	public void SendShootBulletMessage( BULLET_TYPE _bulletType, 
-	                                   int _index,
-	                                   Vector3 _pos, Vector3 _forward )
+
+	public void SendShootBulletMessage( BULLET_TYPE _bulletType, int _index, Vector3 _pos, Quaternion _rot )//Vector3 _forward )
 	{
-		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.MyNetworkID(), (float)Network.time, (int)_bulletType, _index, _pos, _forward );
+		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.MyNetworkID(), (float)Network.time, (int)_bulletType, _index, _pos, _rot );// _forward );
 	}
 
 	[RPC]
 	private void OnShootBulletRPC( int _ownerID, float _creationTime, int _bulletType,
 	                              int _index,
-	                              Vector3 _pos, Vector3 _forward )
+	                              Vector3 _pos, Quaternion _rot )//Vector3 _forward )
 	{
-		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (BULLET_TYPE)_bulletType, _index, _pos, _forward );
+		//TODO: Debug check of bullet type
+		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (BULLET_TYPE)_bulletType, _index, _pos, _rot );//_forward );
 	}
 
 	public void SendDestroySmartBulletMessage( int _ownerID, BULLET_TYPE _bulletType, int _index )
@@ -141,7 +143,7 @@ public class GameNetworkManager : BaseNetworkManager
 	[RPC]
 	private void OnDealDamageRPC( NetworkViewID _id, float _damage )
 	{
-		TargetManager.instance.OnDealDamage( _id, _damage );
+		TargetManager.instance.OnNetworkDamageMessage( _id, _damage );
 	}
 
 	public void SendDockedMessage( NetworkViewID _id, int landedSlot )
@@ -181,12 +183,12 @@ public class GameNetworkManager : BaseNetworkManager
 	{
 		this.networkView.RPC ( "OnFighterUndockedRPC", RPCMode.Others, _id, landedSlot );
 	}
-	
+
 	[RPC]
 	private void OnFighterUndockedRPC( NetworkViewID _id, int landedSlotID )
 	{
 		NetworkView dockingFighterView = NetworkView.Find (_id);
-		
+
 		GameObject dockingFighter = dockingFighterView.gameObject;
 		dockingFighter.GetComponent<NetworkPositionControl>().enabled = true;
 		DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
@@ -201,11 +203,9 @@ public class GameNetworkManager : BaseNetworkManager
 
 	private void LocalGameStart()
 	{
-		//GamePlayerManager.instance.AddPlayer( -1, PLAYER_TYPE.COMMANDER1);
 		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
-		//GamePlayerManager.instance.AddPlayerOfType( Network.player, this.defaultPlayerType );
 		GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( Network.player );
-		 
+
 		PlayerInstantiator.instance.CreatePlayerObject( player );
 	}
 

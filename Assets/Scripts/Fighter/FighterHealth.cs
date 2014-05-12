@@ -3,9 +3,11 @@ using System.Collections;
 
 public class FighterHealth : BaseHealth
 {
-	private void OnNetworkInstantiate( NetworkMessageInfo _info )
+	protected override void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		TargetManager.instance.AddFighter( this, 1 );
+		//TargetManager.instance.AddFighter( this, 1 );
+		base.OnNetworkInstantiate( _info );
+		//TargetManager.instance.AddTarget( this.networkView.viewID, this );
 		//TODO: Figure out the team  
 
 		if ( this.networkView.isMine == false )
@@ -13,17 +15,7 @@ public class FighterHealth : BaseHealth
 			this.enabled = false;
 		}
 	}
-
-	public override void DealDamage( float _damage )
-	{
-		base.DealDamage( _damage );
-	}
-
-	public override void Update()
-	{
-		base.Update ();
-	}
-
+	
 	private void OnGUI()
 	{
 		GUI.Label( new Rect(0, 50, 150, 50), "Shields: " + this.currentShield + " / " + this.maxShield );

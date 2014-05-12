@@ -232,6 +232,7 @@ public class MenuNetworking : BaseNetworkManager
 	public void StartGame()
 	{
 		this.networkView.RPC( "LoadLevel", RPCMode.All, "GameTest" );
+		MasterServer.UnregisterHost();
 	}
 
 	[RPC]

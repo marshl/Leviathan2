@@ -104,8 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8295651b54aa8054596e6344c8deb949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPauseDuration: 5
-  defaultPlayerType: 2
+  startPauseDuration: .10000000149011612
+  defaultPlayerType: 1
 --- !u!4 &122270341
 Transform:
   m_ObjectHideFlags: 0
@@ -2125,7 +2125,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: defaultPlayerType
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: testingFighters
@@ -2134,6 +2134,10 @@ Prefab:
     - target: {fileID: 11400002, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: overrideSelection
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: startPauseDuration
+      value: .10000000149011612
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
@@ -2210,12 +2214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aee74e3c85223d6498d39c58b85d09e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team1Fighters: []
-  team2Fighters:
-  - {fileID: 864014375}
-  team1Capital: {fileID: 0}
-  team2Capital: {fileID: 0}
-  targetList: []
 --- !u!4 &2085318313
 Transform:
   m_ObjectHideFlags: 0

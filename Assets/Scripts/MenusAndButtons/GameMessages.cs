@@ -32,13 +32,13 @@ public class GameMessages : MonoBehaviour
 
 		if( Input.GetKeyDown( KeyCode.Y ))
 		{
-			if(!typing)
+			if ( !typing )
 			{
 				this.showingMessage = !this.showingMessage;
 			}
 		}
 
-		if(typing)
+		if ( typing )
 		{
 			foreach ( char c in Input.inputString )
 			{

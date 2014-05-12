@@ -11,8 +11,6 @@ public class Fighter : MonoBehaviour {
 		DEAD
 	};
 
-	const float EULER = 2.71828f;
-
 	public float turnSpeed = 35.0f;
 	public float rollSpeed = 2.0f;
 	public float acceleration = 2.0f;
@@ -27,10 +25,10 @@ public class Fighter : MonoBehaviour {
 	//public float currentSpeed = 0.0f;
 	//public float desiredSpeed = 0.0f;
 	//public float maxSpeed = 10.0f; //Potentially used as a hard limit
-	
+
 	/// <summary>
 	/// The distance from the centre of the screen at which the turn amout will be maximum
-	/// Example: A value of 1/3 means that the the mouse outside an ellipse with extentes 1/3 
+	/// Example: A value of 1/3 means that the the mouse outside an ellipse with extentes 1/3
 	/// of the screen size will hav maximum turn rate,
 	/// gradually leading down to zero in the centre of the screen
 	/// </summary>
@@ -43,21 +41,23 @@ public class Fighter : MonoBehaviour {
 
 	public DockingBay.DockingSlot currentSlot;
 
-	private float screenRatio = 1.0f;
-	
 	// Unity Callback: Do not modify signature
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 
+		int id = Common.NetworkID( this.networkView.owner );
+		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( id );
+		player.fighter = this;
+		Debug.Log( "Set player " + id + " to own fighter", this.gameObject );
 		if ( this.networkView.isMine == false )
 		{
 			this.enabled = false;
 			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-		}
-
+		} 
 	}
 
 	private void Start()
+	private void LateUpdate()
 	{
 		screenRatio = (float)Screen.width / (float)Screen.height;
 	}
@@ -66,6 +66,7 @@ public class Fighter : MonoBehaviour {
 	{
 
 		switch(state)
+		switch( state )
 		{
 		case FIGHTERSTATE.FLYING:
 			{
@@ -113,7 +114,6 @@ public class Fighter : MonoBehaviour {
 
 	void CheckFlightControls()
 	{
-		//print("Screen ratio " + screenRatio);
 		if ( Input.GetMouseButton(0) ) // Left click - Turn the ship
 		{
 			Vector2 transformedMousePos = new Vector3(Input.mousePosition.x / Screen.width * 2.0f - 1.0f,
@@ -124,9 +124,9 @@ public class Fighter : MonoBehaviour {
 
 			//Set the desired rotation based on mouse position.
 			transformedMousePos.x = Mathf.Sign( transformedMousePos.x ) * Common.GaussianCurveClamped(
-				transformedMousePos.x, -1.0f, 0.0f, this.turnExtents , 1.0f );
+				transformedMousePos.x, -1.0f, 0.0f, this.turnExtents, 1.0f );
 			transformedMousePos.y = Mathf.Sign( transformedMousePos.y ) * Common.GaussianCurveClamped(
-				transformedMousePos.y, -1.0f, 0.0f, this.turnExtents * screenRatio, 1.0f );
+				transformedMousePos.y, -1.0f, 0.0f, this.turnExtents, 1.0f );
 
 			Vector3 torqueValue = new Vector3(
 				-transformedMousePos.y * Time.deltaTime * turnSpeed,
@@ -255,10 +255,8 @@ public class Fighter : MonoBehaviour {
 		print("Undocking");
 		rigidbody.constraints = RigidbodyConstraints.None;
 
-		Vector3 inheritedVelocity = this.transform.root.GetComponent<NetworkPositionControl>().CalculateVelocity ();
-		//Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
-
-
+		Vector3 inheritedVelocity = this.transform.root.forward;
+		Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
 
 		//print("Inherited velocity: " + inheritedVelocity);
 
@@ -279,10 +277,8 @@ public class Fighter : MonoBehaviour {
 		currentSlot = null;
 		this.GetComponent<FighterWeapons>().enabled = true;
 
-		print(inheritedVelocity);
-
-		this.rigidbody.AddForce (inheritedVelocity * 90);
-		//this.rigidbody.AddRelativeTorque (inheritedAngularVelocity);
+		this.rigidbody.AddRelativeForce (inheritedVelocity * 5);
+		this.rigidbody.AddRelativeTorque (inheritedAngularVelocity);
 	}
 
 	public void Respawn()

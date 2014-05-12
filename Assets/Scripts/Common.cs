@@ -143,11 +143,10 @@ public abstract class Common
 	{
 		if ( _target.rigidbody == null )
 		{
-			Debug.LogError( "No rigidbody found on target " + _target.gameObject.name, _target );
+			//Debug.LogError( "No rigidbody found on target " + _target.gameObject.name, _target );
 			return _target.position;
 		}
 
-		//TODO: This will return a point behind the target if the shot isn't travelling fast enough LM:28/03/14
 		float flightDuration = ( _target.position - _origin ).magnitude
 			/ ( _speed - _target.rigidbody.velocity.magnitude );
 
@@ -166,5 +165,22 @@ public abstract class Common
 	public static float SmoothPingPong( float _x, float _min, float _max, float _interval )
 	{
 		return ( Mathf.Sin( _x * Mathf.PI / _interval) * (_max - _min) + _max + _min) / 2;
+	}
+
+	public static int OpposingTeam( int _team )
+	{
+		if ( _team == 1 ) 
+		{
+			return 2;
+		}
+		else if ( _team == 2 )
+		{
+			return 1;
+		}
+		else
+		{
+			Debug.LogError( "Invalid team number " + _team );
+			return -1;
+		} 
 	}
 }

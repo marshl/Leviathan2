@@ -29,6 +29,7 @@ public class MenuLobby : MonoBehaviour
 
 	private void Start()
 	{
+		// Create a player row for each possible player
 		for ( int i = 0; i < MenuNetworking.instance.connectionLimit; ++i )
 		{
 			GameObject rowObj = ( i == 0 ) ? this.firstPlayerRow.gameObject
@@ -72,6 +73,7 @@ public class MenuLobby : MonoBehaviour
 	{
 		MenuNetworking.instance.QuitLobby();
 		MainMenuButtons.instance.ExitLobby();
+		this.Reset();
 	}
 
 	private void UpdateMessageGUI()

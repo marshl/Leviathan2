@@ -25,6 +25,48 @@ public class GamePlayerManager : MonoBehaviour
 		this.team2 = new List<int>();
 	}
 
+	private void Update()
+	{
+		if ( Input.GetKeyDown(KeyCode.Alpha0 ) )
+		{
+			string str = "GamePlayerManager\n";
+
+			str += "Commander 1: " + this.commander1 + "\n";
+			str += "Commander 2: " + this.commander2 + "\n";
+
+			str += "Team 1:\n";
+			for ( int i = 0; i < this.team1.Count; ++i )
+			{
+				str += "\t" + this.team1[i] + "\n";
+			}
+
+			str += "Team 2:\n";
+			for ( int i = 0; i < this.team2.Count; ++i )
+			{
+				str += "\t" + this.team2[i] + "\n";
+			} 
+
+			foreach ( KeyValuePair<int, GamePlayer> pair in this.playerMap )
+			{
+				str += "Player " + pair.Key + ":\n";
+				str += "\tTeam: " + pair.Value.team +
+					"\n\tType: " + pair.Value.playerType + "\n";
+			}
+			Debug.Log( str, this );
+
+			foreach ( KeyValuePair<int, GamePlayer> pair in this.playerMap )
+			{
+				Debug.Log( "Player " + pair.Key + ":" + pair.Value.fighter, pair.Value.fighter );
+				Debug.Log( "Player " + pair.Key + ":" + pair.Value.capitalShip, pair.Value.capitalShip  );
+			}
+
+			if ( GameNetworkManager.instance != null )
+			{
+				GameNetworkManager.instance.SendLobbyMessage( str );
+			} 
+		}
+	}
+
 	public void DisconnectPlayer( NetworkPlayer _player )
 	{
 		this.GetNetworkPlayer( _player ).isConnected = false;
@@ -84,7 +126,6 @@ public class GamePlayerManager : MonoBehaviour
 		this.playerMap.Add( newPlayer.id, newPlayer );
 
 		this.ChangePlayerType( newPlayer.id, _playerType );
-		Debug.Log( "Added player " + newPlayer.id + " to type " + _playerType );
 	}
 
 	public bool RemovePlayer( int _playerID )
@@ -174,9 +215,11 @@ public class GamePlayerManager : MonoBehaviour
 			break;
 		case PLAYER_TYPE.FIGHTER1:
 			this.team1.Add( _playerID );
+			player.team = 1;
 			break;
 		case PLAYER_TYPE.FIGHTER2:
 			this.team2.Add( _playerID );
+			player.team = 2;
 			break;
 		case PLAYER_TYPE.COMMANDER1:
 			if ( this.commander1 != -1 )
@@ -184,6 +227,7 @@ public class GamePlayerManager : MonoBehaviour
 				Debug.LogError( "Commander 1 is already occupied. Cannot change to " + _playerID );
 			}
 			this.commander1 = _playerID;
+			player.team = 1;
 			break;
 		case PLAYER_TYPE.COMMANDER2:
 			if ( this.commander2 != -1 )
@@ -191,6 +235,7 @@ public class GamePlayerManager : MonoBehaviour
 				Debug.LogError( "Commander 2 is already occupied. Cannot change to " + _playerID );
 			}
 			this.commander2 = _playerID;
+			player.team = 2;
 			break;
 			
 		default:

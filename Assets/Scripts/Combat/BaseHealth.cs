@@ -12,17 +12,21 @@ public class BaseHealth : MonoBehaviour
 	public float shieldRegen; //Percentage of shields that gets regenerated per second
 	public float shieldRegenDelay; // Seconds after being hit for the shield to start regenerating again
 	protected float shieldRegenTimer;
-	
+	 
 	public bool isIndestructible;
 
-	protected virtual void Start()
+	/*protected virtual void Start()  
 	{
 		TargetManager.instance.AddTarget( this );
+	}*/
+
+	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
+	{
+		TargetManager.instance.AddTarget( this.networkView.viewID, this );
 	}
 
-	public virtual void DealDamage( float _damage )
+	public virtual void DealDamage( float _damage, bool _broadcast )
 	{
-
 		if ( this.isIndestructible == true )
 		{
 			return;
@@ -43,6 +47,14 @@ public class BaseHealth : MonoBehaviour
 		}
 
 		this.shieldRegenTimer = this.shieldRegenDelay;
+
+		if ( _broadcast
+		  && this.networkView != null
+		  && Network.peerType != NetworkPeerType.Disconnected )
+		{
+			TargetManager.instance.DealDamageNetwork( this.networkView.viewID, _damage );
+		}
+
 	}
 
 	public virtual void Update()
