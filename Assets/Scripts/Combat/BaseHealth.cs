@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BaseHealth : MonoBehaviour 
 {
-	public int teamNumber;
+	public TEAM team;
 
 	public float currentHealth;
 	public float maxHealth;
@@ -14,11 +14,6 @@ public class BaseHealth : MonoBehaviour
 	protected float shieldRegenTimer;
 	 
 	public bool isIndestructible;
-
-	/*protected virtual void Start()  
-	{
-		TargetManager.instance.AddTarget( this );
-	}*/
 
 	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{

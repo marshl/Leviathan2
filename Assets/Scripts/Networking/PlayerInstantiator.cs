@@ -56,9 +56,8 @@ public class PlayerInstantiator : MonoBehaviour
 	}
  
 	private GameObject CreateCapitalShip( GamePlayer _player )
-	{
-		Debug.Log( "Creating capital ship for player " + _player.id + " on team " + _player.team );
-		Vector3 shipPos = _player.team == 1 ? new Vector3( -500.0f, 0.0f, 0.0f ) : new Vector3( 500.0f, 0.0f, 0.0f );
+	{   
+		Vector3 shipPos = _player.team == TEAM.TEAM_1 ? new Vector3( -500.0f, 0.0f, 0.0f ) : new Vector3( 500.0f, 0.0f, 0.0f );
 		GameObject capitalObj;
 		// Used for testing scenes
 		if ( Network.peerType == NetworkPeerType.Disconnected )
@@ -90,12 +89,14 @@ public class PlayerInstantiator : MonoBehaviour
 
 		CapitalShipCamera cameraScript = cameraObj.GetComponent<CapitalShipCamera>();
 		cameraScript.targetTransform = capitalObj.transform;
-
+		Debug.Log( "Creating capital ship for player " + _player.id + " on team " + _player.team, capitalObj );
+		 
 		return capitalObj;
 	}
 
 	private GameObject CreateFighter( GamePlayer _player )
 	{
+
 		Vector3 fighterPos = Common.RandomVector3( -25.0f, 25.0f );
 		GameObject fighterObj;
 		// Used for testing scenes
@@ -123,7 +124,10 @@ public class PlayerInstantiator : MonoBehaviour
 		//_player.fighter = fighterObj.GetComponent<Fighter>();
 
 		FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
-		cameraScript.fighter = fighterObj; 
+		cameraScript.fighter = fighterObj;
+
+		Debug.Log( "Creating fighter for player " + _player.id + " on team " + _player.team, fighterObj );
+
 		return fighterObj;
 	}
 }

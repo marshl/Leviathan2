@@ -10,6 +10,13 @@ public enum PLAYER_TYPE : int
 	FIGHTER2,
 };
 
+public enum TEAM
+{
+	NEUTRAL,
+	TEAM_1,
+	TEAM_2,
+}
+
 public class GamePlayer// : BasePlayer
 {
 	public int id;
@@ -23,7 +30,8 @@ public class GamePlayer// : BasePlayer
 	public int assists; // This one could be tricky to implement
 	public int deaths;
 
-	public int team;  
+	//public int team;  
+	public TEAM team;
 
 	public Fighter fighter;
 	public CapitalShipMovement capitalShip; // TODO: Make a base CapitalShip class

@@ -119,14 +119,18 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
+		Debug.Log( "CapitalShipMovement:OnNetworkInstantiate " + _info.sender + " " + _info.timestamp, this );
 		int playerID = Common.NetworkID( this.networkView.owner );
 		GamePlayer owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
-		if ( owner.capitalShip != null )
+		if ( owner.capitalShip != null ) 
 		{
-			Debug.LogWarning( "Capital ship already set for " + playerID );
+			Debug.LogWarning( "Capital ship already set for " + playerID, this );
 		}
-		owner.capitalShip = this; 
-		Debug.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
+		else
+		{
+			owner.capitalShip = this; 
+			Debug.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
+		}
 	}
 
 	private void Awake()

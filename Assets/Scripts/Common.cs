@@ -167,20 +167,20 @@ public abstract class Common
 		return ( Mathf.Sin( _x * Mathf.PI / _interval) * (_max - _min) + _max + _min) / 2;
 	}
 
-	public static int OpposingTeam( int _team )
+	public static TEAM OpposingTeam( TEAM _team )
 	{
-		if ( _team == 1 ) 
+		if ( _team == TEAM.TEAM_1 ) 
 		{
-			return 2;
+			return TEAM.TEAM_2;
 		}
-		else if ( _team == 2 )
+		else if ( _team == TEAM.TEAM_2 )
 		{
-			return 1;
+			return TEAM.TEAM_1;
 		}
 		else
 		{
-			Debug.LogError( "Invalid team number " + _team );
-			return -1;
+			Debug.LogError( "Cannot find opposing team for netural" );
+			return TEAM.NEUTRAL;
 		} 
 	}
 }

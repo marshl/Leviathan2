@@ -77,6 +77,10 @@ public class BulletBase : MonoBehaviour
 		{
 			return;
 		}
+		if ( this.networkView != null && !this.networkView.isMine )
+		{
+			return;
+		}
 
 		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
 		if ( this.source.collider == _collider )

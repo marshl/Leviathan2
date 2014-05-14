@@ -215,11 +215,11 @@ public class GamePlayerManager : MonoBehaviour
 			break;
 		case PLAYER_TYPE.FIGHTER1:
 			this.team1.Add( _playerID );
-			player.team = 1;
+			player.team = TEAM.TEAM_1;
 			break;
 		case PLAYER_TYPE.FIGHTER2:
 			this.team2.Add( _playerID );
-			player.team = 2;
+			player.team = TEAM.TEAM_2;
 			break;
 		case PLAYER_TYPE.COMMANDER1:
 			if ( this.commander1 != -1 )
@@ -227,7 +227,7 @@ public class GamePlayerManager : MonoBehaviour
 				Debug.LogError( "Commander 1 is already occupied. Cannot change to " + _playerID );
 			}
 			this.commander1 = _playerID;
-			player.team = 1;
+			player.team = TEAM.TEAM_1;
 			break;
 		case PLAYER_TYPE.COMMANDER2:
 			if ( this.commander2 != -1 )
@@ -235,7 +235,7 @@ public class GamePlayerManager : MonoBehaviour
 				Debug.LogError( "Commander 2 is already occupied. Cannot change to " + _playerID );
 			}
 			this.commander2 = _playerID;
-			player.team = 2;
+			player.team = TEAM.TEAM_2;
 			break;
 			
 		default:

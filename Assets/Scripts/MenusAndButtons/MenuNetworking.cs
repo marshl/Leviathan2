@@ -221,6 +221,7 @@ public class MenuNetworking : BaseNetworkManager
 		if ( Network.isServer )
 		{
 			Network.Disconnect();
+			MasterServer.UnregisterHost();
 			//TODO: Send message of some description
 		}
 		else

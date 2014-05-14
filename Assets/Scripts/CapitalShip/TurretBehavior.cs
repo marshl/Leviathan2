@@ -38,7 +38,7 @@ public class TurretBehavior : BaseWeaponManager
 
 		this.ParentToOwnerShip( ownerPlayer );
 
-		this.health.teamNumber = ownerPlayer.team;
+		this.health.team = ownerPlayer.team;
 	}
 
 	protected override void Awake()
@@ -66,7 +66,7 @@ public class TurretBehavior : BaseWeaponManager
 			if ( this.target == null
 			 || (this.transform.position - this.target.transform.position).magnitude > this.range )
 			{
-				this.target = TargetManager.instance.GetBestTarget( this.arm, -1, this.range, Common.OpposingTeam( this.health.teamNumber ) );
+				this.target = TargetManager.instance.GetBestTarget( this.arm, -1, this.range, Common.OpposingTeam( this.health.team ) );
 			}
 			if ( this.target != null )
 			{

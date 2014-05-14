@@ -56,7 +56,7 @@ public class TargetManager : MonoBehaviour
 		return null;
 	}
 
-	public int GetTargetsFromPlayer( ref List<Target> _list, Transform _transform, float _maxAngle, float _maxDistance, int _teamNumber = -1 )
+	public int GetTargetsFromPlayer( ref List<Target> _list, Transform _transform, float _maxAngle, float _maxDistance, TEAM _team = TEAM.NEUTRAL )
 	{
 		int targetsFound = 0;
 		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.healthMap )
@@ -76,7 +76,7 @@ public class TargetManager : MonoBehaviour
 				continue;
 			}
 
-			if ( _teamNumber != -1 && health.teamNumber != _teamNumber )
+			if ( _team != TEAM.NEUTRAL && health.team != _team )
 			{
 				continue;
 			}
@@ -89,11 +89,11 @@ public class TargetManager : MonoBehaviour
 		return targetsFound;
 	}
 
-	public BaseHealth GetBestTarget( Transform _transform, float _maxAngle, float _maxDistance, int _teamNumber = -1 )
+	public BaseHealth GetBestTarget( Transform _transform, float _maxAngle, float _maxDistance, TEAM _team = TEAM.NEUTRAL )
 	{
 		List<Target> targets = new List<Target>();
 
-		this.GetTargetsFromPlayer( ref targets, _transform, _maxAngle, _maxDistance, _teamNumber );
+		this.GetTargetsFromPlayer( ref targets, _transform, _maxAngle, _maxDistance, _team );
 
 		if ( targets.Count == 0 )
 		{
