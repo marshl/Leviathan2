@@ -158,7 +158,7 @@ public class NetworkPositionControl : MonoBehaviour
 
 	public Vector3 CalculateVelocity()
 	{
-		//First up, we need to know the two most recent position data points.
+		/*//First up, we need to know the two most recent position data points.
 		//These are used to calculate the distance moved in that time.
 
 		Vector3 travelledVector = this.newerData.position - this.olderData.position;
@@ -173,7 +173,10 @@ public class NetworkPositionControl : MonoBehaviour
 		//This will not be perfect, but it should be good enough to be useful.
 
 		return travelledVector;
+		*/
 
+
+		return ( this.newerData.position - this.olderData.position ) / (float)this.timeDiff;
 	}
 	
 }

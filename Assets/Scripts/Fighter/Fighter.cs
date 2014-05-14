@@ -254,8 +254,11 @@ public class Fighter : MonoBehaviour {
 		print("Undocking");
 		rigidbody.constraints = RigidbodyConstraints.None;
 
-		Vector3 inheritedVelocity = this.transform.root.forward;
-		Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
+		//Vector3 inheritedVelocity = this.transform.root.forward;
+		//Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
+
+		Vector3 inheritedVelocity = this.transform.root.GetComponent<NetworkPositionControl>().CalculateVelocity ();
+		//Vector3 inheritedAngularVelocity = this.transform.root.FindChild ("CapitalCollider").rigidbody.angularVelocity;
 
 		//print("Inherited velocity: " + inheritedVelocity);
 
@@ -265,19 +268,20 @@ public class Fighter : MonoBehaviour {
 	    desiredSpeed = (maxSpeed * 0.75f);
 	    undockingTimer = undockingDelay;
 
-	//	rigidbody.AddForce (this.transform.root.forward * this.transform.root.GetComponent<CapitalShipMovement
 	    this.transform.parent = null;
 		this.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
 
 		//Apply force of the capital ship so we don't move relative
-
-
 		GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, currentSlot.slotID );
 		currentSlot = null;
 		this.GetComponent<FighterWeapons>().enabled = true;
 
-		this.rigidbody.AddRelativeForce (inheritedVelocity * 5);
-		this.rigidbody.AddRelativeTorque (inheritedAngularVelocity);
+		//this.rigidbody.AddRelativeForce (inheritedVelocity * 5);
+		//this.rigidbody.AddRelativeTorque (inheritedAngularVelocity);
+
+		Debug.Log( "Inherited Velocity: " + inheritedVelocity, this );
+		
+		this.rigidbody.AddForce( inheritedVelocity );
 	}
 
 	public void Respawn()
