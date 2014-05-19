@@ -508,7 +508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletType: 2
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 50
+  count: 500
   moveSpeed: 120
   maxDistance: 500
   damage: 10
@@ -956,7 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamNumber: 1
+  team: 0
   currentHealth: 100
   maxHealth: 100
   currentShield: 0
@@ -1164,7 +1164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2936f4242dcdfd046ab7b9168eccbede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnSpeed: 35
+  turnSpeed: 90
   rollSpeed: 2
   acceleration: 4000
   maxSpeed: 10000
@@ -1175,7 +1175,7 @@ MonoBehaviour:
   bounceVelocityModifier: 50
   team: 1
   state: 2
-  turnExtents: .5
+  turnExtents: .699999988
   undockingTimer: 0
   undockingDelay: 3
   currentSlot:
@@ -1211,7 +1211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamNumber: 1
+  team: 0
   currentHealth: 100
   maxHealth: 100
   currentShield: 100
@@ -2171,10 +2171,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88e6fd43154596142b7df3d9ee7d96ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commander1: 0
-  commander2: 0
-  team1: 
-  team2: 
+  commander1:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  commander2:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  fighters1: []
+  fighters2: []
 --- !u!4 &2040233788
 Transform:
   m_ObjectHideFlags: 0

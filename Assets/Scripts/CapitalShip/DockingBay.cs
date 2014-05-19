@@ -59,15 +59,11 @@ public class DockingBay : MonoBehaviour {
 
 	void FriendlyDockingProcedure(Fighter _fighter)
 	{
-		foreach(DockingSlot friendlySlot in slots)
+		DockingBay.DockingSlot slotToDock = this.GetFreeSlot ();
 		{
-			if(!friendlySlot.occupied)
-			{
-				_fighter.Dock (friendlySlot);
-				friendlySlot.occupied = true;
-				friendlySlot.landedFighter = _fighter;
-				break;
-			}
+			_fighter.Dock (slotToDock);
+			slotToDock.occupied = true;
+			slotToDock.landedFighter = _fighter;
 		}
 	}
 
@@ -81,6 +77,20 @@ public class DockingBay : MonoBehaviour {
 			}
 		}
 		print("Slot search in bay " + bayID + " for id " + _id + " returned no results");
+		return null;
+	}
+
+	public DockingSlot GetFreeSlot()
+	{
+		foreach(DockingSlot friendlySlot in slots)
+		{
+			if(!friendlySlot.occupied)
+			{
+				return friendlySlot;
+
+			}
+		}
+
 		return null;
 	}
 

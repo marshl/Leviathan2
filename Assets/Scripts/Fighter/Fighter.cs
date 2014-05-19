@@ -65,6 +65,11 @@ public class Fighter : MonoBehaviour {
 
 	void LateUpdate()
 	{
+		if(Input.GetKeyDown (KeyCode.G))
+		{
+			Respawn();
+		}
+
 		switch( state )
 		{
 		case FIGHTERSTATE.FLYING:
@@ -104,6 +109,15 @@ public class Fighter : MonoBehaviour {
 						}
 					}
 			};
+			break;
+
+		case FIGHTERSTATE.DEAD:
+			{
+				//Do some ongui stuff here to tell people respawn time
+				
+				//Find an empty fighter slot on the capital ship
+				
+			}
 			break;
 		}
 
@@ -281,24 +295,33 @@ public class Fighter : MonoBehaviour {
 
 		Debug.Log( "Inherited Velocity: " + inheritedVelocity, this );
 		
-		this.rigidbody.AddForce( inheritedVelocity );
+		this.rigidbody.AddForce( inheritedVelocity * 95 );
 	}
 
 	public void Respawn()
 	{
 		//Find an empty spot on the friendly capital ship and dock there
-		/*state = FIGHTERSTATE.DOCKED;
+		//state = FIGHTERSTATE.DOCKED;
 
-		switch(this.team)
+		DockingBay[] bays = FindObjectsOfType(typeof(DockingBay)) as DockingBay[];
+		for(int ii = (int)Random.Range(0, bays.Length); true; ii++) //This is an infinite loop
 		{
-		case 1:
-			TargetManager.instance.team1Capital.gameObject.GetComponent<
-			break;
-		case 2:
-			break;
-		}*/
+			if(ii == bays.Length)
+			{
+				ii = 0;
+			}
 
+			if(bays[ii].team == this.team)
+			{
+				//todo: fill me up
+				this.Dock (bays[ii].GetFreeSlot ());
+				break;
+			}
+
+
+		}
+				
 	}
-
+			
 
 }

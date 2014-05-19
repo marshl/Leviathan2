@@ -200,6 +200,7 @@ public class GameNetworkManager : BaseNetworkManager
 		//dockingFighter.GetComponent<NetworkPositionControl>().lerp = true;
 		landedSlot.landedFighter = null;
 	}
+	
 
 	private void LocalGameStart()
 	{
