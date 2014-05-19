@@ -8,21 +8,21 @@ public class GamePlayerManager : MonoBehaviour
 
 	public Dictionary<int, GamePlayer> playerMap; 
 
-	public int commander1;
-	public int commander2;
-	public List<int> team1;
-	public List<int> team2;
+	public GamePlayer commander1;
+	public GamePlayer commander2;
+	public List<GamePlayer> fighters1;
+	public List<GamePlayer> fighters2;
 
 	private void Awake()
 	{
 		GamePlayerManager.instance = this;
 
 		this.playerMap = new Dictionary<int, GamePlayer>();
-		this.commander1 = -1;
-		this.commander2 = -1;
+		this.commander1 = null;
+		this.commander2 = null;
 
-		this.team1 = new List<int>();
-		this.team2 = new List<int>();
+		this.fighters1 = new List<GamePlayer>();
+		this.fighters2 = new List<GamePlayer>();
 	}
 
 	private void Update()
@@ -35,15 +35,15 @@ public class GamePlayerManager : MonoBehaviour
 			str += "Commander 2: " + this.commander2 + "\n";
 
 			str += "Team 1:\n";
-			for ( int i = 0; i < this.team1.Count; ++i )
+			for ( int i = 0; i < this.fighters1.Count; ++i )
 			{
-				str += "\t" + this.team1[i] + "\n";
+				str += "\t" + this.fighters1[i] + "\n";
 			}
 
 			str += "Team 2:\n";
-			for ( int i = 0; i < this.team2.Count; ++i )
+			for ( int i = 0; i < this.fighters2.Count; ++i )
 			{
-				str += "\t" + this.team2[i] + "\n";
+				str += "\t" + this.fighters2[i] + "\n";
 			} 
 
 			foreach ( KeyValuePair<int, GamePlayer> pair in this.playerMap )
@@ -94,15 +94,15 @@ public class GamePlayerManager : MonoBehaviour
 	// To be used by the server only
 	public PLAYER_TYPE GetNextFreePlayerType()
 	{
-		if ( this.commander1 == -1 )
+		if ( this.commander1 == null )
 		{
 			return PLAYER_TYPE.COMMANDER1;
 		}
-		else if ( this.commander2 == -1 )
+		else if ( this.commander2 == null )
 		{
 			return PLAYER_TYPE.COMMANDER2;
 		}
-		else if ( this.team1.Count > this.team2.Count )
+		else if ( this.fighters1.Count > this.fighters2.Count )
 		{
 			return PLAYER_TYPE.FIGHTER2;
 		}
@@ -138,14 +138,14 @@ public class GamePlayerManager : MonoBehaviour
 		GamePlayer player = this.playerMap[_playerID];
 		PLAYER_TYPE type = player.playerType;
 		
-		if ( this.commander1 == _playerID )
+		if ( this.commander1 == player )
 		{
-			this.commander1 = -1;
+			this.commander1 = null;
 			Debug.Log( "Removing commander1" );
 		}
-		else if ( this.commander2 == _playerID )
+		else if ( this.commander2 == player )
 		{
-			this.commander2 = -1;
+			this.commander2 = null;
 			Debug.Log( "Removing commander2" );
 		}
 
@@ -175,30 +175,30 @@ public class GamePlayerManager : MonoBehaviour
 		case PLAYER_TYPE.UNDEFINED:
 			break;
 		case PLAYER_TYPE.FIGHTER1:
-			if ( !this.team1.Remove( _playerID ) )
+			if ( !this.fighters1.Remove( player ) )
 			{
 				Debug.LogError( "Error removing " + _playerID + " from team 1" );
 			}
 			break;
 		case PLAYER_TYPE.FIGHTER2:
-			if ( !this.team2.Remove( _playerID ) )
+			if ( !this.fighters2.Remove( player ) )
 			{
 				Debug.LogError( "Error removing " + _playerID + " from team 2" );
 			}
 			break;
 		case PLAYER_TYPE.COMMANDER1:
-			if ( this.commander1 != _playerID )
+			if ( this.commander1 != player )
 			{
 				Debug.LogError( "Error removing " + _playerID + " from commander 1" );
 			}
-			this.commander1 = -1;
+			this.commander1 = null;
 			break;
 		case PLAYER_TYPE.COMMANDER2:
-			if ( this.commander2 != _playerID )
+			if ( this.commander2 != player )
 			{
 				Debug.LogError( "Error removing player " + _playerID + " from commander 2" );
 			}
-			this.commander2 = -1;
+			this.commander2 = null;
 			break;
 		
 		default:
@@ -214,27 +214,27 @@ public class GamePlayerManager : MonoBehaviour
 			Debug.LogWarning( "You shouldn't be changing the player type to UNDEFINED " + player.id );
 			break;
 		case PLAYER_TYPE.FIGHTER1:
-			this.team1.Add( _playerID );
+			this.fighters1.Add( player );
 			player.team = TEAM.TEAM_1;
 			break;
 		case PLAYER_TYPE.FIGHTER2:
-			this.team2.Add( _playerID );
+			this.fighters2.Add( player );
 			player.team = TEAM.TEAM_2;
 			break;
 		case PLAYER_TYPE.COMMANDER1:
-			if ( this.commander1 != -1 )
+			if ( this.commander1 != null )
 			{
 				Debug.LogError( "Commander 1 is already occupied. Cannot change to " + _playerID );
 			}
-			this.commander1 = _playerID;
+			this.commander1 = player;
 			player.team = TEAM.TEAM_1;
 			break;
 		case PLAYER_TYPE.COMMANDER2:
-			if ( this.commander2 != -1 )
+			if ( this.commander2 != null )
 			{
 				Debug.LogError( "Commander 2 is already occupied. Cannot change to " + _playerID );
 			}
-			this.commander2 = _playerID;
+			this.commander2 = player;
 			player.team = TEAM.TEAM_2;
 			break;
 			
@@ -261,11 +261,11 @@ public class GamePlayerManager : MonoBehaviour
 	{
 		Debug.Log( "Resetting GamePlayerManager" );
 
-		this.commander1 = this.commander2 = -1;
-		this.team1.Clear();
-		this.team2.Clear();
-
+		this.commander1 = this.commander2 = null;
+		this.fighters1.Clear();
+		this.fighters2.Clear();
+		 
 		this.playerMap.Clear();
-	}
+	} 
 
 }

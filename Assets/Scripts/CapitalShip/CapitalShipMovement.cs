@@ -131,17 +131,11 @@ public class CapitalShipMovement : MonoBehaviour
 			owner.capitalShip = this; 
 			Debug.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
 		}
-	}
 
-	private void Awake()
-	{
-		if ( Network.peerType != NetworkPeerType.Disconnected
-		  && this.networkView != null
-		  && this.networkView.isMine == false )
+		if ( this.networkView.isMine == false )
 		{
 			this.enabled = false;
-			return;
-		}
+		} 
 	}
 
 	private void Start()
@@ -420,7 +414,7 @@ public class CapitalShipMovement : MonoBehaviour
 			}
 		}
 		this.avoidanceTransform.localPosition = new Vector3( 0.0f, this.currentAvoidHeight, 0.0f );
-		this.avoidanceTransform.localRotation = Quaternion.Euler( this.currentAvoidAngle, 0.0f, 0.0f );
+		//this.avoidanceTransform.localRotation = Quaternion.Euler( this.currentAvoidAngle, 0.0f, 0.0f ); 
 	}
 
 	private bool IncreaseAvoidanceAngle()

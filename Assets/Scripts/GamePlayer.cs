@@ -10,14 +10,15 @@ public enum PLAYER_TYPE : int
 	FIGHTER2,
 };
 
-public enum TEAM
+public enum TEAM : int
 {
 	NEUTRAL,
 	TEAM_1,
 	TEAM_2,
 }
 
-public class GamePlayer// : BasePlayer
+[System.Serializable]
+public class GamePlayer
 {
 	public int id;
 	
@@ -29,8 +30,7 @@ public class GamePlayer// : BasePlayer
 	public int kills;
 	public int assists; // This one could be tricky to implement
 	public int deaths;
-
-	//public int team;  
+	
 	public TEAM team;
 
 	public Fighter fighter;

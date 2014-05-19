@@ -127,6 +127,7 @@ public abstract class Common
 		return NetworkID( Network.player );
 	}
 
+	//TODO: Replace this with SmoothPingPong
 	public static float SmoothLerp( float _value, float _min, float _max )
 	{
 		return ( (Mathf.Sin((_value-0.5f)*Mathf.PI) * (_max-_min) ) + _max + _min) / 2.0f;
@@ -162,11 +163,24 @@ public abstract class Common
 		}
 	}
 
+	/// <summary>
+	/// Returns a sine wave between the two values, starting at min at x = 0
+	/// </summary>
+	/// <returns>The value on the wave</returns>
+	/// <param name="_x">The x value of the point on the wave</param>
+	/// <param name="_min">The minimum extent of the wave</param>
+	/// <param name="_max">The maximum extent of the wave</param>
+	/// <param name="_interval">The distance between the min and max of the wave</param>
 	public static float SmoothPingPong( float _x, float _min, float _max, float _interval )
 	{
-		return ( Mathf.Sin( _x * Mathf.PI / _interval) * (_max - _min) + _max + _min) / 2;
+		return ( Mathf.Cos( _x * Mathf.PI / _interval) * (_min - _max) + _max + _min) / 2;
 	}
 
+	/// <summary>
+	/// Helper function to return the opposite team while returning an error if neutral
+	/// </summary>
+	/// <returns>The opposing team of the team given</returns>
+	/// <param name="_team">The team</param>
 	public static TEAM OpposingTeam( TEAM _team )
 	{
 		if ( _team == TEAM.TEAM_1 ) 
