@@ -34,7 +34,7 @@ public class GamePlayer
 	public TEAM team;
 
 	public Fighter fighter;
-	public CapitalShipMovement capitalShip; // TODO: Make a base CapitalShip class
+	public CapitalShipMaster capitalShip;
 
 	public float GetKillDeathRatio()
 	{

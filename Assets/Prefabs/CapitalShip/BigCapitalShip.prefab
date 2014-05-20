@@ -8,6 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
+  - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
   - 148: {fileID: 14800000}
   - 114: {fileID: 11400008}
@@ -4492,6 +4493,19 @@ MonoBehaviour:
   avoidanceFloor: -25
   avoidanceCurveDropRate: .25
   avoidanceAngleMultiplier: 1
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804fa07989b1800449c1c807b5492e4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  capitalShipMovement: {fileID: 11400000}
+  turretManager: {fileID: 11400036}
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4669,7 +4683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09e9c9ce99c83e4daa73d2c0d53fd09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamNumber: 0
+  team: 0
   currentHealth: 1000
   maxHealth: 1000
   currentShield: 5000
