@@ -33,7 +33,7 @@ public class GamePlayer
 	
 	public TEAM team;
 
-	public Fighter fighter;
+	public FighterMaster fighter;
 	public CapitalShipMaster capitalShip;
 
 	public float GetKillDeathRatio()

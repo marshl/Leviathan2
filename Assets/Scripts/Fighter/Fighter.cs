@@ -43,29 +43,14 @@ public class Fighter : MonoBehaviour {
 
 	private float screenRatio;
 
-	// Unity Callback: Do not modify signature
-	private void OnNetworkInstantiate( NetworkMessageInfo _info )
-	{
-
-		int id = Common.NetworkID( this.networkView.owner );
-		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( id );
-		player.fighter = this;
-		Debug.Log( "Set player " + id + " to own fighter", this.gameObject );
-		if ( this.networkView.isMine == false )
-		{
-			this.enabled = false;
-			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-		} 
-	}
-
 	private void Start()
 	{
 		screenRatio = (float)Screen.width / (float)Screen.height;
 	}
 
-	void LateUpdate()
+	private void LateUpdate()
 	{
-		if(Input.GetKeyDown (KeyCode.G))
+		if ( Input.GetKeyDown( KeyCode.G ) )
 		{
 			Respawn();
 		}

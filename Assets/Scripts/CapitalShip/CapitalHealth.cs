@@ -3,8 +3,6 @@ using System.Collections;
 
 public class CapitalHealth : BaseHealth 
 {
-	//Add lots of references to capital systems here so we can break them later
-
 	public int shieldGenerators = 10;
 	public float baseShields; //Our base shields, the capital ship gets this * shieldGenerators final max shield
 

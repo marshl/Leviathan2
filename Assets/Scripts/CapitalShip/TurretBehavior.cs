@@ -25,7 +25,7 @@ public class TurretBehavior : BaseWeaponManager
 	private float range; //TODO: The weapon situation is a disaster that has to be fixed LM 12/05/14
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
-	{ 
+	{
 		Debug.Log( "TurretBehaviour: OnNetworkInstantiate", this );
 		int ownerID = Common.NetworkID( this.networkView.owner );
 
@@ -45,6 +45,7 @@ public class TurretBehavior : BaseWeaponManager
 	{
 		base.Awake();
 
+		// If playing locally
 		if ( Network.peerType == NetworkPeerType.Disconnected
 		    && GamePlayerManager.instance.GetPlayerWithID( -1 ).capitalShip != null )
 		{
@@ -57,7 +58,7 @@ public class TurretBehavior : BaseWeaponManager
 		BULLET_TYPE type = this.weapon.weaponDesc.bulletType;
 		BulletDescriptor desc = BulletDescriptorManager.instance.GetDescOfType( type );
 		this.range = desc.maxDistance;
-	} 
+	}
 
 	private void Update()
 	{
@@ -153,12 +154,12 @@ public class TurretBehavior : BaseWeaponManager
 			{
 				this.target = TargetManager.instance.GetTargetWithID( viewID );
 			}
-			
+
 		}
 	}
 
 	private void ParentToOwnerShip( GamePlayer _player )
-	{ 
+	{
 		this.transform.parent = _player.capitalShip.transform;
 	}
 }

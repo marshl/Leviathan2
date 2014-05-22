@@ -3,27 +3,30 @@ using System.Collections;
 
 public class CapitalShipMaster : MonoBehaviour
 {
-	public CapitalShipMovement capitalShipMovement;
-	public CapitalShipTurretManager turretManager;
+	public GamePlayer owner;
+
+	public CapitalShipMovement movement;
+	public CapitalShipTurretManager turrets;
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )   
 	{
 		Debug.Log( "CapitalShipMovement:OnNetworkInstantiate " + _info.sender + " " + _info.timestamp, this );
 		int playerID = Common.NetworkID( this.networkView.owner );
-		GamePlayer owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
-		if ( owner.capitalShip != null ) 
+		this.owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
+		if ( this.owner.capitalShip != null ) 
 		{
 			Debug.LogWarning( "Capital ship already set for " + playerID, this );
 		}
 		else
 		{
-			owner.capitalShip = this; 
+			this.owner.capitalShip = this; 
 			Debug.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
 		}
 		
 		if ( this.networkView.isMine == false )
 		{
 			this.enabled = false;
+			this.movement.enabled = false;
 		} 
 	}
 }

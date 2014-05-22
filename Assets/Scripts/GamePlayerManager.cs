@@ -72,6 +72,7 @@ public class GamePlayerManager : MonoBehaviour
 		this.GetNetworkPlayer( _player ).isConnected = false;
 
 		//TODO: Blow up their ship etc LM 24/04/14
+		//TODO: Tell everyone else that the player disconnected LM:22/05/14
 	}
 
 	public GamePlayer GetNetworkPlayer( NetworkPlayer _player )

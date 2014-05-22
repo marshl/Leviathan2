@@ -89,8 +89,6 @@ public class GameNetworkManager : BaseNetworkManager
 	[RPC]
 	private void OnGameStartedRPC()
 	{
-		//int id = Common.NetworkID();
-		//PLAYER_TYPE state = MenuToGameInfo.instance.playerTypeMap[ id ];
 		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( Common.MyNetworkID() );
 
 		PlayerInstantiator.instance.CreatePlayerObject( player );

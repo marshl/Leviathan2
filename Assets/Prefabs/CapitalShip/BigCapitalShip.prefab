@@ -1303,7 +1303,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400154}
   m_Layer: 0
-  m_Name: Lasers
+  m_Name: LightLaserPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4504,8 +4504,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 804fa07989b1800449c1c807b5492e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  capitalShipMovement: {fileID: 11400000}
-  turretManager: {fileID: 11400036}
+  owner:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  movement: {fileID: 11400000}
+  turrets: {fileID: 11400036}
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
