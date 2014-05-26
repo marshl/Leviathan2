@@ -2615,10 +2615,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88e6fd43154596142b7df3d9ee7d96ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commander1: 0
-  commander2: 0
-  team1: 
-  team2: 
+  commander1:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  commander2:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  fighters1: []
+  fighters2: []
 --- !u!4 &1435433309
 Transform:
   m_ObjectHideFlags: 0
