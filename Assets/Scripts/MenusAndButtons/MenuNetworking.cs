@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class MenuNetworking : BaseNetworkManager
 {
-	// Static Variables
+	// Static Variables 
 	public static MenuNetworking instance;
 
 	// Editor Variables
@@ -222,7 +222,8 @@ public class MenuNetworking : BaseNetworkManager
 		{
 			Network.Disconnect();
 			MasterServer.UnregisterHost();
-			//TODO: Send message of some description
+
+			this.networkView.RPC( "OnQuitLobbyRPC", RPCMode.Others );
 		}
 		else
 		{
@@ -273,5 +274,11 @@ public class MenuNetworking : BaseNetworkManager
 	private void OnRemovePlayerRPC( int _playerID )
 	{
 		GamePlayerManager.instance.RemovePlayer( _playerID );
+	}
+
+	[RPC]
+	private void OnQuitLobbyRPC()
+	{
+		Debug.Log( "Server has closed" );
 	}
 }

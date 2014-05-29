@@ -60,7 +60,7 @@ public class Fighter : MonoBehaviour {
 		case FIGHTERSTATE.FLYING:
 			{
 				this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
-				if(!GameMessages.typing)
+				if ( !GameMessages.instance.typing )
 				{
 					CheckFlightControls();
 				}
@@ -69,17 +69,18 @@ public class Fighter : MonoBehaviour {
 			break;
 
 		case FIGHTERSTATE.DOCKED:
-			{
+		{
 			//	print("Docked update");
-			if(!GameMessages.typing)
+			if ( !GameMessages.instance.typing )
+			{
 				CheckDockedControls();
-			};
+			}
 			break;
-
+		};
 		case FIGHTERSTATE.UNDOCKING:
 			{
 				this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
-				if(!GameMessages.typing)
+				if ( !GameMessages.instance.typing )
 				{
 					CheckFlightControls();
 				}

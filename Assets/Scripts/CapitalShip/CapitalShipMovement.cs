@@ -203,7 +203,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void UpdateAccelerationInput()
 	{
-		if ( !GameMessages.typing )
+		if ( !GameMessages.instance.typing )
 		{
 			if ( Input.GetKey( KeyCode.W ) )
 			{
@@ -284,8 +284,12 @@ public class CapitalShipMovement : MonoBehaviour
 				float t1 = this.currentAvoidCurvePoint / this.avoidCurveLength;
 				float t2 = oldPos / this.avoidCurveLength;
 
-				float d1 = Common.SmoothLerp( t1, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
-				float d2 = Common.SmoothLerp( t2, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
+				//float d1 = Common.SmoothLerp( t1, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
+				//float d2 = Common.SmoothLerp( t2, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
+
+				float d1 = Common.SmoothPingPong( t1, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight, 1 );
+				float d2 = Common.SmoothPingPong( t2, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight, 1 );
+
 				this.currentAvoidHeight = d1;
 				this.currentAvoidAngle = Mathf.Atan2( d2-d1, t1-t2 ) * this.avoidanceAngleMultiplier;
 			}

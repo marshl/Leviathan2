@@ -62,17 +62,15 @@ public class GamePlayerManager : MonoBehaviour
 
 			if ( GameNetworkManager.instance != null )
 			{
-				GameNetworkManager.instance.SendLobbyMessage( str );
+				GameNetworkManager.instance.SendLobbyMessage( str, -1 );
 			} 
 		}
 	}
 
-	public void DisconnectPlayer( NetworkPlayer _player )
+	public void DisconnectPlayer( int _playerID )
 	{
-		this.GetNetworkPlayer( _player ).isConnected = false;
-
+		this.GetPlayerWithID( _playerID ).isConnected = false;
 		//TODO: Blow up their ship etc LM 24/04/14
-		//TODO: Tell everyone else that the player disconnected LM:22/05/14
 	}
 
 	public GamePlayer GetNetworkPlayer( NetworkPlayer _player )

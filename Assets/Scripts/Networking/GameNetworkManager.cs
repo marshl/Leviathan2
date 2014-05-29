@@ -73,7 +73,14 @@ public class GameNetworkManager : BaseNetworkManager
 	protected override void OnPlayerDisconnected( NetworkPlayer _player )
 	{
 		Debug.Log( _player.ipAddress + " has disconnected" );
-		GamePlayerManager.instance.DisconnectPlayer( _player );
+
+		int playerID = Common.NetworkID( _player );
+		this.networkView.RPC( "OnDisocnnectPlayerRPC", RPCMode.All, playerID );
+	}
+	[RPC]
+	private void OnDisconnectPlayerRPC( int _playerID )
+	{
+		GamePlayerManager.instance.DisconnectPlayer( _playerID );
 	}
 
 	[RPC]
@@ -95,7 +102,7 @@ public class GameNetworkManager : BaseNetworkManager
 		this.gameHasStarted = true;
 	}
 
-	public void SendShootBulletMessage( BULLET_TYPE _bulletType, int _index, Vector3 _pos, Quaternion _rot )//Vector3 _forward )
+	public void SendShootBulletMessage( BULLET_TYPE _bulletType, int _index, Vector3 _pos, Quaternion _rot )
 	{
 		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.MyNetworkID(), (float)Network.time, (int)_bulletType, _index, _pos, _rot );// _forward );
 	}
@@ -103,10 +110,14 @@ public class GameNetworkManager : BaseNetworkManager
 	[RPC]
 	private void OnShootBulletRPC( int _ownerID, float _creationTime, int _bulletType,
 	                              int _index,
-	                              Vector3 _pos, Quaternion _rot )//Vector3 _forward )
+	                              Vector3 _pos, Quaternion _rot )
 	{
-		//TODO: Debug check of bullet type
-		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (BULLET_TYPE)_bulletType, _index, _pos, _rot );//_forward );
+		if ( !System.Enum.IsDefined( typeof(BULLET_TYPE), _bulletType ) )
+		{
+			Debug.LogError( "Bullet type " + _bulletType + " not defined" );
+		}
+
+		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (BULLET_TYPE)_bulletType, _index, _pos, _rot );
 	}
 
 	public void SendDestroySmartBulletMessage( int _ownerID, BULLET_TYPE _bulletType, int _index )

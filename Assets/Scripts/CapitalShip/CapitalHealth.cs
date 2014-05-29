@@ -9,9 +9,6 @@ public class CapitalHealth : BaseHealth
 	protected override void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		base.OnNetworkInstantiate( _info );
-		//TargetManager.instance.AddTarget( this.networkView.viewID, this );
-		//TargetManager.instance.AddCapital(this, 1); //We can all be team 1 together~
-		//TODO: Figure out the team  
 		
 		if ( this.networkView.isMine == false )
 		{  

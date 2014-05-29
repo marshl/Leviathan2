@@ -3,9 +3,16 @@ using System.Collections;
 
 public class GameMessages : MonoBehaviour
 {
+	public static GameMessages instance;
+
 	public bool showingMessage = false;
-	public static bool typing = false;
+	public bool typing = false;
 	public string message = "";
+
+	private void Awake()
+	{
+		GameMessages.instance = this;
+	}
 
 	private void Update()
 	{
@@ -15,30 +22,28 @@ public class GameMessages : MonoBehaviour
 			{
 				if ( this.message != "" )
 				{
-					//MessageManager.instance.AddMessage( Common.MyNetworkID(), this.message );
-					GameNetworkManager.instance.SendLobbyMessage( this.message );
+					GameNetworkManager.instance.SendLobbyMessage( this.message, -1 );
 				}
 				this.message = "";
-				//this.showingMessage = false;
-				typing = false;
+
+				this.typing = false;
 			}
 			else
 			{
 				this.showingMessage = true;
-				typing = true;
+				this.typing = true;
 			}
-			 //= !this.showingMessage;
 		} 
 
-		if( Input.GetKeyDown( KeyCode.Y ))
+		if( Input.GetKeyDown( KeyCode.Y ) )
 		{
-			if ( !typing )
+			if ( !this.typing )
 			{
 				this.showingMessage = !this.showingMessage;
 			}
 		}
 
-		if ( typing )
+		if ( this.typing )
 		{
 			foreach ( char c in Input.inputString )
 			{

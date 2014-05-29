@@ -5,10 +5,7 @@ public class FighterHealth : BaseHealth
 {
 	protected override void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		//TargetManager.instance.AddFighter( this, 1 );
 		base.OnNetworkInstantiate( _info );
-		//TargetManager.instance.AddTarget( this.networkView.viewID, this );
-		//TODO: Figure out the team  
 
 		if ( this.networkView.isMine == false )
 		{

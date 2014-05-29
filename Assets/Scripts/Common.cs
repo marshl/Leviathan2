@@ -128,10 +128,10 @@ public abstract class Common
 	}
 
 	//TODO: Replace this with SmoothPingPong
-	public static float SmoothLerp( float _value, float _min, float _max )
+	/*public static float SmoothLerp( float _value, float _min, float _max )
 	{
 		return ( (Mathf.Sin((_value-0.5f)*Mathf.PI) * (_max-_min) ) + _max + _min) / 2.0f;
-	}
+	}*/
 
 	/// <summary>
 	/// Gets the position where two objects will meet if the target stays on a constant heading and speed

@@ -8,30 +8,31 @@ public class MenuPlayerRow : MonoBehaviour
 	public GUIText ipText;
 	public GUIText latencyText;
 
-	// Public Variables
-	//public int playerIndex;
+	private Ping ping;
 
 	public void UpdateGUI( GamePlayer _player )
 	{
-		/*if ( this.playerIndex >= Network.connections.Length )
-		{
-			this.SetDefaults();
-			return;
-		}*/
-		
-		//NetworkPlayer player = MenuLobby.instance//Network.connections[playerIndex];
-		//TODO: have to store NetworkPlayer somewhere (use MenuPlayer class) LM 30/04/14
-		/*NetworkPlayer player = Network.player; // TODO: Gotta be a better way to default LM 30/04/14
+		NetworkPlayer player = Network.player;
 		for ( int i = 0; i < Network.connections.Length; ++i )
 		{
-			if ( Common.NetworkID( Network.connections[i] ) == _playerID )
+			if ( Common.NetworkID( Network.connections[i] ) == _player.id )
 			{
 				player = Network.connections[i];
 			}
-		}*/
+		}
 
-		this.ipText.text = "<TODO>";//_player.netPlayer.ipAddress;//player.ipAddress;
-		this.nameText.text = "Player " + _player.id;//_playerID;
+		this.ipText.text = player.ipAddress;
+		this.nameText.text = "Player " + _player.id;
+
+		if ( this.ping == null )
+		{
+			this.ping = new Ping( player.ipAddress );
+		}
+		else if ( this.ping.isDone )
+		{
+			this.latencyText.text = this.ping.time + "ms";
+			this.ping = null;
+		}
 	}
 
 	public void SetDefaults()

@@ -6,7 +6,7 @@ using System;
 public class Message
 {
 	public int senderID;
-	public int receiverID; // TODO: Stuff with this
+	public int receiverID;
 	public string message;
 	public DateTime timeReceived;
 
@@ -28,12 +28,23 @@ public class MessageManager : MonoBehaviour
 		this.messages = new List<Message>();
 	}
 
-	public void AddMessage( int _playerID, string _message )
+	public void AddMessage( int _playerID, int _receiverID, string _message )
 	{
+		// If this message isn't meant for me, don't add it
+		if ( _receiverID != -1 && _receiverID != Common.MyNetworkID() )
+		{
+			return;
+		}
+
+		//TODO: This isn't escaping right, revise LM 26/05/14
+		_message = _message.Replace( "<", "&lt;" );
+		_message = _message.Replace( ">", "&gt;" ); 
+
 		Message msg = new Message();
 		msg.senderID = _playerID;
 		msg.message = _message;
 		msg.timeReceived = DateTime.Now;
+		msg.receiverID = _receiverID;
 
 		this.messages.Add( msg );
 	}

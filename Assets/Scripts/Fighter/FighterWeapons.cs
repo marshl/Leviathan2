@@ -38,10 +38,9 @@ public class FighterWeapons : BaseWeaponManager
 		}
 		this.possibleTargets.Clear();
 
-		//TODO: Determine team
 		GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( this.networkView.owner );
-		TargetManager.instance.GetTargetsFromPlayer
-		( ref this.possibleTargets, 
+		TargetManager.instance.GetTargetsFromPlayer( 
+		     ref this.possibleTargets, 
 			 this.transform,
 			 this.maxTargetAngle,
 			 this.maxTargetDistance,

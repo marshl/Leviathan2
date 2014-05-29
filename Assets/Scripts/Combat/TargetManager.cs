@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TargetManager : MonoBehaviour
 {
-	public struct Target
+	public class Target
 	{
 		public Target( BaseHealth _health, float _angle, float _distance )
 		{
@@ -100,13 +100,17 @@ public class TargetManager : MonoBehaviour
 			return null;
 		}
 
-		//TODO: Rather inefficient, better change
-		targets.Sort( delegate( Target t1, Target t2)
-		{  
-			return t1.angle.CompareTo( t2.angle );
-		} );
+		Target bestTarget = null;
 
-		return targets[0].health;
+		foreach ( Target target in targets )
+		{
+			if ( bestTarget == null || target.angle < bestTarget.angle )
+			{
+				bestTarget = target;
+			}
+		}
+
+		return bestTarget.health;
 	}
 
 	public void DealDamageNetwork( NetworkViewID _id, float _damage )
