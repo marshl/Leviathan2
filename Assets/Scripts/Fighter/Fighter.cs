@@ -289,8 +289,24 @@ public class Fighter : MonoBehaviour {
 		//state = FIGHTERSTATE.DOCKED;
 
 		DockingBay[] bays = FindObjectsOfType(typeof(DockingBay)) as DockingBay[];
+		
+		bool firstPass = true;
+		int startingIndex = 0;
 		for(int ii = (int)Random.Range(0, bays.Length); true; ii++) //This is an infinite loop
 		{
+			if(firstPass)
+			{
+				startingIndex = ii;
+				firstPass = false;
+			}
+			else
+			{
+				if(ii == startingIndex)
+				{
+					Debug.Log("Could not find an empty docking bay (somehow)");
+					break;
+				}
+			}
 			if(ii == bays.Length)
 			{
 				ii = 0;
