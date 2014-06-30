@@ -55,8 +55,6 @@ public class GUITextField : MonoBehaviour
 					this.text = this.text.Substring( 0, this.text.Length - 1 );
 				}
 			}
-			//TODO: Tab handling (switch to other fields)
-			//TODO: Event trigger on enter event
 			else if ( this.text.Length < this.characterLimit )
 			{
 				this.text += c;

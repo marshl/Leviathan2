@@ -83,7 +83,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 122270341}
   - 114: {fileID: 122270340}
-  - 148: {fileID: 122270342}
   - 114: {fileID: 122270343}
   m_Layer: 0
   m_Name: GameNetworkManager
@@ -117,19 +116,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
---- !u!148 &122270342
-NetworkView:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 14800000, guid: 3eadb4ab82e3d944cb3e789edd6382c3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1990871751}
-  m_GameObject: {fileID: 122270339}
-  m_Enabled: 1
-  m_StateSynchronization: 0
-  m_Observed: {fileID: 122270341}
-  m_ViewID:
-    m_ID: 1
-    m_Type: 1
 --- !u!114 &122270343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,6 +834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showingMessage: 0
+  typing: 0
   message: 
 --- !u!1 &828339173
 GameObject:
@@ -1039,15 +1026,15 @@ GameObject:
   m_Component:
   - 4: {fileID: 935807972}
   - 54: {fileID: 935807979}
-  - 114: {fileID: 935807978}
   - 135: {fileID: 935807977}
+  - 114: {fileID: 935807982}
+  - 114: {fileID: 935807978}
   - 148: {fileID: 935807976}
   - 114: {fileID: 935807974}
   - 114: {fileID: 935807975}
   - 114: {fileID: 935807973}
   - 114: {fileID: 935807981}
   - 114: {fileID: 935807980}
-  - 114: {fileID: 935807982}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Untagged
@@ -1233,7 +1220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laserWeapon: {fileID: 935807975}
   missileWeapon: {fileID: 935807973}
-  chargeUpWeapon: {fileID: 935807982}
+  chargeUpWeapon: {fileID: 0}
   maxTargetDistance: 500
   maxTargetAngle: 15
 --- !u!114 &935807982
@@ -1245,18 +1232,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 935807971}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce45eca3c510d7b4daabc8ca5b280440, type: 3}
+  m_Script: {fileID: 11500000, guid: 48e1b7e30b7ecf24dab2a383120c4e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 5
-  weaponDesc: {fileID: 0}
-  firePoints:
-  - {fileID: 339182854}
-  firePointIndex: 0
-  timeSinceShot: 0
-  source: {fileID: 935807981}
-  chargeUpDesc: {fileID: 0}
-  currentCharge: 0
+  owner:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  fighter: {fileID: 935807978}
+  health: {fileID: 935807980}
+  weapons: {fileID: 935807981}
 --- !u!1 &1023717884
 GameObject:
   m_ObjectHideFlags: 0
@@ -2139,7 +2131,8 @@ Prefab:
       propertyPath: startPauseDuration
       value: .10000000149011612
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 14800000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
   m_RootGameObject: {fileID: 122270339}
   m_IsPrefabParent: 0

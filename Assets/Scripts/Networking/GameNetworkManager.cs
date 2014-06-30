@@ -14,6 +14,9 @@ public class GameNetworkManager : BaseNetworkManager
 	protected void Awake()
 	{
 		GameNetworkManager.instance = this;
+
+		this.gameObject.AddComponent<NetworkView>();
+		Debug.Log( this.name + " : " + Common.NetworkID( this.networkView.owner ), this ); 
 	}
 
 	protected void Start()
@@ -34,8 +37,9 @@ public class GameNetworkManager : BaseNetworkManager
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
 			//TODO: This may have issues with laggy players LM 28/04/14
-			this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.MyNetworkID(), (int)info.playerType );
+			this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.MyNetworkID(), (int)info.playerType );      
 		}
+
 	}
 
 	protected void Update()

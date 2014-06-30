@@ -64,7 +64,6 @@ public class LocalBulletBucket : BulletBucket
 	{
 		if ( _index != -1 )
 		{
-			//TODO: This could probably be done better (LM:20/02/14)
 			while ( _index >= this.bulletList.Length )
 			{
 				if ( this.DoubleBucketSize() == false )

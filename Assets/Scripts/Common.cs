@@ -127,12 +127,6 @@ public abstract class Common
 		return NetworkID( Network.player );
 	}
 
-	//TODO: Replace this with SmoothPingPong
-	/*public static float SmoothLerp( float _value, float _min, float _max )
-	{
-		return ( (Mathf.Sin((_value-0.5f)*Mathf.PI) * (_max-_min) ) + _max + _min) / 2.0f;
-	}*/
-
 	/// <summary>
 	/// Gets the position where two objects will meet if the target stays on a constant heading and speed
 	/// </summary>
@@ -144,7 +138,6 @@ public abstract class Common
 	{
 		if ( _target.rigidbody == null )
 		{
-			//Debug.LogError( "No rigidbody found on target " + _target.gameObject.name, _target );
 			return _target.position;
 		}
 
@@ -153,7 +146,6 @@ public abstract class Common
 
 		if ( flightDuration <= 0.0f )
 		{
-			//TODO: Quash this warning once tested LM:2/04/2014
 			Debug.LogWarning( "Projectile cannot catch up to target " + _target.gameObject.name, _target );
 			return _target.position;
 		}

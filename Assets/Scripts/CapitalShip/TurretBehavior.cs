@@ -39,6 +39,11 @@ public class TurretBehavior : BaseWeaponManager
 		this.ParentToOwnerShip( ownerPlayer );
 
 		this.health.team = ownerPlayer.team;
+
+		if ( !this.networkView.isMine )
+		{
+			this.enabled = false;
+		}
 	}
 
 	protected override void Awake()

@@ -9,7 +9,6 @@ public class CapitalShipTurretManager : MonoBehaviour
 	public GameObject lightLaserPrefab;
 
 	private void Start()
-	//private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		if ( this.networkView.isMine )
 		{

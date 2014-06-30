@@ -83,8 +83,6 @@ public class MenuLobby : MonoBehaviour
 		for ( int i = MessageManager.instance.messages.Count - 1; i >= 0; --i )
 		{
 			str += MessageManager.instance.GetFormattedMessage( i );
-			//TODO: Improve this significantly LM 30/4/14
-			//TODO: Escape formatting tags LM 02/05/14
 		}
 		this.messageText.text = str;
 	}

@@ -37,8 +37,9 @@ public class MessageManager : MonoBehaviour
 		}
 
 		//TODO: This isn't escaping right, revise LM 26/05/14
-		_message = _message.Replace( "<", "&lt;" );
-		_message = _message.Replace( ">", "&gt;" ); 
+		//_message = _message.Replace( "<", "&lt;" );
+		//_message = _message.Replace( ">", "&gt;" ); 
+		_message = _message.Replace( ">", "" ).Replace( "<", "" );
 
 		Message msg = new Message();
 		msg.senderID = _playerID;

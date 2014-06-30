@@ -10,7 +10,7 @@ public class CapitalShipMaster : MonoBehaviour
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )   
 	{
-		Debug.Log( "CapitalShipMovement:OnNetworkInstantiate " + _info.sender + " " + _info.timestamp, this );
+		Debug.Log( "CapitalShipMovement:OnNetworkInstantiate " + this.networkView.owner + " " + _info.timestamp, this );
 		int playerID = Common.NetworkID( this.networkView.owner );
 		this.owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
 		if ( this.owner.capitalShip != null ) 
@@ -27,6 +27,6 @@ public class CapitalShipMaster : MonoBehaviour
 		{
 			this.enabled = false;
 			this.movement.enabled = false;
-		} 
+		}  
 	}
 }
