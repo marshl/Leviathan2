@@ -37,6 +37,8 @@ public class NetworkPositionControl : MonoBehaviour
 	// Are we going to try to maintain our networked position?
 	private bool readNewPositionData = true;
 
+	public int ownerID = -1;
+
 	// Unity Callback: Do not change signature
 	private void Awake()
 	{
@@ -112,6 +114,8 @@ public class NetworkPositionControl : MonoBehaviour
 	{
 		// This is separate to facilitate local testing
 		this.TransformLerp( Network.time );
+
+		this.ownerID = Common.NetworkID( this.networkView.viewID.owner );
 	}
 
 	/// <summary>

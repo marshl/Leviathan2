@@ -9,8 +9,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400000}
-  - 148: {fileID: 14800000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: GameNetworkManager
   m_TagString: Untagged
@@ -40,7 +40,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8295651b54aa8054596e6344c8deb949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPauseDuration: 5
+  startPauseDuration: .10000000149011612
+  defaultPlayerType: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -60,18 +61,17 @@ MonoBehaviour:
   capitalCameraPrefab: {fileID: 100000, guid: 82ddd68b8858ea9449b324333a204b4d, type: 2}
   testingFighters: 0
   overrideSelection: 0
---- !u!148 &14800000
-NetworkView:
+--- !u!114 &11400004
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
-  m_StateSynchronization: 0
-  m_Observed: {fileID: 400000}
-  m_ViewID:
-    m_ID: 0
-    m_Type: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956e6a73a168fcd4d9b88052eb1ede01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

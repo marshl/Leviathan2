@@ -223,4 +223,15 @@ public class GameNetworkManager : BaseNetworkManager
 		PlayerInstantiator.instance.CreatePlayerObject( player );
 	}
 
+
+	public void SendSetViewIDMessage( NetworkViewID _oldID, NetworkViewID _newID )
+	{
+		this.networkView.RPC( "OnSetViewIDRPC", RPCMode.Others, _oldID, _newID );
+	}
+
+	[RPC]
+	private void OnSetViewIDRPC( NetworkViewID _oldID, NetworkViewID _newID )
+	{
+		NetworkOwnerManager.instance.ReceiveSetViewID( _oldID, _newID );
+	}
 }

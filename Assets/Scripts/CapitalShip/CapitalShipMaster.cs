@@ -10,6 +10,8 @@ public class CapitalShipMaster : MonoBehaviour
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )   
 	{
+		NetworkOwnerManager.instance.RegisterUnknownObject( this.networkView );
+
 		Debug.Log( "CapitalShipMovement:OnNetworkInstantiate " + this.networkView.owner + " " + _info.timestamp, this );
 		int playerID = Common.NetworkID( this.networkView.owner );
 		this.owner = GamePlayerManager.instance.GetPlayerWithID( playerID );

@@ -11,6 +11,8 @@ public class FighterMaster : MonoBehaviour
 	// Unity Callback: Do not modify signature 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
+		NetworkOwnerManager.instance.RegisterUnknownObject( this.networkView );
+
 		int id = Common.NetworkID( this.networkView.owner );
 		this.owner = GamePlayerManager.instance.GetPlayerWithID( id );
 		this.owner.fighter = this;
