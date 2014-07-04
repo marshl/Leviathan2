@@ -24,26 +24,14 @@ public class TurretBehavior : BaseWeaponManager
 
 	private float range; //TODO: The weapon situation is a disaster that has to be fixed LM 12/05/14
 
+	public NetworkOwnerControl ownerControl;
+	private bool ownerInitialised = false;
+
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		Debug.Log( "TurretBehaviour: OnNetworkInstantiate", this );
-		int ownerID = Common.NetworkID( this.networkView.owner );
-
-		GamePlayer ownerPlayer = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-
-		if ( ownerPlayer.capitalShip == null )
-		{
-			Debug.LogWarning( "Turret instantiated by non-commander player", this );
-		}
-
-		this.ParentToOwnerShip( ownerPlayer );
-
-		this.health.team = ownerPlayer.team;
-
-		if ( !this.networkView.isMine )
-		{
-			this.enabled = false;
-		}
+		//Debug.Log( "TurretBehaviour: OnNetworkInstantiate", this );
+	
+		NetworkOwnerManager.instance.RegisterUnknownObject( this );
 	}
 
 	protected override void Awake()
@@ -67,6 +55,17 @@ public class TurretBehavior : BaseWeaponManager
 
 	private void Update()
 	{
+		if ( this.ownerInitialised == false 
+		    && this.ownerControl.ownerID != -1 )
+		{
+			int playerID = this.ownerControl.ownerID;
+			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( playerID );
+			if ( player != null && player.capitalShip != null )
+			{
+				this.OwnerInitialise();
+			}
+		}
+
 		if ( this.networkView.isMine )
 		{
 			if ( this.target == null
@@ -166,5 +165,28 @@ public class TurretBehavior : BaseWeaponManager
 	private void ParentToOwnerShip( GamePlayer _player )
 	{
 		this.transform.parent = _player.capitalShip.transform;
+	}
+
+	private void OwnerInitialise()
+	{
+		this.ownerInitialised = false;
+
+		int ownerID = this.ownerControl.ownerID;//Common.NetworkID( this.networkView.owner );
+		
+		GamePlayer ownerPlayer = GamePlayerManager.instance.GetPlayerWithID( ownerID );
+		
+		if ( ownerPlayer.capitalShip == null )
+		{
+			Debug.LogWarning( "Turret instantiated by non-commander player", this );
+		}
+		
+		this.ParentToOwnerShip( ownerPlayer );
+		
+		this.health.team = ownerPlayer.team;
+		
+		if ( !this.networkView.isMine )
+		{
+			this.enabled = false;
+		}
 	}
 }

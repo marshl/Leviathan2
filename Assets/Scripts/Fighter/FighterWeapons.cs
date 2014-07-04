@@ -35,15 +35,16 @@ public class FighterWeapons : BaseWeaponManager
 			{
 				this.chargeUpWeapon.SendFireMessage();
 			} 
-		}
-		this.possibleTargets.Clear();
+		
+			this.possibleTargets.Clear();
 
-		GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( this.networkView.owner );
-		TargetManager.instance.GetTargetsFromPlayer( 
-		     ref this.possibleTargets, 
-			 this.transform,
-			 this.maxTargetAngle,
-			 this.maxTargetDistance,
-			 Common.OpposingTeam( player.team ) );
+			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( Common.MyNetworkID() );
+			TargetManager.instance.GetTargetsFromPlayer( 
+			     ref this.possibleTargets, 
+				 this.transform,
+				 this.maxTargetAngle,
+				 this.maxTargetDistance,
+				 Common.OpposingTeam( player.team ) );
+		}
 	}
 }

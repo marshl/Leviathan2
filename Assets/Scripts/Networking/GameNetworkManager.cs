@@ -14,9 +14,6 @@ public class GameNetworkManager : BaseNetworkManager
 	protected void Awake()
 	{
 		GameNetworkManager.instance = this;
-
-		this.gameObject.AddComponent<NetworkView>();
-		Debug.Log( this.name + " : " + Common.NetworkID( this.networkView.owner ), this ); 
 	}
 
 	protected void Start()
@@ -39,7 +36,6 @@ public class GameNetworkManager : BaseNetworkManager
 			//TODO: This may have issues with laggy players LM 28/04/14
 			this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.MyNetworkID(), (int)info.playerType );      
 		}
-
 	}
 
 	protected void Update()
@@ -224,14 +220,14 @@ public class GameNetworkManager : BaseNetworkManager
 	}
 
 
-	public void SendSetViewIDMessage( NetworkViewID _oldID, NetworkViewID _newID )
+	public void SendSetViewIDMessage( int _ownerID, NetworkViewID _oldID, NetworkViewID _newID )
 	{
-		this.networkView.RPC( "OnSetViewIDRPC", RPCMode.Others, _oldID, _newID );
+		this.networkView.RPC( "OnSetViewIDRPC", RPCMode.Others, _ownerID, _oldID, _newID );
 	}
 
 	[RPC]
-	private void OnSetViewIDRPC( NetworkViewID _oldID, NetworkViewID _newID )
+	private void OnSetViewIDRPC( int _ownerID, NetworkViewID _oldID, NetworkViewID _newID )
 	{
-		NetworkOwnerManager.instance.ReceiveSetViewID( _oldID, _newID );
+		NetworkOwnerManager.instance.ReceiveSetViewID( _ownerID, _oldID, _newID );
 	}
 }

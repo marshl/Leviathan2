@@ -91,7 +91,7 @@ public class LocalBulletBucket : BulletBucket
 			// If we've wrapped the search, no bullets are free: increase the bucket size and return a new bullet
 			if ( currentIndex == startIndex )
 			{
-				Debug.LogWarning( "Bucket size " + this.bulletList.Length + " for " + this.bulletDesc.bulletType + " was not adequate: increasing bucket size." );
+				Debug.LogWarning( "Bucket size " + this.bulletList.Length + " for " + this.bulletDesc.bulletType + " was inadequate: increasing bucket size." );
 				// Lets try again, starting from the first of the new bullets
 				if ( this.DoubleBucketSize() == true )
 				{

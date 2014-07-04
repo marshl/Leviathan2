@@ -8,16 +8,16 @@ public class CapitalShipTurretManager : MonoBehaviour
 
 	public GameObject lightLaserPrefab;
 
-	private void Start()
+	/*private void Start()
 	{
 		if ( this.networkView.isMine )
 		{
 			Debug.Log( "Creating turrets" );
 			this.CreateTurrets();
 		}
-	}
+	}*/
 
-	private void CreateTurrets()
+	public void CreateTurrets()
 	{
 		foreach ( Transform pos in this.turretPositions )
 		{

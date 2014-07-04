@@ -45,6 +45,7 @@ GameObject:
   - 148: {fileID: 14800000}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400008}
+  - 114: {fileID: 11400010}
   m_Layer: 11
   m_Name: Light_Laser
   m_TagString: Turret
@@ -492,6 +493,7 @@ MonoBehaviour:
   minimumPitchAngle: 0
   weapon: {fileID: 11400006}
   health: {fileID: 11400008}
+  ownerControl: {fileID: 11400010}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -541,6 +543,18 @@ MonoBehaviour:
   shieldRegen: 15
   shieldRegenDelay: 3
   isIndestructible: 0
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ef634c3f5055643a216109a4ac4517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerID: -1
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

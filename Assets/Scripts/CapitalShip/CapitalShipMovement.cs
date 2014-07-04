@@ -117,6 +117,14 @@ public class CapitalShipMovement : MonoBehaviour
 
 	public float avoidanceAngleMultiplier;
 
+	private void OnNetworkInstantiate( NetworkMessageInfo _info )
+	{
+		if ( this.networkView.isMine == false )
+		{
+			this.enabled = false;
+		}
+	}
+
 	private void Start()
 	{
 		this.currentMovementSpeed = (this.maxMoveSpeed + this.minMoveSpeed) / 2;
