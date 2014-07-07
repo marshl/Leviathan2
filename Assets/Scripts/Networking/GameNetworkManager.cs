@@ -75,7 +75,7 @@ public class GameNetworkManager : BaseNetworkManager
 		Debug.Log( _player.ipAddress + " has disconnected" );
 
 		int playerID = Common.NetworkID( _player );
-		this.networkView.RPC( "OnDisocnnectPlayerRPC", RPCMode.All, playerID );
+		this.networkView.RPC( "OnDisconnectPlayerRPC", RPCMode.All, playerID );
 	}
 	[RPC]
 	private void OnDisconnectPlayerRPC( int _playerID )
@@ -220,14 +220,14 @@ public class GameNetworkManager : BaseNetworkManager
 	}
 
 
-	public void SendSetViewIDMessage( int _ownerID, NetworkViewID _oldID, NetworkViewID _newID )
+	public void SendSetViewIDMessage( int _ownerID, NetworkViewID _id )
 	{
-		this.networkView.RPC( "OnSetViewIDRPC", RPCMode.Others, _ownerID, _oldID, _newID );
+		this.networkView.RPC( "OnSetViewIDRPC", RPCMode.Others, _ownerID, _id );
 	}
 
 	[RPC]
-	private void OnSetViewIDRPC( int _ownerID, NetworkViewID _oldID, NetworkViewID _newID )
+	private void OnSetViewIDRPC( int _ownerID, NetworkViewID _id )
 	{
-		NetworkOwnerManager.instance.ReceiveSetViewID( _ownerID, _oldID, _newID );
+		NetworkOwnerManager.instance.ReceiveSetViewID( _ownerID, _id );
 	}
 }

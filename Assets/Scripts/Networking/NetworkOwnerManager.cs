@@ -37,40 +37,32 @@ public class NetworkOwnerManager : MonoBehaviour
 
 		if ( view.isMine ) // If it is mine, tell everyone else about it
 		{
-			NetworkViewID newID = Network.AllocateViewID();
 			int ownerID = Common.MyNetworkID();
-			GameNetworkManager.instance.SendSetViewIDMessage( ownerID, id, newID );
-			Debug.Log( "Changing view ID for " + _obj.gameObject.name + " from " + view.viewID + " to " + newID, view );
-			view.viewID = newID;
-
+			GameNetworkManager.instance.SendSetViewIDMessage( ownerID, id );
 			_obj.GetComponent<NetworkOwnerControl>().ownerID = ownerID;
 		}
 		else // If it isn't mine, store this away and wait for the RPC
 		{
-			Debug.Log( "Network view for " + _obj.gameObject.name + " registered as " + id, _obj );
 			this.map.Add( id, view );
 		}
 	}
 	
-	public void ReceiveSetViewID( int _ownerID, NetworkViewID _oldID, NetworkViewID _newID )
+	public void ReceiveSetViewID( int _ownerID, NetworkViewID _id )
 	{
-		if ( this.map.ContainsKey( _oldID ) == false )
+		if ( this.map.ContainsKey( _id ) == false )
 		{
-			Debug.LogError( "Cannot find NetworkView with ID " + _oldID );
+			Debug.LogError( "Cannot find NetworkView with ID " + _id );
 			return;
 		}
-		NetworkView view = this.map[_oldID];
-
-		int oldOwner = Common.NetworkID( view.owner );
-		Debug.Log( "Received change notification for " + view.gameObject.name + " from " + _oldID + " to " + _newID, view );
-		Debug.Log( "Transferring ownership from " + oldOwner + " to " + _ownerID );
-		view.viewID = _newID;
-		this.map.Remove( _oldID );
-
+		NetworkView view = this.map[_id];
 		NetworkOwnerControl ownerControl = view.GetComponent<NetworkOwnerControl>();
-		if ( ownerControl != null )
+		if ( ownerControl == null )
 		{
-			ownerControl.ownerID = _ownerID;
+			Debug.LogError ( "Cannot find NetworkOwnerControl on " + view.gameObject.name, view.gameObject );
+			return;
 		}
+
+		this.map.Remove( _id );
+		ownerControl.ownerID = _ownerID;
 	}
 }

@@ -18,15 +18,9 @@ public class CapitalHealth : BaseHealth
 
 	public void Awake()
 	{
-
-		RecalculateMaxShields();
+		this.RecalculateMaxShields();
 	}
-	
-	/*public override void DealDamage( float _damage )
-	{
-		base.DealDamage( _damage );
-	}*/
-	
+
 	public override void Update()
 	{
 		base.Update ();
