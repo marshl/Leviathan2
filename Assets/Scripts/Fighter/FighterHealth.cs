@@ -15,16 +15,19 @@ public class FighterHealth : BaseHealth
 			this.enabled = false;
 		}
 	}
-	
+
 	private void OnGUI()
 	{
-		GUI.Label( new Rect(0, 50, 150, 50), "Shields: " + this.currentShield + " / " + this.maxShield );
-		GUI.Label( new Rect(0, 0, 150, 50), "Hull: " + this.currentHealth + " / " + this.maxHealth );
+		if ( this.networkView.isMine )
+		{
+			GUI.Label( new Rect(0, 50, 150, 50), "Shields: " + this.currentShield + " / " + this.maxShield );
+			GUI.Label( new Rect(0, 0, 150, 50), "Hull: " + this.currentHealth + " / " + this.maxHealth );
+		}
 	} 
 
 	public override void Update()
 	{
-		if(this.currentHealth <= 0)
+		if(this.currentHealth <= 0 && this.GetComponent<Fighter>().state != Fighter.FIGHTERSTATE.DEAD)
 		{
 
 			this.currentHealth = 0;
@@ -57,5 +60,17 @@ public class FighterHealth : BaseHealth
 		}
 
 		return deathType;
+	}
+
+	public void FighterDestroyedNetwork()
+	{
+		this.gameObject.collider.enabled = false;
+		//this.gameObject.
+	}
+
+	public void FighterRespawnedNetwork()
+	{
+		this.gameObject.collider.enabled = true;
+		//this.gameObject.renderer.enabled = true;
 	}
 }
