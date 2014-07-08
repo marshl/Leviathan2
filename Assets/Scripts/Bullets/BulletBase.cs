@@ -91,11 +91,25 @@ public class BulletBase : MonoBehaviour
 		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
 		if ( health != null )
 		{
+			print("Hit object directly");
 			this.OnTargetCollision( health );
+
 		}
 		else
 		{
-			this.OnEmptyCollision();
+			BaseHealth parentHealth = _collider.gameObject.transform.parent.GetComponent<BaseHealth>();
+
+			if(parentHealth != null)
+			{
+				print("Hit object indirectly");
+				this.OnTargetCollision( parentHealth );
+			}
+
+			else
+			{
+				this.OnEmptyCollision();
+			}
+
 		}
 	}
 

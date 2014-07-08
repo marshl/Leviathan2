@@ -138,6 +138,28 @@ public class GameNetworkManager : BaseNetworkManager
 		this.networkView.RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_bulletType, _index );
 	}
 
+	public void SendDeadFighterMessage( NetworkViewID _id)
+	{
+		this.networkView.RPC ("OnDeadFighterRPC",RPCMode.All,_id);
+	}
+
+	[RPC]
+	private void OnDeadFighterRPC( NetworkViewID _id)
+	{
+		TargetManager.instance.GetTargetWithID(_id).GetComponent<FighterHealth>().FighterDestroyedNetwork();
+	}
+
+	public void SendRespawnedFighterMessage (NetworkViewID _id)
+	{
+		this.networkView.RPC ("OnRespawnedFighterRPC",RPCMode.All,_id);
+	}
+
+	[RPC]
+	private void OnRespawnedFighterRPC(NetworkViewID _id)
+	{
+		TargetManager.instance.GetTargetWithID(_id).GetComponent<FighterHealth>().FighterRespawnedNetwork();
+	}
+
 	[RPC]
 	private void OnDestroyDumbBulletRPC( int _bulletType, int _index )
 	{

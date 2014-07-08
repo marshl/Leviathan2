@@ -500,7 +500,7 @@ MonoBehaviour:
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
   count: 0
   moveSpeed: 80
-  maxDistance: 1000
+  maxDistance: 250
   damage: 50
   smartBullet: 1
   turnRate: 35
@@ -1194,6 +1194,8 @@ MonoBehaviour:
   turnExtents: .699999988
   undockingTimer: 0
   undockingDelay: 3
+  respawnDelay: 5
+  respawnTimer: 0
   currentSlot:
     landedPosition: {fileID: 0}
     landedFighter: {fileID: 0}
@@ -1278,7 +1280,7 @@ MonoBehaviour:
   fighter: {fileID: 935807978}
   health: {fileID: 935807980}
   weapons: {fileID: 935807981}
-  ownerControl: {fileID: 0}
+  ownerControl: {fileID: 935807983}
 --- !u!114 &935807983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1472,6 +1474,14 @@ Prefab:
     - target: {fileID: 14800000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: m_ViewID.m_Type
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: testingFighters
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: overrideSelection
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}

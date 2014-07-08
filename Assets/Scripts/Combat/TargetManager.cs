@@ -46,6 +46,19 @@ public class TargetManager : MonoBehaviour
 		this.healthMap.Add( _viewID, _health );
 	}
 
+	public void RemoveTarget(NetworkViewID _viewID)
+	{
+		if ( this.healthMap.ContainsKey( _viewID ) )
+		{
+			Debug.Log( "Removing target" + _viewID );
+			this.healthMap.Remove(_viewID);
+		}
+		else
+		{
+			Debug.LogWarning ("No target with id " + _viewID + " found in healthmap");
+		}
+	}
+
 	public BaseHealth GetTargetWithID( NetworkViewID _viewID )
 	{
 		BaseHealth target = null;

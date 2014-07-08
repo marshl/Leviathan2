@@ -33,7 +33,8 @@ public class BaseHealth : MonoBehaviour
 			this.currentShield -= _damage;
 			if( this.currentShield < 0 ) //We inflict damage to the hull based on how much the shield is below 0
 			{
-				this.currentHealth += this.currentShield; //Shield is negative by the points that break through
+				//Shield is a negative number right now, which is the leftover damage from the hit
+				this.currentHealth -= (this.currentShield * -1); //Subtracting the sign-changed number for readability
 				this.currentShield = 0;
 			}
 		}
@@ -55,6 +56,11 @@ public class BaseHealth : MonoBehaviour
 
 	public virtual void Update()
 	{
+		RegenerateShields();
+	}
+
+	public virtual void RegenerateShields()
+	{
 		if( this.shieldRegenTimer <= 0 )
 		{
 			this.shieldRegenTimer = 0;
@@ -66,11 +72,17 @@ public class BaseHealth : MonoBehaviour
 					this.currentShield = this.maxShield;
 				}
 			}
-
+			
 		}
 		else
 		{
 			this.shieldRegenTimer -= Time.deltaTime;
 		}
+	}
+
+	public virtual void FullHeal()
+	{
+		currentHealth = maxHealth;
+		currentShield = maxShield;
 	}
 }

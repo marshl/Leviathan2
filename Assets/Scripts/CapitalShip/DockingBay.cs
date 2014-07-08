@@ -41,10 +41,10 @@ public class DockingBay : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if(other.GetComponent<Fighter>() != null)
+		if(other.GetComponent<Fighter>() != null && other.GetComponent<NetworkView>().isMine)
 		{
 			Fighter fighter = other.GetComponent<Fighter>();
-			if(fighter.team == this.team && fighter.state == Fighter.FIGHTERSTATE.FLYING) //If we're on the same team
+			if(fighter.team == this.team && fighter.state == Fighter.FIGHTERSTATE.FLYING && fighter.enabled) //If we're on the same team
 			{
 				print("Fighter received");
 				FriendlyDockingProcedure(fighter); //You may dock
