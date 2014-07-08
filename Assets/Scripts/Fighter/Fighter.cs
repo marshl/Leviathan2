@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class Fighter : MonoBehaviour {
-
+public class Fighter : MonoBehaviour 
+{
 	public enum FIGHTERSTATE
 	{
 		DOCKED,
@@ -22,9 +22,6 @@ public class Fighter : MonoBehaviour {
 	public float bounceVelocityModifier = 300.0f;
 	public int team = 1;
 	public FIGHTERSTATE state = FIGHTERSTATE.FLYING;
-	//public float currentSpeed = 0.0f;
-	//public float desiredSpeed = 0.0f;
-	//public float maxSpeed = 10.0f; //Potentially used as a hard limit
 
 	/// <summary>
 	/// The distance from the centre of the screen at which the turn amout will be maximum
@@ -33,9 +30,7 @@ public class Fighter : MonoBehaviour {
 	/// gradually leading down to zero in the centre of the screen
 	/// </summary>
 	public float turnExtents;
-
-	//public bool docked = false;
-	//public bool undocking = false;
+	
 	public float undockingTimer = 0.0f;
 	public float undockingDelay = 3.0f;
 
@@ -58,57 +53,51 @@ public class Fighter : MonoBehaviour {
 		switch( state )
 		{
 		case FIGHTERSTATE.FLYING:
+		{
+			this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
+			if ( !GameMessages.instance.typing )
 			{
-				this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
-				if ( !GameMessages.instance.typing )
-				{
-					CheckFlightControls();
-				}
-				ApplyDrag();
-			};
+				CheckFlightControls();
+			}
+			ApplyDrag();
 			break;
-
+		}
 		case FIGHTERSTATE.DOCKED:
 		{
-			//	print("Docked update");
 			if ( !GameMessages.instance.typing )
 			{
 				CheckDockedControls();
 			}
 			break;
-		};
+		}
 		case FIGHTERSTATE.UNDOCKING:
+		{
+			this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
+			if ( !GameMessages.instance.typing )
 			{
-				this.rigidbody.AddForce (this.transform.forward * desiredSpeed * Time.deltaTime);
-				if ( !GameMessages.instance.typing )
-				{
-					CheckFlightControls();
-				}
-				ApplyDrag();
-					if(undockingTimer > 0)
-					{
-						undockingTimer -= Time.deltaTime;
-						if(undockingTimer < 0)
-						{
-							undockingTimer = 0;
-							state = FIGHTERSTATE.FLYING;
-						}
-					}
-			};
-			break;
+				CheckFlightControls();
+			}
+			ApplyDrag();
 
-		case FIGHTERSTATE.DEAD:
+			if ( undockingTimer > 0 )
 			{
-				//Do some ongui stuff here to tell people respawn time
-				
-				//Find an empty fighter slot on the capital ship
-				
+				undockingTimer -= Time.deltaTime;
+				if ( undockingTimer < 0 )
+				{
+					undockingTimer = 0;
+					state = FIGHTERSTATE.FLYING;
+				}
 			}
 			break;
 		}
-
-
-
+		case FIGHTERSTATE.DEAD:
+		{
+			//Do some ongui stuff here to tell people respawn time
+			
+			//Find an empty fighter slot on the capital ship
+			break;
+		}
+		}
 	}
 
 	void CheckFlightControls()
@@ -197,17 +186,6 @@ public class Fighter : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
-		/*Vector3 averagePoint = Vector3.zero;
-		int counter = 0;
-
-		foreach (ContactPoint contact in collision.contacts)
-		{
-			averagePoint += contact.normal;
-			counter++;
-		}
-
-		averagePoint /= counter;*/
-
 		Vector3 bounceForce = (collision.contacts[0].normal *
 		                       this.rigidbody.velocity.magnitude * bounceVelocityModifier)
 			+ (minimumBounce * collision.contacts[0].normal.normalized);
@@ -217,12 +195,8 @@ public class Fighter : MonoBehaviour {
 			bounceForce *= (collision.rigidbody.velocity.magnitude * bounceVelocityModifier);
 		}
 
-		//print(bounceForce);
-
-
 		this.rigidbody.AddForce (bounceForce);
 		this.rigidbody.AddTorque (Vector3.Cross(new Vector3(bounceForce.z, bounceForce.y, bounceForce.x), this.transform.rotation.eulerAngles));
-		//this.rigidbody.AddForce (averagePoint * this.rigidbody.velocity.magnitude * bounciness); //bounciness);
 	}
 
 	public void Dock(DockingBay.DockingSlot slot)

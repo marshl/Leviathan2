@@ -5,9 +5,10 @@ public class CapitalShipTurretManager : MonoBehaviour
 {
 	//TODO: Transforms might have to be replaced with custom script
 	public Transform[] turretPositions;
-
+	public Transform[] missileTurretPositions;
 	public GameObject lightLaserPrefab;
 
+	public GameObject missileTurretPrefab;
 	/*private void Start()
 	{
 		if ( this.networkView.isMine )
@@ -27,5 +28,10 @@ public class CapitalShipTurretManager : MonoBehaviour
 
 			Debug.Log( "Created " + obj );
 		} 
+
+		foreach ( Transform pos in this.missileTurretPositions )
+		{
+			Network.Instantiate( this.missileTurretPrefab, pos.position, pos.rotation, 0 );
+		}
 	}
 }

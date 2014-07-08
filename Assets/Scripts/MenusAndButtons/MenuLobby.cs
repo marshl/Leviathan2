@@ -15,12 +15,13 @@ public class MenuLobby : MonoBehaviour
 	public GUIText messageText;
 	public int messageLimit;
 
+	public GameObject startGameButton;
+
 	public MenuPlayerRow firstPlayerRow;
 	public float playerRowOffset;
 
 	private List<MenuPlayerRow> playerRows;
-
-
+	
 	private void Awake ()
 	{
 		MenuLobby.instance = this;
@@ -67,6 +68,9 @@ public class MenuLobby : MonoBehaviour
 	{
 		this.gameNameText.text = MenuNetworking.instance.gameName;
 		this.gameCommentText.text = MenuNetworking.instance.gameComment;
+
+		// Disable the start button if we aren't the host
+		this.startGameButton.SetActive( Network.isServer );
 	}
 
 	public void ExitLobby()
@@ -74,6 +78,7 @@ public class MenuLobby : MonoBehaviour
 		MenuNetworking.instance.QuitLobby();
 		MainMenuButtons.instance.ExitLobby();
 		this.Reset();
+		GamePlayerManager.instance.Reset();
 	}
 
 	private void UpdateMessageGUI()

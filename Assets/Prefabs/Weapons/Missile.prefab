@@ -61,7 +61,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.0762501, y: 10.6709538, z: 1.48565292}
+  m_LocalPosition: {x: -2.02733707, y: 0, z: 163.329132}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -74,8 +74,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: .499999493, y: -.499999434, z: -.500000596, w: .500000596}
-  m_LocalPosition: {x: 0, y: 0, z: .923317909}
-  m_LocalScale: {x: 1, y: 1.77533019, z: 1}
+  m_LocalPosition: {x: -4.29153442e-06, y: 3.35178413e-07, z: -.951126099}
+  m_LocalScale: {x: .538293898, y: 1.72464097, z: .538293898}
   m_Children: []
   m_Father: {fileID: 400000}
 --- !u!4 &400004
@@ -85,8 +85,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: -.707105994, z: 0, w: .707107604}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .27462706, y: 1, z: 1}
+  m_LocalPosition: {x: -4.529953e-06, y: 0, z: -2.05235291}
+  m_LocalScale: {x: .212840289, y: .775015831, z: .775015831}
   m_Children: []
   m_Father: {fileID: 400000}
 --- !u!23 &2300000
@@ -176,6 +176,7 @@ MonoBehaviour:
   bulletType: 1
   parentBucket: {fileID: 0}
   distanceTravelled: 0
+  source: {fileID: 0}
   desc: {fileID: 0}
   target: {fileID: 0}
   seekingDesc: {fileID: 0}
@@ -190,6 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6289df16c1b660e46b2b71bffbf82f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lerp: 0
+  lerpRate: 0
+  ownerID: -1
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -200,8 +204,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: .75
-  m_Center: {x: 0, y: 0, z: 2}
+  m_Radius: .5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1

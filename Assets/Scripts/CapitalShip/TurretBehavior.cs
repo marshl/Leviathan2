@@ -10,10 +10,6 @@ public class TurretBehavior : BaseWeaponManager
 	public Transform arm;
 	public float rotationSpeed;
 
-	private Vector3 direction;
-	private Quaternion lookRotation;
-	private Quaternion newRot;
-
 	public bool chrisTurret = false;
 	public float pitchOffset = 0;
 
@@ -29,8 +25,6 @@ public class TurretBehavior : BaseWeaponManager
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		//Debug.Log( "TurretBehaviour: OnNetworkInstantiate", this );
-	
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
 	}
 
@@ -38,7 +32,7 @@ public class TurretBehavior : BaseWeaponManager
 	{
 		base.Awake();
 
-		// If playing locally
+		// If playing locally, this has to be parented to the capital ship here
 		if ( Network.peerType == NetworkPeerType.Disconnected
 		    && GamePlayerManager.instance.GetPlayerWithID( -1 ).capitalShip != null )
 		{
@@ -93,13 +87,13 @@ public class TurretBehavior : BaseWeaponManager
 		}
 
 		//Predict the target's location ahead based on the shot speed and current velocity
-		direction = (leadPosition - transform.position).normalized;
+		Vector3 direction = (leadPosition - transform.position).normalized;
 
 		//create the rotation we need to be in to look at the target
-		lookRotation = Quaternion.LookRotation( direction );
+		Quaternion lookRotation = Quaternion.LookRotation( direction );
 
 		//copy the quaternion into a new variable so we can mess with it safely
-		newRot = lookRotation;
+		Quaternion newRot = lookRotation;
 
 		//Wrapping code
 		float threshold = lookRotation.eulerAngles.x;
@@ -158,21 +152,19 @@ public class TurretBehavior : BaseWeaponManager
 			{
 				this.target = TargetManager.instance.GetTargetWithID( viewID );
 			}
-
 		}
 	}
 
 	private void ParentToOwnerShip( GamePlayer _player )
 	{
-		this.transform.parent = _player.capitalShip.transform;
+		this.transform.parent = _player.capitalShip.depthControl;
 	}
 
 	private void OwnerInitialise()
 	{
 		this.ownerInitialised = false;
 
-		int ownerID = this.ownerControl.ownerID;//Common.NetworkID( this.networkView.owner );
-		
+		int ownerID = this.ownerControl.ownerID;
 		GamePlayer ownerPlayer = GamePlayerManager.instance.GetPlayerWithID( ownerID );
 		
 		if ( ownerPlayer.capitalShip == null )
@@ -181,7 +173,6 @@ public class TurretBehavior : BaseWeaponManager
 		}
 		
 		this.ParentToOwnerShip( ownerPlayer );
-		
 		this.health.team = ownerPlayer.team;
 		
 		if ( !this.networkView.isMine )

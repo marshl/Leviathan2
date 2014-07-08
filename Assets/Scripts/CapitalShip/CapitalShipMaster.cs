@@ -8,6 +8,7 @@ public class CapitalShipMaster : MonoBehaviour
 	public CapitalShipMovement movement;
 	public NetworkOwnerControl ownerControl;
 	public CapitalShipTurretManager turrets;
+	public Transform depthControl;
 
 	private bool ownerInitialised = false;
 
@@ -19,7 +20,7 @@ public class CapitalShipMaster : MonoBehaviour
 	private void Update()
 	{
 		if ( this.ownerInitialised == false 
-		    && this.ownerControl.ownerID != -1 )
+		  && this.ownerControl.ownerID != -1 )
 		{
 			this.OwnerInitialise();
 		}
@@ -41,14 +42,14 @@ public class CapitalShipMaster : MonoBehaviour
 			Debug.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
 		}
 
-		if ( this.networkView.isMine == false )
+		if ( this.networkView.isMine )
 		{
-			this.enabled = false;
-			this.movement.enabled = false;
+			this.turrets.CreateTurrets();
 		}  
 		else
 		{
-			this.turrets.CreateTurrets();
+			this.enabled = false;
+			this.movement.enabled = false;
 		}
 	}
 }

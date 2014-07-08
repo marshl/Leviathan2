@@ -17,7 +17,7 @@ public class FighterMaster : MonoBehaviour
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
 
 		if ( this.ownerInitialised == false 
-		    && this.ownerControl.ownerID != -1 )
+		  && this.ownerControl.ownerID != -1 )
 		{
 			this.OwnerInitialise();
 		}
@@ -37,5 +37,8 @@ public class FighterMaster : MonoBehaviour
 			this.fighter.enabled = false;
 			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		} 
+
+		//TODO: Shouls team be removed from health in favour of GamePlayer pointer? LM:7/7/14
+		this.health.team = this.owner.team;
 	}
 }

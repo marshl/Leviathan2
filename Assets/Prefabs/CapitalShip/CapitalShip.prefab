@@ -271,7 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8ed82c1cafef548ac38e63832a185c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markerTransform: {fileID: 0}
   rotationSegmentPrefab: {fileID: 100000, guid: d9588999404854d4eaf7d116dc88cf98,
     type: 2}
   tentativePathLine: {fileID: 0}
@@ -289,6 +288,7 @@ MonoBehaviour:
   avoidanceCeiling: 1
   avoidanceFloor: -1
   avoidanceCurveDropRate: .200000003
+  avoidanceAngleMultiplier: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -352,6 +352,7 @@ MonoBehaviour:
   - {fileID: 11400008}
   firePointIndex: 0
   timeSinceShot: 0
+  source: {fileID: 0}
   spinUpDesc: {fileID: 0}
   currentSpin: 0
 --- !u!114 &11400016
@@ -367,19 +368,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerp: 1
   lerpRate: 5000
+  ownerID: -1
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6289df16c1b660e46b2b71bffbf82f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lerp: 1
   lerpRate: 5
+  ownerID: -1
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1
@@ -400,7 +403,7 @@ NetworkView:
   m_GameObject: {fileID: 100006}
   m_Enabled: 1
   m_StateSynchronization: 1
-  m_Observed: {fileID: 400006}
+  m_Observed: {fileID: 11400018}
   m_ViewID:
     m_ID: 0
     m_Type: 0
