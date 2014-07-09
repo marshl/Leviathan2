@@ -4606,6 +4606,7 @@ MonoBehaviour:
   ownerControl: {fileID: 11400004}
   turrets: {fileID: 11400036}
   depthControl: {fileID: 400002}
+  health: {fileID: 11400024}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4711,6 +4712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12454c70d24e9c245aeec1973d19f2ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  capitalShip: {fileID: 11400002}
   maximumShips: 4
   currentShips: 0
   slots:
@@ -4730,7 +4732,6 @@ MonoBehaviour:
     landedFighter: {fileID: 0}
     occupied: 0
     slotID: 0
-  team: 1
   bayID: 3
 --- !u!114 &11400018
 MonoBehaviour:
@@ -4743,6 +4744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12454c70d24e9c245aeec1973d19f2ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  capitalShip: {fileID: 11400002}
   maximumShips: 4
   currentShips: 0
   slots:
@@ -4762,7 +4764,6 @@ MonoBehaviour:
     landedFighter: {fileID: 0}
     occupied: 0
     slotID: 0
-  team: 1
   bayID: 4
 --- !u!114 &11400020
 MonoBehaviour:
@@ -4775,6 +4776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12454c70d24e9c245aeec1973d19f2ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  capitalShip: {fileID: 11400002}
   maximumShips: 4
   currentShips: 0
   slots:
@@ -4794,7 +4796,6 @@ MonoBehaviour:
     landedFighter: {fileID: 0}
     occupied: 0
     slotID: 0
-  team: 1
   bayID: 2
 --- !u!114 &11400022
 MonoBehaviour:
@@ -4807,6 +4808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12454c70d24e9c245aeec1973d19f2ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  capitalShip: {fileID: 11400002}
   maximumShips: 4
   currentShips: 0
   slots:
@@ -4826,7 +4828,6 @@ MonoBehaviour:
     landedFighter: {fileID: 0}
     occupied: 0
     slotID: 0
-  team: 1
   bayID: 1
 --- !u!114 &11400024
 MonoBehaviour:

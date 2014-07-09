@@ -179,34 +179,27 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDockedMessage( NetworkViewID _id, int landedSlot )
 	{
-		this.networkView.RPC ( "OnFighterDockedRPC", RPCMode.Others, _id, landedSlot );
+		this.networkView.RPC( "OnFighterDockedRPC", RPCMode.Others, _id, landedSlot );
 	}
 
 	[RPC]
 	private void OnFighterDockedRPC( NetworkViewID _id, int landedSlotID )
 	{
-		//_id.gameObject.transform.position = landedSlot.landedPosition.transform.position;
-		//_id.gameObject.transform.rotation = landedSlot.landedPosition.transform.rotation;
-
-		NetworkView dockingFighterView = NetworkView.Find (_id);
+		NetworkView dockingFighterView = NetworkView.Find( _id );
 
 		GameObject dockingFighter = dockingFighterView.gameObject;
 
-		if(!dockingFighterView.isMine)
+		if ( !dockingFighterView.isMine )
 		{
 			DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
-
 			dockingFighter.transform.position = landedSlot.landedPosition.transform.position;
 			dockingFighter.transform.parent = landedSlot.landedPosition;
-
 			dockingFighter.transform.rotation = landedSlot.landedPosition.transform.rotation;
-			//dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+			dockingFighter.GetComponent<NetworkPositionControl>().SetUpdatePosition( false );
 
-			dockingFighter.GetComponent<NetworkPositionControl>().TogglePositionUpdates( false );
+			landedSlot.landedFighter = dockingFighter.GetComponent<FighterMaster>();
 
-			landedSlot.landedFighter = dockingFighter.GetComponent<Fighter>();
-
-			print("Received docked RPC");
+			Debug.Log( "Received docked RPC", this );
 		}
 	}
 
@@ -222,16 +215,14 @@ public class GameNetworkManager : BaseNetworkManager
 
 		GameObject dockingFighter = dockingFighterView.gameObject;
 		dockingFighter.GetComponent<NetworkPositionControl>().enabled = true;
-		DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
+		DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID( landedSlotID );
 
 		dockingFighter.transform.parent = null;
-		dockingFighter.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+		dockingFighter.transform.localScale = Vector3.one;
 
-		dockingFighter.GetComponent<NetworkPositionControl>().TogglePositionUpdates( true );
-		//dockingFighter.GetComponent<NetworkPositionControl>().lerp = true;
+		dockingFighter.GetComponent<NetworkPositionControl>().SetUpdatePosition( true );
 		landedSlot.landedFighter = null;
 	}
-	
 
 	private void LocalGameStart()
 	{
@@ -240,7 +231,6 @@ public class GameNetworkManager : BaseNetworkManager
 
 		PlayerInstantiator.instance.CreatePlayerObject( player );
 	}
-
 
 	public void SendSetViewIDMessage( int _ownerID, NetworkViewID _id )
 	{

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-
-public class DockingBay : MonoBehaviour {
+public class DockingBay : MonoBehaviour
+{
+	public CapitalShipMaster capitalShip;
 
 	public int maximumShips = 4;
 	public int currentShips = 0;
@@ -12,59 +12,51 @@ public class DockingBay : MonoBehaviour {
 	public class DockingSlot
 	{
 		public Transform landedPosition;
-		public Fighter landedFighter;
+		public FighterMaster landedFighter;
 		public bool occupied;
 		public int slotID;
 	}
 
 	public DockingSlot[] slots = new DockingSlot[4];
-
-	public int team = 1;
+	
 	public int bayID;
-	// Use this for initialization
-	void Start () {
 
-		int idCounter = (team * 1000) + (bayID * 10 + 1);
-		foreach(DockingSlot newSlot in slots)
+	private void Start()
+	{
+		int idCounter = ((int)(this.capitalShip.health.team) * 1000) + (bayID * 10 + 1);
+		foreach ( DockingSlot newSlot in slots )
 		{
 			newSlot.slotID = idCounter;
 			idCounter++;
 		}
-	
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
-	void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter( Collider _other )
 	{
-		if(other.GetComponent<Fighter>() != null && other.GetComponent<NetworkView>().isMine)
+		FighterMaster fighterScript = _other.GetComponent<FighterMaster>();
+		if ( fighterScript != null && _other.networkView != null && _other.networkView.isMine )
 		{
-			Fighter fighter = other.GetComponent<Fighter>();
-			if(fighter.team == this.team && fighter.state == Fighter.FIGHTERSTATE.FLYING && fighter.enabled) //If we're on the same team
+			if ( fighterScript.health.team == this.capitalShip.health.team
+			  && fighterScript.state == FighterMaster.FIGHTERSTATE.FLYING
+			  && fighterScript.enabled ) //If we're on the same team
 			{
 				print("Fighter received");
-				FriendlyDockingProcedure(fighter); //You may dock
+				FriendlyDockingProcedure( fighterScript ); //You may dock
 			}
 			else
 			{
-				EnemyDockingProcedure(fighter); //Do bad stuff to them.
+				EnemyDockingProcedure( fighterScript ); //Do bad stuff to them.
 			}
-
 		}
 	}
 
-	void FriendlyDockingProcedure(Fighter _fighter)
+	private void FriendlyDockingProcedure( FighterMaster _fighter )
 	{
-		DockingBay.DockingSlot slotToDock = this.GetFreeSlot ();
-		{
-			_fighter.Dock (slotToDock);
-			slotToDock.occupied = true;
-			slotToDock.landedFighter = _fighter;
-		}
+		DockingBay.DockingSlot slotToDock = this.GetFreeSlot();
+
+		_fighter.Dock( slotToDock );
+		slotToDock.occupied = true;
+		slotToDock.landedFighter = _fighter;
 	}
 
 	public DockingSlot GetSlotByID( int _id )
@@ -82,20 +74,19 @@ public class DockingBay : MonoBehaviour {
 
 	public DockingSlot GetFreeSlot()
 	{
-		foreach(DockingSlot friendlySlot in slots)
+		foreach ( DockingSlot friendlySlot in slots )
 		{
-			if(!friendlySlot.occupied)
+			if ( !friendlySlot.occupied )
 			{
 				return friendlySlot;
-
 			}
 		}
 
 		return null;
 	}
 
-	void EnemyDockingProcedure(Fighter _fighter)
+	private void EnemyDockingProcedure( FighterMaster _fighter )
 	{
-
+		//TODO: Damage the fighter etc.
 	}
 }

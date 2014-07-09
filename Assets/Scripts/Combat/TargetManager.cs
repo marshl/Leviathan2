@@ -118,6 +118,7 @@ public class TargetManager : MonoBehaviour
 
 		foreach ( Target target in targets )
 		{
+			//TODO: Range check as well
 			if ( bestTarget == null || target.angle < bestTarget.angle )
 			{
 				bestTarget = target;

@@ -135,7 +135,6 @@ public class TurretBehavior : BaseWeaponManager
 			_stream.Serialize( ref jointRot );
 			_stream.Serialize( ref armRot );
 			_stream.Serialize( ref viewID );
-
 		}
 		else if ( _stream.isReading )
 		{

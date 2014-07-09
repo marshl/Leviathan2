@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPauseDuration: .10000000149011612
-  defaultPlayerType: 1
+  defaultPlayerType: 3
 --- !u!4 &122270341
 Transform:
   m_ObjectHideFlags: 0
@@ -978,6 +978,7 @@ MonoBehaviour:
   shieldRegen: 0
   shieldRegenDelay: 0
   isIndestructible: 0
+  masterScript: {fileID: 0}
 --- !u!23 &864014376
 Renderer:
   m_ObjectHideFlags: 0
@@ -1180,6 +1181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2936f4242dcdfd046ab7b9168eccbede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  masterScript: {fileID: 935807982}
   turnSpeed: 90
   rollSpeed: 2
   acceleration: 4000
@@ -1189,18 +1191,7 @@ MonoBehaviour:
   rollDamping: .300000012
   minimumBounce: 500
   bounceVelocityModifier: 50
-  team: 1
-  state: 2
   turnExtents: .699999988
-  undockingTimer: 0
-  undockingDelay: 3
-  respawnDelay: 5
-  respawnTimer: 0
-  currentSlot:
-    landedPosition: {fileID: 0}
-    landedFighter: {fileID: 0}
-    occupied: 0
-    slotID: 0
 --- !u!54 &935807979
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1237,6 +1228,7 @@ MonoBehaviour:
   shieldRegen: .25
   shieldRegenDelay: 1
   isIndestructible: 0
+  masterScript: {fileID: 935807982}
 --- !u!114 &935807981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,6 +1258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1b7e30b7ecf24dab2a383120c4e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 2
   owner:
     id: 0
     name: DEFAULT
@@ -1277,10 +1270,19 @@ MonoBehaviour:
     team: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
-  fighter: {fileID: 935807978}
+  movement: {fileID: 935807978}
   health: {fileID: 935807980}
   weapons: {fileID: 935807981}
   ownerControl: {fileID: 935807983}
+  undockingTimer: 0
+  undockingDelay: 3
+  respawnDelay: 5
+  respawnTimer: 0
+  currentSlot:
+    landedPosition: {fileID: 0}
+    landedFighter: {fileID: 0}
+    occupied: 0
+    slotID: 0
 --- !u!114 &935807983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1482,6 +1484,10 @@ Prefab:
     - target: {fileID: 11400002, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: overrideSelection
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: defaultPlayerType
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}

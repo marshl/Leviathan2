@@ -186,7 +186,7 @@ public class BulletManager : MonoBehaviour
 				GameObject.Destroy( _bullet.gameObject );
 			}
 		}
-		else
+		else //Dumb bullet
 		{
 			if ( _bullet.state == BulletBase.BULLET_STATE.INACTIVE
 			  || _bullet.gameObject.activeSelf == false )

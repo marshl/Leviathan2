@@ -154,33 +154,22 @@ public class NetworkPositionControl : MonoBehaviour
 		}
 	}
 
-	public void TogglePositionUpdates( bool _toggle )
+	public void SetUpdatePosition( bool _toggle )
 	{
-		print("Toggled position updating to " + _toggle);
-		readNewPositionData = _toggle;
+		Debug.Log( "Toggled position updating to " + _toggle, this );
+		this.readNewPositionData = _toggle;
 	}
 
 	public Vector3 CalculateVelocity()
 	{
-		/*//First up, we need to know the two most recent position data points.
-		//These are used to calculate the distance moved in that time.
-
-		Vector3 travelledVector = this.newerData.position - this.olderData.position;
-
-		//Next we scale this vector up using the time difference to work out one second of velocity.
-		//I really badly wish you could overload Vector3 operators for this.
-
-		travelledVector.x = travelledVector.x * (float)(1 / timeDiff ) ;
-		travelledVector.y = travelledVector.y * (float)(1 / timeDiff ) ;
-		travelledVector.z = travelledVector.z * (float)(1 / timeDiff ) ;
-
-		//This will not be perfect, but it should be good enough to be useful.
-
-		return travelledVector;
-		*/
-
-
-		return ( this.newerData.position - this.olderData.position ) / (float)this.timeDiff;
+		if ( this.newerData.timeStamp == 0.0f || this.olderData.timeStamp == 0.0f )
+		{
+			return Vector3.zero;
+		}
+		else
+		{
+			return ( this.newerData.position - this.olderData.position ) / (float)this.timeDiff;
+		}
 	}
 	
 }

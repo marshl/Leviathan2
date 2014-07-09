@@ -9,6 +9,7 @@ public class CapitalShipMaster : MonoBehaviour
 	public NetworkOwnerControl ownerControl;
 	public CapitalShipTurretManager turrets;
 	public Transform depthControl;
+	public CapitalHealth health;
 
 	private bool ownerInitialised = false;
 
@@ -41,6 +42,8 @@ public class CapitalShipMaster : MonoBehaviour
 			this.owner.capitalShip = this; 
 			Debug.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
 		}
+
+		this.health.team = this.owner.team;
 
 		if ( this.networkView.isMine )
 		{
