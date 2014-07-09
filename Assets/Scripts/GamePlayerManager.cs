@@ -84,7 +84,7 @@ public class GamePlayerManager : MonoBehaviour
 		GamePlayer player;
 		if ( !this.playerMap.TryGetValue( _playerID, out player ) )
 		{
-			Debug.LogError( "Could not find player with id " + _playerID );
+			Debug.LogWarning( "Could not find player with id " + _playerID );
 			return null;
 		}
 		return player;
