@@ -32,6 +32,9 @@ public class FighterMaster : MonoBehaviour
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
+
+
+
 	}
 
 	private void Update()
@@ -120,6 +123,15 @@ public class FighterMaster : MonoBehaviour
 
 		//TODO: Shouls team be removed from health in favour of GamePlayer pointer? LM:7/7/14
 		this.health.team = this.owner.team;
+
+		
+		foreach (Renderer render in GetComponentsInChildren<Renderer>())
+		{
+			if(owner.team == TEAM.TEAM_1)
+				render.material.color = new Color(1.0f,1.0f,0.2f);
+			else
+				render.material.color = new Color(1,0f,0.2f,1.0f);
+		}
 	}
 
 	public void Respawn()

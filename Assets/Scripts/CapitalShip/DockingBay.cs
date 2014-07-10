@@ -29,6 +29,12 @@ public class DockingBay : MonoBehaviour
 			newSlot.slotID = idCounter;
 			idCounter++;
 		}
+
+		if(capitalShip.owner.team == TEAM.TEAM_1)
+			renderer.material.color = new Color(0.5f,1.0f,0.5f);
+		else
+			renderer.material.color = new Color(0.5f, 0.5f, 1.0f);
+
 	}
 
 	private void OnTriggerEnter( Collider _other )

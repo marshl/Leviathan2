@@ -54,5 +54,19 @@ public class CapitalShipMaster : MonoBehaviour
 			this.enabled = false;
 			this.movement.enabled = false;
 		}
+
+		
+		foreach (Renderer render in GetComponentsInChildren<Renderer>())
+		{
+			if(render.gameObject.name == "Port" || 
+			   render.gameObject.name == "Bow" ||
+			   render.gameObject.name == "Starboard" )
+			{
+				if(owner.team == TEAM.TEAM_1)
+					render.material.color = new Color(1.0f,1.0f,0.5f);
+				else
+					render.material.color = new Color(1,0f,0.2f,1.0f);
+			}
+		}
 	}
 }
