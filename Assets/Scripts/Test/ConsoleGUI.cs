@@ -18,19 +18,44 @@ public class ConsoleGUI : MonoBehaviour
 			this.displaying = !this.displaying;
 		}
 
-		if ( this.displaying && DebugConsole.input.Length > 0 )
+		if ( this.displaying )
 		{
 			this.linesLong = (int)(( (float)Screen.height * 0.9f ) / lineHeight);
-
-			foreach ( char c in Input.inputString )
+			if ( DebugConsole.input.Length > 0 )
 			{
-				if ( (int)c == 13 )
+				foreach ( char c in Input.inputString )
 				{
-					DebugConsole.ProcessInput();
+					if ( (int)c == 13 ) // New Line
+					{
+						DebugConsole.ProcessInput();
 
-					this.sliderValue = DebugConsole.outputLines.Count - this.linesLong;
-					this.sliderValue = this.sliderValue > 0.0f ? this.sliderValue : 0.0f;
-					break;
+						this.sliderValue = DebugConsole.outputLines.Count - this.linesLong;
+						this.sliderValue = this.sliderValue > 0.0f ? this.sliderValue : 0.0f;
+						break;
+					}
+				}
+			}
+
+			if ( Input.GetKeyDown( KeyCode.UpArrow ) || Input.GetKeyDown( KeyCode.DownArrow ) )
+			{
+				if ( Input.GetKeyDown( KeyCode.UpArrow ) )
+				{
+					DebugConsole.currentInputLine = Mathf.Max( DebugConsole.currentInputLine - 1, 0 );
+				}
+				if ( Input.GetKeyDown( KeyCode.DownArrow ) )
+				{
+					DebugConsole.currentInputLine = Mathf.Min( DebugConsole.currentInputLine + 1, DebugConsole.inputLines.Count );
+					
+				}
+
+				// Index into the old input strings
+				if ( DebugConsole.currentInputLine < DebugConsole.inputLines.Count  )
+				{
+					DebugConsole.input = DebugConsole.inputLines[DebugConsole.currentInputLine];
+				}
+				else // If we go over the end of the list, go back to blank input
+				{
+					DebugConsole.input = "";
 				}
 			}
 		}
@@ -43,17 +68,20 @@ public class ConsoleGUI : MonoBehaviour
 			int lineOverflow = DebugConsole.outputLines.Count - this.linesLong;
 			lineOverflow = lineOverflow > 0 ? lineOverflow : 0;
 
+			// Output lines
 			for ( int i = 0; i < DebugConsole.outputLines.Count && i < this.linesLong; ++i )
 			{
 				int lineIndex = i + (int)this.sliderValue;
 				GUI.Label(  new Rect( 0.0f, (float)i * lineHeight, Screen.width, lineHeight ), DebugConsole.outputLines[lineIndex], this.style );
 			}
 
+			// Input field
 			DebugConsole.input = GUI.TextField( new Rect( 0.0f, Screen.height*0.9f, Screen.width, Screen.height * 0.1f ), DebugConsole.input );
 
+			// Output slider
 			if ( lineOverflow > 0 )
 			{
-				this.sliderValue = GUI.VerticalSlider( new Rect(Screen.width-10, 0, 10, Screen.height*0.9f), this.sliderValue, 0, lineOverflow );
+				this.sliderValue = Mathf.Floor( GUI.VerticalSlider( new Rect(Screen.width-10, 0, 10, Screen.height*0.9f), this.sliderValue, 0, lineOverflow ) );
 			}
 		}
 	}

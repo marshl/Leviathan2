@@ -7,6 +7,8 @@ public static class DebugConsole
 	public static bool changed = false;
 
 	public static List<string> outputLines = new List<string>();
+	public static List<string> inputLines = new List<string>();
+	public static int currentInputLine = -1;
 	//public static string output = "";
 	public static string input = "";
 
@@ -65,6 +67,11 @@ public static class DebugConsole
 			OnTGM( chunks );
 			break;
 		}
+		case "sethealth":
+		{
+			OnSetHealth( chunks );
+			break;
+		}
 		default:
 		{
 			AddLine( "Unknown command \"" + input + "\". Type \"help\" for a list of commands." );
@@ -72,6 +79,8 @@ public static class DebugConsole
 		}
 		}
 
+		inputLines.Add( input );
+		currentInputLine = inputLines.Count;
 		input = "";
 	}
 
@@ -79,6 +88,8 @@ public static class DebugConsole
 	{
 		AddLine( "Available commands:" );
 		AddLine( "playerlist - Displays a list of all players" );
+		AddLine( "tgm - Toggle God Mode" );
+		AddLine( "sethealth - Set the health of a player" );
 	}
 
 	private static void OnPlayerList( string[] _chunks )
@@ -109,8 +120,7 @@ public static class DebugConsole
 		  || chunks[1] != "1" && chunks[1] != "0" )
 		{
 			AddLine( "Toggle God Mode syntax: " );
-			AddLine( "tgm 1/0" );
-			AddLine( "Where 1 is on, 0 is off" );
+			AddLine( "tgm [1/0]" );
 			return;
 		}
 
@@ -139,5 +149,47 @@ public static class DebugConsole
 		}
 
 		AddLine( "God mode " + (tgm ? "enabled" : "disabled" ) );
+	}
+
+	private static void OnSetHealth( string[] _chunks )
+	{
+		int playerID = -1;
+		int health;
+		if ( (_chunks.Length == 2 && int.TryParse( _chunks[1], out health )
+		  || _chunks.Length == 3 && int.TryParse( _chunks[1], out health ) && int.TryParse( _chunks[2], out playerID ) )
+			== false )
+		{
+			AddLine( "Set Health syntax:" );
+			AddLine( "sethealth [health] [playerid=me]" );
+			return;
+		}
+
+		if ( playerID == -1 )
+		{
+			playerID = Common.MyNetworkID();
+		}
+
+		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( playerID );
+		if ( player == null )
+		{
+			AddLine( "No player with ID " + playerID + " found" );
+			return;
+		}
+
+		if ( player.fighter != null )
+		{
+			player.fighter.health.currentHealth = health;
+		}
+		else if ( player.capitalShip != null )
+		{
+			player.capitalShip.health.currentHealth = health;
+		}
+		else
+		{
+			AddLine( "No player object found to modiify" );
+			return;
+		}
+
+		AddLine( "Player " + playerID + " health set to " + health );
 	}
 }
