@@ -52,12 +52,12 @@ public class GamePlayerManager : MonoBehaviour
 				str += "\tTeam: " + pair.Value.team +
 					"\n\tType: " + pair.Value.playerType + "\n";
 			}
-			Debug.Log( str, this );
+			DebugConsole.Log( str, this );
 
 			foreach ( KeyValuePair<int, GamePlayer> pair in this.playerMap )
 			{
-				Debug.Log( "Player " + pair.Key + ":" + pair.Value.fighter, pair.Value.fighter );
-				Debug.Log( "Player " + pair.Key + ":" + pair.Value.capitalShip, pair.Value.capitalShip  );
+				DebugConsole.Log( "Player " + pair.Key + ":" + pair.Value.fighter, pair.Value.fighter );
+				DebugConsole.Log( "Player " + pair.Key + ":" + pair.Value.capitalShip, pair.Value.capitalShip  );
 			}
 
 			if ( GameNetworkManager.instance != null )
@@ -84,7 +84,7 @@ public class GamePlayerManager : MonoBehaviour
 		GamePlayer player;
 		if ( !this.playerMap.TryGetValue( _playerID, out player ) )
 		{
-			Debug.LogWarning( "Could not find player with id " + _playerID );
+			DebugConsole.Warning( "Could not find player with ID " + _playerID );
 			return null;
 		}
 		return player;
@@ -113,10 +113,10 @@ public class GamePlayerManager : MonoBehaviour
 	
 	public void AddPlayerOfType( int _playerID, PLAYER_TYPE _playerType )
 	{
-		Debug.Log( "Adding player " + _playerID + " to " + _playerType );
+		DebugConsole.Log( "Adding player " + _playerID + " to " + _playerType );
 		if ( this.playerMap.ContainsKey( _playerID ) )
 		{
-			Debug.LogWarning( "Player " + _playerID + " already added", this );
+			DebugConsole.Warning( "Player " + _playerID + " already added", this );
 		}
 
 		GamePlayer newPlayer = new GamePlayer();
@@ -131,7 +131,7 @@ public class GamePlayerManager : MonoBehaviour
 	{
 		if ( !this.playerMap.ContainsKey( _playerID ) )
 		{
-			Debug.LogError( "Cannot remove player " + _playerID );
+			DebugConsole.Error( "Cannot remove player " + _playerID );
 			return false;
 		}
 		GamePlayer player = this.playerMap[_playerID];
@@ -140,17 +140,17 @@ public class GamePlayerManager : MonoBehaviour
 		if ( this.commander1 == player )
 		{
 			this.commander1 = null;
-			Debug.Log( "Removing commander1" );
+			DebugConsole.Log( "Removing commander1" );
 		}
 		else if ( this.commander2 == player )
 		{
 			this.commander2 = null;
-			Debug.Log( "Removing commander2" );
+			DebugConsole.Log( "Removing commander2" );
 		}
 
 		this.playerMap.Remove( _playerID );
 
-		Debug.Log( "Removed player " + _playerID + " from " + type );
+		DebugConsole.Log( "Removed player " + _playerID + " from " + type );
 		return true;
 	}
 
@@ -158,7 +158,7 @@ public class GamePlayerManager : MonoBehaviour
 	{
 		if ( !this.playerMap.ContainsKey( _playerID ) )
 		{
-			Debug.LogError( "Unknown player ID " + _playerID );
+			DebugConsole.Error( "Unknown player ID " + _playerID );
 			return;
 		}
 
@@ -166,7 +166,7 @@ public class GamePlayerManager : MonoBehaviour
 
 		if ( player.playerType == _newType )
 		{
-			Debug.LogWarning( "Useless change request changing player " + _playerID + " to " + _newType );
+			DebugConsole.Warning( "Useless change request changing player " + _playerID + " to " + _newType );
 		}
 
 		switch ( player.playerType )
@@ -176,32 +176,32 @@ public class GamePlayerManager : MonoBehaviour
 		case PLAYER_TYPE.FIGHTER1:
 			if ( !this.fighters1.Remove( player ) )
 			{
-				Debug.LogError( "Error removing " + _playerID + " from team 1" );
+				DebugConsole.Error( "Error removing " + _playerID + " from team 1" );
 			}
 			break;
 		case PLAYER_TYPE.FIGHTER2:
 			if ( !this.fighters2.Remove( player ) )
 			{
-				Debug.LogError( "Error removing " + _playerID + " from team 2" );
+				DebugConsole.Error( "Error removing " + _playerID + " from team 2" );
 			}
 			break;
 		case PLAYER_TYPE.COMMANDER1:
 			if ( this.commander1 != player )
 			{
-				Debug.LogError( "Error removing " + _playerID + " from commander 1" );
+				DebugConsole.Error( "Error removing " + _playerID + " from commander 1" );
 			}
 			this.commander1 = null;
 			break;
 		case PLAYER_TYPE.COMMANDER2:
 			if ( this.commander2 != player )
 			{
-				Debug.LogError( "Error removing player " + _playerID + " from commander 2" );
+				DebugConsole.Error( "Error removing player " + _playerID + " from commander 2" );
 			}
 			this.commander2 = null;
 			break;
 		
 		default:
-			Debug.LogError( "Uncaught player type " + _playerID + ":" + player.playerType );
+			DebugConsole.Error( "Uncaught player type " + _playerID + ":" + player.playerType );
 			break;
 		}
 
@@ -210,7 +210,7 @@ public class GamePlayerManager : MonoBehaviour
 		switch ( player.playerType )
 		{
 		case PLAYER_TYPE.UNDEFINED:
-			Debug.LogWarning( "You shouldn't be changing the player type to UNDEFINED " + player.id );
+			DebugConsole.Warning( "You shouldn't be changing the player type to UNDEFINED " + player.id );
 			break;
 		case PLAYER_TYPE.FIGHTER1:
 			this.fighters1.Add( player );
@@ -223,7 +223,7 @@ public class GamePlayerManager : MonoBehaviour
 		case PLAYER_TYPE.COMMANDER1:
 			if ( this.commander1 != null )
 			{
-				Debug.LogError( "Commander 1 is already occupied. Cannot change to " + _playerID );
+				DebugConsole.Error( "Commander 1 is already occupied. Cannot change to " + _playerID );
 			}
 			this.commander1 = player;
 			player.team = TEAM.TEAM_1;
@@ -231,14 +231,14 @@ public class GamePlayerManager : MonoBehaviour
 		case PLAYER_TYPE.COMMANDER2:
 			if ( this.commander2 != null )
 			{
-				Debug.LogError( "Commander 2 is already occupied. Cannot change to " + _playerID );
+				DebugConsole.Error( "Commander 2 is already occupied. Cannot change to " + _playerID );
 			}
 			this.commander2 = player;
 			player.team = TEAM.TEAM_2;
 			break;
 			
 		default:
-			Debug.LogError( "Uncaught player type " + _playerID + ":" + player.playerType );
+			DebugConsole.Error( "Uncaught player type " + _playerID + ":" + player.playerType );
 			break;
 		}
 	}
@@ -252,13 +252,13 @@ public class GamePlayerManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogError( "Could not find player type in map " + id );
+			DebugConsole.Error( "Could not find player type in map " + id );
 		}
 	}
 
 	public void Reset() // protip: don't call this in the game
 	{
-		Debug.Log( "Resetting GamePlayerManager" );
+		DebugConsole.Log( "Resetting GamePlayerManager" );
 
 		this.commander1 = this.commander2 = null;
 		this.fighters1.Clear();

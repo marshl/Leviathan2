@@ -54,7 +54,7 @@ public class PlayerOptions : MonoBehaviour
 		FileStream stream = new FileStream( this.GetFilePath(), FileMode.CreateNew );
 		if ( stream == null )
 		{
-			Debug.LogError( "Error creating default options file." );
+			DebugConsole.Error( "Error creating default options file." );
 			return;
 		}
 		serialiser.Serialize( stream, this.options );

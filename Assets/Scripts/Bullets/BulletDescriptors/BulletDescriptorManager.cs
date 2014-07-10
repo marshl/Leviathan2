@@ -26,7 +26,7 @@ public class BulletDescriptorManager : MonoBehaviour
 
 		if ( this.descMap.TryGetValue( _bulletType, out desc ) == false )
 		{
-			Debug.LogError( "Could not find bullet descriptor of type " + _bulletType, this );
+			DebugConsole.Error( "Could not find bullet descriptor of type " + _bulletType, this );
 		}
 
 		return desc;

@@ -45,7 +45,7 @@ public class MenuNetworking : BaseNetworkManager
 		this.gameComment = _comment;
 		this.portNumber = _port;
 
-		Debug.Log( "Starting server Port:" + this.portNumber + " GameName:" + this.gameName + " Comment:"+ this.gameComment );
+		DebugConsole.Log( "Starting server Port:" + this.portNumber + " GameName:" + this.gameName + " Comment:"+ this.gameComment );
 		NetworkConnectionError result = NetworkConnectionError.NoError;
 		try
 		{
@@ -53,11 +53,11 @@ public class MenuNetworking : BaseNetworkManager
 		}
 		catch
 		{
-			Debug.Log( "Error starting server: " + result.ToString() );
+			DebugConsole.Log( "Error starting server: " + result.ToString() );
 			return result;
 		}
-		Debug.Log( "Start Server result: " + result.ToString() );
-		Debug.Log( "Registering master server: " + this.gameTypeName );
+		DebugConsole.Log( "Start Server result: " + result.ToString() );
+		DebugConsole.Log( "Registering master server: " + this.gameTypeName );
 		MasterServer.RegisterHost( this.gameTypeName, this.gameName, this.gameComment );
 
 		return result;
@@ -65,9 +65,9 @@ public class MenuNetworking : BaseNetworkManager
 
 	public NetworkConnectionError Connect( string _ip, int _port )
 	{
-		Debug.Log( "Connecting IP:" + _ip + " Port:" + _port );
+		DebugConsole.Log( "Connecting IP:" + _ip + " Port:" + _port );
 		NetworkConnectionError result = Network.Connect( _ip, _port );
-		Debug.Log( "Connection result " + _ip + ":" + _port + " " + result.ToString() );
+		DebugConsole.Log( "Connection result " + _ip + ":" + _port + " " + result.ToString() );
 
 		return result;
 	}
@@ -81,7 +81,7 @@ public class MenuNetworking : BaseNetworkManager
 	{
 		if ( _index < 0 || _index >= this.gameHosts.Length )
 		{
-			Debug.LogError( "Index out of range: " + _index, this );
+			DebugConsole.Error( "Index out of range: " + _index, this );
 			return NetworkConnectionError.ConnectionFailed;
 		}
 
@@ -99,21 +99,21 @@ public class MenuNetworking : BaseNetworkManager
 		}
 		else
 		{
-			Debug.LogWarning( "Invalid host index" );
+			DebugConsole.Warning( "Invalid host index" );
 			return null;
 		}
 	}
 
 	public void DisconnectFromLobby()
 	{
-		Debug.Log( "Disconnecting from lobby" );
+		DebugConsole.Log( "Disconnecting from lobby" );
 		Network.Disconnect();
 	}
 
 	// Unity Callback: Do not change signature
 	private void OnConnectedToServer()
 	{
-		Debug.Log( "Connected to server." );
+		DebugConsole.Log( "Connected to server." );
 		MainMenuButtons.instance.OpenGameLobby();
 	}
 
@@ -122,16 +122,16 @@ public class MenuNetworking : BaseNetworkManager
 	{
 		if ( Network.isServer )
 		{
-			Debug.Log( "Server has been shut down." );
+			DebugConsole.Log( "Server has been shut down." );
 		}
 		else if ( _info == NetworkDisconnection.LostConnection )
 		{
-			Debug.Log( "Unexpected connection loss." );
+			DebugConsole.Log( "Unexpected connection loss." );
 			MenuLobby.instance.ExitLobby();
 		}
 		else if ( _info == NetworkDisconnection.Disconnected )
 		{
-			Debug.Log( "Diconnected from server." );
+			DebugConsole.Log( "Diconnected from server." );
 		}
 
 		MainMenuButtons.instance.ExitLobby();
@@ -144,12 +144,12 @@ public class MenuNetworking : BaseNetworkManager
 		{
 		case NetworkConnectionError.ConnectionFailed:
 		{
-			Debug.Log( "Connection Failure: General connection failure" );
+			DebugConsole.Log( "Connection Failure: General connection failure" );
 			break;
 		}
 		default:
 		{
-			Debug.LogError( "Uncaught connection failure \"" + _info.ToString() + "\"" );
+			DebugConsole.Error( "Uncaught connection failure \"" + _info.ToString() + "\"" );
 			break;
 		}
 		}
@@ -160,7 +160,7 @@ public class MenuNetworking : BaseNetworkManager
 	// Unity Callback: Do not change signature
 	private void OnPlayerConnected( NetworkPlayer _player )
 	{
-		Debug.Log( "Player connected IP:" + _player.ipAddress + " Port;" + _player.port
+		DebugConsole.Log( "Player connected IP:" + _player.ipAddress + " Port;" + _player.port
 		          + " ExtIP:" + _player.externalIP + " ExtPort:" + _player.externalPort );
 
 		if ( Network.isServer == true )
@@ -174,12 +174,12 @@ public class MenuNetworking : BaseNetworkManager
 			{
 				if ( pair.Key != playerID ) // Info about the player is sent further down
 				{
-					Debug.Log( "Telling " + playerID + " about " + pair.Key + ":" + pair.Value.playerType );
+					DebugConsole.Log( "Telling " + playerID + " about " + pair.Key + ":" + pair.Value.playerType );
 					this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value.playerType );
 				}
 			}
 
-			Debug.Log( "Telling everyone else about " + playerID + ":" + playerType );
+			DebugConsole.Log( "Telling everyone else about " + playerID + ":" + playerType );
 			// Then tell everyone about the new guy
 			this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
 		}
@@ -188,7 +188,7 @@ public class MenuNetworking : BaseNetworkManager
 	// Unity Callback: Do not change signature
 	protected override void OnPlayerDisconnected( NetworkPlayer _player )
 	{
-		Debug.Log( "Player has disconnected IP:" + _player.ipAddress + " Port:" + _player.port );
+		DebugConsole.Log( "Player has disconnected IP:" + _player.ipAddress + " Port:" + _player.port );
 
 		int playerID = Common.NetworkID( _player );
 		GamePlayerManager.instance.RemovePlayer( playerID );
@@ -199,7 +199,7 @@ public class MenuNetworking : BaseNetworkManager
 	// Unity Callback: Do not change signature
 	private void OnServerInitialized()
 	{
-		Debug.Log( "Server initialised." );
+		DebugConsole.Log( "Server initialised." );
 		PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();
 		GamePlayerManager.instance.AddPlayerOfType( Common.MyNetworkID(), playerType );
 	}
@@ -207,12 +207,12 @@ public class MenuNetworking : BaseNetworkManager
 	// Unity Callback: Do not modify signature
 	private void OnFailedToConnectToMasterServer( NetworkConnectionError _info )
 	{
-		Debug.LogWarning( "Could not connect to master server: " + _info );
+		DebugConsole.Warning( "Could not connect to master server: " + _info );
 	}
 
 	private void OnMasterServerEvent( MasterServerEvent _event )
 	{
-		Debug.Log( "Master Server event " + _event.ToString() );
+		DebugConsole.Log( "Master Server event " + _event.ToString() );
 		//TODO: Implement cases found here http://docs.unity3d.com/Documentation/ScriptReference/MasterServerEvent.html LM 01/05/14
 	}
 
@@ -254,7 +254,7 @@ public class MenuNetworking : BaseNetworkManager
 	{
 		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
 		{
-			Debug.LogError( "Player type " + _playerType + " not defined" );
+			DebugConsole.Error( "Player type " + _playerType + " not defined" );
 		}
 		GamePlayerManager.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
 	}
@@ -264,7 +264,7 @@ public class MenuNetworking : BaseNetworkManager
 	{
 		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
 		{
-			Debug.LogError( "Player type " + _playerType + " not defined" );
+			DebugConsole.Error( "Player type " + _playerType + " not defined" );
 		}
 
 		GamePlayerManager.instance.ChangePlayerType( _playerID, (PLAYER_TYPE)_playerType );
@@ -279,6 +279,6 @@ public class MenuNetworking : BaseNetworkManager
 	[RPC]
 	private void OnQuitLobbyRPC()
 	{
-		Debug.Log( "Server has closed" );
+		DebugConsole.Log( "Server has closed" );
 	}
 }

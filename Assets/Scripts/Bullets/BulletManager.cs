@@ -43,8 +43,8 @@ public class BulletManager : MonoBehaviour
 	{
 		if ( instance != null )
 		{
-			Debug.LogError( "Duplicate instance of Bullet Manager found", instance );
-			Debug.LogError( "Duplicate instance of Bullet Manager found", this );
+			DebugConsole.Error( "Duplicate instance of Bullet Manager found", instance );
+			DebugConsole.Error( "Duplicate instance of Bullet Manager found", this );
 		}
 		instance = this;
 	}
@@ -79,7 +79,7 @@ public class BulletManager : MonoBehaviour
 
 			if ( bulletScript == null )
 			{
-				Debug.LogError( "Error shooting bullet of type \"" + _bulletType + "\"", this );
+				DebugConsole.Error( "Error shooting bullet of type \"" + _bulletType + "\"", this );
 				return null;
 			}
 
@@ -94,7 +94,7 @@ public class BulletManager : MonoBehaviour
 				bulletObj = Network.Instantiate( desc.prefab, _pos, Quaternion.LookRotation( _forward ), 0) as GameObject;
 				if ( bulletObj.networkView == null )
 				{
-					Debug.LogError( "Smart bullets require a network view to function correctly", bulletObj );
+					DebugConsole.Error( "Smart bullets require a network view to function correctly", bulletObj );
 				}
 			}
 			else
@@ -191,7 +191,7 @@ public class BulletManager : MonoBehaviour
 			if ( _bullet.state == BulletBase.BULLET_STATE.INACTIVE
 			  || _bullet.gameObject.activeSelf == false )
 			{
-				Debug.LogWarning( "Attempting to disable non active bullet", _bullet );
+				DebugConsole.Warning( "Attempting to disable non active bullet", _bullet );
 				return;
 			}
 
@@ -221,7 +221,7 @@ public class BulletManager : MonoBehaviour
 		BulletBase bulletScript = this.bulletDictionary[_bulletType].GetAvailableBullet( _index, _ownerID );
 		bulletScript.gameObject.SetActive( false );
 		bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
-		Debug.Log( "Smart bullet destroyed" );
+		DebugConsole.Log( "Smart bullet destroyed" );
 	} 
 
 	public void DestroyDumbBulletRPC( BULLET_TYPE _bulletType, int _index )
@@ -229,14 +229,14 @@ public class BulletManager : MonoBehaviour
 		BulletBase bulletScript = this.bulletDictionary[_bulletType].GetAvailableBullet( _index, -1 );
 		bulletScript.gameObject.SetActive( false );
 		bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
-		Debug.Log( "Dumb bullet destroyed" );
+		DebugConsole.Log( "Dumb bullet destroyed" );
 	}
 	
 	private void CreateBulletBucket( BulletDescriptor _desc )
 	{
 		if ( this.bulletDictionary.ContainsKey( _desc.bulletType ) )
 		{
-			Debug.LogError( "Bullet type \"" + _desc.bulletType.ToString() + "\" already used.", _desc.prefab );
+			DebugConsole.Error( "Bullet type \"" + _desc.bulletType.ToString() + "\" already used.", _desc.prefab );
 			return;
 		}
 

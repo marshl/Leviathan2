@@ -16,8 +16,8 @@ public class WeaponDescManager : MonoBehaviour
 	{
 		if ( WeaponDescManager.instance != null )
 		{
-			Debug.Log( "Duplicate WeaponDescManager found.", WeaponDescManager.instance );
-			Debug.Log( "Duplicate WeaponDescManager found.", this );
+			DebugConsole.Log( "Duplicate WeaponDescManager found.", WeaponDescManager.instance );
+			DebugConsole.Log( "Duplicate WeaponDescManager found.", this );
 		}
 		WeaponDescManager.instance = this;
 
@@ -35,13 +35,13 @@ public class WeaponDescManager : MonoBehaviour
 		{
 			if ( descriptorMap.ContainsKey( weaponDesc.weaponType ) )
 			{
-				Debug.LogWarning( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
+				DebugConsole.Warning( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
 				continue;
 			}
 
 			if ( weaponDesc.bulletType == BULLET_TYPE.NONE )
 			{
-				Debug.LogWarning( "No bullet type set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
+				DebugConsole.Warning( "No bullet type set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
 			}
 			this.descriptorMap.Add( weaponDesc.weaponType, weaponDesc );
 		}
@@ -57,7 +57,7 @@ public class WeaponDescManager : MonoBehaviour
 		WeaponDescriptor desc;
 		if ( this.descriptorMap.TryGetValue( _weaponType, out desc ) == false )
 		{
-			Debug.LogError( "Could not find weapon descriptor for weapon type \"" + _weaponType + "\"", this );
+			DebugConsole.Error( "Could not find weapon descriptor for weapon type \"" + _weaponType + "\"", this );
 			return null;
 		}
 		return desc;

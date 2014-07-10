@@ -21,7 +21,7 @@ public class GUIMessage : MonoBehaviour
 		{
 			if ( this.receiverRequired == SendMessageOptions.RequireReceiver )
 			{
-				Debug.LogError( "GUIMessage with receiver requirement has no target or message set.", this );
+				DebugConsole.Error( "GUIMessage with receiver requirement has no target or message set.", this );
 			}
 			return;
 		}

@@ -43,7 +43,7 @@ public class NetworkBulletBucket : BulletBucket
 
 		if ( this.buckets.ContainsKey( _ownerID ) == false )
 		{
-			Debug.LogError( "No player " + _ownerID + " found in Network Bullet Bucket for " + this.bulletDesc.name, this.gameObject );
+			DebugConsole.Error( "No player " + _ownerID + " found in Network Bullet Bucket for " + this.bulletDesc.name, this.gameObject );
 			return null;
 		}
 		return this.buckets[ _ownerID ].GetAvailableBullet( _index, -1 );

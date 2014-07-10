@@ -19,7 +19,7 @@ public class LocalBulletBucket : BulletBucket
 
 		if ( this.bulletDesc.count <= 0 )
 		{
-			Debug.LogError( "Bullet list for " + this.bulletDesc + " has unusable count of " + this.bulletDesc.count, this.bulletDesc );
+			DebugConsole.Error( "Bullet list for " + this.bulletDesc + " has unusable count of " + this.bulletDesc.count, this.bulletDesc );
 		}
 		this.bulletList = new BulletBase[ this.bulletDesc.count ];
 		for ( int i = 0; i < this.bulletDesc.count; ++i )
@@ -91,7 +91,7 @@ public class LocalBulletBucket : BulletBucket
 			// If we've wrapped the search, no bullets are free: increase the bucket size and return a new bullet
 			if ( currentIndex == startIndex )
 			{
-				Debug.LogWarning( "Bucket size " + this.bulletList.Length + " for " + this.bulletDesc.bulletType + " was inadequate: increasing bucket size." );
+				DebugConsole.Warning( "Bucket size " + this.bulletList.Length + " for " + this.bulletDesc.bulletType + " was inadequate: increasing bucket size." );
 				// Lets try again, starting from the first of the new bullets
 				if ( this.DoubleBucketSize() == true )
 				{
@@ -115,7 +115,7 @@ public class LocalBulletBucket : BulletBucket
 		// Attempting to double an empty list ain't gonna work so well
 		if ( oldLength == 0 )
 		{
-			Debug.LogError( "Cannot double the size of an empty list" );
+			DebugConsole.Error( "Cannot double the size of an empty list" );
 			return false;
 		}
 		int newLength = oldLength * 2;

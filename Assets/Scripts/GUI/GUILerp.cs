@@ -25,7 +25,7 @@ public abstract class GUILerp : MonoBehaviour {
 		this.targetText = this.target as GUIText;
 		if ( this.targetTexture == null && this.targetText == null )
 		{
-			Debug.LogError( "Target for GUIColor needs to be iehter GUITexture or GUIText.", this );
+			DebugConsole.Error( "Target for GUIColor needs to be iehter GUITexture or GUIText.", this );
 		}
 	}
 

@@ -7,7 +7,7 @@ public class GUITextFieldBG : MonoBehaviour
 
 	public void OnMouseDown()
 	{
-		Debug.Log ("ARGH");
+		DebugConsole.Log( "ARGH" );
 		this.textField.selected = true;
 	}
 }

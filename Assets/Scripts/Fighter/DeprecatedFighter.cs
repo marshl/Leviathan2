@@ -39,11 +39,9 @@ public class DeprecatedFighter : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update () 
+	{
 		CheckFlightControls();
-		//print(Input.mousePosition);
-	
 	}
 	
 	void FixedUpdate()
@@ -95,7 +93,7 @@ public class DeprecatedFighter : MonoBehaviour {
 				transformedMousePos.x *= Gaussian(transformedMousePos.x);
 			}
 
-			print(transformedMousePos);
+			DebugConsole.Log( "Pos: " + transformedMousePos );
 
 			if(useGaussianSmoothing)
 			{
@@ -111,17 +109,6 @@ public class DeprecatedFighter : MonoBehaviour {
 					turnSpeed * transformedMousePos.x ,
 					0));
 			}
-
-			/*desiredRotation = this.transform.rotation * Quaternion.Euler (new Vector3(
-				turnSpeed * (transformedMousePos.y / Screen.height/2 ) * -1,
-				turnSpeed * (transformedMousePos.x / Screen.width/2 ),
-				0));*/
-		/*	desiredRotation = desiredRotation * Quaternion.Euler (new Vector3(
-				turnSpeed * (transformedMousePos.y / Screen.height/2 ) * -1,
-				turnSpeed * (transformedMousePos.x / Screen.width/2 ),
-				0));
-				*/
-
 		}
 		
 		if(Input.GetKey(KeyCode.W))

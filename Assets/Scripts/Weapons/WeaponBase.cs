@@ -87,7 +87,7 @@ public class WeaponBase : MonoBehaviour
 	{
 		if ( this.firePoints.Length == 0 )
 		{
-			Debug.LogError( "No fire points found on weapon \"" + this.ToString() + "\"", this );
+			DebugConsole.Error( "No fire points found on weapon \"" + this.ToString() + "\"", this );
 			return null;
 		}
 		this.timeSinceShot = 0.0f;
@@ -126,7 +126,7 @@ public class WeaponBase : MonoBehaviour
 
 			if ( bullet == null )
 			{
-				Debug.LogError( "Error firing weapon \"" + this.GetType().ToString() + "\"", this );
+				DebugConsole.Error( "Error firing weapon \"" + this.GetType().ToString() + "\"", this );
 			}
 			this.IncrementFireIndex();
 

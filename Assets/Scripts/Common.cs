@@ -146,7 +146,7 @@ public abstract class Common
 
 		if ( flightDuration <= 0.0f )
 		{
-			Debug.LogWarning( "Projectile cannot catch up to target " + _target.gameObject.name, _target );
+			DebugConsole.Warning( "Projectile cannot catch up to target " + _target.gameObject.name, _target );
 			return _target.position;
 		}
 		else
@@ -185,7 +185,7 @@ public abstract class Common
 		}
 		else
 		{
-			Debug.LogError( "Cannot find opposing team for netural" );
+			DebugConsole.Error( "Cannot find opposing team for netural" );
 			return TEAM.NEUTRAL;
 		} 
 	}

@@ -85,7 +85,7 @@ public class NetworkPositionControl : MonoBehaviour
 	{
 		if ( _time < this.newerData.timeStamp )
 		{
-			Debug.Log( "receiving early packet" );
+			DebugConsole.Log( "receiving early packet" );
 			return;
 		}
 
@@ -156,7 +156,7 @@ public class NetworkPositionControl : MonoBehaviour
 
 	public void SetUpdatePosition( bool _toggle )
 	{
-		Debug.Log( "Toggled position updating to " + _toggle, this );
+		DebugConsole.Log( "Toggled position updating to " + _toggle, this );
 		this.readNewPositionData = _toggle;
 	}
 

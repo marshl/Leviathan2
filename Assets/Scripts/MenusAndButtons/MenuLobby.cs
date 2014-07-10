@@ -60,7 +60,7 @@ public class MenuLobby : MonoBehaviour
 
 	public void Reset()
 	{
-		Debug.Log( "Resetting MenuLobby", this );
+		DebugConsole.Log( "Resetting MenuLobby", this );
 		GamePlayerManager.instance.Reset();
 	}
 

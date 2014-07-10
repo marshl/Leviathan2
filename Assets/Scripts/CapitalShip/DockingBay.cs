@@ -40,7 +40,7 @@ public class DockingBay : MonoBehaviour
 			  && fighterScript.state == FighterMaster.FIGHTERSTATE.FLYING
 			  && fighterScript.enabled ) //If we're on the same team
 			{
-				print("Fighter received");
+				DebugConsole.Log("Fighter received");
 				FriendlyDockingProcedure( fighterScript ); //You may dock
 			}
 			else
@@ -68,7 +68,7 @@ public class DockingBay : MonoBehaviour
 				return slot;
 			}
 		}
-		print("Slot search in bay " + bayID + " for id " + _id + " returned no results");
+		DebugConsole.Log("Slot search in bay " + bayID + " for id " + _id + " returned no results");
 		return null;
 	}
 

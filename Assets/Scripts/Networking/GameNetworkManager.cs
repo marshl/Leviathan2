@@ -28,7 +28,7 @@ public class GameNetworkManager : BaseNetworkManager
 			info = obj.AddComponent<MenuToGameInfo>();
 			info.UseDefaults();
 
-			Debug.LogWarning( "No menu to game info found. Using default values", info );
+			DebugConsole.Warning( "No menu to game info found. Using default values", info );
 		}
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
@@ -65,14 +65,14 @@ public class GameNetworkManager : BaseNetworkManager
 	// Unity Callback
 	protected override void OnDisconnectedFromServer( NetworkDisconnection _info )
 	{
-		Debug.Log( "Disconnected from server" );
+		DebugConsole.Log( "Disconnected from server" );
 		Application.LoadLevel( "MenuTest" );
 	}
 
 	// Unity Callback
 	protected override void OnPlayerDisconnected( NetworkPlayer _player )
 	{
-		Debug.Log( _player.ipAddress + " has disconnected" );
+		DebugConsole.Log( _player.ipAddress + " has disconnected" );
 
 		int playerID = Common.NetworkID( _player );
 		this.networkView.RPC( "OnDisconnectPlayerRPC", RPCMode.All, playerID );
@@ -88,7 +88,7 @@ public class GameNetworkManager : BaseNetworkManager
 	{
 		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
 		{
-			Debug.LogError( "Player type " + _playerType + " not defined" );
+			DebugConsole.Error( "Player type " + _playerType + " not defined" );
 		}
 		GamePlayerManager.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
 	}
@@ -114,7 +114,7 @@ public class GameNetworkManager : BaseNetworkManager
 	{
 		if ( !System.Enum.IsDefined( typeof(BULLET_TYPE), _bulletType ) )
 		{
-			Debug.LogError( "Bullet type " + _bulletType + " not defined" );
+			DebugConsole.Error( "Bullet type " + _bulletType + " not defined" );
 		}
 
 		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (BULLET_TYPE)_bulletType, _index, _pos, _rot );
@@ -122,14 +122,14 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDestroySmartBulletMessage( int _ownerID, BULLET_TYPE _bulletType, int _index )
 	{
-		Debug.Log( "Sending message to destroy" );
+		DebugConsole.Log( "Sending message to destroy" );
 		this.networkView.RPC( "OnDestroySmartBulletRPC", RPCMode.Others, _ownerID, (int)_bulletType, _index );
 	}
 
 	[RPC]
 	private void OnDestroySmartBulletRPC( int _ownerID, int _bulletType, int _index )
 	{
-		Debug.Log( "Received Destroy Message" );
+		DebugConsole.Log( "Received Destroy Message" );
 		BulletManager.instance.DestroySmartBulletRPC( _ownerID, (BULLET_TYPE)_bulletType, _index );
 	}
 
@@ -199,7 +199,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 			landedSlot.landedFighter = dockingFighter.GetComponent<FighterMaster>();
 
-			Debug.Log( "Received docked RPC", this );
+			DebugConsole.Log( "Received docked RPC", this );
 		}
 	}
 

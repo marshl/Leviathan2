@@ -54,7 +54,7 @@ public class MessageManager : MonoBehaviour
 	{
 		if ( _messageIndex < 0 && _messageIndex >= this.messages.Count )
 		{
-			Debug.LogError( "bad message index " + _messageIndex );
+			DebugConsole.Error( "bad message index " + _messageIndex );
 			return "ERROR";
 		}
 

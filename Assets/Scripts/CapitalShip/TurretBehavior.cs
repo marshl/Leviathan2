@@ -168,7 +168,7 @@ public class TurretBehavior : BaseWeaponManager
 		
 		if ( ownerPlayer.capitalShip == null )
 		{
-			Debug.LogWarning( "Turret instantiated by non-commander player", this );
+			DebugConsole.Warning( "Turret instantiated by non-commander player", this );
 		}
 		
 		this.ParentToOwnerShip( ownerPlayer );

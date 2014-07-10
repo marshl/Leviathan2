@@ -11,23 +11,46 @@ public static class DebugConsole
 	public static int currentInputLine = -1;
 	//public static string output = "";
 	public static string input = "";
-
-	public static void Log( string _str )
+	
+	public static void Log( string _str, Object _context  = null )
 	{
+		if ( _context != null )
+		{
+			Debug.Log( _str );
+		}
+		else
+		{
+			Debug.Log( _str, _context );
+		}
 		DebugConsole.Write( _str );
-		Debug.Log( _str );
 	}
 
-	public static void Warning( string _str )
+	public static void Warning( string _str, Object _context = null )
 	{
+		if ( _context != null )
+		{
+			Debug.LogWarning( _str );
+		}
+		else
+		{
+			Debug.LogWarning( _str, _context );
+		}
+		_str = "<color=yellow>" +_str + "</color>";
 		DebugConsole.Write( _str );
-		Debug.LogWarning( _str );
 	}
 
-	public static void Error( string _str )
+	public static void Error( string _str, Object _context = null )
 	{
+		if ( _context != null )
+		{
+			Debug.LogError( _str );
+		}
+		else
+		{
+			Debug.LogError( _str, _context );
+		}
+		_str = "<color=red>" +_str + "</color>";
 		DebugConsole.Write( _str );
-		Debug.LogError( _str );
 	}
 
 	public static void Write( string _str )

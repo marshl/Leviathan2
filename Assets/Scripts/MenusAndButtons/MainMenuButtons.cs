@@ -95,20 +95,20 @@ public class MainMenuButtons : MonoBehaviour
 
 		if ( gameNameString == "" )
 		{
-			Debug.LogError( "No game name provided." );
+			DebugConsole.Error( "No game name provided." );
 			return;
 		}
 
 		if ( portString == "" )
 		{
-			Debug.LogError( "No port number  provided." );
+			DebugConsole.Error( "No port number  provided." );
 			return;
 		}
 
 		int portNumber;
 		if ( int.TryParse( portString, out portNumber ) == false )
 		{
-			Debug.LogError( "Port number \"" + portNumber + "\" is invalid." );
+			DebugConsole.Error( "Port number \"" + portNumber + "\" is invalid." );
 			return;
 		}
 
@@ -133,7 +133,7 @@ public class MainMenuButtons : MonoBehaviour
 	{
 		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
 		{
-			Debug.LogError( "Unknown PLAYER_TYPE condicion " + _playerType );
+			DebugConsole.Error( "Unknown PLAYER_TYPE condicion " + _playerType );
 		}
 		else
 		{
@@ -146,6 +146,6 @@ public class MainMenuButtons : MonoBehaviour
 	private void OnExitGameDown()
 	{
 		Application.Quit();
-		Debug.LogWarning( "Quitting application" );
+		DebugConsole.Warning( "Quitting application" );
 	}
 }

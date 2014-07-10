@@ -9,14 +9,6 @@ public class CapitalShipTurretManager : MonoBehaviour
 	public GameObject lightLaserPrefab;
 
 	public GameObject missileTurretPrefab;
-	/*private void Start()
-	{
-		if ( this.networkView.isMine )
-		{
-			Debug.Log( "Creating turrets" );
-			this.CreateTurrets();
-		}
-	}*/
 
 	public void CreateTurrets()
 	{
@@ -26,7 +18,7 @@ public class CapitalShipTurretManager : MonoBehaviour
 			GameObject obj = Network.Instantiate( this.lightLaserPrefab, pos.position, pos.rotation, 0 ) as GameObject;
 			// Turret itself will handle parenting
 
-			Debug.Log( "Created " + obj );
+			DebugConsole.Log( "Created " + obj );
 		} 
 
 		foreach ( Transform pos in this.missileTurretPositions )

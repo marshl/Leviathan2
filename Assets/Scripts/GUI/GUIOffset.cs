@@ -97,7 +97,7 @@ public class GUIOffset : GUILerp
 		}
 		else
 		{
-			Debug.LogError( "No texture or text defined on GUI Offset", this );
+			DebugConsole.Error( "No texture or text defined on GUI Offset", this );
 			return Vector2.zero;
 		}
 	}

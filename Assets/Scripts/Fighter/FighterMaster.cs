@@ -61,7 +61,7 @@ public class FighterMaster : MonoBehaviour
 				if ( Input.GetKeyDown( KeyCode.Space ) 
 				  && !GameMessages.instance.typing )
 				{
-					Debug.Log( "Space was pressed", this );
+					DebugConsole.Log( "Space was pressed", this );
 					this.Undock();
 				}
 				break;
@@ -110,7 +110,7 @@ public class FighterMaster : MonoBehaviour
 		int id = this.ownerControl.ownerID;
 		this.owner = GamePlayerManager.instance.GetPlayerWithID( id );
 		this.owner.fighter = this;
-		Debug.Log( "Set player " + id + " to own fighter", this.gameObject );
+		DebugConsole.Log( "Set player " + id + " to own fighter", this.gameObject );
 		if ( this.networkView.isMine == false )
 		{
 			this.enabled = false;
@@ -130,7 +130,7 @@ public class FighterMaster : MonoBehaviour
 
 		if ( bays.Length == 0 )
 		{
-			Debug.LogError( "No docking bays found", this );
+			DebugConsole.Warning( "No docking bays found", this );
 			return;
 		}
 
@@ -154,7 +154,7 @@ public class FighterMaster : MonoBehaviour
 			++index;
 			if ( index == startingIndex )
 			{
-				Debug.Log("Could not find an empty docking bay (somehow)");
+				DebugConsole.Warning("Could not find an empty docking bay (somehow)");
 				break;
 			}
 		}
@@ -172,11 +172,11 @@ public class FighterMaster : MonoBehaviour
 	{
 		if ( state == FIGHTERSTATE.UNDOCKING )
 		{
-			Debug.Log( "Skipping dock", this );
+			DebugConsole.Log( "Skipping dock", this );
 			return;
 		}
 		
-		Debug.Log( "Proceeding with dock", this );
+		DebugConsole.Log( "Proceeding with dock", this );
 
 		this.movement.desiredSpeed = 0;
 		this.rigidbody.velocity = Vector3.zero;
@@ -195,7 +195,7 @@ public class FighterMaster : MonoBehaviour
 
 	public void Undock()
 	{
-		Debug.Log( "Undocking", this );
+		DebugConsole.Log( "Undocking", this );
 		this.rigidbody.constraints = RigidbodyConstraints.None;
 		
 		Vector3 inheritedVelocity = Vector3.zero;
@@ -226,7 +226,7 @@ public class FighterMaster : MonoBehaviour
 			inheritedVelocity.z = 10;
 		}
 		
-		Debug.Log( "Inherited Velocity: " + inheritedVelocity, this );
+		DebugConsole.Log( "Inherited Velocity: " + inheritedVelocity, this );
 
 		this.rigidbody.AddForce( inheritedVelocity * 95 );
 	}

@@ -244,7 +244,7 @@ public class CapitalShipMovement : MonoBehaviour
 		Vector3 vectorToTarget = this.lastTargetPosition - this.transform.position;
 		if ( vectorToTarget.sqrMagnitude == 0.0f )
 		{
-			Debug.Log( Time.frameCount + " Preventing div/0" );
+			DebugConsole.Log( Time.frameCount + " Preventing div/0" );
 			return;
 		}
 		Vector3 rayToTarget = vectorToTarget.normalized;
@@ -399,7 +399,7 @@ public class CapitalShipMovement : MonoBehaviour
 			}
 			default:
 			{
-				Debug.LogError( "Uncaught state " + this.currentAvoidanceState, this );
+				DebugConsole.Error( "Uncaught state " + this.currentAvoidanceState, this );
 				return;
 			}
 			}
@@ -477,7 +477,7 @@ public class CapitalShipMovement : MonoBehaviour
 			this.currentAvoidanceState = AVOIDANCE_STATE.DOWN_RETURN;
 			break;
 		default:
-			Debug.LogError( "Uncaught state " + this.currentAvoidanceState );
+			DebugConsole.Error( "Uncaught state " + this.currentAvoidanceState );
 			break;
 		}
 	}
@@ -505,7 +505,7 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		if ( _moveSpeed == 0.0f )
 		{
-			Debug.Log ( "Cannot crete travel path with zero movement speed." );;
+			DebugConsole.Log( "Cannot crete travel path with zero movement speed." );;
 			return;
 		}
 
@@ -539,7 +539,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 				if ( lineLength > pathLength )
 				{
-					Debug.LogError( "Not enough path length to cover curve. Need at least " + arcRadius * Mathf.PI );
+					DebugConsole.Error( "Not enough path length to cover curve. Need at least " + arcRadius * Mathf.PI );
 				}
 			}
 		}
@@ -618,7 +618,7 @@ public class CapitalShipMovement : MonoBehaviour
 		float r2 = Mathf.Deg2Rad * ( 90 - this.currentAvoidAngle );
 		if ( Mathf.Sin(r2) == 0.0f )
 		{
-			Debug.LogError( "bad argument" );
+			DebugConsole.Error( "bad argument" );
 			return 0.0f;
 		}
 		return this.currentMovementSpeed * Mathf.Sin(r1) / Mathf.Sin(r2);;

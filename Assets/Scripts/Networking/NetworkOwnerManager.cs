@@ -20,7 +20,7 @@ public class NetworkOwnerManager : MonoBehaviour
 	{
 		if ( _obj.networkView == null )
 		{
-			Debug.LogWarning( "Cannot add NetworkOwnerControl without a NetworkView (" + _obj.gameObject.name + ")", _obj );
+			DebugConsole.Warning( "Cannot add NetworkOwnerControl without a NetworkView (" + _obj.gameObject.name + ")", _obj );
 			return;
 		}
 	
@@ -29,9 +29,9 @@ public class NetworkOwnerManager : MonoBehaviour
 
 		if ( this.map.ContainsKey( _obj.networkView.viewID ) )
 		{
-			Debug.LogWarning( "NetworkViewID " + id + " aleady exists as " + _obj.gameObject.name,
+			DebugConsole.Warning( "NetworkViewID " + id + " aleady exists as " + _obj.gameObject.name,
 			                 this.map[id].gameObject );
-			Debug.LogWarning( "Cannot set " + id + " to " + _obj.gameObject.name, _obj.gameObject );
+			DebugConsole.Warning( "Cannot set " + id + " to " + _obj.gameObject.name, _obj.gameObject );
 			return;
 		}
 
@@ -51,14 +51,14 @@ public class NetworkOwnerManager : MonoBehaviour
 	{
 		if ( this.map.ContainsKey( _id ) == false )
 		{
-			Debug.LogError( "Cannot find NetworkView with ID " + _id );
+			DebugConsole.Error( "Cannot find NetworkView with ID " + _id );
 			return;
 		}
 		NetworkView view = this.map[_id];
 		NetworkOwnerControl ownerControl = view.GetComponent<NetworkOwnerControl>();
 		if ( ownerControl == null )
 		{
-			Debug.LogError ( "Cannot find NetworkOwnerControl on " + view.gameObject.name, view.gameObject );
+			DebugConsole.Error ( "Cannot find NetworkOwnerControl on " + view.gameObject.name, view.gameObject );
 			return;
 		}
 

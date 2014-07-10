@@ -90,13 +90,13 @@ public class MenuServerList : MonoBehaviour
 		int index = 0;
 		if ( int.TryParse( _arg, out index ) == false )
 		{
-			Debug.LogError( "Cannot convert argument into int \"" + _arg + "\"", this );
+			DebugConsole.Error( "Cannot convert argument into int \"" + _arg + "\"", this );
 			return;
 		}
 	
 		if ( index < 0 || index >= this.serverRows.Length )
 		{
-			Debug.LogError( "Server index out of range \"" + index + "\"", this );
+			DebugConsole.Error( "Server index out of range \"" + index + "\"", this );
 			return;
 		}
 		//MenuServerRow serverRow = this.serverRows[ _index ];

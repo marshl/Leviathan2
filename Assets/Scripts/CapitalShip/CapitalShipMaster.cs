@@ -35,12 +35,12 @@ public class CapitalShipMaster : MonoBehaviour
 		this.owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
 		if ( this.owner.capitalShip != null ) 
 		{
-			Debug.LogWarning( "Capital ship already set for " + playerID, this );
+			DebugConsole.Warning( "Capital ship already set for " + playerID, this );
 		}
 		else
 		{
 			this.owner.capitalShip = this; 
-			Debug.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
+			DebugConsole.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
 		}
 
 		this.health.team = this.owner.team;

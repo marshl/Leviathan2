@@ -49,7 +49,7 @@ public class PlayerInstantiator : MonoBehaviour
 		}
 		default:
 		{
-			Debug.LogError( "Uncaught player type " + _player.playerType );
+			DebugConsole.Error( "Uncaught player type " + _player.playerType );
 			return null;
 		}
 		}
@@ -89,7 +89,7 @@ public class PlayerInstantiator : MonoBehaviour
 
 		CapitalShipCamera cameraScript = cameraObj.GetComponent<CapitalShipCamera>();
 		cameraScript.targetTransform = capitalObj.transform;
-		Debug.Log( "Creating capital ship for player " + _player.id + " on team " + _player.team, capitalObj );
+		DebugConsole.Log( "Creating capital ship for player " + _player.id + " on team " + _player.team, capitalObj );
 		 
 		return capitalObj;
 	}
@@ -126,7 +126,7 @@ public class PlayerInstantiator : MonoBehaviour
 		FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
 		cameraScript.fighter = fighterObj;
 
-		Debug.Log( "Creating fighter for player " + _player.id + " on team " + _player.team, fighterObj );
+		DebugConsole.Log( "Creating fighter for player " + _player.id + " on team " + _player.team, fighterObj );
 
 		return fighterObj;
 	}

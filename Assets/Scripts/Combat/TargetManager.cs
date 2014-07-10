@@ -27,7 +27,7 @@ public class TargetManager : MonoBehaviour
 	{
 		if ( TargetManager.instance != null )
 		{
-			Debug.LogError( "Duplicate TargetManagers detected", TargetManager.instance );
+			DebugConsole.Error( "Duplicate TargetManagers detected", TargetManager.instance );
 		}
 		TargetManager.instance = this;
 
@@ -38,11 +38,11 @@ public class TargetManager : MonoBehaviour
 	{
 		if ( this.healthMap.ContainsKey( _viewID ) )
 		{
-			Debug.LogWarning( "Target Manager already contains " + _viewID + "(" + _health.gameObject.name + ")", _health );
+			DebugConsole.Warning( "Target Manager already contains " + _viewID + "(" + _health.gameObject.name + ")", _health );
 			return;
 		}
 
-		Debug.Log( "Adding target " + _viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
+		DebugConsole.Log( "Adding target " + _viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
 		this.healthMap.Add( _viewID, _health );
 	}
 
@@ -50,12 +50,12 @@ public class TargetManager : MonoBehaviour
 	{
 		if ( this.healthMap.ContainsKey( _viewID ) )
 		{
-			Debug.Log( "Removing target" + _viewID );
-			this.healthMap.Remove(_viewID);
+			DebugConsole.Log( "Removing target" + _viewID );
+			this.healthMap.Remove( _viewID );
 		}
 		else
 		{
-			Debug.LogWarning ("No target with id " + _viewID + " found in healthmap");
+			DebugConsole.Warning( "No target with id " + _viewID + " found in healthmap" );
 		}
 	}
 
@@ -66,7 +66,7 @@ public class TargetManager : MonoBehaviour
 		{
 			return target;
 		}
-		Debug.LogWarning( "Could not find target with ID " + _viewID );
+		DebugConsole.Warning( "Could not find target with ID " + _viewID );
 		return null;
 	}
 
@@ -138,11 +138,11 @@ public class TargetManager : MonoBehaviour
 		BaseHealth target;
 		if ( !this.healthMap.TryGetValue( _id, out target ) )
 		{
-			Debug.LogError( "Cannot find target with ID " + _id );
+			DebugConsole.Error( "Cannot find target with ID " + _id );
 			return;
 		}
 		target.DealDamage( _damage, false );
-		Debug.Log( target.gameObject.name + " has been dealt " + _damage, target );
+		DebugConsole.Log( target.gameObject.name + " has been dealt " + _damage, target );
 	}
 
 	//TODO: Shift this into its own script on the capital ship LM 07/05/14
@@ -163,7 +163,7 @@ public class TargetManager : MonoBehaviour
 			}
 		}
 
-		print("No slot of ID " + _id + " found");
+		DebugConsole.Log("No slot of ID " + _id + " found");
 		return null;
 	}
 }

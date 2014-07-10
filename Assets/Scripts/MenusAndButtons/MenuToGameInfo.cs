@@ -22,13 +22,7 @@ public class MenuToGameInfo : MonoBehaviour
 
 	public void Print()
 	{
-		Debug.Log( "Printing MenuToGameInfo", this );
-		/*Debug.Log( "int : PLAYER_TYPE" );
-		foreach ( KeyValuePair<int, PLAYER_TYPE> pair in this.playerTypeMap )
-		{
-			Debug.Log( pair.Key + " : " + pair.Value );
-		}*/
-
-		Debug.Log( "Player Type: " + this.playerType );
+		DebugConsole.Log( "Printing MenuToGameInfo", this );
+		DebugConsole.Log( "Player Type: " + this.playerType );
 	}
 }

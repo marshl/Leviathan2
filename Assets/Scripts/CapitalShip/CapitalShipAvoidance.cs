@@ -10,8 +10,8 @@ public class CapitalShipAvoidance : MonoBehaviour
 		CapitalShipAvoidance avoidanceScript = _other.GetComponent<CapitalShipAvoidance>();
 		if ( avoidanceScript == null )
 		{
-			Debug.LogWarning( "CapitalShipAvoidance has collided with an object that is not an avoidance collider", this );
-			Debug.LogWarning( "CapitalShipAvoidance has collided with an object that is not an avoidance collider", _other );
+			DebugConsole.Warning( "CapitalShipAvoidance has collided with an object that is not an avoidance collider", this );
+			DebugConsole.Warning( "CapitalShipAvoidance has collided with an object that is not an avoidance collider", _other );
 			return;
 		}
 		CapitalShipMovement script = _other.transform.parent.GetComponent<CapitalShipMovement>();

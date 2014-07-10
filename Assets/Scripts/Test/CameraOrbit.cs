@@ -32,8 +32,6 @@ public class CameraOrbit : MonoBehaviour
 		float newX = Mathf.Sin( angle ) * dist;
 		float newZ = Mathf.Cos( angle ) * dist;
 
-		//Debug.Log( "Angle:" + angle + " Height:" + height + " Dist:" + dist );
-
 		this.transform.position = this.target.position + new Vector3(
 			newX,
 			height,
