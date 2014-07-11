@@ -55,6 +55,7 @@ public static class DebugConsole
 
 	public static void Write( string _str )
 	{
+		_str += " (" + System.DateTime.Now.ToString( "HH:mm:ss tt" ) + ")";
 		AddLine( _str );
 	}
 

@@ -11,6 +11,8 @@ public class NetworkPositionControl : MonoBehaviour
 		public Vector3 position;
 		public Quaternion rotation;
 		public double timeStamp;
+
+		public Vector3 velocity;
 	};
 	
 
@@ -63,6 +65,11 @@ public class NetworkPositionControl : MonoBehaviour
 			Quaternion rot = this.transform.localRotation;
 			_stream.Serialize( ref pos );
 			_stream.Serialize( ref rot );
+			if ( this.rigidbody != null )
+			{
+				Vector3 vel = this.rigidbody.velocity;
+				_stream.Serialize( ref vel );
+			}
 		}
 		else if ( _stream.isReading == true )
 		{
@@ -71,7 +78,13 @@ public class NetworkPositionControl : MonoBehaviour
 			_stream.Serialize( ref pos );
 			_stream.Serialize( ref rot );
 
-			this.StoreData( pos, rot, _info.timestamp );
+			Vector3 vel = Vector3.zero;
+			if ( this.rigidbody != null )
+			{
+				_stream.Serialize( ref vel );
+			}
+
+			this.StoreData( pos, rot, vel, _info.timestamp );
 		}	
 	}
 	 
@@ -81,7 +94,7 @@ public class NetworkPositionControl : MonoBehaviour
 	/// <param name="_pos">The last known position</param>
 	/// <param name="_rot">The last known rotation</param>
 	/// <param name="_time">The time at which the pos and rot were sent</param>
-	public void StoreData( Vector3 _pos, Quaternion _rot, double _time )
+	public void StoreData( Vector3 _pos, Quaternion _rot, Vector3 _vel, double _time )
 	{
 		if ( _time < this.newerData.timeStamp )
 		{
@@ -91,10 +104,12 @@ public class NetworkPositionControl : MonoBehaviour
 
 		this.olderData.rotation = this.newerData.rotation;
 		this.olderData.position = this.newerData.position;
+		this.olderData.velocity = this.newerData.velocity;
 		this.olderData.timeStamp = this.newerData.timeStamp;
 
 		this.newerData.rotation = _rot;
 		this.newerData.position = _pos;
+		this.newerData.velocity = _vel;
 		this.newerData.timeStamp = _time;
 		
 		this.timeDiff = this.newerData.timeStamp - this.olderData.timeStamp;
@@ -108,6 +123,8 @@ public class NetworkPositionControl : MonoBehaviour
 		{
 			this.axis = Vector3.Cross( oldForward, newForward );
 		}
+
+		//this.transform.position = _pos + (float)this.timeDiff * _vel;
 	}
 
 	private void Update()
@@ -151,6 +168,12 @@ public class NetworkPositionControl : MonoBehaviour
 		{
 			this.transform.localPosition = targetPosition;
 			this.transform.localRotation = targetRotation;
+		}
+
+		if ( this.rigidbody != null )
+		{
+			this.rigidbody.velocity = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, multiplier );
+			Debug.DrawRay( this.transform.position, this.rigidbody.velocity, Color.red );
 		}
 	}
 

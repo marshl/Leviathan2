@@ -32,7 +32,7 @@ public class NetworkPositionTest : MonoBehaviour
 			data.timeStamp = (double)Time.time;
 			data.position = this.transform.localPosition;
 			data.rotation = this.transform.rotation;
-			 
+			data.velocity = this.rigidbody != null ? this.rigidbody.velocity : Vector3.zero;
 			this.dataPoints.Add( data );
 		}
 		 
@@ -40,13 +40,22 @@ public class NetworkPositionTest : MonoBehaviour
 		if ( this.dataPoints.Count > 0 
 		    && Time.time - (float)this.dataPoints[0].timeStamp > this.latency )
 		{
-			this.other.StoreData( dataPoints[0].position, dataPoints[0].rotation, dataPoints[0].timeStamp );
+			this.other.StoreData( dataPoints[0].position, dataPoints[0].rotation, dataPoints[0].velocity, dataPoints[0].timeStamp );
 			this.dataPoints.RemoveAt( 0 );
 		}
 
 		this.other.TransformLerp( Time.realtimeSinceStartup );
 		this.transform.Rotate( this.transform.up, this.turnSpeed * Time.deltaTime );
 		this.transform.Rotate( this.transform.forward, this.twistSpeed * Time.deltaTime );
-		this.transform.position += this.transform.forward * Time.deltaTime * this.moveSpeed;
+
+		if ( this.rigidbody != null )
+		{
+			this.rigidbody.velocity = this.transform.forward * this.moveSpeed;
+			Debug.DrawRay( this.transform.position, this.rigidbody.velocity );
+		}
+		else
+		{
+			this.transform.position += this.transform.forward * Time.deltaTime * this.moveSpeed;
+		}
 	}
 }
