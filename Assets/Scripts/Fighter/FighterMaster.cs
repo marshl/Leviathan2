@@ -242,7 +242,7 @@ public class FighterMaster : MonoBehaviour
 		
 		DebugConsole.Log( "Inherited Velocity: " + inheritedVelocity, this );
 
-		this.rigidbody.AddForce( inheritedVelocity * 95 );
+		this.rigidbody.AddForce( inheritedVelocity);
 	}
 	
 	private void OnGUI()
