@@ -47,12 +47,12 @@ public class FighterMovement : MonoBehaviour
 		
 		case FighterMaster.FIGHTERSTATE.UNDOCKING:
 		{
-			this.rigidbody.AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
+			//this.rigidbody.AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
 			if ( !GameMessages.instance.typing )
 			{
 				this.CheckFlightControls();
 			}
-			this.ApplyDrag();
+			//this.ApplyDrag();
 			break;
 		}
 		

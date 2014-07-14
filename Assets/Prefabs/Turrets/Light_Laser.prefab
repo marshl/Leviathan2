@@ -487,7 +487,7 @@ MonoBehaviour:
   target: {fileID: 0}
   joint: {fileID: 400026}
   arm: {fileID: 400024}
-  rotationSpeed: 5
+  rotationSpeed: 500
   chrisTurret: 1
   pitchOffset: 0
   minimumPitchAngle: 0

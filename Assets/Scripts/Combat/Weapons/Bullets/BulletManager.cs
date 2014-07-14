@@ -191,7 +191,7 @@ public class BulletManager : MonoBehaviour
 			if ( _bullet.state == BulletBase.BULLET_STATE.INACTIVE
 			  || _bullet.gameObject.activeSelf == false )
 			{
-				DebugConsole.Warning( "Attempting to disable non active bullet", _bullet );
+			//	DebugConsole.Warning( "Attempting to disable non active bullet", _bullet );
 				return;
 			}
 

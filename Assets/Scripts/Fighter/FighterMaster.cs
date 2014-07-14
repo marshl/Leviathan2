@@ -22,6 +22,7 @@ public class FighterMaster : MonoBehaviour
 	
 	public float undockingTimer = 0.0f;
 	public float undockingDelay = 3.0f;
+	public float undockingLaunchSpeed = 100.0f;
 	
 	public float respawnDelay = 5.0f;
 	
@@ -214,6 +215,7 @@ public class FighterMaster : MonoBehaviour
 		if(this.GetComponent<NetworkPositionControl>() != null)
 		{
 			inheritedVelocity = this.GetComponent<NetworkPositionControl>().CalculateVelocity();
+			inheritedVelocity += this.transform.forward * undockingLaunchSpeed;
 		}
 
 		this.state = FIGHTERSTATE.UNDOCKING;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class BulletDescriptorManager : MonoBehaviour
 {
-	public static BulletDescriptorManager instance = null;
+	public static BulletDescriptorManager instance;
 	
 	public Dictionary<BULLET_TYPE, BulletDescriptor> descMap;
 

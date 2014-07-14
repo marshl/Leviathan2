@@ -19,10 +19,11 @@ public class FighterWeapons : BaseWeaponManager
 
 	private void Update()
 	{
-		if( this.networkView.isMine )
+		if( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
 			{
+			//	Debug.Log ("Firing");
 				this.laserWeapon.SendFireMessage();
 			}
 			

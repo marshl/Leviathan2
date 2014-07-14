@@ -136,13 +136,15 @@ public abstract class Common
 	/// <param name="_speed">_speed.</param>
 	public static Vector3 GetTargetLeadPosition( Vector3 _origin, Transform _target, float _speed )
 	{
+
+
 		if ( _target.rigidbody == null )
 		{
 			return _target.position;
 		}
 
 		float flightDuration = ( _target.position - _origin ).magnitude
-			/ ( _speed - _target.rigidbody.velocity.magnitude );
+			/ ( _speed );
 
 		if ( flightDuration <= 0.0f )
 		{
@@ -151,7 +153,7 @@ public abstract class Common
 		}
 		else
 		{
-			return _target.position + _target.rigidbody.velocity * flightDuration;
+			return _target.position + _target.GetComponent<NetworkPositionControl>().CalculateVelocity () * flightDuration;
 		}
 	}
 

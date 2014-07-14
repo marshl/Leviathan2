@@ -36,6 +36,8 @@ public class NetworkPositionControl : MonoBehaviour
 	/// </summary>
 	public float lerpRate;
 
+	public Vector3 velocity;
+
 	// Are we going to try to maintain our networked position?
 	private bool readNewPositionData = true;
 
@@ -123,6 +125,8 @@ public class NetworkPositionControl : MonoBehaviour
 		{
 			this.axis = Vector3.Cross( oldForward, newForward );
 		}
+
+		Vector3 velocity = _vel;
 
 		//this.transform.position = _pos + (float)this.timeDiff * _vel;
 	}
