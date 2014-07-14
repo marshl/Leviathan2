@@ -37,11 +37,11 @@ public class FighterWeapons : BaseWeaponManager
 				this.chargeUpWeapon.SendFireMessage();
 			} 
 		
-			this.possibleTargets.Clear();
+			this.targets.Clear();
 
 			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( Common.MyNetworkID() );
 			TargetManager.instance.GetTargetsFromPlayer( 
-			     ref this.possibleTargets, 
+			     ref this.targets, 
 				 this.transform,
 				 this.maxTargetAngle,
 				 this.maxTargetDistance,

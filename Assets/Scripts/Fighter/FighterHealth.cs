@@ -6,10 +6,10 @@ public class FighterHealth : BaseHealth
 	public FighterMaster masterScript;
 	private BaseWeaponManager lastHitBy;
 
-	protected override void OnNetworkInstantiate( NetworkMessageInfo _info )
+	/*protected override void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		base.OnNetworkInstantiate( _info );
-	}
+	}*/
 
 	private void OnGUI()
 	{

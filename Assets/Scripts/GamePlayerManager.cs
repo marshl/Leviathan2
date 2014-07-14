@@ -90,6 +90,11 @@ public class GamePlayerManager : MonoBehaviour
 		return player;
 	}
 
+	public GamePlayer GetMe()
+	{
+		return this.GetPlayerWithID( Common.MyNetworkID() );
+	}
+
 	// To be used by the server only
 	public PLAYER_TYPE GetNextFreePlayerType()
 	{

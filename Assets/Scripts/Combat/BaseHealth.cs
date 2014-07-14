@@ -15,6 +15,15 @@ public class BaseHealth : MonoBehaviour
 	protected float shieldRegenTimer;
 	 
 	public bool isIndestructible;
+#if UNITY_EDITOR
+	protected void Start()
+	{
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			TargetManager.instance.AddTarget( this.networkView.viewID, this );
+		}
+	}
+#endif
 
 	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{

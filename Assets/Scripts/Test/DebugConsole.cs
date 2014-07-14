@@ -9,7 +9,6 @@ public static class DebugConsole
 	public static List<string> outputLines = new List<string>();
 	public static List<string> inputLines = new List<string>();
 	public static int currentInputLine = -1;
-	//public static string output = "";
 	public static string input = "";
 	
 	public static void Log( string _str, Object _context  = null )

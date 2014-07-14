@@ -5,6 +5,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class TargetManager : MonoBehaviour
 {
+	[System.Serializable]
 	public class Target
 	{
 		public Target( BaseHealth _health, float _angle, float _distance )
@@ -22,6 +23,10 @@ public class TargetManager : MonoBehaviour
 	public static TargetManager instance;
 	
 	public Dictionary<NetworkViewID, BaseHealth> healthMap;
+
+#if UNITY_EDITOR
+	public List<BaseHealth> targets;
+#endif
 
 	private void Awake()
 	{
@@ -41,7 +46,9 @@ public class TargetManager : MonoBehaviour
 			DebugConsole.Warning( "Target Manager already contains " + _viewID + "(" + _health.gameObject.name + ")", _health );
 			return;
 		}
-
+#if UNITY_EDITOR
+		this.targets.Add( _health );
+#endif
 		DebugConsole.Log( "Adding target " + _viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
 		this.healthMap.Add( _viewID, _health );
 	}
@@ -50,8 +57,12 @@ public class TargetManager : MonoBehaviour
 	{
 		if ( this.healthMap.ContainsKey( _viewID ) )
 		{
+#if UNITY_EDITOR
+			this.targets.Remove( this.healthMap[_viewID] );
+#endif
 			DebugConsole.Log( "Removing target" + _viewID );
 			this.healthMap.Remove( _viewID );
+
 		}
 		else
 		{

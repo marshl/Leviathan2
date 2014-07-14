@@ -33,11 +33,11 @@ public class TurretBehavior : BaseWeaponManager
 		base.Awake();
 
 		// If playing locally, this has to be parented to the capital ship here
-		if ( Network.peerType == NetworkPeerType.Disconnected
+		/*if ( Network.peerType == NetworkPeerType.Disconnected
 		    && GamePlayerManager.instance.GetPlayerWithID( -1 ).capitalShip != null )
 		{
 			this.ParentToOwnerShip( GamePlayerManager.instance.GetPlayerWithID( -1 ) );
-		}
+		}*/
 
 	}
 	protected void Start()
@@ -47,7 +47,7 @@ public class TurretBehavior : BaseWeaponManager
 		this.range = desc.maxDistance;
 	}
 
-	private void Update()
+	protected virtual void Update()
 	{
 		if ( this.ownerInitialised == false 
 		    && this.ownerControl.ownerID != -1 )
@@ -60,12 +60,13 @@ public class TurretBehavior : BaseWeaponManager
 			}
 		}
 
-		if ( this.networkView.isMine )
+		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			if ( this.target == null
 			 || (this.transform.position - this.target.transform.position).magnitude > this.range )
 			{
 				this.target = TargetManager.instance.GetBestTarget( this.arm, -1, this.range, Common.OpposingTeam( this.health.team ) );
+				Debug.DrawRay( this.arm.transform.position, this.arm.transform.forward );
 			}
 			if ( this.target != null )
 			{
@@ -75,19 +76,19 @@ public class TurretBehavior : BaseWeaponManager
 		}
 	}
 
-	private void TurretAim()
+	protected Vector3 TurretAim()
 	{
 		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponDesc.bulletType ).moveSpeed;
 
-		Vector3 leadPosition = Common.GetTargetLeadPosition( this.transform.position, this.target.transform, speed );
+		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, this.target.transform, speed );
 
-		if ( leadPosition == this.transform.position )
+		if ( leadPosition == this.arm.position )
 		{
-			return;
+			return Vector3.zero;
 		}
 
 		//Predict the target's location ahead based on the shot speed and current velocity
-		Vector3 direction = (leadPosition - transform.position).normalized;
+		Vector3 direction = (leadPosition - this.arm.position).normalized;
 
 		//create the rotation we need to be in to look at the target
 		Quaternion lookRotation = Quaternion.LookRotation( direction );
@@ -122,6 +123,7 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			transform.rotation = Quaternion.Slerp( transform.rotation, newRot, Time.deltaTime * rotationSpeed );
 		}
+		return leadPosition;
 	}
 
 	// Unity Callback: Do not change signature

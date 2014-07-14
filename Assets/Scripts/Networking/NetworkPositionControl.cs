@@ -100,7 +100,7 @@ public class NetworkPositionControl : MonoBehaviour
 	{
 		if ( _time < this.newerData.timeStamp )
 		{
-			DebugConsole.Log( "receiving early packet" );
+			DebugConsole.Log( "Receiving early packet" );
 			return;
 		}
 
@@ -115,7 +115,7 @@ public class NetworkPositionControl : MonoBehaviour
 		this.newerData.timeStamp = _time;
 		
 		this.timeDiff = this.newerData.timeStamp - this.olderData.timeStamp;
-
+		Debug.Log( this.timeDiff );
 		Vector3 vectorTravelled = this.newerData.position - this.olderData.position;
 		this.distTravelled = vectorTravelled.magnitude;
 
@@ -129,6 +129,7 @@ public class NetworkPositionControl : MonoBehaviour
 		Vector3 velocity = _vel;
 
 		//this.transform.position = _pos + (float)this.timeDiff * _vel;
+		this.transform.position = _pos + (Time.time - (float)_time) * _vel;
 	}
 
 	private void Update()
@@ -165,7 +166,7 @@ public class NetworkPositionControl : MonoBehaviour
 
 		if ( this.lerp == true )
 		{
-			this.transform.localPosition = Vector3.Lerp( this.transform.localPosition, targetPosition, Time.deltaTime * this.lerpRate * this.distTravelled );
+			//this.transform.localPosition = Vector3.Lerp( this.transform.localPosition, targetPosition, Time.deltaTime * this.lerpRate * this.distTravelled );
 			this.transform.localRotation = Quaternion.Slerp( this.transform.localRotation, targetRotation, Time.deltaTime * this.lerpRate );
 		}
 		else
@@ -176,9 +177,13 @@ public class NetworkPositionControl : MonoBehaviour
 
 		if ( this.rigidbody != null )
 		{
-			this.rigidbody.velocity = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, multiplier );
+			//Debug.Log( "Multiplier: " + multiplier );
+			Vector3 velocityAverage = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, Time.time - (float)this.newerData.timeStamp );
+			this.transform.position = this.newerData.position + velocityAverage * (Time.time - (float)this.newerData.timeStamp);
+			this.rigidbody.velocity = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, Time.time - (float)this.newerData.timeStamp );
 			Debug.DrawRay( this.transform.position, this.rigidbody.velocity, Color.red );
 		}
+		this.velocity = this.rigidbody.velocity;
 	}
 
 	public void SetUpdatePosition( bool _toggle )

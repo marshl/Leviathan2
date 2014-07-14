@@ -158,8 +158,8 @@ public class WeaponBase : MonoBehaviour
 		RaycastHit targetAim = new RaycastHit();
 		Ray rayToCast = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-		DebugConsole.Log ("Ray casting: " + rayToCast.direction.ToString ());
-		DebugConsole.Log ("Input.MousePosition: " + Input.mousePosition.ToString ());
+		//DebugConsole.Log ("Ray casting: " + rayToCast.direction.ToString ());
+		//DebugConsole.Log ("Input.MousePosition: " + Input.mousePosition.ToString ());
 
 		if(this.gameObject.GetComponent<FighterMaster>() != null)
 		{

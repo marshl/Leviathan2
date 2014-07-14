@@ -17,7 +17,7 @@ public abstract class Common
 		float t3 = t*t*t;
 		return (1 - 3*t2 + 2*t3)*start + t2*(3 - 2*t)*end + t*(t-1)*(t-1)*startTangent + t2*(t-1)*endTangent;
 	}
-
+	
 	/// <summary>
 	/// Returns the position of the mouse on the specified plane
 	/// </summary>
@@ -29,7 +29,7 @@ public abstract class Common
 	{
 		return MousePositionToPlanePoint( out _outPos, new Plane( _planeNormal, _planePos ) );
 	}
-
+	
 	/// <summary>
 	/// Returns the position of the mouse on the specified plane
 	/// </summary>
@@ -40,12 +40,12 @@ public abstract class Common
 	{
 		Ray mouseRay = Camera.main.ScreenPointToRay( Input.mousePosition );
 		float dist;
-
+		
 		bool hit = _plane.Raycast( mouseRay, out dist );
 		_outPos = mouseRay.GetPoint( dist );
 		return hit;
 	}
-
+	
 	/// <summary>
 	/// Returns a randomised vector with each x/y/z value between the corresponding values in the min/max vectors
 	/// </summary>
@@ -56,7 +56,7 @@ public abstract class Common
 	{
 		return new Vector3( Random.Range( _min.x, _max.x ), Random.Range( _min.y, _max.y ), Random.Range( _min.z, _max.z ) );
 	}
-
+	
 	/// <summary>
 	/// Returns a random vector3 with x/y/z values between the min and max
 	/// </summary>
@@ -67,7 +67,7 @@ public abstract class Common
 	{
 		return Common.RandomVector3( new Vector3( _min, _min, _min), new Vector3( _max, _max, _max ) );
 	}
-
+	
 	/// <summary>
 	/// Returns the point x on a gaussian bell curve (as copied from UnityGenetics)
 	/// </summary>
@@ -83,7 +83,7 @@ public abstract class Common
 		{
 			throw new System.DivideByZeroException();
 		}
-
+		
 		return _height * Mathf.Exp( - Mathf.Pow( _x - _centre, 2.0f ) / ( 2.0f * _std * _std ) ) + _base;
 		/*_
 		 *          ( (x - c)^2 )
@@ -91,7 +91,7 @@ public abstract class Common
 		 *          (  2 . o^2  )
 		 */
 	}
-
+	
 	public static float GaussianCurveClamped( float _x, float _height, float _centre, float _extents, float _base = 0.0f )
 	{
 		if ( _x < _centre - _extents || _x > _centre + _extents )
@@ -104,7 +104,7 @@ public abstract class Common
 			return val + _base ;
 		}
 	}
-
+	
 	/// Keeps the camera angle in the limits
 	static public float ClampAngleDegrees( float _angle, float _min, float _max )
 	{
@@ -112,21 +112,21 @@ public abstract class Common
 			_angle += 360.0f;
 		while ( _angle > 360.0f )
 			_angle -= 360.0f;
-
+		
 		return Mathf.Clamp( _angle, _min, _max );
 	}
-
+	
 	public static int NetworkID( NetworkPlayer _player )
 	{
 		//TODO: There has to be a better way to to this LM:18/03/14
 		return int.Parse( _player.ToString() );
 	}
-
+	
 	public static int MyNetworkID()
 	{
 		return NetworkID( Network.player );
 	}
-
+	
 	/// <summary>
 	/// Gets the position where two objects will meet if the target stays on a constant heading and speed
 	/// </summary>
@@ -136,16 +136,14 @@ public abstract class Common
 	/// <param name="_speed">_speed.</param>
 	public static Vector3 GetTargetLeadPosition( Vector3 _origin, Transform _target, float _speed )
 	{
-
-
-		if ( _target.rigidbody == null )
+		/*if ( _target.rigidbody == null )
 		{
 			return _target.position;
 		}
-
+		
 		float flightDuration = ( _target.position - _origin ).magnitude
-			/ ( _speed );
-
+			/ ( _speed - _target.rigidbody.velocity.magnitude );
+		
 		if ( flightDuration <= 0.0f )
 		{
 			DebugConsole.Warning( "Projectile cannot catch up to target " + _target.gameObject.name, _target );
@@ -153,10 +151,41 @@ public abstract class Common
 		}
 		else
 		{
-			return _target.position + _target.GetComponent<NetworkPositionControl>().CalculateVelocity () * flightDuration;
-		}
-	}
+			return _target.position + _target.rigidbody.velocity * flightDuration;
+		}*/
 
+		//return ((_target.position - _origin).magnitude / _speed ) * _target.rigidbody.velocity + _target.position;
+
+		float s = _speed;
+		float v = _target.rigidbody.velocity.magnitude;
+		float d = ( _origin - _target.position ).magnitude;
+
+		//float theta = Vector3.Angle( _target.forward.normalized, _origin-_target.position.normalized );
+		float theta = Mathf.Acos( Vector3.Dot( _target.forward, (_origin - _target.position).normalized ) );
+		//Debug.Log( theta + " : Cos " + Mathf.Cos( theta ) );
+		float a = s*s-v*v;
+		float b = 2*v*d*Mathf.Cos( theta );
+		float c = -d*d;
+
+		float x1 = (-b+Mathf.Sqrt( b*b - 4*a*c ))/(2*a);
+		float x2 = (-b-Mathf.Sqrt( b*b - 4*a*c ))/(2*a);
+		//Debug.Log( x1+" : "+x2);
+		if ( x1 >= 0.0f )
+		{
+			return _target.position + _target.rigidbody.velocity * x1;
+		}
+		else
+		{
+			return _target.position + _target.rigidbody.velocity * x2;
+		}
+
+		/*Vector3 leadDirection = _target.position - _origin;
+		leadDirection += leadDirection.magnitude
+				* _target.rigidbody.velocity
+				/ _speed;
+		return leadDirection + _origin;*/
+	}
+	
 	/// <summary>
 	/// Returns a sine wave between the two values, starting at min at x = 0
 	/// </summary>
