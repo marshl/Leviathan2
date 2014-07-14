@@ -157,7 +157,11 @@ public abstract class Common
 		//return ((_target.position - _origin).magnitude / _speed ) * _target.rigidbody.velocity + _target.position;
 
 		float s = _speed;
-		float v = _target.rigidbody.velocity.magnitude;
+		float v = 0;
+		if(_target.rigidbody != null)
+		{
+			v = _target.rigidbody.velocity.magnitude;
+		}
 		float d = ( _origin - _target.position ).magnitude;
 
 		//float theta = Vector3.Angle( _target.forward.normalized, _origin-_target.position.normalized );

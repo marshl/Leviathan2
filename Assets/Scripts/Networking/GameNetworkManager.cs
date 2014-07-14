@@ -149,6 +149,17 @@ public class GameNetworkManager : BaseNetworkManager
 		TargetManager.instance.GetTargetWithID(_id).GetComponent<FighterHealth>().FighterDestroyedNetwork();
 	}
 
+	public void SendDeadShieldMessage( NetworkViewID _id)
+	{
+		this.networkView.RPC ("OnDeadShieldRPC",RPCMode.All,_id);
+	}
+	
+	[RPC]
+	private void OnDeadShieldRPC( NetworkViewID _id)
+	{
+		TargetManager.instance.GetTargetWithID(_id).GetComponent<ShieldGeneratorHealth>().ShieldDestroyedNetwork();
+	}
+
 	public void SendRespawnedFighterMessage (NetworkViewID _id)
 	{
 		this.networkView.RPC ("OnRespawnedFighterRPC",RPCMode.All,_id);
