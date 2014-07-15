@@ -3,8 +3,6 @@ using System.Collections;
 
 public class GameGUI : MonoBehaviour 
 {
-	//private FighterMaster fighterMaster;
-	//private CapitalShipMaster capitalShipMaster;
 	private GamePlayer player;
 
 	public enum GUI_MODE
@@ -20,7 +18,10 @@ public class GameGUI : MonoBehaviour
 	public Texture healthBarTexture;
 	public Texture shieldBarTexture;
 
-	//public Rect CapitalShipHealth
+	public Rect capitalShipHealthRect1;
+	public Rect capitalShipHealthRect2;
+	public Rect capitalShipShieldRect1;
+	public Rect capitalShipShieldRect2;
 
 	private void Update () 
 	{
@@ -58,6 +59,7 @@ public class GameGUI : MonoBehaviour
 		}
 		case GUI_MODE.FIGHTER:
 		{
+			this.UpdateCapitalShipDisplay();
 			break;
 		}
 		case GUI_MODE.FIGHTER_RESPAWNING:
@@ -66,6 +68,7 @@ public class GameGUI : MonoBehaviour
 		}
 		case GUI_MODE.CAPITAL:
 		{
+			this.UpdateCapitalShipDisplay();
 			break;
 		}
 		default:
@@ -78,7 +81,32 @@ public class GameGUI : MonoBehaviour
 
 	private void UpdateCapitalShipDisplay()
 	{
+		GamePlayer p1 = GamePlayerManager.instance.commander1;
+		if ( p1 != null && p1.capitalShip != null )
+		{
+			CapitalHealth health = p1.capitalShip.health;
+			float healthRatio = health.currentHealth / health.maxHealth;
+			float shieldRatio = health.currentShield / health.maxShield;
 
+			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
+			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
+
+			this.capitalShipHealthRect1.Set( 5, 5, healthRatio * (Screen.width * 0.5f-10), 5 );
+			this.capitalShipShieldRect1.Set( 5, 10, shieldRatio * (Screen.width * 0.5f-10), 5 );
+		}
+		GamePlayer p2  = GamePlayerManager.instance.commander2;
+		if ( p2 != null && p2.capitalShip != null )
+		{
+			CapitalHealth health = p2.capitalShip.health;
+			float healthRatio = health.currentHealth / health.maxHealth;
+			float shieldRatio = health.currentShield / health.maxShield;
+
+			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
+			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
+
+			this.capitalShipHealthRect2.Set( Screen.width * 0.5f+5, 5, healthRatio * (Screen.width * 0.5f - 10), 5 );
+			this.capitalShipShieldRect2.Set( Screen.width * 0.5f+5, 10, shieldRatio * (Screen.width * 0.5f - 10), 5 );
+		}
 	}
 
 	private void RenderCapitalShipDisplay()
@@ -95,30 +123,11 @@ public class GameGUI : MonoBehaviour
 
 	private void RenderCapitalShipHealth( CapitalShipMaster _ship )
 	{
-		float healthRatio = _ship.health.currentHealth / _ship.health.maxHealth;
-		float shieldRatio = _ship.health.currentShield / _ship.health.maxShield;
-		if ( healthRatio > 0.0f )
-		{
-			if ( _ship.health.team == TEAM.TEAM_1 )
-			{
-				GUI.DrawTexture( new Rect( 5, 5, healthRatio * Screen.width * 0.5f, 10 ), this.healthBarTexture ); 
-			}
-			else
-			{
-				GUI.DrawTexture( new Rect( Screen.width * 0.5f, 5, healthRatio * Screen.width * 0.5f - 5, 10 ), this.healthBarTexture ); 
-			}
-		}
-		if ( shieldRatio > 0.0f )
-		{
-			if ( _ship.health.team == TEAM.TEAM_1 )
-			{
-				GUI.DrawTexture( new Rect( 5, 5, shieldRatio * Screen.width * 0.5f, 10 ), this.shieldBarTexture ); 
-			}
-			else
-			{
-				GUI.DrawTexture( new Rect( Screen.width * 0.5f+5, 5, shieldRatio * Screen.width * 0.5f, 10 ), this.shieldBarTexture ); 
-			}
-		}
+		GUI.DrawTexture( this.capitalShipHealthRect1, this.healthBarTexture ); 
+		GUI.DrawTexture( this.capitalShipHealthRect2, this.healthBarTexture ); 
+
+		GUI.DrawTexture( this.capitalShipShieldRect1, this.shieldBarTexture ); 
+		GUI.DrawTexture( this.capitalShipShieldRect2, this.shieldBarTexture ); 
 	}
 
 	private void RenderFighterTargets()

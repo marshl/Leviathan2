@@ -38,8 +38,6 @@ public class BulletBase : MonoBehaviour
 	protected virtual void Awake()
 	{
 		this.desc = BulletDescriptorManager.instance.GetDescOfType( this.bulletType );
-		//BulletDescriptorManager.instance
-
 	}
 
 	protected virtual void Start()

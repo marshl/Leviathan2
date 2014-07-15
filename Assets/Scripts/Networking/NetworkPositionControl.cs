@@ -37,6 +37,7 @@ public class NetworkPositionControl : MonoBehaviour
 	public float lerpRate;
 
 	public Vector3 velocity;
+	public Vector3 rotVel;
 
 	// Are we going to try to maintain our networked position?
 	private bool readNewPositionData = true;
@@ -115,7 +116,7 @@ public class NetworkPositionControl : MonoBehaviour
 		this.newerData.timeStamp = _time;
 		
 		this.timeDiff = this.newerData.timeStamp - this.olderData.timeStamp;
-		Debug.Log( this.timeDiff );
+		//Debug.Log( this.timeDiff );
 		Vector3 vectorTravelled = this.newerData.position - this.olderData.position;
 		this.distTravelled = vectorTravelled.magnitude;
 
@@ -126,10 +127,10 @@ public class NetworkPositionControl : MonoBehaviour
 			this.axis = Vector3.Cross( oldForward, newForward );
 		}
 
-		Vector3 velocity = _vel;
+		//Vector3 velocity = _vel;
 
 		//this.transform.position = _pos + (float)this.timeDiff * _vel;
-		this.transform.position = _pos + (Time.time - (float)_time) * _vel;
+		//this.transform.position = _pos + (Time.time - (float)_time) * _vel;
 	}
 
 	private void Update()
@@ -149,8 +150,8 @@ public class NetworkPositionControl : MonoBehaviour
 		// We need two or more points for this to work
 		//TODO: A basic move using only one point (LM:21/02/14)
 		if ( olderData.timeStamp == 0.0f 
-		    || newerData.timeStamp == 0.0f
-		    || !readNewPositionData)
+		  || newerData.timeStamp == 0.0f
+		  || !readNewPositionData)
 		{
 			return;
 		}
@@ -164,26 +165,31 @@ public class NetworkPositionControl : MonoBehaviour
 
 		Vector3 targetPosition = this.newerData.position + this.transform.forward * multiplier * this.distTravelled;
 
-		if ( this.lerp == true )
+		if ( this.rigidbody != null )
 		{
-			//this.transform.localPosition = Vector3.Lerp( this.transform.localPosition, targetPosition, Time.deltaTime * this.lerpRate * this.distTravelled );
-			this.transform.localRotation = Quaternion.Slerp( this.transform.localRotation, targetRotation, Time.deltaTime * this.lerpRate );
+			Vector3 velocityAverage = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, Time.time - (float)this.newerData.timeStamp );
+			Vector3 desiredPos = this.newerData.position + velocityAverage * (Time.time - (float)this.newerData.timeStamp);
+			this.transform.position = Vector3.Lerp( this.transform.position, desiredPos, this.lerpRate );
+
+			this.rigidbody.velocity = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, Time.time - (float)this.newerData.timeStamp );
+			Debug.DrawRay( this.transform.position, this.rigidbody.velocity, Color.red );
+
+			this.velocity = this.rigidbody.velocity;
+			this.rotVel = this.rigidbody.angularVelocity;
 		}
 		else
 		{
-			this.transform.localPosition = targetPosition;
-			this.transform.localRotation = targetRotation;
+			if ( this.lerp == true )
+			{
+				this.transform.localPosition = Vector3.Lerp( this.transform.localPosition, targetPosition, Time.deltaTime * this.lerpRate * this.distTravelled );
+				this.transform.rotation = Quaternion.Slerp( this.transform.rotation, targetRotation, Time.deltaTime * this.lerpRate );
+			}
+			else
+			{
+				this.transform.position = targetPosition;
+				this.transform.rotation = targetRotation;
+			}
 		}
-
-		if ( this.rigidbody != null )
-		{
-			//Debug.Log( "Multiplier: " + multiplier );
-			Vector3 velocityAverage = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, Time.time - (float)this.newerData.timeStamp );
-			this.transform.position = this.newerData.position + velocityAverage * (Time.time - (float)this.newerData.timeStamp);
-			this.rigidbody.velocity = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, Time.time - (float)this.newerData.timeStamp );
-			Debug.DrawRay( this.transform.position, this.rigidbody.velocity, Color.red );
-		}
-		this.velocity = this.rigidbody.velocity;
 	}
 
 	public void SetUpdatePosition( bool _toggle )

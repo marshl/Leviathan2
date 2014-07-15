@@ -136,44 +136,34 @@ public abstract class Common
 	/// <param name="_speed">_speed.</param>
 	public static Vector3 GetTargetLeadPosition( Vector3 _origin, Transform _target, float _speed )
 	{
-		/*if ( _target.rigidbody == null )
+		if ( _target.rigidbody == null )
 		{
 			return _target.position;
 		}
-		
-		float flightDuration = ( _target.position - _origin ).magnitude
-			/ ( _speed - _target.rigidbody.velocity.magnitude );
-		
-		if ( flightDuration <= 0.0f )
-		{
-			DebugConsole.Warning( "Projectile cannot catch up to target " + _target.gameObject.name, _target );
-			return _target.position;
-		}
-		else
-		{
-			return _target.position + _target.rigidbody.velocity * flightDuration;
-		}*/
-
-		//return ((_target.position - _origin).magnitude / _speed ) * _target.rigidbody.velocity + _target.position;
-
+	
 		float s = _speed;
-		float v = 0;
-		if(_target.rigidbody != null)
-		{
-			v = _target.rigidbody.velocity.magnitude;
-		}
+		float v = _target.rigidbody.velocity.magnitude;
+
 		float d = ( _origin - _target.position ).magnitude;
 
-		//float theta = Vector3.Angle( _target.forward.normalized, _origin-_target.position.normalized );
-		float theta = Mathf.Acos( Vector3.Dot( _target.forward, (_origin - _target.position).normalized ) );
-		//Debug.Log( theta + " : Cos " + Mathf.Cos( theta ) );
-		float a = s*s-v*v;
+		// The angle between the forward of the target and the direction to the origin
+		float theta = Mathf.Acos( Vector3.Dot( _target.rigidbody.velocity.normalized, (_origin - _target.position).normalized ) );
+
+		// Now we need to solve for T, the time at which the bullet and target will collide
+		// First we can use the rule of sines ( c*c = a*a + b*b - 2*a*b*cos(theta)
+		// We know the angle between 2 sides, and the distance from the origin to the target
+		// While we don't know the length of the other two sides exactly,we know they are T*bulletSpeed and T*targetSpeed
+		// Which makes our equation s*s*t*t = v*v*t*t + d*d - 2*v*t*d*cos(theta)
+		// Rearranged: (s*s - v*v)t*t + 2*v*d*cos(theta)*t - d*d = 0
+		// Now use a quadratic equation to solve for T
+		float a = s*s - v*v;
 		float b = 2*v*d*Mathf.Cos( theta );
 		float c = -d*d;
 
+		// Quadratic x = (-b (+-) sqrt( b*b - 4ac ) ) / 2a
 		float x1 = (-b+Mathf.Sqrt( b*b - 4*a*c ))/(2*a);
 		float x2 = (-b-Mathf.Sqrt( b*b - 4*a*c ))/(2*a);
-		//Debug.Log( x1+" : "+x2);
+
 		if ( x1 >= 0.0f )
 		{
 			return _target.position + _target.rigidbody.velocity * x1;
@@ -182,12 +172,6 @@ public abstract class Common
 		{
 			return _target.position + _target.rigidbody.velocity * x2;
 		}
-
-		/*Vector3 leadDirection = _target.position - _origin;
-		leadDirection += leadDirection.magnitude
-				* _target.rigidbody.velocity
-				/ _speed;
-		return leadDirection + _origin;*/
 	}
 	
 	/// <summary>

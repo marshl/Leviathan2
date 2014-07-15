@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targets: []
-  target: {fileID: 2008328286}
+  target: {fileID: 1671166664}
   joint: {fileID: 1691194849}
   arm: {fileID: 6446711}
   rotationSpeed: 5000
@@ -826,7 +826,7 @@ Prefab:
     - target: {fileID: 11400002, guid: 740c8b61efc57c3479c08d938862528a, type: 2}
       propertyPath: target
       value: 
-      objectReference: {fileID: 2008328286}
+      objectReference: {fileID: 1671166664}
     - target: {fileID: 11400004, guid: 740c8b61efc57c3479c08d938862528a, type: 2}
       propertyPath: source
       value: 
@@ -835,6 +835,10 @@ Prefab:
       propertyPath: dummy
       value: 
       objectReference: {fileID: 1983347883}
+    - target: {fileID: 100028, guid: 740c8b61efc57c3479c08d938862528a, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 740c8b61efc57c3479c08d938862528a, type: 2}
   m_RootGameObject: {fileID: 738721093}
@@ -1000,8 +1004,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerp: 1
-  lerpRate: 1
+  lerpRate: .25
   velocity: {x: 0, y: 0, z: 0}
+  rotVel: {x: 0, y: 0, z: 0}
   ownerID: -1
 --- !u!23 &1671166660
 Renderer:
@@ -1053,7 +1058,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1671166658}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -16.4036064, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1400,7 +1405,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1983347883}
   - 33: {fileID: 1983347886}
-  - 65: {fileID: 1983347885}
   - 23: {fileID: 1983347884}
   m_Layer: 0
   m_Name: Cube
@@ -1441,18 +1445,6 @@ Renderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortingLayerID: 0
---- !u!65 &1983347885
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1983347882}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1983347886
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1492,11 +1484,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   other: {fileID: 1671166659}
-  turnSpeed: 0
+  turnSpeed: 15
   moveSpeed: 50
-  twistSpeed: 0
+  twistSpeed: 5
   latency: .5
   sendRate: .00999999978
+  goingLeft: 1
+  turnAmount: 1.5
+  turnStop: 3
 --- !u!23 &2008328282
 Renderer:
   m_ObjectHideFlags: 0
