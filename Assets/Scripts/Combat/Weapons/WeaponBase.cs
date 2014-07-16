@@ -100,16 +100,12 @@ public class WeaponBase : MonoBehaviour
 			for ( int i = 0; i < this.firePoints.Length; ++i )
 			{
 				WeaponFirePoint currentFirePoint = this.firePoints[i];
-
-				Vector3 shotDirection = this.GetAimVector(currentFirePoint);
-
-
 				BulletBase bullet = BulletManager.instance.CreateBullet
 				(
 					this.source,
 					this.weaponDesc.bulletType,
 					currentFirePoint.transform.position, 
-					shotDirection, 
+					currentFirePoint.transform.forward, 
 					this.weaponDesc.spread
 				);
 
@@ -119,15 +115,12 @@ public class WeaponBase : MonoBehaviour
 		else
 		{
 			WeaponFirePoint currentFirePoint = this.firePoints[this.firePointIndex];
-
-			Vector3 shotDirection = this.GetAimVector (currentFirePoint);
-
 			BulletBase bullet = BulletManager.instance.CreateBullet
 			(
 				this.source,
 				this.weaponDesc.bulletType,
 				currentFirePoint.transform.position, 
-				shotDirection, 
+					currentFirePoint.transform.forward, 
 				this.weaponDesc.spread
 			);
 
@@ -151,12 +144,12 @@ public class WeaponBase : MonoBehaviour
 		}
 	}
 
-	protected Vector3 GetAimVector(WeaponFirePoint _firePoint)
+	/*protected Vector3 GetAimVector(WeaponFirePoint _firePoint)
 	{
 		//Cast a ray to determine if there's an object under the cursor or not
 
 		RaycastHit targetAim = new RaycastHit();
-		Ray rayToCast = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray rayToCast = Camera.main.ScreenPointToRay( Input.mousePosition );
 
 		//DebugConsole.Log ("Ray casting: " + rayToCast.direction.ToString ());
 		//DebugConsole.Log ("Input.MousePosition: " + Input.mousePosition.ToString ());
@@ -185,5 +178,13 @@ public class WeaponBase : MonoBehaviour
 		return _firePoint.transform.forward;
 		
 
+	}*/
+
+	public void FocusFirePoints( Vector3 _direction )
+	{
+		foreach ( WeaponFirePoint firePoint in this.firePoints )
+		{
+			firePoint.transform.LookAt( firePoint.transform.position + _direction );
+		}
 	}
 }

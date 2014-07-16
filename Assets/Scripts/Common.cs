@@ -45,6 +45,26 @@ public abstract class Common
 		_outPos = mouseRay.GetPoint( dist );
 		return hit;
 	}
+
+	public static Vector3 MousePointHitDirection( GameObject _source )
+	{
+		RaycastHit targetAim;
+		Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
+		
+		if ( Physics.Raycast( ray, out targetAim ) )
+		{
+			if ( _source.collider != null
+			  && targetAim.collider == _source.collider )
+			{
+				return ray.direction;
+			}
+			return ( targetAim.point - _source.transform.position ).normalized ;
+		}
+		else
+		{
+			return ray.direction;
+		}
+	}
 	
 	/// <summary>
 	/// Returns a randomised vector with each x/y/z value between the corresponding values in the min/max vectors

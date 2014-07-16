@@ -23,7 +23,7 @@ public class FighterWeapons : BaseWeaponManager
 		{
 			if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
 			{
-			//	Debug.Log ("Firing");
+				this.laserWeapon.FocusFirePoints( Common.MousePointHitDirection( this.gameObject ) );
 				this.laserWeapon.SendFireMessage();
 			}
 			
@@ -48,4 +48,5 @@ public class FighterWeapons : BaseWeaponManager
 				 Common.OpposingTeam( player.team ) );
 		}
 	}
+
 }
