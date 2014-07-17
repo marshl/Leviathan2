@@ -167,12 +167,16 @@ public class NetworkPositionControl : MonoBehaviour
 
 		if ( this.rigidbody != null )
 		{
-			Vector3 velocityAverage = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, Time.time - (float)this.newerData.timeStamp );
-			Vector3 desiredPos = this.newerData.position + velocityAverage * (Time.time - (float)this.newerData.timeStamp);
+			Vector3 velocityAverage = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, (float)( Network.time - this.newerData.timeStamp ) );
+			Vector3 desiredPos = this.newerData.position + velocityAverage * (float)( Network.time - this.newerData.timeStamp );
 			this.transform.position = Vector3.Lerp( this.transform.position, desiredPos, this.lerpRate );
+			//this.transform.position = desiredPos;
+			//Debug.Log( "T: " + (Network.time - this.newerData.timeStamp) );
 
-			this.rigidbody.velocity = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, Time.time - (float)this.newerData.timeStamp );
-			Debug.DrawRay( this.transform.position, this.rigidbody.velocity, Color.red );
+			this.rigidbody.velocity = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, (float)( Network.time - this.newerData.timeStamp ) );
+			//Debug.DrawRay( this.transform.position, this.rigidbody.velocity, Color.red );
+
+			this.transform.rotation = targetRotation;
 
 			this.velocity = this.rigidbody.velocity;
 			this.rotVel = this.rigidbody.angularVelocity;

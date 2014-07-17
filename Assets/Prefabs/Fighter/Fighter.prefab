@@ -398,8 +398,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerp: 0
-  lerpRate: 5
+  lerpRate: .25
   velocity: {x: 0, y: 0, z: 0}
+  rotVel: {x: 0, y: 0, z: 0}
   ownerID: -1
 --- !u!114 &11400008
 MonoBehaviour:
@@ -472,6 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57798d38267b00a4eadde6d24737fc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targets: []
   laserWeapon: {fileID: 11400004}
   missileWeapon: {fileID: 11400008}
   chargeUpWeapon: {fileID: 0}
@@ -506,6 +508,7 @@ MonoBehaviour:
   ownerControl: {fileID: 11400020}
   undockingTimer: 0
   undockingDelay: 3
+  undockingLaunchSpeed: 100
   respawnDelay: 5
   respawnTimer: 0
   currentSlot:

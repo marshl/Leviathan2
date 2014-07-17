@@ -109,7 +109,7 @@ public class BulletManager : MonoBehaviour
 		bulletScript.enabled = true;
 
 		bulletObj.SetActive( true );
-		bulletObj.collider.enabled = true;
+		bulletObj.collider.enabled = true; // If it was fired by another player, its collider would be turned off
 
 		bulletScript.source = _source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
 		Physics.IgnoreCollision( bulletObj.collider, _source.collider );
