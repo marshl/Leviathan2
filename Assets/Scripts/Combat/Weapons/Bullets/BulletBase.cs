@@ -29,6 +29,8 @@ public class BulletBase : MonoBehaviour
 	
 	public BaseWeaponManager source;
 
+	public Vector3 lastPosition;
+
 	/// <summary>
 	/// The associated bullet desciptor (set elsewhere)
 	/// </summary>
@@ -54,6 +56,7 @@ public class BulletBase : MonoBehaviour
 	public virtual void OnShoot()
 	{
 		this.rigidbody.velocity = this.transform.forward * this.desc.moveSpeed;
+		this.lastPosition = this.transform.position;
 	}
 
 	/// <summary>
@@ -66,6 +69,54 @@ public class BulletBase : MonoBehaviour
 		{
 			this.OnLifetimeExpiration();
 		} 
+
+		//Advanced collision checking - note that it calls OnTriggerEnter by hand.
+
+		DetectCollision();
+
+		lastPosition = this.transform.position;
+	}
+	/// <summary>
+	/// Custom collision detection method to handle high-speed physics.
+	/// </summary>
+	protected virtual void DetectCollision()
+	{
+		//TODO: Convert raycast to spherecast for shot radius to matter, using the collider radius as the size
+
+		Ray positionCheckRay = new Ray(this.transform.position, this.lastPosition - this.transform.position);
+		RaycastHit[] rayInfo;
+		float distance = Vector3.Distance (this.transform.position, this.lastPosition);
+		rayInfo = Physics.RaycastAll (positionCheckRay, distance);
+		
+		bool hitOccurred = false;
+		
+		foreach (RaycastHit hit in rayInfo)
+		{
+
+			//Ugly fix here - namecheck for capital collider should eventually be the physics layer
+			if(hit.collider != null && hit.collider != source.collider && hit.transform.name != "CapitalCollider")
+			{
+				DebugConsole.Log("Collided with " + hit.collider.name + " at distance " + distance);
+				//OnTriggerEnter(hit.collider);
+				
+				BaseHealth health = hit.collider.gameObject.GetComponent<BaseHealth>();
+				if ( health != null )
+				{
+					//_health.DealDamage( this.desc.damage, true );
+					this.OnTargetCollision( health );
+					hitOccurred = true;
+				}
+				else
+				{
+					//this.OnEmptyCollision();
+				}
+				
+			}
+		}
+		if(hitOccurred)
+		{
+			BulletManager.instance.DestroyLocalBullet( this );
+		}
 	}
 
 	/// <summary>
@@ -73,7 +124,7 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	protected virtual void OnTriggerEnter( Collider _collider )
 	{
-		if ( this.gameObject.activeSelf == false )
+	/*	if ( this.gameObject.activeSelf == false )
 		{
 			return;
 		}
@@ -96,7 +147,7 @@ public class BulletBase : MonoBehaviour
 		else
 		{
 			this.OnEmptyCollision();
-		}
+		}*/
 	}
 
 	/// <summary>
@@ -113,6 +164,7 @@ public class BulletBase : MonoBehaviour
 	/// <param name="_target">_target.</param>
 	public virtual void OnTargetCollision( BaseHealth _health )
 	{
+		DebugConsole.Log("Collided with " + _health.name + " in target collision");
 		_health.DealDamage( this.desc.damage, true );
 
 		BulletManager.instance.DestroyLocalBullet( this );
@@ -123,6 +175,7 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public virtual void OnEmptyCollision()
 	{
+		DebugConsole.Log("Empty collision");
 		BulletManager.instance.DestroyLocalBullet( this );
 	}
 
@@ -135,6 +188,8 @@ public class BulletBase : MonoBehaviour
 
 		this.rigidbody.velocity = Vector3.zero;
 		this.rigidbody.angularVelocity = Vector3.zero;
+
+		this.lastPosition = this.transform.position;
 	}
 
 	protected void OnNetworkInstantiate( NetworkMessageInfo _info )

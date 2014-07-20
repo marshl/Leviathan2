@@ -575,6 +575,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 		for ( int i = 0; i < this.rotationSegmentCount; ++i )
 		{
+
 			_segments[i].SetActive( i >= minActiveSegments && i <= maxActiveSegments );
 		}
 	}
