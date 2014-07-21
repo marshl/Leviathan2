@@ -164,6 +164,11 @@ public abstract class Common
 		float s = _speed;
 		float v = _target.rigidbody.velocity.magnitude;
 
+		if ( s == v )
+		{
+			return _target.position;
+		}
+
 		float d = ( _origin - _target.position ).magnitude;
 
 		// The angle between the forward of the target and the direction to the origin
@@ -188,9 +193,13 @@ public abstract class Common
 		{
 			return _target.position + _target.rigidbody.velocity * x1;
 		}
-		else
+		else if ( x2 >= 0.0f )
 		{
 			return _target.position + _target.rigidbody.velocity * x2;
+		}
+		else
+		{
+			return _target.position;
 		}
 	}
 	

@@ -12,13 +12,15 @@ public class NetworkPositionTest : MonoBehaviour
 	public float latency;
 	public float sendRate;
 	private float timer;
-
-	private List<NetworkPositionControl.DataPoint> dataPoints;
+	
+	public List<NetworkPositionControl.DataPoint> dataPoints;
 
 	public bool goingLeft = true;
 	public float turnAmount;
 	public float turnStop;
 
+
+	public bool turn;
 	private void Awake()
 	{
 		this.dataPoints = new List<NetworkPositionControl.DataPoint>();
@@ -30,10 +32,10 @@ public class NetworkPositionTest : MonoBehaviour
 		// Store a "packet" every _sendRate_ seconds
 		if ( this.timer >= this.sendRate )
 		{
-			this.timer = 0.0f;
+			this.timer -= this.sendRate;
 
 			NetworkPositionControl.DataPoint data = new NetworkPositionControl.DataPoint();
-			data.timeStamp = (double)Time.time;
+			data.timeStamp = (double)Time.realtimeSinceStartup;
 			data.position = this.transform.localPosition;
 			data.rotation = this.transform.rotation;
 			data.velocity = this.rigidbody != null ? this.rigidbody.velocity : Vector3.zero;
@@ -48,9 +50,7 @@ public class NetworkPositionTest : MonoBehaviour
 			this.dataPoints.RemoveAt( 0 );
 		}
 
-		this.other.TransformLerp( Time.realtimeSinceStartup );
 		//this.transform.Rotate( this.transform.up, this.turnSpeed * Time.deltaTime );
-		this.transform.Rotate( this.transform.forward, this.twistSpeed * Time.deltaTime );
 
 		if ( this.rigidbody != null )
 		{
@@ -62,12 +62,22 @@ public class NetworkPositionTest : MonoBehaviour
 			this.transform.position += this.transform.forward * Time.deltaTime * this.moveSpeed;
 		}
 
-		this.transform.Rotate( this.transform.up, this.turnSpeed * Time.deltaTime * (this.goingLeft ? 1.0f : -1.0f) );
-		this.turnAmount += Time.deltaTime;
-		if ( this.turnAmount > this.turnStop )
+		if ( this.turn )
 		{
-			this.goingLeft = !this.goingLeft;
-			this.turnAmount = 0.0f;
+			this.transform.Rotate( this.transform.forward, this.twistSpeed * Time.deltaTime );
+			this.transform.Rotate( this.transform.up, this.turnSpeed * Time.deltaTime * (this.goingLeft ? 1.0f : -1.0f) );
+			this.turnAmount += Time.deltaTime;
+			if ( this.turnAmount > this.turnStop )
+			{
+				this.goingLeft = !this.goingLeft;
+				this.turnAmount = 0.0f;
+			}
 		}
+		Debug.DrawLine( this.transform.position, this.other.transform.position, Color.red );
+	}
+
+	private void LateUpdate()
+	{
+		this.other.TransformLerp( Time.realtimeSinceStartup );
 	}
 }

@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
+[System.Serializable]
 public class NetworkPositionControl : MonoBehaviour
 {
 	/// A position and rotation point sent over the network
+	[System.Serializable]
 	public struct DataPoint
 	{
 		public Vector3 position;
@@ -36,8 +37,10 @@ public class NetworkPositionControl : MonoBehaviour
 	/// </summary>
 	public float lerpRate;
 
+#if UNITY_EDITOR
 	public Vector3 velocity;
 	public Vector3 rotVel;
+#endif
 
 	// Are we going to try to maintain our networked position?
 	private bool readNewPositionData = true;
@@ -116,7 +119,7 @@ public class NetworkPositionControl : MonoBehaviour
 		this.newerData.timeStamp = _time;
 		
 		this.timeDiff = this.newerData.timeStamp - this.olderData.timeStamp;
-		//Debug.Log( this.timeDiff );
+
 		Vector3 vectorTravelled = this.newerData.position - this.olderData.position;
 		this.distTravelled = vectorTravelled.magnitude;
 
@@ -126,19 +129,17 @@ public class NetworkPositionControl : MonoBehaviour
 		{
 			this.axis = Vector3.Cross( oldForward, newForward );
 		}
-
-		//Vector3 velocity = _vel;
-
-		//this.transform.position = _pos + (float)this.timeDiff * _vel;
-		//this.transform.position = _pos + (Time.time - (float)_time) * _vel;
 	}
 
 	private void Update()
 	{
-		// This is separate to facilitate local testing
-		this.TransformLerp( Network.time );
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			// This is separate to facilitate local testing
+			this.TransformLerp( Network.time );
 
-		this.ownerID = Common.NetworkID( this.networkView.viewID.owner );
+			this.ownerID = Common.NetworkID( this.networkView.viewID.owner );
+		}
 	}
 
 	/// <summary>
@@ -148,7 +149,6 @@ public class NetworkPositionControl : MonoBehaviour
 	public void TransformLerp( double _currentTime )
 	{
 		// We need two or more points for this to work
-		//TODO: A basic move using only one point (LM:21/02/14)
 		if ( olderData.timeStamp == 0.0f 
 		  || newerData.timeStamp == 0.0f
 		  || !readNewPositionData)
@@ -163,27 +163,26 @@ public class NetworkPositionControl : MonoBehaviour
 			 Quaternion.Angle( this.olderData.rotation, this.newerData.rotation ) * multiplier, this.axis
 	    );
 
-		Vector3 targetPosition = this.newerData.position + this.transform.forward * multiplier * this.distTravelled;
 
 		if ( this.rigidbody != null )
 		{
-			Vector3 velocityAverage = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, (float)( Network.time - this.newerData.timeStamp ) );
-			Vector3 desiredPos = this.newerData.position + velocityAverage * (float)( Network.time - this.newerData.timeStamp );
+			Vector3 velocityGuess = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, multiplier );
+			Vector3 desiredPos = this.newerData.position + (float)timeSince * velocityGuess;
 			this.transform.position = Vector3.Lerp( this.transform.position, desiredPos, this.lerpRate );
-			//this.transform.position = desiredPos;
-			//Debug.Log( "T: " + (Network.time - this.newerData.timeStamp) );
 
-			this.rigidbody.velocity = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, (float)( Network.time - this.newerData.timeStamp ) );
-			//Debug.DrawRay( this.transform.position, this.rigidbody.velocity, Color.red );
-
+			this.rigidbody.velocity = velocityGuess;
 			this.transform.rotation = targetRotation;
-
+#if UNITY_EDITOR
+			Debug.DrawRay( this.transform.position, this.velocity );
 			this.velocity = this.rigidbody.velocity;
 			this.rotVel = this.rigidbody.angularVelocity;
+#endif
 		}
 		else
 		{
-			if ( this.lerp == true )
+			Vector3 targetPosition = this.newerData.position + this.transform.forward * multiplier * this.distTravelled;
+            
+            if ( this.lerp == true )
 			{
 				this.transform.localPosition = Vector3.Lerp( this.transform.localPosition, targetPosition, Time.deltaTime * this.lerpRate * this.distTravelled );
 				this.transform.rotation = Quaternion.Slerp( this.transform.rotation, targetRotation, Time.deltaTime * this.lerpRate );
