@@ -184,6 +184,8 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public virtual void Reset()
 	{
+		this.source = null;
+
 		this.distanceTravelled = 0.0f;
 
 		this.rigidbody.velocity = Vector3.zero;

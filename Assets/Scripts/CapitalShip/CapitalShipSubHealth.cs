@@ -6,6 +6,12 @@ public class CapitalShipSubHealth : BaseHealth
 	public CapitalHealth mainHealth;
 	public float damageMultiplier = 1.0f;
 
+#if UNITY_EDITOR
+	protected override void Start()
+	{
+
+	}
+#endif
 
 	protected override void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{

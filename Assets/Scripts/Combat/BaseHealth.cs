@@ -16,7 +16,7 @@ public class BaseHealth : MonoBehaviour
 	 
 	public bool isIndestructible;
 #if UNITY_EDITOR
-	protected void Start()
+	protected virtual void Start()
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{

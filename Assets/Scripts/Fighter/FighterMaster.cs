@@ -18,24 +18,18 @@ public class FighterMaster : MonoBehaviour
 	public FighterWeapons weapons; 
 	public NetworkOwnerControl ownerControl;
 
+	public CapitalShipMaster capitalShip;
+
 	private bool ownerInitialised = false;
 	
-	public float undockingTimer = 0.0f;
-	public float undockingDelay = 3.0f;
-	public float undockingLaunchSpeed = 100.0f;
-	
 	public float respawnDelay = 5.0f;
-	
 	public float respawnTimer = 0.0f;
 	
 	public DockingBay.DockingSlot currentSlot;
-
+	
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
-
-
-
 	}
 
 	private void Update()
@@ -53,6 +47,7 @@ public class FighterMaster : MonoBehaviour
 				this.Respawn();
 			}
 
+			//TODO: Add a die function to the shell LM:28/07/2014
 			if ( Input.GetKeyDown( KeyCode.LeftBracket ) )
 			{
 				this.Die( 0 );
@@ -72,15 +67,6 @@ public class FighterMaster : MonoBehaviour
 			}
 			case FighterMaster.FIGHTERSTATE.UNDOCKING:
 			{
-				if ( this.undockingTimer > 0 )
-				{
-					this.undockingTimer -= Time.deltaTime;
-					if ( this.undockingTimer < 0 )
-					{
-						this.undockingTimer = 0;
-						this.state = FighterMaster.FIGHTERSTATE.FLYING;
-					}
-				}
 				break;
 			}
 			case FIGHTERSTATE.DEAD:
@@ -125,13 +111,20 @@ public class FighterMaster : MonoBehaviour
 		//TODO: Shouls team be removed from health in favour of GamePlayer pointer? LM:7/7/14
 		this.health.team = this.owner.team;
 
+		//TODO: Add a helper function to shortcut this LM:24/07/2014
+		this.capitalShip = this.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1.capitalShip
+			: GamePlayerManager.instance.commander2.capitalShip;
 		
-		foreach (Renderer render in GetComponentsInChildren<Renderer>())
+		foreach ( Renderer render in GetComponentsInChildren<Renderer>( ))
 		{
-			if(owner.team == TEAM.TEAM_1)
+			if ( owner.team == TEAM.TEAM_1 )
+			{
 				render.material.color = new Color(1.0f,1.0f,0.2f);
+			}
 			else
+			{
 				render.material.color = new Color(1,0f,0.2f,1.0f);
+			}
 		}
 	}
 
@@ -210,39 +203,25 @@ public class FighterMaster : MonoBehaviour
 	{
 		DebugConsole.Log( "Undocking", this );
 		this.rigidbody.constraints = RigidbodyConstraints.None;
-		
-		Vector3 inheritedVelocity = Vector3.zero;
-		if(this.GetComponent<NetworkPositionControl>() != null)
-		{
-			inheritedVelocity = this.GetComponent<NetworkPositionControl>().CalculateVelocity();
-			inheritedVelocity += this.transform.forward * undockingLaunchSpeed;
-		}
-
+	
 		this.state = FIGHTERSTATE.UNDOCKING;
 		this.currentSlot.occupied = false;
 		this.currentSlot.landedFighter = null;
 
-		this.movement.desiredSpeed = ( this.movement.maxSpeed * 0.75f );
-		this.undockingTimer = this.undockingDelay;
+		this.movement.desiredSpeed = this.movement.maxSpeed;
 		
 		this.transform.parent = null;
 		this.transform.localScale = Vector3.one;
-		
+
 		//Apply force of the capital ship so we don't move relative
 		GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, this.currentSlot.slotID );
 		this.currentSlot = null;
 		this.weapons.enabled = true;
-		
-		if ( inheritedVelocity == Vector3.zero )
-		{
-			inheritedVelocity.x = 10;
-			inheritedVelocity.y = 0;
-			inheritedVelocity.z = 10;
-		}
-		
-		DebugConsole.Log( "Inherited Velocity: " + inheritedVelocity, this );
+	}
 
-		this.rigidbody.AddForce( inheritedVelocity);
+	public void ExitDock()
+	{
+		this.state = FIGHTERSTATE.FLYING;
 	}
 	
 	private void OnGUI()
@@ -259,4 +238,7 @@ public class FighterMaster : MonoBehaviour
 			}
 		}
 	}
+
+
+
 }

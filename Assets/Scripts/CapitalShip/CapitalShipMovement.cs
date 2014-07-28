@@ -57,7 +57,7 @@ public class CapitalShipMovement : MonoBehaviour
 	/// <summary>
 	/// The speed at which the ship is currently moving
 	/// </summary>
-	private float currentMovementSpeed;
+	public float currentMovementSpeed;
 
 	/// <summary>
 	/// The vertex count of the path lines
@@ -175,7 +175,6 @@ public class CapitalShipMovement : MonoBehaviour
 		this.UpdateAvoidanceControl();
 		   
 		this.transform.position += this.transform.forward * this.currentMovementSpeed * Time.deltaTime;
-		//this.rigidbody.velocity = this.transform.forward * this.currentMovementSpeed;
 	}
 
 	/// <summary>

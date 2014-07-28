@@ -58,8 +58,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400006}
+  - 136: {fileID: 13600000}
   - 54: {fileID: 5400000}
-  - 135: {fileID: 13500000}
   - 114: {fileID: 11400018}
   - 114: {fileID: 11400000}
   - 148: {fileID: 14800000}
@@ -353,8 +353,9 @@ MonoBehaviour:
   desiredSpeed: 0
   minSpeed: -400
   rollDamping: .300000012
-  minimumBounce: 500
-  bounceVelocityModifier: 50
+  undockingSpeed: 50
+  contactPushForce: 4
+  contactTorque: 75
   turnExtents: .699999988
 --- !u!114 &11400002
 MonoBehaviour:
@@ -506,9 +507,8 @@ MonoBehaviour:
   health: {fileID: 11400014}
   weapons: {fileID: 11400016}
   ownerControl: {fileID: 11400020}
-  undockingTimer: 0
-  undockingDelay: 3
-  undockingLaunchSpeed: 100
+  capitalShip: {fileID: 0}
+  undockingLaunchSpeed: 1000
   respawnDelay: 5
   respawnTimer: 0
   currentSlot:
@@ -528,17 +528,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ownerID: -1
---- !u!135 &13500000
-SphereCollider:
+--- !u!136 &13600000
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 99e86ee0ad11f8d6d00011d98d76c639, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.25
+  m_Radius: .670000017
+  m_Height: 2.1099999
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!148 &14800000
 NetworkView:

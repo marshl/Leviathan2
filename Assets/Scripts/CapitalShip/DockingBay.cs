@@ -21,6 +21,8 @@ public class DockingBay : MonoBehaviour
 	
 	public int bayID;
 
+	public Renderer bayRenderer;
+
 	private void Start()
 	{
 		int idCounter = ((int)(this.capitalShip.health.team) * 1000) + (bayID * 10 + 1);
@@ -31,9 +33,13 @@ public class DockingBay : MonoBehaviour
 		}
 
 		if(capitalShip.owner.team == TEAM.TEAM_1)
-			renderer.material.color = new Color(0.5f,1.0f,0.5f);
+		{
+			bayRenderer.material.color = new Color(0.5f,1.0f,0.5f);
+		}
 		else
-			renderer.material.color = new Color(0.5f, 0.5f, 1.0f);
+		{
+			bayRenderer.material.color = new Color(0.5f, 0.5f, 1.0f);
+		}
 
 	}
 
@@ -52,6 +58,18 @@ public class DockingBay : MonoBehaviour
 			else
 			{
 				EnemyDockingProcedure( fighterScript ); //Do bad stuff to them.
+			}
+		}
+	}
+
+	private void OnTriggerExit( Collider _other )
+	{
+		FighterMaster fighterScript = _other.GetComponent<FighterMaster>();
+		if ( fighterScript != null )
+		{
+			if ( fighterScript.state == FighterMaster.FIGHTERSTATE.UNDOCKING )
+			{
+				fighterScript.ExitDock();
 			}
 		}
 	}
