@@ -479,7 +479,7 @@ MonoBehaviour:
   missileWeapon: {fileID: 11400008}
   chargeUpWeapon: {fileID: 0}
   maxTargetDistance: 500
-  maxTargetAngle: 15
+  maxTargetAngle: 45
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -508,7 +508,6 @@ MonoBehaviour:
   weapons: {fileID: 11400016}
   ownerControl: {fileID: 11400020}
   capitalShip: {fileID: 0}
-  undockingLaunchSpeed: 1000
   respawnDelay: 5
   respawnTimer: 0
   currentSlot:

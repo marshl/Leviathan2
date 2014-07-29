@@ -96,7 +96,7 @@ public class BulletBase : MonoBehaviour
 			//Ugly fix here - namecheck for capital collider should eventually be the physics layer
 			if(hit.collider != null && hit.collider != source.collider && hit.transform.name != "CapitalCollider")
 			{
-				DebugConsole.Log("Collided with " + hit.collider.name + " at distance " + distance);
+				//DebugConsole.Log("Collided with " + hit.collider.name + " at distance " + distance);
 				//OnTriggerEnter(hit.collider);
 				
 				BaseHealth health = hit.collider.gameObject.GetComponent<BaseHealth>();
@@ -164,7 +164,7 @@ public class BulletBase : MonoBehaviour
 	/// <param name="_target">_target.</param>
 	public virtual void OnTargetCollision( BaseHealth _health )
 	{
-		DebugConsole.Log("Collided with " + _health.name + " in target collision");
+		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
 		_health.DealDamage( this.desc.damage, true );
 
 		BulletManager.instance.DestroyLocalBullet( this );
@@ -175,7 +175,7 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public virtual void OnEmptyCollision()
 	{
-		DebugConsole.Log("Empty collision");
+		//DebugConsole.Log("Empty collision");
 		BulletManager.instance.DestroyLocalBullet( this );
 	}
 

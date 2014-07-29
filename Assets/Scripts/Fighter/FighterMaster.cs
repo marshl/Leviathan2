@@ -26,7 +26,19 @@ public class FighterMaster : MonoBehaviour
 	public float respawnTimer = 0.0f;
 	
 	public DockingBay.DockingSlot currentSlot;
-	
+
+#if UNITY_EDITOR
+	protected void Start()
+	{
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			this.owner = GamePlayerManager.instance.myPlayer;
+			this.health.team = this.owner.team;
+			this.owner.fighter = this;
+		}
+	}
+#endif
+
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
@@ -131,12 +143,18 @@ public class FighterMaster : MonoBehaviour
 	public void Respawn()
 	{
 		//Find an empty spot on the friendly capital ship and dock there
-		
 		DockingBay[] bays = FindObjectsOfType( typeof(DockingBay) ) as DockingBay[];
 
+		this.health.FullHeal();
+	
 		if ( bays.Length == 0 )
 		{
 			DebugConsole.Warning( "No docking bays found", this );
+			this.transform.position = Vector3.zero;
+			this.transform.rotation = Quaternion.identity;
+			this.rigidbody.velocity = Vector3.zero;
+			this.rigidbody.angularVelocity = Vector3.zero;
+			this.state = FIGHTERSTATE.FLYING;
 			return;
 		}
 
@@ -152,7 +170,6 @@ public class FighterMaster : MonoBehaviour
 			
 			if( bays[index].capitalShip.health.team == this.health.team )
 			{
-				this.health.FullHeal();
 				GameNetworkManager.instance.SendRespawnedFighterMessage( this.networkView.viewID );
 				this.Dock( bays[index].GetFreeSlot() );
 				break;
@@ -171,7 +188,10 @@ public class FighterMaster : MonoBehaviour
 		respawnTimer = respawnDelay; 
 		
 		this.state = FIGHTERSTATE.DEAD;
-		GameNetworkManager.instance.SendDeadFighterMessage( this.networkView.viewID );
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendDeadFighterMessage( this.networkView.viewID );
+		}
 	}
 
 	public void Dock( DockingBay.DockingSlot _slot )

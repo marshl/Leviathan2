@@ -53,7 +53,7 @@ public class GameNetworkManager : BaseNetworkManager
 		  && !this.gameHasStarted )
 		{
 			this.gameHasStarted = true;
-			LocalGameStart();
+			this.LocalGameStart();
 		}
 	}
 
@@ -237,10 +237,11 @@ public class GameNetworkManager : BaseNetworkManager
 
 	private void LocalGameStart()
 	{
-		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
-		GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( Network.player );
+		DebugConsole.Log( "Local game start" );
 
-		PlayerInstantiator.instance.CreatePlayerObject( player );
+		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
+		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer );
+		//GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( Network.player );
 	}
 
 	public void SendSetViewIDMessage( int _ownerID, NetworkViewID _id )

@@ -81,9 +81,12 @@ public class TargetManager : MonoBehaviour
 		return null;
 	}
 
-	public int GetTargetsFromPlayer( ref List<Target> _list, Transform _transform, float _maxAngle, float _maxDistance, TEAM _team = TEAM.NEUTRAL )
+	public void GetTargetsFromPlayer( BaseWeaponManager _weaponScript, Transform _transform,
+	                                float _maxDistance = -1.0f, float _maxAngle = -1.0f, TEAM _team = TEAM.NEUTRAL )
 	{
-		int targetsFound = 0;
+		_weaponScript.currentTarget = null;
+		_weaponScript.otherTargets.Clear();
+
 		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.healthMap )
 		{
 			BaseHealth health = pair.Value;
@@ -108,35 +111,19 @@ public class TargetManager : MonoBehaviour
 
 			Target t = new Target( health, angle, dist );
 
-			_list.Add( t );
-			++targetsFound;
+			_weaponScript.otherTargets.Add( t );
 		}
-		return targetsFound;
-	}
+	
+		_weaponScript.otherTargets.Sort( 
+		delegate( Target _x, Target _y ) 
+		{ 
+			return _x.angle.CompareTo( _y.angle ); 
+		} );
 
-	public BaseHealth GetBestTarget( Transform _transform, float _maxAngle, float _maxDistance, TEAM _team = TEAM.NEUTRAL )
-	{
-		List<Target> targets = new List<Target>();
-
-		this.GetTargetsFromPlayer( ref targets, _transform, _maxAngle, _maxDistance, _team );
-
-		if ( targets.Count == 0 )
+		if ( _weaponScript.otherTargets.Count > 0 )
 		{
-			return null;
+			_weaponScript.currentTarget = _weaponScript.otherTargets[0];
 		}
-
-		Target bestTarget = null;
-
-		foreach ( Target target in targets )
-		{
-			//TODO: Range check as well
-			if ( bestTarget == null || target.angle < bestTarget.angle )
-			{
-				bestTarget = target;
-			}
-		}
-
-		return bestTarget.health;
 	}
 
 	public void DealDamageNetwork( NetworkViewID _id, float _damage )

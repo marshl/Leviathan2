@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class TurretBehavior : BaseWeaponManager
 {
-	public BaseHealth target;
-
 	public Transform joint;
 	public Transform arm;
 	public float rotationSpeed;
@@ -62,13 +60,14 @@ public class TurretBehavior : BaseWeaponManager
 
 		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
-			if ( this.target == null
-			 || (this.transform.position - this.target.transform.position).magnitude > this.range )
+			if ( this.currentTarget == null
+			 || (this.transform.position - this.currentTarget.health.transform.position).magnitude > this.range )
 			{
-				this.target = TargetManager.instance.GetBestTarget( this.arm, -1, this.range, Common.OpposingTeam( this.health.team ) );
+				TargetManager.instance.GetTargetsFromPlayer( this, this.transform, this.range, -1, Common.OpposingTeam( this.health.team ) );
+				//this.target = TargetManager.instance.GetBestTarget( this.arm, -1, this.range, Common.OpposingTeam( this.health.team ) );
 				Debug.DrawRay( this.arm.transform.position, this.arm.transform.forward );
 			}
-			if ( this.target != null )
+			if ( this.currentTarget != null )
 			{
 				this.TurretAim();
 				this.gameObject.GetComponent<WeaponBase>().SendFireMessage();
@@ -80,7 +79,7 @@ public class TurretBehavior : BaseWeaponManager
 	{
 		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponDesc.bulletType ).moveSpeed;
 
-		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, this.target.transform, speed );
+		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, this.currentTarget.health.transform, speed );
 
 		if ( leadPosition == this.arm.position )
 		{
@@ -133,7 +132,7 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			Quaternion jointRot = this.joint.rotation;
 			Quaternion armRot = this.arm.rotation;
-			NetworkViewID viewID = this.target == null ? this.networkView.viewID : this.target.networkView.viewID;
+			NetworkViewID viewID = this.currentTarget == null ? this.networkView.viewID : this.currentTarget.health.networkView.viewID;
 			_stream.Serialize( ref jointRot );
 			_stream.Serialize( ref armRot );
 			_stream.Serialize( ref viewID );
@@ -151,7 +150,7 @@ public class TurretBehavior : BaseWeaponManager
 			this.arm.rotation = armRot;
 			if ( viewID != this.networkView.viewID )
 			{
-				this.target = TargetManager.instance.GetTargetWithID( viewID );
+				this.currentTarget = new TargetManager.Target( TargetManager.instance.GetTargetWithID( viewID ), -1, -1 );
 			}
 		}
 	}

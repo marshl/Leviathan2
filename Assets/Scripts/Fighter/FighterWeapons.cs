@@ -6,11 +6,8 @@ public class FighterWeapons : BaseWeaponManager
 {
 	public WeaponBase laserWeapon;
 	public WeaponBase missileWeapon;
-	public ChargeUpWeapon chargeUpWeapon;
-
 
 	public float maxTargetDistance;
-	public float maxTargetAngle;
 
 	protected override void Awake()
 	{
@@ -19,7 +16,7 @@ public class FighterWeapons : BaseWeaponManager
 
 	private void Update()
 	{
-		if( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+		if( this.networkView.isMine )
 		{
 			if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
 			{
@@ -31,21 +28,12 @@ public class FighterWeapons : BaseWeaponManager
 			{
 				this.missileWeapon.SendFireMessage();
 			}
-
-			if ( Input.GetKey( KeyCode.LeftControl ) )
-			{
-				this.chargeUpWeapon.SendFireMessage();
-			} 
 		
-			this.targets.Clear();
+			this.otherTargets.Clear();
 
-			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( Common.MyNetworkID() );
-			TargetManager.instance.GetTargetsFromPlayer( 
-			     ref this.targets, 
-				 this.transform,
-				 this.maxTargetAngle,
-				 this.maxTargetDistance,
-				 Common.OpposingTeam( player.team ) );
+			GamePlayer player = GamePlayerManager.instance.myPlayer;
+
+			TargetManager.instance.GetTargetsFromPlayer( this, this.transform, this.maxTargetDistance, -1, Common.OpposingTeam( player.team ) );
 		}
 	}
 

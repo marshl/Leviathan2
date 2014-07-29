@@ -4,20 +4,21 @@ using System.Collections.Generic;
 
 public class BaseWeaponManager : MonoBehaviour
 {
-	public List<TargetManager.Target> targets;
+	public TargetManager.Target currentTarget;
+	public List<TargetManager.Target> otherTargets;
 
 	protected virtual void Awake()
 	{
-		this.targets = new List<TargetManager.Target>();
+		this.currentTarget = null;
+		this.otherTargets = new List<TargetManager.Target>();
 	}
 
 	public virtual void OnBulletCreated( BulletBase _bullet )
 	{
-		SeekingBullet seeking = _bullet as SeekingBullet;
-		if ( seeking != null )
+		SeekingBullet seekingScript = _bullet as SeekingBullet;
+		if ( seekingScript != null )
 		{
-			BaseHealth target = this.targets.Count == 0 ? null : this.targets[0].health;
-			seeking.target = target;
+			seekingScript.target = this.currentTarget.health;
 		}
 	}
 }

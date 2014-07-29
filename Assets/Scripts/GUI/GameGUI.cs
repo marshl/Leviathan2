@@ -17,17 +17,73 @@ public class GameGUI : MonoBehaviour
 
 	public Texture healthBarTexture;
 	public Texture shieldBarTexture;
+	public Texture reticuleTexture;
 
-	public Rect capitalShipHealthRect1;
-	public Rect capitalShipHealthRect2;
-	public Rect capitalShipShieldRect1;
-	public Rect capitalShipShieldRect2;
+	private Rect capitalShipHealthRect1;
+	private Rect capitalShipHealthRect2;
+	private Rect capitalShipShieldRect1;
+	private Rect capitalShipShieldRect2;
+
+	public Rect targetReticuleScale;
+
+	public float targetCameraDistance;
 
 	private void Update () 
 	{
+		this.DetermineGUIMode();
+
+		switch ( this.guiMode )
+		{
+		case GUI_MODE.NONE:
+		{
+			this.camera.enabled = false;
+			return;
+		}
+		case GUI_MODE.FIGHTER:
+		{
+			this.camera.enabled = true;
+			this.UpdateCapitalShipDisplay();
+
+			TargetManager.Target target = this.player.fighter.weapons.currentTarget;
+			if ( target != null )
+			{
+				Vector3 targetPos = target.health.transform.position;
+				Vector3 fighterPos = this.player.fighter.transform.position;
+
+				Vector3 diff = targetPos - fighterPos;
+				this.transform.position = targetPos - diff.normalized * this.targetCameraDistance;
+				this.transform.LookAt( targetPos );
+			}
+			else
+			{
+				this.camera.enabled = false;
+			}
+			break;
+		}
+		case GUI_MODE.FIGHTER_RESPAWNING:
+		{
+			this.camera.enabled = false;
+			break;
+		}
+		case GUI_MODE.CAPITAL:
+		{
+			this.camera.enabled = false;
+			this.UpdateCapitalShipDisplay();
+			break;
+		}
+		default:
+		{
+			DebugConsole.Error( "Uncaught GUIMODE state " + this.guiMode );
+			break;
+		}
+		}
+	}
+
+	private void DetermineGUIMode()
+	{
 		if ( this.player == null )
 		{
-			this.player = GamePlayerManager.instance.GetMe();
+			this.player = GamePlayerManager.instance.myPlayer;
 		}
 
 		if ( this.player != null )
@@ -50,33 +106,6 @@ public class GameGUI : MonoBehaviour
 		{
 			this.guiMode = GUI_MODE.NONE;
 		}
-
-		switch ( this.guiMode )
-		{
-		case GUI_MODE.NONE:
-		{
-			return;
-		}
-		case GUI_MODE.FIGHTER:
-		{
-			this.UpdateCapitalShipDisplay();
-			break;
-		}
-		case GUI_MODE.FIGHTER_RESPAWNING:
-		{
-			break;
-		}
-		case GUI_MODE.CAPITAL:
-		{
-			this.UpdateCapitalShipDisplay();
-			break;
-		}
-		default:
-		{
-			DebugConsole.Error( "Uncaught GUIMODE state " + this.guiMode );
-			break;
-		}
-		}
 	}
 
 	private void UpdateCapitalShipDisplay()
@@ -94,6 +123,7 @@ public class GameGUI : MonoBehaviour
 			this.capitalShipHealthRect1.Set( 5, 5, healthRatio * (Screen.width * 0.5f-10), 5 );
 			this.capitalShipShieldRect1.Set( 5, 10, shieldRatio * (Screen.width * 0.5f-10), 5 );
 		}
+
 		GamePlayer p2  = GamePlayerManager.instance.commander2;
 		if ( p2 != null && p2.capitalShip != null )
 		{
@@ -108,7 +138,7 @@ public class GameGUI : MonoBehaviour
 			this.capitalShipShieldRect2.Set( Screen.width * 0.5f+5, 10, shieldRatio * (Screen.width * 0.5f - 10), 5 );
 		}
 	}
-
+	
 	private void RenderCapitalShipDisplay()
 	{
 		if ( GamePlayerManager.instance.commander1 != null )
@@ -132,13 +162,22 @@ public class GameGUI : MonoBehaviour
 
 	private void RenderFighterTargets()
 	{
-		foreach ( TargetManager.Target target in this.player.fighter.weapons.targets )
+		TargetManager.Target target = this.player.fighter.weapons.currentTarget;
+		if ( target != null )
+		//foreach ( TargetManager.Target target in this.player.fighter.weapons.otherTargets )
 		{
-			Vector3 worldPos = target.health.transform.position;
+			Vector3 toTarget = target.health.transform.position - this.player.fighter.transform.position;
+			if ( Vector3.Dot( this.player.fighter.transform.forward, toTarget.normalized ) > 0.0f )
+			{
+				Vector3 worldPos = target.health.transform.position;
 
-			Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
+				Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
+				Rect r = this.targetReticuleScale;
+				r.x += screenPos.x;
+				r.y += Screen.height - screenPos.y;
 
-			GUI.DrawTexture( new Rect( screenPos.x, screenPos.y, 5, 5 ), this.healthBarTexture );
+				GUI.DrawTexture( r, this.reticuleTexture );
+			}
 		}
 	}
 

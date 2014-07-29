@@ -13,6 +13,8 @@ public class GamePlayerManager : MonoBehaviour
 	public List<GamePlayer> fighters1;
 	public List<GamePlayer> fighters2;
 
+	public GamePlayer myPlayer;
+
 	private void Awake()
 	{
 		GamePlayerManager.instance = this;
@@ -90,10 +92,10 @@ public class GamePlayerManager : MonoBehaviour
 		return player;
 	}
 
-	public GamePlayer GetMe()
+	/*public GamePlayer GetMe()
 	{
 		return this.GetPlayerWithID( Common.MyNetworkID() );
-	}
+	}*/
 
 	// To be used by the server only
 	public PLAYER_TYPE GetNextFreePlayerType()
@@ -130,6 +132,11 @@ public class GamePlayerManager : MonoBehaviour
 		this.playerMap.Add( newPlayer.id, newPlayer );
 
 		this.ChangePlayerType( newPlayer.id, _playerType );
+
+		if ( _playerID == Common.MyNetworkID() )
+		{
+			this.myPlayer = newPlayer;
+		}
 	}
 
 	public bool RemovePlayer( int _playerID )
