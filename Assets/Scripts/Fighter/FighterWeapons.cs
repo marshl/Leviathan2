@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class FighterWeapons : BaseWeaponManager
 {
+	public FighterMaster master;
+
 	public WeaponBase laserWeapon;
 	public WeaponBase missileWeapon;
 
@@ -16,7 +18,8 @@ public class FighterWeapons : BaseWeaponManager
 
 	private void Update()
 	{
-		if( this.networkView.isMine )
+		if( this.networkView.isMine 
+		 && this.master.state == FighterMaster.FIGHTERSTATE.FLYING )
 		{
 			if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
 			{
@@ -35,6 +38,12 @@ public class FighterWeapons : BaseWeaponManager
 
 			TargetManager.instance.GetTargetsFromPlayer( this, this.transform, this.maxTargetDistance, -1, Common.OpposingTeam( player.team ) );
 		}
+	}
+
+	public void OnRespawn()
+	{
+		this.currentTarget = null;
+		this.otherTargets.Clear();
 	}
 
 }

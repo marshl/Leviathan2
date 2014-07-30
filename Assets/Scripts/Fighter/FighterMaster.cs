@@ -146,6 +146,8 @@ public class FighterMaster : MonoBehaviour
 		DockingBay[] bays = FindObjectsOfType( typeof(DockingBay) ) as DockingBay[];
 
 		this.health.FullHeal();
+		this.movement.OnRespawn();
+		this.weapons.OnRespawn();
 	
 		if ( bays.Length == 0 )
 		{

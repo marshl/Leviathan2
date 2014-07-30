@@ -474,12 +474,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57798d38267b00a4eadde6d24737fc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targets: []
+  currentTarget:
+    health: {fileID: 0}
+    angle: 0
+    distance: 0
+  otherTargets: []
+  master: {fileID: 11400018}
   laserWeapon: {fileID: 11400004}
   missileWeapon: {fileID: 11400008}
-  chargeUpWeapon: {fileID: 0}
   maxTargetDistance: 500
-  maxTargetAngle: 45
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1

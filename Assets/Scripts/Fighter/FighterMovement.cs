@@ -5,13 +5,13 @@ public class FighterMovement : MonoBehaviour
 {
 	public FighterMaster masterScript;
 
-	public float turnSpeed = 35.0f;
-	public float rollSpeed = 2.0f;
-	public float acceleration = 2.0f;
-	public float maxSpeed = 10.0f;
-	public float desiredSpeed = 0.0f;
-	public float minSpeed = -2.0f;
-	public float rollDamping = 0.3f;
+	public float turnSpeed;
+	public float rollSpeed;
+	public float acceleration;
+	public float maxSpeed;
+	public float desiredSpeed;
+	public float minSpeed;
+	public float rollDamping;
 	
 	public float undockingSpeed;
 
@@ -149,5 +149,12 @@ public class FighterMovement : MonoBehaviour
 		
 		this.desiredSpeed = this.rigidbody.velocity.magnitude;
 		this.desiredSpeed *= Vector3.Dot( this.transform.forward, this.rigidbody.velocity.normalized ) > 0.0f ? 1.0f : -1.0f;
+	}
+
+	public void OnRespawn()
+	{
+		this.rigidbody.velocity = Vector3.zero;
+		this.rigidbody.angularVelocity = Vector3.zero;
+		this.desiredSpeed = 0.0f;
 	}
 }

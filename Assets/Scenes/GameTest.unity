@@ -1937,6 +1937,7 @@ MonoBehaviour:
     angle: 0
     distance: 0
   otherTargets: []
+  master: {fileID: 935807982}
   laserWeapon: {fileID: 935807975}
   missileWeapon: {fileID: 935807973}
   maxTargetDistance: 500
