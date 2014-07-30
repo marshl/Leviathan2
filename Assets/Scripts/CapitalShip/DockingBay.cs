@@ -55,10 +55,22 @@ public class DockingBay : MonoBehaviour
 				DebugConsole.Log("Fighter received");
 				FriendlyDockingProcedure( fighterScript ); //You may dock
 			}
+
+
+
 			else
 			{
 				EnemyDockingProcedure( fighterScript ); //Do bad stuff to them.
 			}
+
+
+		}
+
+		if ( fighterScript.state == FighterMaster.FIGHTERSTATE.FLYING
+		    && fighterScript.enabled && Network.peerType == NetworkPeerType.Disconnected ) //If we're on the same team
+		{
+			DebugConsole.Log("Fighter received");
+			FriendlyDockingProcedure( fighterScript ); //You may dock
 		}
 	}
 
