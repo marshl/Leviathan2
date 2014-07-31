@@ -1375,7 +1375,6 @@ GameObject:
   - 23: {fileID: 2300002}
   - 148: {fileID: 14800004}
   - 114: {fileID: 11400032}
-  - 54: {fileID: 5400002}
   m_Layer: 0
   m_Name: ShieldGenerator
   m_TagString: Untagged
@@ -1414,7 +1413,6 @@ GameObject:
   - 23: {fileID: 2300116}
   - 148: {fileID: 14800006}
   - 114: {fileID: 11400034}
-  - 54: {fileID: 5400004}
   m_Layer: 0
   m_Name: ShieldGenerator
   m_TagString: Untagged
@@ -1453,7 +1451,6 @@ GameObject:
   - 23: {fileID: 2300120}
   - 148: {fileID: 14800008}
   - 114: {fileID: 11400038}
-  - 54: {fileID: 5400006}
   m_Layer: 0
   m_Name: ShieldGenerator
   m_TagString: Untagged
@@ -4272,51 +4269,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!54 &5400002
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100158}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: .0500000007
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
---- !u!54 &5400004
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100162}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: .0500000007
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
---- !u!54 &5400006
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100166}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: .0500000007
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
 --- !u!65 &6500000
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -5402,6 +5354,7 @@ MonoBehaviour:
   isIndestructible: 0
   explosionRadius: 250
   explosionDamage: 150
+  capitalShip: {fileID: 11400002}
 --- !u!114 &11400034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5423,6 +5376,7 @@ MonoBehaviour:
   isIndestructible: 0
   explosionRadius: 250
   explosionDamage: 150
+  capitalShip: {fileID: 11400002}
 --- !u!114 &11400036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5464,6 +5418,7 @@ MonoBehaviour:
   isIndestructible: 0
   explosionRadius: 250
   explosionDamage: 150
+  capitalShip: {fileID: 11400002}
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1

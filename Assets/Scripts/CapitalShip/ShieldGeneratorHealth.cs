@@ -8,8 +8,8 @@ public class ShieldGeneratorHealth : BaseHealth {
 
 	bool kaboom = false;
 
+	public CapitalShipMaster capitalShip;
 
-	// Update is called once per frame
 	public override void Update()
 	{
 		if ( this.currentHealth <= 0 && kaboom == false )
@@ -27,26 +27,9 @@ public class ShieldGeneratorHealth : BaseHealth {
 
 	public void Explode()
 	{
-//		BaseHealth[] healthScripts = (BaseHealth[]) Object.FindObjectsOfType (typeof (BaseHealth));
+		TargetManager.instance.AreaOfEffectDamage( this.transform.position, this.explosionRadius, this.explosionDamage, false, this.team );
 
-	/*	foreach(BaseHealth healths in healthScripts)
-		{
-			float distanceBetween = Vector3.Distance (this.transform.position, healths.transform.position);
-
-			if(distanceBetween <= explosionRadius)
-			{
-				float damageMultiplier = 1.0f - (distanceBetween / explosionRadius);
-
-				if(damageMultiplier > 0)
-				{
-					healths.DealDamage (explosionDamage * damageMultiplier, true);
-				}
-			}
-
-		}*/
-
-		GameNetworkManager.instance.SendDeadShieldMessage (this.networkView.viewID);
-
+		GameNetworkManager.instance.SendDeadShieldMessage( this.networkView.viewID );
 	}
 
 	public void ShieldDestroyedNetwork()
@@ -55,10 +38,11 @@ public class ShieldGeneratorHealth : BaseHealth {
 
 		//todo: explosion
 
-		this.transform.parent.GetComponent<CapitalHealth>().shieldGenerators -= 1;
-		this.transform.parent.GetComponent<CapitalHealth>().RecalculateMaxShields();
+		this.capitalShip.health.shieldGenerators -= 1;
+		this.capitalShip.health.RecalculateMaxShields();
 
 		TargetManager.instance.RemoveTarget(this.networkView.viewID);
+
 		Destroy(this.gameObject);
 
 		//this.gameObject.collider.enabled = false;

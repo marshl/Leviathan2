@@ -9,7 +9,7 @@ public class BurstFireWeapon : WeaponBase
 	/// <summary>
 	/// The descriptor for this weapon (Set elsewhere)
 	/// </summary>
-	[HideInInspector]
+	//[HideInInspector]
 	public BurstFireWeaponDesc burstFireDesc;
 
 	/// <summary>

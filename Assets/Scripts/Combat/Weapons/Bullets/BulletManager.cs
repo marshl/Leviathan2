@@ -8,6 +8,8 @@ public enum BULLET_TYPE : int
 	NONE,
 	MISSILE,
 	LIGHT_LASER,
+
+	TURRET_SHREDDER,
 };
 
 public enum WEAPON_TYPE : int
@@ -18,6 +20,8 @@ public enum WEAPON_TYPE : int
 	GATLING_LASER,
 	BURST_FIRE_TEST,
 	CHARGE_UP_TEST,
+
+	TURRET_SHREDDER,
 };
 
 /// <summary>

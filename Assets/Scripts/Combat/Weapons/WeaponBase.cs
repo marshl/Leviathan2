@@ -14,7 +14,7 @@ public class WeaponBase : MonoBehaviour
 	/// <summary>
 	/// The descriptor for this weapon
 	/// </summary>
-	[HideInInspector]
+	//[HideInInspector]
 	public WeaponDescriptor weaponDesc;
 
 	/// <summary>

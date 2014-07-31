@@ -2,10 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
 public class TargetManager : MonoBehaviour
 {
-	[System.Serializable]
 	public class Target
 	{
 		public Target( BaseHealth _health, float _angle, float _distance )
@@ -25,7 +23,7 @@ public class TargetManager : MonoBehaviour
 	public Dictionary<NetworkViewID, BaseHealth> healthMap;
 
 #if UNITY_EDITOR
-	public List<BaseHealth> targets;
+	public List<BaseHealth> debugTargets;
 #endif
 
 	private void Awake()
@@ -47,7 +45,7 @@ public class TargetManager : MonoBehaviour
 			return;
 		}
 #if UNITY_EDITOR
-		this.targets.Add( _health );
+		this.debugTargets.Add( _health );
 #endif
 		DebugConsole.Log( "Adding target " + _viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
 		this.healthMap.Add( _viewID, _health );
@@ -58,7 +56,7 @@ public class TargetManager : MonoBehaviour
 		if ( this.healthMap.ContainsKey( _viewID ) )
 		{
 #if UNITY_EDITOR
-			this.targets.Remove( this.healthMap[_viewID] );
+			this.debugTargets.Remove( this.healthMap[_viewID] );
 #endif
 			DebugConsole.Log( "Removing target" + _viewID );
 			this.healthMap.Remove( _viewID );
@@ -123,6 +121,24 @@ public class TargetManager : MonoBehaviour
 		if ( _weaponScript.otherTargets.Count > 0 )
 		{
 			_weaponScript.currentTarget = _weaponScript.otherTargets[0];
+		}
+	}
+
+	public void AreaOfEffectDamage( Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam )
+	{
+		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.healthMap )
+		{
+			if ( _friendlyFire == true && _sourceTeam == pair.Value.team )
+			{
+				return;
+			}
+
+			float distance = ( pair.Value.transform.position - _position ).magnitude;
+			if ( distance < _radius )
+			{
+				float multiplier = 1.0f - distance / _radius;
+				pair.Value.DealDamage( _damage * multiplier, true );
+			}
 		}
 	}
 

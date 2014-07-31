@@ -72,7 +72,6 @@ public class FighterMaster : MonoBehaviour
 				if ( Input.GetKeyDown( KeyCode.Space ) 
 				  && !GameMessages.instance.typing )
 				{
-					DebugConsole.Log( "Space was pressed", this );
 					this.Undock();
 				}
 				break;
