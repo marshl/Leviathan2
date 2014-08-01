@@ -484,7 +484,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67be29578340c724b92a1403cafefc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  currentTarget: {fileID: 0}
+  targetList: []
+  targetIndex: 0
+  maxTargetDistance: 500
   joint: {fileID: 400026}
   arm: {fileID: 400024}
   rotationSpeed: 500
@@ -493,6 +496,7 @@ MonoBehaviour:
   minimumPitchAngle: 0
   weapon: {fileID: 11400006}
   health: {fileID: 11400008}
+  fireLockAngle: .100000001
   ownerControl: {fileID: 11400010}
 --- !u!114 &11400004
 MonoBehaviour:
@@ -565,8 +569,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.68000007
-  m_Center: {x: 0, y: -1.48000002, z: 0}
+  m_Radius: 2.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &13700000
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

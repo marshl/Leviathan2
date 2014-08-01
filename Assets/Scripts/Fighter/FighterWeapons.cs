@@ -9,8 +9,6 @@ public class FighterWeapons : BaseWeaponManager
 	public WeaponBase laserWeapon;
 	public WeaponBase missileWeapon;
 
-	public float maxTargetDistance;
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -18,7 +16,7 @@ public class FighterWeapons : BaseWeaponManager
 
 	private void Update()
 	{
-		if( this.networkView.isMine 
+		if( ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		 && this.master.state == FighterMaster.FIGHTERSTATE.FLYING )
 		{
 			if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
@@ -31,19 +29,31 @@ public class FighterWeapons : BaseWeaponManager
 			{
 				this.missileWeapon.SendFireMessage();
 			}
-		
-			this.otherTargets.Clear();
 
-			GamePlayer player = GamePlayerManager.instance.myPlayer;
+			if ( Input.GetKey( KeyCode.T ) )
+			{
+				this.SwitchToCentreTarget( this.transform.forward, false );
+			}
 
-			TargetManager.instance.GetTargetsFromPlayer( this, this.transform, this.maxTargetDistance, -1, Common.OpposingTeam( player.team ) );
+			if ( Input.GetKeyDown( KeyCode.LeftBracket ) )
+			{
+				this.SwitchToPreviousTarget();
+			}
+			else if ( Input.GetKeyDown( KeyCode.RightBracket ) )
+			{
+				this.SwitchToNextTarget();
+			}
+
+			if ( this.currentTarget == null )
+			{
+				this.SwitchToCentreTarget( this.transform.forward, false );
+			}
 		}
 	}
 
 	public void OnRespawn()
 	{
 		this.currentTarget = null;
-		this.otherTargets.Clear();
+		this.targetList.Clear();
 	}
-
 }

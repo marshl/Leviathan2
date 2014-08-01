@@ -44,10 +44,10 @@ public class GameGUI : MonoBehaviour
 			this.camera.enabled = true;
 			this.UpdateCapitalShipDisplay();
 
-			TargetManager.Target target = this.player.fighter.weapons.currentTarget;
+			BaseHealth target = this.player.fighter.weapons.currentTarget;
 			if ( target != null )
 			{
-				Vector3 targetPos = target.health.transform.position;
+				Vector3 targetPos = target.transform.position;
 				Vector3 fighterPos = this.player.fighter.transform.position;
 
 				Vector3 diff = targetPos - fighterPos;
@@ -162,14 +162,14 @@ public class GameGUI : MonoBehaviour
 
 	private void RenderFighterTargets()
 	{
-		TargetManager.Target target = this.player.fighter.weapons.currentTarget;
+		BaseHealth target = this.player.fighter.weapons.currentTarget;
 		if ( target != null )
 		//foreach ( TargetManager.Target target in this.player.fighter.weapons.otherTargets )
 		{
-			Vector3 toTarget = target.health.transform.position - this.player.fighter.transform.position;
+			Vector3 toTarget = target.transform.position - this.player.fighter.transform.position;
 			if ( Vector3.Dot( this.player.fighter.transform.forward, toTarget.normalized ) > 0.0f )
 			{
-				Vector3 worldPos = target.health.transform.position;
+				Vector3 worldPos = target.transform.position;
 
 				Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
 				Rect r = this.targetReticuleScale;

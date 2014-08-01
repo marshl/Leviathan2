@@ -16,6 +16,8 @@ public class TurretBehavior : BaseWeaponManager
 	public WeaponBase weapon;
 	public BaseHealth health;
 
+	public float fireLockAngle;
+
 	private float range; //TODO: The weapon situation is a disaster that has to be fixed LM 12/05/14
 
 	public NetworkOwnerControl ownerControl;
@@ -29,14 +31,6 @@ public class TurretBehavior : BaseWeaponManager
 	protected override void Awake()
 	{
 		base.Awake();
-
-		// If playing locally, this has to be parented to the capital ship here
-		/*if ( Network.peerType == NetworkPeerType.Disconnected
-		    && GamePlayerManager.instance.GetPlayerWithID( -1 ).capitalShip != null )
-		{
-			this.ParentToOwnerShip( GamePlayerManager.instance.GetPlayerWithID( -1 ) );
-		}*/
-
 	}
 	protected void Start()
 	{
@@ -58,19 +52,30 @@ public class TurretBehavior : BaseWeaponManager
 			}
 		}
 
-		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+		if ( (this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
+		    && this.health.currentHealth > 0.0f )
 		{
 			if ( this.currentTarget == null
-			 || (this.transform.position - this.currentTarget.health.transform.position).magnitude > this.range )
+			  || this.currentTarget.currentHealth <= 0.0f
+			  || this.currentTarget.enabled == false
+			  || (this.transform.position - this.currentTarget.transform.position).magnitude > this.range
+			  || Vector3.Dot( this.currentTarget.transform.position - this.transform.position, this.transform.up) < 0.0f ) // Below the target horizon
 			{
-				TargetManager.instance.GetTargetsFromPlayer( this, this.transform, this.range, -1, Common.OpposingTeam( this.health.team ) );
-				//this.target = TargetManager.instance.GetBestTarget( this.arm, -1, this.range, Common.OpposingTeam( this.health.team ) );
-				Debug.DrawRay( this.arm.transform.position, this.arm.transform.forward );
+				//Debug.Log( "Switching targets", this );
+				this.SwitchToCentreTarget( this.arm.forward, true );
 			}
+
 			if ( this.currentTarget != null )
 			{
-				this.TurretAim();
-				this.gameObject.GetComponent<WeaponBase>().SendFireMessage();
+				Vector3 leadPos = this.TurretAim();
+				Vector3 vectorToLeadPos = (leadPos - this.transform.position).normalized;
+				Vector3 vectorToFront = this.arm.transform.forward;
+				float angleToLeadPos = Vector3.Dot( vectorToLeadPos, vectorToFront );
+
+				if ( angleToLeadPos >= 1.0f - this.fireLockAngle )
+				{
+					this.gameObject.GetComponent<WeaponBase>().SendFireMessage();
+				}
 			}
 		}
 	}
@@ -79,7 +84,7 @@ public class TurretBehavior : BaseWeaponManager
 	{
 		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponDesc.bulletType ).moveSpeed;
 
-		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, this.currentTarget.health.transform, speed );
+		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, this.currentTarget.transform, speed );
 
 		if ( leadPosition == this.arm.position )
 		{
@@ -132,7 +137,7 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			Quaternion jointRot = this.joint.rotation;
 			Quaternion armRot = this.arm.rotation;
-			NetworkViewID viewID = this.currentTarget == null ? this.networkView.viewID : this.currentTarget.health.networkView.viewID;
+			NetworkViewID viewID = this.currentTarget == null ? this.networkView.viewID : this.currentTarget.networkView.viewID;
 			_stream.Serialize( ref jointRot );
 			_stream.Serialize( ref armRot );
 			_stream.Serialize( ref viewID );
@@ -150,7 +155,7 @@ public class TurretBehavior : BaseWeaponManager
 			this.arm.rotation = armRot;
 			if ( viewID != this.networkView.viewID )
 			{
-				this.currentTarget = new TargetManager.Target( TargetManager.instance.GetTargetWithID( viewID ), -1, -1 );
+				this.currentTarget = TargetManager.instance.GetTargetWithID( viewID );
 			}
 		}
 	}

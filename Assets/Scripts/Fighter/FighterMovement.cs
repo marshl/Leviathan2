@@ -35,7 +35,7 @@ public class FighterMovement : MonoBehaviour
 	
 	private void LateUpdate()
 	{
-		if ( this.networkView.isMine )
+		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			switch ( this.masterScript.state )
 			{

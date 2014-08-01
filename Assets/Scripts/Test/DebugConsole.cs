@@ -95,6 +95,11 @@ public static class DebugConsole
 			OnSetHealth( chunks );
 			break;
 		}
+		case "die":
+		{
+			OnDie( chunks );
+			break;
+		}
 		default:
 		{
 			AddLine( "Unknown command \"" + input + "\". Type \"help\" for a list of commands." );
@@ -113,6 +118,7 @@ public static class DebugConsole
 		AddLine( "playerlist - Displays a list of all players" );
 		AddLine( "tgm - Toggle God Mode" );
 		AddLine( "sethealth - Set the health of a player" );
+		AddLine( "die - Sets your health to 0" );
 	}
 
 	private static void OnPlayerList( string[] _chunks )
@@ -214,5 +220,28 @@ public static class DebugConsole
 		}
 
 		AddLine( "Player " + playerID + " health set to " + health );
+	}
+
+	private static void OnDie( string[] _chunks )
+	{
+		if ( _chunks.Length != 1 )
+		{
+			AddLine( "No parameters needed for 'die'" );
+		}
+
+		GamePlayer player = GamePlayerManager.instance.myPlayer;
+		if ( player.fighter != null )
+		{
+			player.fighter.health.currentHealth = 0;
+		}
+		else if ( player.capitalShip != null )
+		{
+			player.capitalShip.health.currentHealth = 0;
+		}
+		else
+		{
+			AddLine( "No player object found to modiify" );
+			return;
+		}
 	}
 }

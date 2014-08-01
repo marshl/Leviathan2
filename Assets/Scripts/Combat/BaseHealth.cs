@@ -65,7 +65,10 @@ public class BaseHealth : MonoBehaviour
 
 	public virtual void Update()
 	{
-		RegenerateShields();
+		if ( this.currentHealth > 0.0f )
+		{
+			RegenerateShields();
+		}
 	}
 
 	public virtual void RegenerateShields()

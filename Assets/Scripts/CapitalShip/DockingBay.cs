@@ -46,31 +46,22 @@ public class DockingBay : MonoBehaviour
 	private void OnTriggerEnter( Collider _other )
 	{
 		FighterMaster fighterScript = _other.GetComponent<FighterMaster>();
-		if ( fighterScript != null && _other.networkView != null && _other.networkView.isMine )
+		if ( fighterScript != null
+		  && fighterScript.enabled
+	      && fighterScript.state == FighterMaster.FIGHTERSTATE.FLYING
+	       )
 		{
-			if ( fighterScript.health.team == this.capitalShip.health.team
-			  && fighterScript.state == FighterMaster.FIGHTERSTATE.FLYING
-			  && fighterScript.enabled ) //If we're on the same team
+			DebugConsole.Log("Fighter received");
+
+			//If we're on the same team
+			if ( fighterScript.health.team == this.capitalShip.health.team ) 
 			{
-				DebugConsole.Log("Fighter received");
 				FriendlyDockingProcedure( fighterScript ); //You may dock
 			}
-
-
-
 			else
 			{
 				EnemyDockingProcedure( fighterScript ); //Do bad stuff to them.
 			}
-
-
-		}
-
-		if ( fighterScript.state == FighterMaster.FIGHTERSTATE.FLYING
-		    && fighterScript.enabled && Network.peerType == NetworkPeerType.Disconnected ) //If we're on the same team
-		{
-			DebugConsole.Log("Fighter received");
-			FriendlyDockingProcedure( fighterScript ); //You may dock
 		}
 	}
 

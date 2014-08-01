@@ -52,22 +52,25 @@ public class FighterMaster : MonoBehaviour
 			this.OwnerInitialise();
 		}
 
-		if ( this.networkView.isMine )
+		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
 		{
 			if ( Input.GetKeyDown( KeyCode.G ) )
 			{
 				this.Respawn();
 			}
 
-			//TODO: Add a die function to the shell LM:28/07/2014
-			if ( Input.GetKeyDown( KeyCode.LeftBracket ) )
+			if ( Input.GetKeyDown( KeyCode.P ) )
 			{
 				this.Die( 0 );
 			}
 
 			switch ( this.state )
 			{
-			case FighterMaster.FIGHTERSTATE.DOCKED:
+			case FIGHTERSTATE.FLYING:
+			{
+				break;
+			}
+			case FIGHTERSTATE.DOCKED:
 			{
 				if ( Input.GetKeyDown( KeyCode.Space ) 
 				  && !GameMessages.instance.typing )
@@ -76,7 +79,7 @@ public class FighterMaster : MonoBehaviour
 				}
 				break;
 			}
-			case FighterMaster.FIGHTERSTATE.UNDOCKING:
+			case FIGHTERSTATE.UNDOCKING:
 			{
 				break;
 			}

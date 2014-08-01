@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class TargetManager : MonoBehaviour
 {
+	[System.Serializable]
 	public class Target
 	{
 		public Target( BaseHealth _health, float _angle, float _distance )
@@ -20,7 +21,7 @@ public class TargetManager : MonoBehaviour
 
 	public static TargetManager instance;
 	
-	public Dictionary<NetworkViewID, BaseHealth> healthMap;
+	public Dictionary<NetworkViewID, BaseHealth> targetMap;
 
 #if UNITY_EDITOR
 	public List<BaseHealth> debugTargets;
@@ -34,12 +35,12 @@ public class TargetManager : MonoBehaviour
 		}
 		TargetManager.instance = this;
 
-		this.healthMap = new Dictionary<NetworkViewID, BaseHealth>();
+		this.targetMap = new Dictionary<NetworkViewID, BaseHealth>();
 	}
 
 	public void AddTarget( NetworkViewID _viewID, BaseHealth _health )
 	{
-		if ( this.healthMap.ContainsKey( _viewID ) )
+		if ( this.targetMap.ContainsKey( _viewID ) )
 		{
 			DebugConsole.Warning( "Target Manager already contains " + _viewID + "(" + _health.gameObject.name + ")", _health );
 			return;
@@ -48,18 +49,18 @@ public class TargetManager : MonoBehaviour
 		this.debugTargets.Add( _health );
 #endif
 		DebugConsole.Log( "Adding target " + _viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
-		this.healthMap.Add( _viewID, _health );
+		this.targetMap.Add( _viewID, _health );
 	}
 
 	public void RemoveTarget(NetworkViewID _viewID)
 	{
-		if ( this.healthMap.ContainsKey( _viewID ) )
+		if ( this.targetMap.ContainsKey( _viewID ) )
 		{
 #if UNITY_EDITOR
-			this.debugTargets.Remove( this.healthMap[_viewID] );
+			this.debugTargets.Remove( this.targetMap[_viewID] );
 #endif
 			DebugConsole.Log( "Removing target" + _viewID );
-			this.healthMap.Remove( _viewID );
+			this.targetMap.Remove( _viewID );
 
 		}
 		else
@@ -71,7 +72,7 @@ public class TargetManager : MonoBehaviour
 	public BaseHealth GetTargetWithID( NetworkViewID _viewID )
 	{
 		BaseHealth target = null;
-		if ( this.healthMap.TryGetValue( _viewID, out target ) )
+		if ( this.targetMap.TryGetValue( _viewID, out target ) )
 		{
 			return target;
 		}
@@ -79,15 +80,24 @@ public class TargetManager : MonoBehaviour
 		return null;
 	}
 
-	public void GetTargetsFromPlayer( BaseWeaponManager _weaponScript, Transform _transform,
+	public void GetTargets( BaseWeaponManager _weaponScript, Transform _transform,
 	                                float _maxDistance = -1.0f, float _maxAngle = -1.0f, TEAM _team = TEAM.NEUTRAL )
 	{
-		_weaponScript.currentTarget = null;
-		_weaponScript.otherTargets.Clear();
+		_weaponScript.targetList.Clear();
 
-		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.healthMap )
+		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
 		{
 			BaseHealth health = pair.Value;
+
+			// Ignore dead targets
+			if ( health.currentHealth <= 0.0f 
+			    || health.enabled == false 
+			    || health.gameObject.activeInHierarchy == false )
+			{
+				continue;
+			}
+
+			// Ignore targets out of range
 			Vector3 v = health.transform.position - _transform.position;
 			float dist = v.magnitude;
 			if ( _maxDistance > 0.0f && dist > _maxDistance )
@@ -95,8 +105,8 @@ public class TargetManager : MonoBehaviour
 				continue;
 			}
 
+			// Ignore targets that are out of angle
 			float angle = Vector3.Angle( _transform.forward, v.normalized );
-
 			if ( _maxAngle > 0.0f && angle >= _maxAngle )
 			{
 				continue;
@@ -107,26 +117,13 @@ public class TargetManager : MonoBehaviour
 				continue;
 			}
 
-			Target t = new Target( health, angle, dist );
-
-			_weaponScript.otherTargets.Add( t );
-		}
-	
-		_weaponScript.otherTargets.Sort( 
-		delegate( Target _x, Target _y ) 
-		{ 
-			return _x.angle.CompareTo( _y.angle ); 
-		} );
-
-		if ( _weaponScript.otherTargets.Count > 0 )
-		{
-			_weaponScript.currentTarget = _weaponScript.otherTargets[0];
+			_weaponScript.targetList.Add( health );
 		}
 	}
 
 	public void AreaOfEffectDamage( Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam )
 	{
-		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.healthMap )
+		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
 		{
 			if ( _friendlyFire == true && _sourceTeam == pair.Value.team )
 			{
@@ -150,7 +147,7 @@ public class TargetManager : MonoBehaviour
 	public void OnNetworkDamageMessage( NetworkViewID _id, float _damage ) 
 	{
 		BaseHealth target;
-		if ( !this.healthMap.TryGetValue( _id, out target ) )
+		if ( !this.targetMap.TryGetValue( _id, out target ) )
 		{
 			DebugConsole.Error( "Cannot find target with ID " + _id );
 			return;

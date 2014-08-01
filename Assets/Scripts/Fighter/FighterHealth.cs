@@ -4,7 +4,7 @@ using System.Collections;
 public class FighterHealth : BaseHealth
 {
 	public FighterMaster masterScript;
-	private BaseWeaponManager lastHitBy;
+	public BaseWeaponManager lastHitBy;
 
 	private void OnGUI()
 	{
@@ -20,7 +20,6 @@ public class FighterHealth : BaseHealth
 		if ( this.currentHealth <= 0
 		  && this.masterScript.state != FighterMaster.FIGHTERSTATE.DEAD )
 		{
-
 			this.currentHealth = 0;
 			this.masterScript.Die( this.DetermineExplosion() );
 		}
@@ -59,7 +58,6 @@ public class FighterHealth : BaseHealth
 	public void FighterDestroyedNetwork()
 	{
 		this.gameObject.collider.enabled = false;
-		//this.gameObject.
 	}
 
 	public void FighterRespawnedNetwork()

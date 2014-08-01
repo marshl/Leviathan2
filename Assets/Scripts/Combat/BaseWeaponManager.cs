@@ -4,13 +4,16 @@ using System.Collections.Generic;
 
 public class BaseWeaponManager : MonoBehaviour
 {
-	public TargetManager.Target currentTarget;
-	public List<TargetManager.Target> otherTargets;
+	public BaseHealth currentTarget;
+	public List<BaseHealth> targetList;
+	public int targetIndex;
+
+	public float maxTargetDistance;
 
 	protected virtual void Awake()
 	{
 		this.currentTarget = null;
-		this.otherTargets = new List<TargetManager.Target>();
+		this.targetList = new List<BaseHealth>();
 	}
 
 	public virtual void OnBulletCreated( BulletBase _bullet )
@@ -19,7 +22,78 @@ public class BaseWeaponManager : MonoBehaviour
 		if ( seekingScript != null
 		  && this.currentTarget != null )
 		{
-			seekingScript.target = this.currentTarget.health;
+			seekingScript.target = this.currentTarget;
 		}
+	}
+
+	public void SwitchToCentreTarget( Vector3 _forward, bool _ignoreBelowHorizon )
+	{
+		this.UpdateTargetList();
+
+		this.currentTarget = null;
+		float closestAngle = float.MaxValue;
+		foreach ( BaseHealth target in this.targetList )
+		{
+			Vector3 vectorToTarget = target.transform.position - this.transform.position;
+
+			// Ignore targets that are below the horizon
+			if ( _ignoreBelowHorizon && Vector3.Dot( vectorToTarget, this.transform.up ) < 0.0f )
+			{
+				continue;
+			}
+			float angle = Vector3.Angle( _forward, vectorToTarget );
+
+			if ( angle < closestAngle )
+			{
+				this.currentTarget = target;
+				closestAngle = angle;
+			}
+		}
+	}
+
+	public void SwitchToNextTarget()
+	{
+		if ( this.targetList.Count > 0 )
+		{
+			--this.targetIndex;
+			if ( this.targetIndex < 0 )
+			{
+				this.targetIndex = this.targetList.Count - 1;
+			}
+			this.currentTarget = this.targetList[this.targetIndex];
+		}
+		else
+		{
+			this.targetIndex = 0;
+		}
+	}
+
+	public void SwitchToPreviousTarget()
+	{
+		if ( this.targetList.Count > 0 )
+		{
+			++this.targetIndex;
+			if ( this.targetIndex >= this.targetList.Count )
+			{
+				this.targetIndex = 0;
+			}
+			this.currentTarget = this.targetList[this.targetIndex];
+		}
+		else
+		{
+			this.targetIndex = 0;
+		}
+	}
+	
+	public virtual void UpdateTargetList()
+	{
+		TargetManager.instance.GetTargets
+		( 
+            this, 
+            this.transform, 
+            this.maxTargetDistance, 
+            -1, 
+			 Common.OpposingTeam( this.GetComponent<BaseHealth>().team ) 
+		);
 	}
 }
