@@ -1060,6 +1060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 2
   team: 1
   currentHealth: 100
   maxHealth: 100
@@ -1878,6 +1879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 2
   team: 2
   currentHealth: 100
   maxHealth: 100
@@ -2171,6 +2173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 0
   team: 2
   currentHealth: 100
   maxHealth: 100
@@ -3140,6 +3143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 1
   team: 0
   currentHealth: 100
   maxHealth: 100
@@ -3305,6 +3309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 2
   team: 2
   currentHealth: 100
   maxHealth: 100
@@ -4342,6 +4347,7 @@ MonoBehaviour:
   spread: 0
   fireInSync: 0
   bulletType: 2
+  bulletDesc: {fileID: 0}
   chargeUpTime: 2
   depleteOnPrerelease: 1
 --- !u!114 &1271608246
@@ -4361,6 +4367,7 @@ MonoBehaviour:
   spread: 15
   fireInSync: 0
   bulletType: 2
+  bulletDesc: {fileID: 0}
   spinUpTime: 2
   spinDownTime: 3
   spinDownDelay: 1
@@ -4382,6 +4389,7 @@ MonoBehaviour:
   spread: 0
   fireInSync: 0
   bulletType: 1
+  bulletDesc: {fileID: 0}
 --- !u!114 &1271608248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4399,6 +4407,7 @@ MonoBehaviour:
   spread: 0
   fireInSync: 0
   bulletType: 2
+  bulletDesc: {fileID: 0}
 --- !u!114 &1271608249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4428,6 +4437,7 @@ MonoBehaviour:
   spread: 10
   fireInSync: 1
   bulletType: 3
+  bulletDesc: {fileID: 0}
   timeBetweenBursts: 5
   shotsInBurst: 20
 --- !u!1 &1279197418
@@ -5055,6 +5065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 2
   team: 2
   currentHealth: 100
   maxHealth: 100
@@ -5572,6 +5583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 2
   team: 1
   currentHealth: 100
   maxHealth: 100
@@ -6029,6 +6041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 2
   team: 1
   currentHealth: 100
   maxHealth: 100

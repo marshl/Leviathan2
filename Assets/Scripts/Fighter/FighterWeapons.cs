@@ -56,4 +56,17 @@ public class FighterWeapons : BaseWeaponManager
 		this.currentTarget = null;
 		this.targetList.Clear();
 	}
+
+	public override void UpdateTargetList()
+	{
+		TargetManager.instance.GetTargets
+		( 
+			this, 
+			this.transform, 
+			(int)(TARGET_TYPE.FIGHTER | TARGET_TYPE.CAPITAL_SHIP | TARGET_TYPE.TURRET),
+			this.maxTargetDistance, 
+			-1, 
+			Common.OpposingTeam( this.GetComponent<BaseHealth>().team ) 
+		);
+	}
 }

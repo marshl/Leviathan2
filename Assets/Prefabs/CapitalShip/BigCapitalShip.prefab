@@ -5041,6 +5041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 0
   team: 0
   currentHealth: 0
   maxHealth: 0
@@ -5094,6 +5095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 0
   team: 0
   currentHealth: 0
   maxHealth: 0
@@ -5259,6 +5261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09e9c9ce99c83e4daa73d2c0d53fd09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 4
   team: 0
   currentHealth: 1000
   maxHealth: 1000
@@ -5281,6 +5284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 4
   team: 0
   currentHealth: 0
   maxHealth: 0
@@ -5302,6 +5306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 4
   team: 0
   currentHealth: 0
   maxHealth: 0
@@ -5323,6 +5328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 4
   team: 0
   currentHealth: 0
   maxHealth: 0
@@ -5344,6 +5350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19122e212e2a8d4888f9dbde43a85f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 0
   team: 0
   currentHealth: 500
   maxHealth: 500
@@ -5366,6 +5373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19122e212e2a8d4888f9dbde43a85f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 0
   team: 0
   currentHealth: 500
   maxHealth: 500
@@ -5408,6 +5416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19122e212e2a8d4888f9dbde43a85f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 0
   team: 0
   currentHealth: 500
   maxHealth: 500

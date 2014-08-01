@@ -4,6 +4,7 @@ using System.Collections;
 [System.Serializable]
 public class BaseHealth : MonoBehaviour 
 {
+	public TARGET_TYPE targetType;
 	public TEAM team;
 
 	public float currentHealth;
@@ -13,6 +14,8 @@ public class BaseHealth : MonoBehaviour
 	public float shieldRegen; //Percentage of shields that gets regenerated per second
 	public float shieldRegenDelay; // Seconds after being hit for the shield to start regenerating again
 	protected float shieldRegenTimer;
+
+
 	 
 	public bool isIndestructible;
 #if UNITY_EDITOR

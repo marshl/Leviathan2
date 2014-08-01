@@ -2,6 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum TARGET_TYPE : int
+{
+	NONE = 0,
+	FIGHTER = 1,
+	TURRET = 2,
+	CAPITAL_SHIP = 4,
+	FOO_BAR = 4,
+};
+
 public class TargetManager : MonoBehaviour
 {
 	[System.Serializable]
@@ -80,7 +89,7 @@ public class TargetManager : MonoBehaviour
 		return null;
 	}
 
-	public void GetTargets( BaseWeaponManager _weaponScript, Transform _transform,
+	public void GetTargets( BaseWeaponManager _weaponScript, Transform _transform, int _targetTypes,
 	                                float _maxDistance = -1.0f, float _maxAngle = -1.0f, TEAM _team = TEAM.NEUTRAL )
 	{
 		_weaponScript.targetList.Clear();
@@ -92,7 +101,8 @@ public class TargetManager : MonoBehaviour
 			// Ignore dead targets
 			if ( health.currentHealth <= 0.0f 
 			    || health.enabled == false 
-			    || health.gameObject.activeInHierarchy == false )
+			    || health.gameObject.activeInHierarchy == false
+			    || ((int)(health.targetType) & _targetTypes) == 0 )
 			{
 				continue;
 			}

@@ -17,26 +17,13 @@ public class TurretBehavior : BaseWeaponManager
 	public BaseHealth health;
 
 	public float fireLockAngle;
-
-	private float range; //TODO: The weapon situation is a disaster that has to be fixed LM 12/05/14
-
+	
 	public NetworkOwnerControl ownerControl;
 	private bool ownerInitialised = false;
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
-	}
-
-	protected override void Awake()
-	{
-		base.Awake();
-	}
-	protected void Start()
-	{
-		BULLET_TYPE type = this.weapon.weaponDesc.bulletType;
-		BulletDescriptor desc = BulletDescriptorManager.instance.GetDescOfType( type );
-		this.range = desc.maxDistance;
 	}
 
 	protected virtual void Update()
@@ -55,13 +42,13 @@ public class TurretBehavior : BaseWeaponManager
 		if ( (this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
 		    && this.health.currentHealth > 0.0f )
 		{
+			float range = this.weapon.weaponDesc.bulletDesc.maxDistance;
 			if ( this.currentTarget == null
 			  || this.currentTarget.currentHealth <= 0.0f
 			  || this.currentTarget.enabled == false
-			  || (this.transform.position - this.currentTarget.transform.position).magnitude > this.range
+			  || (this.transform.position - this.currentTarget.transform.position).magnitude > range
 			  || Vector3.Dot( this.currentTarget.transform.position - this.transform.position, this.transform.up) < 0.0f ) // Below the target horizon
 			{
-				//Debug.Log( "Switching targets", this );
 				this.SwitchToCentreTarget( this.arm.forward, true );
 			}
 
@@ -184,5 +171,18 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			this.enabled = false;
 		}
+	}
+
+	public override void UpdateTargetList()
+	{
+		TargetManager.instance.GetTargets
+		( 
+			this, 
+			this.transform, 
+			(int)TARGET_TYPE.FIGHTER,
+			this.maxTargetDistance, 
+			-1, 
+			Common.OpposingTeam( this.GetComponent<BaseHealth>().team ) 
+		);
 	}
 }

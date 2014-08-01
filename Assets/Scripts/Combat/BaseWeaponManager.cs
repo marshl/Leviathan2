@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BaseWeaponManager : MonoBehaviour
+public abstract class BaseWeaponManager : MonoBehaviour
 {
 	public BaseHealth currentTarget;
 	public List<BaseHealth> targetList;
@@ -85,15 +85,5 @@ public class BaseWeaponManager : MonoBehaviour
 		}
 	}
 	
-	public virtual void UpdateTargetList()
-	{
-		TargetManager.instance.GetTargets
-		( 
-            this, 
-            this.transform, 
-            this.maxTargetDistance, 
-            -1, 
-			 Common.OpposingTeam( this.GetComponent<BaseHealth>().team ) 
-		);
-	}
+	public abstract void UpdateTargetList();
 }

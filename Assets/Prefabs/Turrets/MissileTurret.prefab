@@ -473,7 +473,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67be29578340c724b92a1403cafefc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  currentTarget: {fileID: 0}
+  targetList: []
+  targetIndex: 0
+  maxTargetDistance: 0
   joint: {fileID: 400008}
   arm: {fileID: 400018}
   rotationSpeed: 5
@@ -482,6 +485,7 @@ MonoBehaviour:
   minimumPitchAngle: 0
   weapon: {fileID: 11400002}
   health: {fileID: 11400004}
+  fireLockAngle: 0
   ownerControl: {fileID: 11400006}
 --- !u!114 &11400002
 MonoBehaviour:
@@ -512,6 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5afbd847fc63564eb43e2660d152826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 2
   team: 0
   currentHealth: 200
   maxHealth: 200

@@ -42,7 +42,11 @@ public class WeaponDescManager : MonoBehaviour
 			if ( weaponDesc.bulletType == BULLET_TYPE.NONE )
 			{
 				DebugConsole.Warning( "No bullet type set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
+				continue;
 			}
+
+			weaponDesc.bulletDesc = BulletDescriptorManager.instance.GetDescOfType( weaponDesc.bulletType );
+
 			this.descriptorMap.Add( weaponDesc.weaponType, weaponDesc );
 		}
 	}

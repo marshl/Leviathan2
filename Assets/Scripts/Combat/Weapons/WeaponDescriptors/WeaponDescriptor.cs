@@ -30,4 +30,6 @@ public class WeaponDescriptor : MonoBehaviour
 	public bool fireInSync;
 
 	public BULLET_TYPE bulletType;
+
+	public BulletDescriptor bulletDesc;
 }

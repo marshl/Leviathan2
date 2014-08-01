@@ -454,6 +454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6327020b346a32b4eba95c3044bd8556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetType: 1
   team: 0
   currentHealth: 100
   maxHealth: 100
@@ -463,6 +464,7 @@ MonoBehaviour:
   shieldRegenDelay: 1
   isIndestructible: 0
   masterScript: {fileID: 11400018}
+  lastHitBy: {fileID: 0}
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -474,15 +476,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57798d38267b00a4eadde6d24737fc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTarget:
-    health: {fileID: 0}
-    angle: 0
-    distance: 0
-  otherTargets: []
+  currentTarget: {fileID: 0}
+  targetList: []
+  targetIndex: 0
+  maxTargetDistance: 500
   master: {fileID: 11400018}
   laserWeapon: {fileID: 11400004}
   missileWeapon: {fileID: 11400008}
-  maxTargetDistance: 500
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1
