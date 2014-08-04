@@ -36,16 +36,22 @@ public class ShieldGeneratorHealth : BaseHealth {
 	{
 		//Play explosion, decrement shield generator count then remove self
 
-		//todo: explosion
+		//TODO: explosion
 
 		this.capitalShip.health.shieldGenerators -= 1;
 		this.capitalShip.health.RecalculateMaxShields();
 
-		TargetManager.instance.RemoveTarget(this.networkView.viewID);
+#if UNITY_EDITOR
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			TargetManager.instance.RemoveDebugTarget( this.debugTargetID );
+		}
+#endif
 
-		Destroy(this.gameObject);
-
-		//this.gameObject.collider.enabled = false;
-		//this.gameObject.
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			TargetManager.instance.RemoveTarget( this.networkView.viewID );
+		}
+		Destroy( this.gameObject );
 	}
 }

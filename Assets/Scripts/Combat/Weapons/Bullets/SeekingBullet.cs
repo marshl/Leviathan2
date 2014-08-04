@@ -6,14 +6,25 @@ using System.Collections;
 /// </summary>
 public class SeekingBullet : BulletBase
 {
-	//public TargettableObject target;
-	public BaseHealth target;
+	public BaseHealth health;
 
+	public BaseHealth target;
+	
 	/// <summary>
 	/// The descriptor of this bullet, converted into the right subclass (do not set)
 	/// </summary>
 	[HideInInspector]
 	public SeekingBulletDesc seekingDesc;
+	
+	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
+	{
+		DebugConsole.Log( "Missile Team: " + this.health.team );
+		BulletManager.instance.networkedBullets.Add( this.networkView.viewID, this );
+		if ( this.networkView.isMine == false )
+		{
+			this.enabled = false;
+		}
+	}
 
 	protected override void Awake()
 	{
@@ -32,7 +43,8 @@ public class SeekingBullet : BulletBase
 		  && this.target != null )
 		{
 			this.TurnToTarget();
-			float angleToTarget = this.GetAngleToTarget();
+			Vector3 vectorToTarget = (target.transform.position - this.transform.position).normalized;
+			float angleToTarget = Vector3.Angle( this.transform.forward, vectorToTarget );
 			if ( this.seekingDesc.canAngleOut
 			  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
 			{
@@ -86,43 +98,6 @@ public class SeekingBullet : BulletBase
 		}
 		this.transform.Rotate( perp.normalized, amountToTurn, Space.World );
 		return facingTarget;
-	}
-
-	/*
-	private Vector3 GetTargetLeadPosition()
-	{
-		if ( this.target.rigidbody != null )
-		{
-			/*Vector3 targetPos = this.target.transform.position;
-			Vector3 targetVel = this.target.rigidbody.velocity;
-			float targetSpeed = targetVel.magnitude;
-			float flightDuration = ( targetPos - this.transform.position ).magnitude
-				/ (this.desc.moveSpeed - targetSpeed );
-
-			return targetPos + targetVel * flightDuration;* /
-
-			Vector3 targetPos = this.target.transform.position;
-			Vector3 targetForward = this.target.transform.forward;
-
-			Vector3 vectorFromTarget = this.transform.position - targetPos;
-			Vector3 rayFromTarget = vectorFromTarget.normalized;
-			float angleFromTarget = Vector3.Angle( rayFromTarget, targetForward );
-			float distToTarget = vectorFromTarget.magnitude;
-			float flightDuration = distToTarget * Mathf.Cos( angleFromTarget ) / 2.0f;
-			Vector3 targetVel = this.target.rigidbody.velocity;
-
-			return targetPos + targetVel * flightDuration;
-		}
-		else
-		{
-			return this.target.transform.position;
-		}
-	}
-*/
-	private float GetAngleToTarget()
-	{
-		return Vector3.Angle( this.transform.forward,
-		                     (target.transform.position - this.transform.position).normalized );
 	}
 }
 

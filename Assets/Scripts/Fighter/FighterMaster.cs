@@ -237,10 +237,8 @@ public class FighterMaster : MonoBehaviour
 		this.transform.parent = null;
 		this.transform.localScale = Vector3.one;
 
-		//Apply force of the capital ship so we don't move relative
 		GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, this.currentSlot.slotID );
 		this.currentSlot = null;
-		this.weapons.enabled = true;
 	}
 
 	public void ExitDock()
@@ -263,6 +261,16 @@ public class FighterMaster : MonoBehaviour
 		}
 	}
 
-
-
+	public void FighterDestroyedNetwork()
+	{
+		this.state = FIGHTERSTATE.DEAD;
+		this.gameObject.collider.enabled = false;
+	}
+	
+	public void FighterRespawnedNetwork()
+	{
+		this.state = FIGHTERSTATE.FLYING;
+		this.gameObject.collider.enabled = true;
+		this.health.FullHeal();
+	}
 }

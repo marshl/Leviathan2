@@ -6,6 +6,9 @@ public class BaseHealth : MonoBehaviour
 {
 	public TARGET_TYPE targetType;
 	public TEAM team;
+#if UNITY_EDITOR
+	public int debugTargetID;
+#endif
 
 	public float currentHealth;
 	public float maxHealth;
@@ -23,14 +26,14 @@ public class BaseHealth : MonoBehaviour
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			TargetManager.instance.AddTarget( this.networkView.viewID, this );
+			TargetManager.instance.AddTarget( this );
 		}
 	}
 #endif
 
 	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		TargetManager.instance.AddTarget( this.networkView.viewID, this );
+		TargetManager.instance.AddTarget( this );
 	}
 
 	public virtual void DealDamage( float _damage, bool _broadcast )

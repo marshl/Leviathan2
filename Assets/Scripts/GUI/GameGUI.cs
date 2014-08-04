@@ -120,8 +120,8 @@ public class GameGUI : MonoBehaviour
 			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
 			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
 
-			this.capitalShipHealthRect1.Set( 5, 5, healthRatio * (Screen.width * 0.5f-10), 5 );
-			this.capitalShipShieldRect1.Set( 5, 10, shieldRatio * (Screen.width * 0.5f-10), 5 );
+			this.capitalShipHealthRect1.Set( 5, 0, healthRatio * (Screen.width * 0.5f), 3 );
+			this.capitalShipShieldRect1.Set( 5, 0, shieldRatio * (Screen.width * 0.5f), 3 );
 		}
 
 		GamePlayer p2  = GamePlayerManager.instance.commander2;
@@ -134,8 +134,8 @@ public class GameGUI : MonoBehaviour
 			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
 			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
 
-			this.capitalShipHealthRect2.Set( Screen.width * 0.5f+5, 5, healthRatio * (Screen.width * 0.5f - 10), 5 );
-			this.capitalShipShieldRect2.Set( Screen.width * 0.5f+5, 10, shieldRatio * (Screen.width * 0.5f - 10), 5 );
+			this.capitalShipHealthRect2.Set( Screen.width * 0.5f, 0, healthRatio * (Screen.width * 0.5f), 3 );
+			this.capitalShipShieldRect2.Set( Screen.width * 0.5f, 0, shieldRatio * (Screen.width * 0.5f), 3 );
 		}
 	}
 	
@@ -164,7 +164,6 @@ public class GameGUI : MonoBehaviour
 	{
 		BaseHealth target = this.player.fighter.weapons.currentTarget;
 		if ( target != null )
-		//foreach ( TargetManager.Target target in this.player.fighter.weapons.otherTargets )
 		{
 			Vector3 toTarget = target.transform.position - this.player.fighter.transform.position;
 			if ( Vector3.Dot( this.player.fighter.transform.forward, toTarget.normalized ) > 0.0f )

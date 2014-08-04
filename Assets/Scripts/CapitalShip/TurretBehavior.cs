@@ -181,7 +181,6 @@ public class TurretBehavior : BaseWeaponManager
 			this.transform, 
 			(int)TARGET_TYPE.FIGHTER,
 			this.maxTargetDistance, 
-			-1, 
 			Common.OpposingTeam( this.GetComponent<BaseHealth>().team ) 
 		);
 	}

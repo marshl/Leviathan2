@@ -29,7 +29,7 @@ public class BulletBase : MonoBehaviour
 	
 	public BaseWeaponManager source;
 
-	public Vector3 lastPosition;
+	//public Vector3 lastPosition;
 
 	/// <summary>
 	/// The associated bullet desciptor (set elsewhere)
@@ -56,7 +56,7 @@ public class BulletBase : MonoBehaviour
 	public virtual void OnShoot()
 	{
 		this.rigidbody.velocity = this.transform.forward * this.desc.moveSpeed;
-		this.lastPosition = this.transform.position;
+		//this.lastPosition = this.transform.position;
 	}
 
 	/// <summary>
@@ -72,14 +72,14 @@ public class BulletBase : MonoBehaviour
 
 		//Advanced collision checking - note that it calls OnTriggerEnter by hand.
 
-		DetectCollision();
+		//DetectCollision();
 
-		lastPosition = this.transform.position;
+		//lastPosition = this.transform.position;
 	}
 	/// <summary>
 	/// Custom collision detection method to handle high-speed physics.
 	/// </summary>
-	protected virtual void DetectCollision()
+	/*protected virtual void DetectCollision()
 	{
 		//TODO: Convert raycast to spherecast for shot radius to matter, using the collider radius as the size
 
@@ -118,17 +118,20 @@ public class BulletBase : MonoBehaviour
 			BulletManager.instance.DestroyLocalBullet( this );
 		}
 	}
-
+*/
 	/// <summary>
 	/// Unity callback on collision with another object
 	/// </summary>
 	protected virtual void OnTriggerEnter( Collider _collider )
 	{
-	/*	if ( this.gameObject.activeSelf == false )
+		if ( this.gameObject.activeSelf == false
+		  || this.enabled == false )
 		{
 			return;
 		}
-		if ( this.networkView != null && !this.networkView.isMine )
+		if ( Network.peerType != NetworkPeerType.Disconnected
+		  && this.networkView != null
+		  && !this.networkView.isMine )
 		{
 			return;
 		}
@@ -147,7 +150,7 @@ public class BulletBase : MonoBehaviour
 		else
 		{
 			this.OnEmptyCollision();
-		}*/
+		}
 	}
 
 	/// <summary>
@@ -191,15 +194,7 @@ public class BulletBase : MonoBehaviour
 		this.rigidbody.velocity = Vector3.zero;
 		this.rigidbody.angularVelocity = Vector3.zero;
 
-		this.lastPosition = this.transform.position;
-	}
-
-	protected void OnNetworkInstantiate( NetworkMessageInfo _info )
-	{
-		if ( this.networkView.isMine == false )
-		{
-			this.enabled = false;
-		}
+		//this.lastPosition = this.transform.position;
 	}
 }
 

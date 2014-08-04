@@ -120,17 +120,17 @@ public class GameNetworkManager : BaseNetworkManager
 		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (BULLET_TYPE)_bulletType, _index, _pos, _rot );
 	}
 
-	public void SendDestroySmartBulletMessage( int _ownerID, BULLET_TYPE _bulletType, int _index )
+	public void SendDestroySmartBulletMessage( NetworkViewID _viewID )
 	{
 		DebugConsole.Log( "Sending message to destroy" );
-		this.networkView.RPC( "OnDestroySmartBulletRPC", RPCMode.Others, _ownerID, (int)_bulletType, _index );
+		this.networkView.RPC( "OnDestroySmartBulletRPC", RPCMode.Others, _viewID );
 	}
 
 	[RPC]
-	private void OnDestroySmartBulletRPC( int _ownerID, int _bulletType, int _index )
+	private void OnDestroySmartBulletRPC( NetworkViewID _viewID )
 	{
 		DebugConsole.Log( "Received Destroy Message" );
-		BulletManager.instance.DestroySmartBulletRPC( _ownerID, (BULLET_TYPE)_bulletType, _index );
+		BulletManager.instance.DestroySmartBulletRPC( _viewID );
 	}
 
 	public void SendDestroyDumbBulletMessage( BULLET_TYPE _bulletType, int _index )
@@ -146,7 +146,20 @@ public class GameNetworkManager : BaseNetworkManager
 	[RPC]
 	private void OnDeadFighterRPC( NetworkViewID _id)
 	{
-		TargetManager.instance.GetTargetWithID(_id).GetComponent<FighterHealth>().FighterDestroyedNetwork();
+		BaseHealth health = TargetManager.instance.GetTargetWithID( _id );
+		if ( health == null )
+		{
+			DebugConsole.Error( "Could not find fighter" );
+			return;
+		}
+		FighterHealth fighterHealth = health as FighterHealth;
+		if ( fighterHealth == null )
+		{
+			DebugConsole.Error( "Could not convert BaseHealth to FigherHealth" );
+			return;
+		}
+
+		fighterHealth.masterScript.FighterDestroyedNetwork();
 	}
 
 	public void SendDeadShieldMessage( NetworkViewID _id)
@@ -166,9 +179,21 @@ public class GameNetworkManager : BaseNetworkManager
 	}
 
 	[RPC]
-	private void OnRespawnedFighterRPC(NetworkViewID _id)
+	private void OnRespawnedFighterRPC( NetworkViewID _id )
 	{
-		TargetManager.instance.GetTargetWithID(_id).GetComponent<FighterHealth>().FighterRespawnedNetwork();
+		BaseHealth health = TargetManager.instance.GetTargetWithID( _id );
+		if ( health == null )
+		{
+			DebugConsole.Error( "Could not find fighter" );
+			return;
+		}
+		FighterHealth fighterHealth = health as FighterHealth;
+		if ( fighterHealth == null )
+		{
+			DebugConsole.Error( "Could not convert BaseHealth to FigherHealth" );
+			return;
+		}
+		fighterHealth.masterScript.FighterRespawnedNetwork();
 	}
 
 	[RPC]
@@ -253,5 +278,32 @@ public class GameNetworkManager : BaseNetworkManager
 	private void OnSetViewIDRPC( int _ownerID, NetworkViewID _id )
 	{
 		NetworkOwnerManager.instance.ReceiveSetViewID( _ownerID, _id );
+	}
+
+	public void SendSetSmartBulletTeamMessage( NetworkViewID _viewID, TEAM _team )
+	{
+		this.networkView.RPC( "OnSetSmartBulletTeamRPC", RPCMode.Others, _viewID, (int)_team );
+	}
+
+	[RPC]
+	private void OnSetSmartBulletTeamRPC( NetworkViewID _viewID, int _team )
+	{
+		if ( !System.Enum.IsDefined( typeof(TEAM), _team ) )
+		{
+			DebugConsole.Error( "Parameter could not be converted to team: " + _team );
+			return;
+		}
+
+		if ( BulletManager.instance.networkedBullets.ContainsKey( _viewID ) )
+		{
+			SeekingBullet bullet = BulletManager.instance.networkedBullets[_viewID];
+			DebugConsole.Log( "Changing smart bullet " + _viewID + " to team " + (TEAM)_team, bullet  );
+			bullet.health.team = (TEAM)_team;
+		}
+		else
+		{
+			DebugConsole.Warning( "Could not find smart bullet with view ID " + _viewID );
+		}
+
 	}
 }

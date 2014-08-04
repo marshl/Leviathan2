@@ -55,14 +55,5 @@ public class FighterHealth : BaseHealth
 		return deathType;
 	}
 
-	public void FighterDestroyedNetwork()
-	{
-		this.gameObject.collider.enabled = false;
-	}
 
-	public void FighterRespawnedNetwork()
-	{
-		this.gameObject.collider.enabled = true;
-		//this.gameObject.renderer.enabled = true;
-	}
 }

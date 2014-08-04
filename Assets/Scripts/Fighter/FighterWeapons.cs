@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -44,6 +44,20 @@ public class FighterWeapons : BaseWeaponManager
 				this.SwitchToNextTarget();
 			}
 
+			if ( Input.GetKeyDown( KeyCode.Colon ) )
+			{
+				this.SwitchToPreviousFriendlyTarget();
+			}
+			else if ( Input.GetKeyDown( KeyCode.Quote ) )
+			{
+				this.SwitchToNextFriendlyTarget();
+			}
+
+			if ( Input.GetKeyDown( KeyCode.I ) )
+			{
+				this.SwitchToNextMissileTargettingMe();
+			}
+
 			if ( this.currentTarget == null )
 			{
 				this.SwitchToCentreTarget( this.transform.forward, false );
@@ -63,9 +77,8 @@ public class FighterWeapons : BaseWeaponManager
 		( 
 			this, 
 			this.transform, 
-			(int)(TARGET_TYPE.FIGHTER | TARGET_TYPE.CAPITAL_SHIP | TARGET_TYPE.TURRET),
+			(int)(TARGET_TYPE.FIGHTER | TARGET_TYPE.CAPITAL_SHIP_PRIMARY | TARGET_TYPE.TURRET | TARGET_TYPE.MISSILE ),
 			this.maxTargetDistance, 
-			-1, 
 			Common.OpposingTeam( this.GetComponent<BaseHealth>().team ) 
 		);
 	}

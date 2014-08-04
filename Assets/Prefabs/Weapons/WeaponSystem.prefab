@@ -192,10 +192,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
-  fireRate: .5
+  fireRate: 3
   spread: 0
   fireInSync: 0
   bulletType: 1
+  bulletDesc: {fileID: 0}
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -212,6 +213,7 @@ MonoBehaviour:
   spread: 0
   fireInSync: 0
   bulletType: 2
+  bulletDesc: {fileID: 0}
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,6 +241,7 @@ MonoBehaviour:
   spread: 15
   fireInSync: 0
   bulletType: 2
+  bulletDesc: {fileID: 0}
   spinUpTime: 2
   spinDownTime: 3
   spinDownDelay: 1
@@ -259,6 +262,7 @@ MonoBehaviour:
   spread: 0
   fireInSync: 0
   bulletType: 2
+  bulletDesc: {fileID: 0}
   chargeUpTime: 2
   depleteOnPrerelease: 1
 --- !u!114 &11400018
@@ -295,6 +299,7 @@ MonoBehaviour:
   spread: 10
   fireInSync: 1
   bulletType: 3
+  bulletDesc: {fileID: 0}
   timeBetweenBursts: 5
   shotsInBurst: 20
 --- !u!1001 &100100000

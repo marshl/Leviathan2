@@ -2,13 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// This is used to select what targets a player/turret will target
+// These need to be kept as powers of 2 so they can be |'d together
 public enum TARGET_TYPE : int
 {
 	NONE = 0,
 	FIGHTER = 1,
 	TURRET = 2,
-	CAPITAL_SHIP = 4,
-	FOO_BAR = 4,
+	CAPITAL_SHIP_PRIMARY = 4,
+	CAPITAL_SHIP_SUB = 8,
+	MISSILE = 16,
 };
 
 public class TargetManager : MonoBehaviour
@@ -34,6 +37,9 @@ public class TargetManager : MonoBehaviour
 
 #if UNITY_EDITOR
 	public List<BaseHealth> debugTargets;
+
+	public Dictionary<int, BaseHealth> debugTargetMap;
+	public int currentDebugID;
 #endif
 
 	private void Awake()
@@ -45,23 +51,42 @@ public class TargetManager : MonoBehaviour
 		TargetManager.instance = this;
 
 		this.targetMap = new Dictionary<NetworkViewID, BaseHealth>();
+#if UNITY_EDITOR
+		this.debugTargetMap = new Dictionary<int, BaseHealth>();
+		this.debugTargets = new List<BaseHealth>();
+#endif
 	}
 
-	public void AddTarget( NetworkViewID _viewID, BaseHealth _health )
+	public void AddTarget( BaseHealth _health )
 	{
-		if ( this.targetMap.ContainsKey( _viewID ) )
+#if UNITY_EDITOR
+		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			DebugConsole.Warning( "Target Manager already contains " + _viewID + "(" + _health.gameObject.name + ")", _health );
-			return;
+			this.debugTargetMap.Add( this.currentDebugID, _health );
+			DebugConsole.Log( "Added target " + this.currentDebugID, _health );
+			_health.debugTargetID = this.currentDebugID;
+			this.currentDebugID++;
 		}
+		else
+#endif
+		{
+			NetworkViewID viewID = _health.networkView.viewID;
+			if ( this.targetMap.ContainsKey( viewID ) )
+			{
+				DebugConsole.Warning( "Target Manager already contains " + viewID + " (" + this.GetTargetWithID( viewID ).gameObject.name+ ")", _health );
+				return;
+			}
+
+			DebugConsole.Log( "Adding target " + viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
+			this.targetMap.Add( viewID, _health );
+		}
+
 #if UNITY_EDITOR
 		this.debugTargets.Add( _health );
 #endif
-		DebugConsole.Log( "Adding target " + _viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
-		this.targetMap.Add( _viewID, _health );
 	}
 
-	public void RemoveTarget(NetworkViewID _viewID)
+	public void RemoveTarget( NetworkViewID _viewID )
 	{
 		if ( this.targetMap.ContainsKey( _viewID ) )
 		{
@@ -78,6 +103,24 @@ public class TargetManager : MonoBehaviour
 		}
 	}
 
+#if UNITY_EDITOR
+	public void RemoveDebugTarget( int _id )
+	{
+		if ( this.debugTargetMap.ContainsKey( _id ) )
+		{
+			BaseHealth target = this.debugTargetMap[_id];
+			this.debugTargetMap.Remove( _id );
+			DebugConsole.Log( "Removed target " + _id, target );
+
+			this.debugTargets.Remove( target );
+		}
+		else
+		{
+			DebugConsole.Warning( "Failed to remove target with ID " + _id );
+		}
+	}
+#endif
+
 	public BaseHealth GetTargetWithID( NetworkViewID _viewID )
 	{
 		BaseHealth target = null;
@@ -89,63 +132,114 @@ public class TargetManager : MonoBehaviour
 		return null;
 	}
 
+#if UNITY_EDITOR
+	public BaseHealth GetTargetWithDebugID( int _id )
+	{
+		BaseHealth target = null;
+		if ( this.debugTargetMap.TryGetValue( _id, out target ) )
+		{
+			return target;
+		}
+		DebugConsole.Warning( "Could not find target with ID " + _id );
+		return null;
+	}
+#endif
+
 	public void GetTargets( BaseWeaponManager _weaponScript, Transform _transform, int _targetTypes,
-	                                float _maxDistance = -1.0f, float _maxAngle = -1.0f, TEAM _team = TEAM.NEUTRAL )
+	                                float _maxDistance, TEAM _team )
 	{
 		_weaponScript.targetList.Clear();
 
-		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
+		if ( _targetTypes == 0 )
 		{
-			BaseHealth health = pair.Value;
-
-			// Ignore dead targets
-			if ( health.currentHealth <= 0.0f 
-			    || health.enabled == false 
-			    || health.gameObject.activeInHierarchy == false
-			    || ((int)(health.targetType) & _targetTypes) == 0 )
-			{
-				continue;
-			}
-
-			// Ignore targets out of range
-			Vector3 v = health.transform.position - _transform.position;
-			float dist = v.magnitude;
-			if ( _maxDistance > 0.0f && dist > _maxDistance )
-			{
-				continue;
-			}
-
-			// Ignore targets that are out of angle
-			float angle = Vector3.Angle( _transform.forward, v.normalized );
-			if ( _maxAngle > 0.0f && angle >= _maxAngle )
-			{
-				continue;
-			}
-
-			if ( _team != TEAM.NEUTRAL && health.team != _team )
-			{
-				continue;
-			}
-
-			_weaponScript.targetList.Add( health );
+			return;
 		}
+
+#if UNITY_EDITOR
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			foreach ( KeyValuePair<int, BaseHealth> pair in this.debugTargetMap )
+			{
+				if ( this.IsValidTarget( pair.Value, _transform, _targetTypes, _maxDistance, _team ) )
+				{
+					_weaponScript.targetList.Add( pair.Value );
+				}
+			}
+		}
+		else
+#endif
+		{
+			foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
+			{
+				if ( this.IsValidTarget( pair.Value, _transform, _targetTypes, _maxDistance, _team ) )
+				{
+					_weaponScript.targetList.Add( pair.Value );
+				}
+			}
+		}
+	}
+
+	private bool IsValidTarget( BaseHealth _health, Transform _transform, int _targetTypes,
+	                           float _maxDistance, TEAM _team )
+	{
+		// Ignore dead targets
+		if ( _health == null
+		  || _health.currentHealth <= 0.0f 
+		  || _health.enabled == false 
+		  || _health.gameObject.activeInHierarchy == false
+		  || ((int)(_health.targetType) & _targetTypes) == 0 )
+		{
+			return false;
+		}
+		
+		// Ignore targets out of range
+		Vector3 v = _health.transform.position - _transform.position;
+		float dist = v.magnitude;
+		if ( _maxDistance > 0.0f && dist > _maxDistance )
+		{
+			return false;
+		}
+		
+		if ( _team != TEAM.NEUTRAL && _health.team != _team )
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public void AreaOfEffectDamage( Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam )
 	{
-		foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
+#if UNITY_EDITOR
+		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			if ( _friendlyFire == true && _sourceTeam == pair.Value.team )
+			foreach ( KeyValuePair<int, BaseHealth> pair in this.debugTargetMap )
 			{
-				return;
+				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam );
 			}
+		}
+		else
+#endif
+		{
+			foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
+			{
+				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam );
+			}
+		}
+	}
 
-			float distance = ( pair.Value.transform.position - _position ).magnitude;
-			if ( distance < _radius )
-			{
-				float multiplier = 1.0f - distance / _radius;
-				pair.Value.DealDamage( _damage * multiplier, true );
-			}
+	private void AreaOfEffectDamageCheck( BaseHealth _health, 
+	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam )
+	{
+		if ( _friendlyFire == true && _sourceTeam == _health.team )
+		{
+			return;
+		}
+		
+		float distance = (_health.transform.position - _position ).magnitude;
+		if ( distance < _radius )
+		{
+			float multiplier = 1.0f - distance / _radius;
+			_health.DealDamage( _damage * multiplier, true );
 		}
 	}
 

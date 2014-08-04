@@ -84,6 +84,21 @@ public abstract class BaseWeaponManager : MonoBehaviour
 			this.targetIndex = 0;
 		}
 	}
+
+	public void SwitchToNextFriendlyTarget()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public void SwitchToPreviousFriendlyTarget()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public void SwitchToNextMissileTargettingMe()
+	{
+		throw new System.NotImplementedException();
+	}
 	
 	public abstract void UpdateTargetList();
 }

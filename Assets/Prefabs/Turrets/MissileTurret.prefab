@@ -485,7 +485,7 @@ MonoBehaviour:
   minimumPitchAngle: 0
   weapon: {fileID: 11400002}
   health: {fileID: 11400004}
-  fireLockAngle: 0
+  fireLockAngle: .25
   ownerControl: {fileID: 11400006}
 --- !u!114 &11400002
 MonoBehaviour:
@@ -518,6 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetType: 2
   team: 0
+  debugTargetID: 0
   currentHealth: 200
   maxHealth: 200
   currentShield: 300
