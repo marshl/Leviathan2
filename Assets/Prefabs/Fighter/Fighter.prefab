@@ -64,9 +64,9 @@ GameObject:
   - 114: {fileID: 11400000}
   - 148: {fileID: 14800000}
   - 114: {fileID: 11400006}
+  - 114: {fileID: 11400016}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400008}
-  - 114: {fileID: 11400016}
   - 114: {fileID: 11400014}
   - 114: {fileID: 11400020}
   m_Layer: 12
@@ -477,9 +477,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57798d38267b00a4eadde6d24737fc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 11400014}
   currentTarget: {fileID: 0}
-  targetList: []
-  targetIndex: 0
   maxTargetDistance: 500
   master: {fileID: 11400018}
   laserWeapon: {fileID: 11400004}

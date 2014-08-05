@@ -168,7 +168,10 @@ public class BulletBase : MonoBehaviour
 	public virtual void OnTargetCollision( BaseHealth _health )
 	{
 		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
-		_health.DealDamage( this.desc.damage, true );
+		if ( _health.GetComponent<SeekingBullet>() == null )
+		{
+			_health.DealDamage( this.desc.damage, true );
+		}
 
 		BulletManager.instance.DestroyLocalBullet( this );
 	}

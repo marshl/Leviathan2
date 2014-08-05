@@ -181,6 +181,7 @@ MonoBehaviour:
   desc: {fileID: 0}
   health: {fileID: 11400004}
   target: {fileID: 0}
+  debugID: 0
   seekingDesc: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:

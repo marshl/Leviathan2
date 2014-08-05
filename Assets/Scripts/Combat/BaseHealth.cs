@@ -18,8 +18,6 @@ public class BaseHealth : MonoBehaviour
 	public float shieldRegenDelay; // Seconds after being hit for the shield to start regenerating again
 	protected float shieldRegenTimer;
 
-
-	 
 	public bool isIndestructible;
 #if UNITY_EDITOR
 	protected virtual void Start()

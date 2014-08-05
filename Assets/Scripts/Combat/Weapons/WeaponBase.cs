@@ -144,42 +144,6 @@ public class WeaponBase : MonoBehaviour
 		}
 	}
 
-	/*protected Vector3 GetAimVector(WeaponFirePoint _firePoint)
-	{
-		//Cast a ray to determine if there's an object under the cursor or not
-
-		RaycastHit targetAim = new RaycastHit();
-		Ray rayToCast = Camera.main.ScreenPointToRay( Input.mousePosition );
-
-		//DebugConsole.Log ("Ray casting: " + rayToCast.direction.ToString ());
-		//DebugConsole.Log ("Input.MousePosition: " + Input.mousePosition.ToString ());
-
-		if(this.gameObject.GetComponent<FighterMaster>() != null)
-		{
-			if(Physics.Raycast(rayToCast, out targetAim))
-			{
-				if(targetAim.collider == this.collider)
-				{
-					//DebugConsole.Log ("Self-collision");
-					return rayToCast.direction;
-				}
-
-				//DebugConsole.Log ("Final result: " + (targetAim.point - _firePoint.transform.position).ToString ());
-				return targetAim.point - _firePoint.transform.position ;
-				
-			}
-			else
-			{
-				//DebugConsole.Log ("Final result: " + rayToCast.direction.ToString());
-				return rayToCast.direction;
-			}
-		}
-
-		return _firePoint.transform.forward;
-		
-
-	}*/
-
 	public void FocusFirePoints( Vector3 _direction )
 	{
 		foreach ( WeaponFirePoint firePoint in this.firePoints )

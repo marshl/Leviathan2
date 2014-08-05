@@ -35,6 +35,7 @@ public class FighterMaster : MonoBehaviour
 			this.owner = GamePlayerManager.instance.myPlayer;
 			this.health.team = this.owner.team;
 			this.owner.fighter = this;
+			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
 		}
 	}
 #endif
@@ -124,6 +125,8 @@ public class FighterMaster : MonoBehaviour
 
 		//TODO: Shouls team be removed from health in favour of GamePlayer pointer? LM:7/7/14
 		this.health.team = this.owner.team;
+
+		this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
 
 		//TODO: Add a helper function to shortcut this LM:24/07/2014
 		this.capitalShip = this.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1.capitalShip
@@ -220,7 +223,6 @@ public class FighterMaster : MonoBehaviour
 		this.transform.parent = _slot.landedPosition;
 
 		GameNetworkManager.instance.SendDockedMessage( this.networkView.viewID, _slot.slotID );
-		this.GetComponent<FighterWeapons>().enabled = false;
 	}
 
 	public void Undock()

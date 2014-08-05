@@ -121,8 +121,6 @@ public class PlayerInstantiator : MonoBehaviour
 			fighterObj.transform.position,
 			Quaternion.identity ) as GameObject;
 
-		//_player.fighter = fighterObj.GetComponent<Fighter>();
-
 		FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
 		cameraScript.fighter = fighterObj;
 

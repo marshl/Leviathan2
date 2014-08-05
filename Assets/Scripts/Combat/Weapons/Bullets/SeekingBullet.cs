@@ -9,6 +9,10 @@ public class SeekingBullet : BulletBase
 	public BaseHealth health;
 
 	public BaseHealth target;
+
+#if UNITY_EDITOR
+	public int debugID;
+#endif
 	
 	/// <summary>
 	/// The descriptor of this bullet, converted into the right subclass (do not set)
@@ -19,7 +23,7 @@ public class SeekingBullet : BulletBase
 	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		DebugConsole.Log( "Missile Team: " + this.health.team );
-		BulletManager.instance.networkedBullets.Add( this.networkView.viewID, this );
+		BulletManager.instance.seekingBulletMap.Add( this.networkView.viewID, this );
 		if ( this.networkView.isMine == false )
 		{
 			this.enabled = false;
@@ -30,6 +34,12 @@ public class SeekingBullet : BulletBase
 	{
 		base.Awake();
 		this.seekingDesc = this.desc as SeekingBulletDesc;
+
+#if UNITY_EDITOR
+		this.debugID = BulletManager.instance.debugSeekingID;
+		BulletManager.instance.debugSeekingBulletMap.Add( this.debugID, this );
+		++BulletManager.instance.debugSeekingID;
+#endif
 	}
 
 	protected override void Start()

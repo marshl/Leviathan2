@@ -14,12 +14,28 @@ public class TurretBehavior : BaseWeaponManager
 	public float minimumPitchAngle = 180;
 
 	public WeaponBase weapon;
-	public BaseHealth health;
 
 	public float fireLockAngle;
 	
 	public NetworkOwnerControl ownerControl;
 	private bool ownerInitialised = false;
+
+	protected override void Awake()
+	{
+		base.Awake();
+
+		this.restrictions.types = (int)( TARGET_TYPE.FIGHTER );
+		this.restrictions.ignoreBelowHorizon = true;
+		this.restrictions.transform = this.arm;
+	}
+
+	private void Start()
+	{
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+		}
+	}
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
@@ -49,7 +65,7 @@ public class TurretBehavior : BaseWeaponManager
 			  || (this.transform.position - this.currentTarget.transform.position).magnitude > range
 			  || Vector3.Dot( this.currentTarget.transform.position - this.transform.position, this.transform.up) < 0.0f ) // Below the target horizon
 			{
-				this.SwitchToCentreTarget( this.arm.forward, true );
+				this.currentTarget = TargetManager.instance.GetCentreTarget( this );
 			}
 
 			if ( this.currentTarget != null )
@@ -61,7 +77,7 @@ public class TurretBehavior : BaseWeaponManager
 
 				if ( angleToLeadPos >= 1.0f - this.fireLockAngle )
 				{
-					this.gameObject.GetComponent<WeaponBase>().SendFireMessage();
+					this.weapon.SendFireMessage();
 				}
 			}
 		}
@@ -124,7 +140,7 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			Quaternion jointRot = this.joint.rotation;
 			Quaternion armRot = this.arm.rotation;
-			NetworkViewID viewID = this.currentTarget == null ? this.networkView.viewID : this.currentTarget.networkView.viewID;
+			NetworkViewID viewID = this.currentTarget == null ? NetworkViewID.unassigned : this.currentTarget.networkView.viewID;
 			_stream.Serialize( ref jointRot );
 			_stream.Serialize( ref armRot );
 			_stream.Serialize( ref viewID );
@@ -133,14 +149,14 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			Quaternion jointRot = Quaternion.identity;
 			Quaternion armRot = Quaternion.identity;
-			NetworkViewID viewID = this.networkView.viewID;
+			NetworkViewID viewID = NetworkViewID.unassigned;
 			_stream.Serialize( ref jointRot );
 			_stream.Serialize( ref armRot );
 			_stream.Serialize( ref viewID );
 
 			this.joint.rotation = jointRot;
 			this.arm.rotation = armRot;
-			if ( viewID != this.networkView.viewID )
+			if ( viewID != NetworkViewID.unassigned )
 			{
 				this.currentTarget = TargetManager.instance.GetTargetWithID( viewID );
 			}
@@ -166,22 +182,12 @@ public class TurretBehavior : BaseWeaponManager
 		
 		this.ParentToOwnerShip( ownerPlayer );
 		this.health.team = ownerPlayer.team;
-		
+
+		this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+
 		if ( !this.networkView.isMine )
 		{
 			this.enabled = false;
 		}
-	}
-
-	public override void UpdateTargetList()
-	{
-		TargetManager.instance.GetTargets
-		( 
-			this, 
-			this.transform, 
-			(int)TARGET_TYPE.FIGHTER,
-			this.maxTargetDistance, 
-			Common.OpposingTeam( this.GetComponent<BaseHealth>().team ) 
-		);
 	}
 }

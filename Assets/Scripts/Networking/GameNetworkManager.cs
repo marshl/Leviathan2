@@ -199,6 +199,7 @@ public class GameNetworkManager : BaseNetworkManager
 	[RPC]
 	private void OnDestroyDumbBulletRPC( int _bulletType, int _index )
 	{
+		//TODO: Enum check
 		BulletManager.instance.DestroyDumbBulletRPC( (BULLET_TYPE)_bulletType, _index );
 	}
 
@@ -280,13 +281,13 @@ public class GameNetworkManager : BaseNetworkManager
 		NetworkOwnerManager.instance.ReceiveSetViewID( _ownerID, _id );
 	}
 
-	public void SendSetSmartBulletTeamMessage( NetworkViewID _viewID, TEAM _team )
+	public void SendSetSmartBulletTeamMessage( NetworkViewID _viewID, TEAM _team, NetworkViewID _targetID )
 	{
-		this.networkView.RPC( "OnSetSmartBulletTeamRPC", RPCMode.Others, _viewID, (int)_team );
+		this.networkView.RPC( "OnSetSmartBulletTeamRPC", RPCMode.Others, _viewID, (int)_team, _targetID );
 	}
 
 	[RPC]
-	private void OnSetSmartBulletTeamRPC( NetworkViewID _viewID, int _team )
+	private void OnSetSmartBulletTeamRPC( NetworkViewID _viewID, int _team, NetworkViewID _targetID )
 	{
 		if ( !System.Enum.IsDefined( typeof(TEAM), _team ) )
 		{
@@ -294,11 +295,16 @@ public class GameNetworkManager : BaseNetworkManager
 			return;
 		}
 
-		if ( BulletManager.instance.networkedBullets.ContainsKey( _viewID ) )
+		if ( BulletManager.instance.seekingBulletMap.ContainsKey( _viewID ) )
 		{
-			SeekingBullet bullet = BulletManager.instance.networkedBullets[_viewID];
+			SeekingBullet bullet = BulletManager.instance.seekingBulletMap[_viewID];
 			DebugConsole.Log( "Changing smart bullet " + _viewID + " to team " + (TEAM)_team, bullet  );
 			bullet.health.team = (TEAM)_team;
+
+			if ( _targetID != NetworkViewID.unassigned )
+			{
+				bullet.target = TargetManager.instance.GetTargetWithID( _targetID );
+			}
 		}
 		else
 		{

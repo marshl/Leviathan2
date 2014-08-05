@@ -13,9 +13,4 @@ public class CapitalShipWeapons : BaseWeaponManager
 			this.weapon.SendFireMessage();
 		}
 	}
-
-	public override void UpdateTargetList ()
-	{
-		throw new System.NotImplementedException ();
-	}
 }
