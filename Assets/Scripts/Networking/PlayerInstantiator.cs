@@ -11,9 +11,6 @@ public class PlayerInstantiator : MonoBehaviour
 	public GameObject capitalPathLinePrefab;
 	public GameObject capitalCameraPrefab;
 
-	public bool testingFighters;
-	public bool overrideSelection;
-
 	private void Awake()
 	{
 		PlayerInstantiator.instance = this;
@@ -25,18 +22,10 @@ public class PlayerInstantiator : MonoBehaviour
 		{
 		case PLAYER_TYPE.COMMANDER1:
 		{
-			if ( this.testingFighters && this.overrideSelection )
-			{
-				return this.CreateFighter( _player );
-		    }
 			return this.CreateCapitalShip( _player );
 		}
 		case PLAYER_TYPE.COMMANDER2:
 		{
-			if ( this.testingFighters && this.overrideSelection )
-			{
-				return this.CreateFighter( _player );
-			}
 			return this.CreateCapitalShip( _player );
 		}
 		case PLAYER_TYPE.FIGHTER1:
@@ -77,26 +66,37 @@ public class PlayerInstantiator : MonoBehaviour
 		}
 
 		CapitalShipMovement movementScript = capitalObj.GetComponent<CapitalShipMovement>();
+		CapitalShipMaster masterScript = movementScript.master;
 
-		GameObject lineObj = GameObject.Instantiate( this.capitalPathLinePrefab, Vector3.zero, Quaternion.identity ) as GameObject;
-		LineRenderer lineScript = lineObj.GetComponent<LineRenderer>();
-		movementScript.tentativePathLine = lineScript;
+#if UNITY_EDITOR
+		masterScript.dummyShip = Network.peerType == NetworkPeerType.Disconnected 
+			&& GameNetworkManager.instance.createCapitalShip
+			&& GamePlayerManager.instance.myPlayer.playerType != PLAYER_TYPE.COMMANDER1;
 
-		GameObject cameraObj = GameObject.Instantiate(
-			this.capitalCameraPrefab,
-			Vector3.zero,
-			Quaternion.identity ) as GameObject;
 
-		CapitalShipCamera cameraScript = cameraObj.GetComponent<CapitalShipCamera>();
-		cameraScript.targetTransform = capitalObj.transform;
+
+		if ( masterScript.dummyShip == false )
+#endif
+		{
+			GameObject lineObj = GameObject.Instantiate( this.capitalPathLinePrefab, Vector3.zero, Quaternion.identity ) as GameObject;
+			LineRenderer lineScript = lineObj.GetComponent<LineRenderer>();
+			movementScript.tentativePathLine = lineScript;
+
+			GameObject cameraObj = GameObject.Instantiate(
+				this.capitalCameraPrefab,
+				Vector3.zero,
+				Quaternion.identity ) as GameObject;
+
+			CapitalShipCamera cameraScript = cameraObj.GetComponent<CapitalShipCamera>();
+			cameraScript.targetTransform = capitalObj.transform;
+		}
 		DebugConsole.Log( "Creating capital ship for player " + _player.id + " on team " + _player.team, capitalObj );
-		 
+
 		return capitalObj;
 	}
 
 	private GameObject CreateFighter( GamePlayer _player )
 	{
-
 		Vector3 fighterPos = Common.RandomVector3( -25.0f, 25.0f );
 		GameObject fighterObj;
 		// Used for testing scenes

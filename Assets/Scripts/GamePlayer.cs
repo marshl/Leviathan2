@@ -36,6 +36,8 @@ public class GamePlayer
 	public FighterMaster fighter;
 	public CapitalShipMaster capitalShip;
 
+	public NetworkPlayer networkPlayer;
+
 	public float GetKillDeathRatio()
 	{
 		return deaths == 0 ? kills : kills / deaths;

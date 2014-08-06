@@ -9,7 +9,11 @@ public abstract class BaseNetworkManager : MonoBehaviour
 
 	public void SendLobbyMessage( string _message, int _receiverID )
 	{
-		this.networkView.RPC( "OnSendLobbyMessageRPC", RPCMode.All, Common.MyNetworkID(), _receiverID, _message );
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			this.networkView.RPC( "OnSendLobbyMessageRPC", RPCMode.Others, Common.MyNetworkID(), _receiverID, _message );
+		}
+		this.OnSendLobbyMessageRPC( Common.MyNetworkID(), _receiverID, _message ); 
 	}
 	 
 	[RPC]

@@ -9,7 +9,10 @@ public class GameNetworkManager : BaseNetworkManager
 	private double timeStarted;
 	private bool gameHasStarted = false;
 
+#if UNITY_EDITOR
 	public PLAYER_TYPE defaultPlayerType;
+	public bool createCapitalShip;
+#endif
 
 	protected void Awake()
 	{
@@ -49,12 +52,14 @@ public class GameNetworkManager : BaseNetworkManager
 			this.networkView.RPC( "OnGameStartedRPC", RPCMode.All );
 		}
 
+#if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected
 		  && !this.gameHasStarted )
 		{
 			this.gameHasStarted = true;
 			this.LocalGameStart();
 		}
+#endif
 	}
 
 	private void OnGUI()
@@ -173,7 +178,7 @@ public class GameNetworkManager : BaseNetworkManager
 		TargetManager.instance.GetTargetWithID(_id).GetComponent<ShieldGeneratorHealth>().ShieldDestroyedNetwork();
 	}
 
-	public void SendRespawnedFighterMessage (NetworkViewID _id)
+	public void SendRespawnedFighterMessage( NetworkViewID _id )
 	{
 		this.networkView.RPC ("OnRespawnedFighterRPC",RPCMode.All,_id);
 	}
@@ -200,18 +205,23 @@ public class GameNetworkManager : BaseNetworkManager
 	private void OnDestroyDumbBulletRPC( int _bulletType, int _index )
 	{
 		//TODO: Enum check
+		if ( System.Enum.IsDefined( typeof(BULLET_TYPE), _bulletType ) == false )
+		{
+			DebugConsole.Error( "Undefined bullet type " + _bulletType );
+			return;
+		}
 		BulletManager.instance.DestroyDumbBulletRPC( (BULLET_TYPE)_bulletType, _index );
 	}
 
-	public void SendDealDamageMessage( NetworkViewID _id, float _damage )
+	public void SendDealDamageMessage( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
 	{
-		this.networkView.RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage );
+		this.networkView.RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage, _sourceID );
 	}
 
 	[RPC]
-	private void OnDealDamageRPC( NetworkViewID _id, float _damage )
+	private void OnDealDamageRPC( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
 	{
-		TargetManager.instance.OnNetworkDamageMessage( _id, _damage );
+		TargetManager.instance.OnNetworkDamageMessage( _id, _damage, _sourceID );
 	}
 
 	public void SendDockedMessage( NetworkViewID _id, int landedSlot )
@@ -261,14 +271,21 @@ public class GameNetworkManager : BaseNetworkManager
 		landedSlot.landedFighter = null;
 	}
 
+#if UNITY_EDITOR
 	private void LocalGameStart()
 	{
 		DebugConsole.Log( "Local game start" );
 
+		if ( this.createCapitalShip && GamePlayerManager.instance.myPlayer.playerType != PLAYER_TYPE.COMMANDER1 )
+		{
+			GamePlayer capitalPlayer = GamePlayerManager.instance.AddPlayerOfType( -2, PLAYER_TYPE.COMMANDER1 );
+			PlayerInstantiator.instance.CreatePlayerObject( capitalPlayer );
+		}
+
 		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
 		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer );
-		//GamePlayer player = GamePlayerManager.instance.GetNetworkPlayer( Network.player );
 	}
+#endif
 
 	public void SendSetViewIDMessage( int _ownerID, NetworkViewID _id )
 	{

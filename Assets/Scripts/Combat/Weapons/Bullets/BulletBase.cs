@@ -170,7 +170,7 @@ public class BulletBase : MonoBehaviour
 		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
 		if ( _health.GetComponent<SeekingBullet>() == null )
 		{
-			_health.DealDamage( this.desc.damage, true );
+			_health.DealDamage( this.desc.damage, true, this.source.networkView.viewID );
 		}
 
 		BulletManager.instance.DestroyLocalBullet( this );

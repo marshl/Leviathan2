@@ -13,17 +13,27 @@ public class CapitalShipMaster : MonoBehaviour
 
 	private bool ownerInitialised = false;
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
+	public bool dummyShip = false;
+
 	protected void Start()
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			this.owner = GamePlayerManager.instance.myPlayer;
+			if ( this.dummyShip )
+			{
+				this.owner = GamePlayerManager.instance.commander1;
+			}
+			else
+			{
+				this.owner = GamePlayerManager.instance.myPlayer;
+			}
+
 			this.health.team = this.owner.team;
 			this.owner.capitalShip = this;
 		}
 	}
-	#endif
+#endif
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )   
 	{

@@ -489,6 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPauseDuration: .10000000149011612
   defaultPlayerType: 3
+  createCapitalShip: 1
 --- !u!4 &122270341
 Transform:
   m_ObjectHideFlags: 0
@@ -530,8 +531,6 @@ MonoBehaviour:
   capitalPathLinePrefab: {fileID: 100000, guid: 97ee7467a0e155b478e63dcc80140dc5,
     type: 2}
   capitalCameraPrefab: {fileID: 100000, guid: 82ddd68b8858ea9449b324333a204b4d, type: 2}
-  testingFighters: 0
-  overrideSelection: 0
 --- !u!148 &122270344
 NetworkView:
   m_ObjectHideFlags: 0
@@ -625,7 +624,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
@@ -685,7 +684,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
@@ -997,7 +996,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
@@ -1051,7 +1050,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &321428629
 Transform:
   m_ObjectHideFlags: 0
@@ -1272,7 +1271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &334588817
 Transform:
   m_ObjectHideFlags: 0
@@ -2045,7 +2044,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &601673147
 Transform:
   m_ObjectHideFlags: 0
@@ -3066,7 +3065,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
@@ -3161,7 +3160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &946499830
 Transform:
   m_ObjectHideFlags: 0
@@ -3485,7 +3484,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
@@ -4183,6 +4182,10 @@ Prefab:
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: defaultPlayerType
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: createCapitalShip
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
@@ -5516,7 +5519,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1598827304
 Transform:
   m_ObjectHideFlags: 0
@@ -5930,7 +5933,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
@@ -6076,7 +6079,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1733603018
 Transform:
   m_ObjectHideFlags: 0

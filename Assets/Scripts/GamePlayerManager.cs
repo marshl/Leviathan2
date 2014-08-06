@@ -118,12 +118,13 @@ public class GamePlayerManager : MonoBehaviour
 		}
 	}
 	
-	public void AddPlayerOfType( int _playerID, PLAYER_TYPE _playerType )
+	public GamePlayer AddPlayerOfType( int _playerID, PLAYER_TYPE _playerType )
 	{
 		DebugConsole.Log( "Adding player " + _playerID + " to " + _playerType );
 		if ( this.playerMap.ContainsKey( _playerID ) )
 		{
 			DebugConsole.Warning( "Player " + _playerID + " already added", this );
+			return null;
 		}
 
 		GamePlayer newPlayer = new GamePlayer();
@@ -137,6 +138,20 @@ public class GamePlayerManager : MonoBehaviour
 		{
 			this.myPlayer = newPlayer;
 		}
+
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			foreach ( NetworkPlayer netPlayer in Network.connections )
+			{
+				if ( Common.NetworkID( netPlayer ) == _playerID )
+				{
+					newPlayer.networkPlayer = netPlayer;
+					break;
+				}
+			}
+		}
+
+		return newPlayer;
 	}
 
 	public bool RemovePlayer( int _playerID )
@@ -278,5 +293,19 @@ public class GamePlayerManager : MonoBehaviour
 		 
 		this.playerMap.Clear();
 	} 
+
+	public CapitalShipMaster GetCapitalShip( TEAM _team )
+	{
+		switch ( _team )
+		{
+		case TEAM.TEAM_1:
+			return this.commander1.capitalShip;
+		case TEAM.TEAM_2:
+			return this.commander2.capitalShip;
+		default:
+			DebugConsole.Error( "Could not find capital ship for team " + _team );
+			return null;
+		}
+	}
 
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class CapitalShipMovement : MonoBehaviour
 {
+	public CapitalShipMaster master;
+
 	/// <summary>
 	/// The prefab used to mark the turning angle around the ship
 	/// </summary>
@@ -128,11 +130,15 @@ public class CapitalShipMovement : MonoBehaviour
 	private void Start()
 	{
 		this.currentMovementSpeed = (this.maxMoveSpeed + this.minMoveSpeed) / 2;
-
-		this.tentativePathLine.SetVertexCount( lineVertexCount );
-
-		this.CreateRotationSegments();
-
+#if UNITY_EDITOR
+		if ( this.master.dummyShip == false )
+#endif
+		{
+			this.tentativePathLine.SetVertexCount( lineVertexCount );
+			
+			this.CreateRotationSegments();
+		}
+	
 		CapitalShipMovement[] otherScripts = GameObject.FindObjectsOfType<CapitalShipMovement>() as CapitalShipMovement[];
 		foreach ( CapitalShipMovement other in otherScripts )
 		{
@@ -145,8 +151,13 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void Update()
 	{
-		this.UpdateAccelerationInput();
-		this.UpdateTurnLine();
+		#if UNITY_EDITOR
+		if ( this.master.dummyShip == false )
+#endif
+		{
+			this.UpdateAccelerationInput();
+			this.UpdateTurnLine();
+		}
 
 		// If the current position + the radius of a turn would place this ship out of bounds,
 		//   start an emergency turn
@@ -163,12 +174,17 @@ public class CapitalShipMovement : MonoBehaviour
 			this.currentTurnAmount -= Time.deltaTime * turnRate;
 			this.transform.Rotate( Vector3.up, turnRate * Time.deltaTime * this.currentTurnDirection * Mathf.Rad2Deg);
 
-			UpdateRotationSegments( this.rotationSegmentsActual, this.currentTurnAmount, this.currentTurnDirection );
-
-			if ( this.currentTurnAmount <= 0.0f )
+#if UNITY_EDITOR
+			if ( this.master.dummyShip == false )
+				#endif
 			{
-				this.DisableRotationSegments();
-				this.isTurning = false;
+				UpdateRotationSegments( this.rotationSegmentsActual, this.currentTurnAmount, this.currentTurnDirection );
+
+				if ( this.currentTurnAmount <= 0.0f )
+				{
+					this.DisableRotationSegments();
+					this.isTurning = false;
+				}
 			}
 		}
 

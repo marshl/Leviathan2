@@ -114,6 +114,8 @@ public class DockingBay : MonoBehaviour
 
 	private void EnemyDockingProcedure( FighterMaster _fighter )
 	{
-		//TODO: Damage the fighter etc.
+		TargetManager.instance.DealDamageNetwork( _fighter.networkView.viewID,
+		                                         _fighter.health.currentHealth + _fighter.health.currentShield,
+		                                         this.capitalShip.networkView.viewID);
 	}
 }

@@ -221,14 +221,14 @@ public class TargetManager : MonoBehaviour
 	}
 
 	public void AreaOfEffectDamage( Vector3 _position, float _radius, float _damage, 
-	                               bool _friendlyFire, TEAM _sourceTeam )
+	                               bool _friendlyFire, TEAM _sourceTeam, NetworkViewID _sourceID )
 	{
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			foreach ( KeyValuePair<int, BaseHealth> pair in this.debugTargetMap )
 			{
-				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam );
+				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam, _sourceID );
 			}
 		}
 		else
@@ -236,13 +236,13 @@ public class TargetManager : MonoBehaviour
 		{
 			foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
 			{
-				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam );
+				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam, _sourceID );
 			}
 		}
 	}
 
 	private void AreaOfEffectDamageCheck( BaseHealth _health, 
-	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam )
+	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam, NetworkViewID _source )
 	{
 		if ( _friendlyFire == true && _sourceTeam == _health.team )
 		{
@@ -253,16 +253,16 @@ public class TargetManager : MonoBehaviour
 		if ( distance < _radius )
 		{
 			float multiplier = 1.0f - distance / _radius;
-			_health.DealDamage( _damage * multiplier, true );
+			_health.DealDamage( _damage * multiplier, true, _source );
 		}
 	}
 
-	public void DealDamageNetwork( NetworkViewID _id, float _damage )
+	public void DealDamageNetwork( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
 	{
-		GameNetworkManager.instance.SendDealDamageMessage( _id, _damage );
+		GameNetworkManager.instance.SendDealDamageMessage( _id, _damage, _sourceID );
 	}
 
-	public void OnNetworkDamageMessage( NetworkViewID _id, float _damage ) 
+	public void OnNetworkDamageMessage( NetworkViewID _id, float _damage, NetworkViewID _sourceID ) 
 	{
 		BaseHealth target;
 		if ( !this.targetMap.TryGetValue( _id, out target ) )
@@ -270,7 +270,7 @@ public class TargetManager : MonoBehaviour
 			DebugConsole.Error( "Cannot find target with ID " + _id );
 			return;
 		}
-		target.DealDamage( _damage, false );
+		target.DealDamage( _damage, false, _sourceID );
 		DebugConsole.Log( target.gameObject.name + " has been dealt " + _damage, target );
 	}
 

@@ -4,7 +4,6 @@ using System.Collections;
 public class FighterHealth : BaseHealth
 {
 	public FighterMaster masterScript;
-	public BaseWeaponManager lastHitBy;
 
 	private void OnGUI()
 	{
@@ -26,19 +25,6 @@ public class FighterHealth : BaseHealth
 		else
 		{
 			this.RegenerateShields();
-		}
-	}
-
-	protected void OnTriggerEnter( Collider _collider )
-	{
-		BulletBase collisionBullet = _collider.GetComponent<BulletBase>();
-		//TODO: Not sure if this works
-		if( collisionBullet != null)
-		{
-			if( collisionBullet.state == BulletBase.BULLET_STATE.ACTIVE_NOT_OWNED )
-			{
-				lastHitBy = collisionBullet.source;
-			}
 		}
 	}
 

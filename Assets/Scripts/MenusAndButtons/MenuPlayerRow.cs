@@ -7,22 +7,18 @@ public class MenuPlayerRow : MonoBehaviour
 	public GUIText nameText;
 	public GUIText ipText;
 	public GUIText latencyText;
+	public GUIText typeText;
 
 	private Ping ping;
 
 	public void UpdateGUI( GamePlayer _player )
 	{
-		NetworkPlayer player = Network.player;
-		for ( int i = 0; i < Network.connections.Length; ++i )
-		{
-			if ( Common.NetworkID( Network.connections[i] ) == _player.id )
-			{
-				player = Network.connections[i];
-			}
-		}
+		NetworkPlayer player = _player.networkPlayer;//Network.player;
 
 		this.ipText.text = player.ipAddress;
 		this.nameText.text = "Player " + _player.id;
+
+		this.typeText.text = _player.playerType.ToString();
 
 		if ( this.ping == null )
 		{

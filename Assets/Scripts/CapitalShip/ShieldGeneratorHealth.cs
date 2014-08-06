@@ -27,7 +27,13 @@ public class ShieldGeneratorHealth : BaseHealth {
 
 	public void Explode()
 	{
-		TargetManager.instance.AreaOfEffectDamage( this.transform.position, this.explosionRadius, this.explosionDamage, false, this.team );
+		TargetManager.instance.AreaOfEffectDamage( 
+          this.transform.position,
+          this.explosionRadius,
+          this.explosionDamage,
+          false, 
+          this.team, 
+          this.networkView.viewID );
 
 		GameNetworkManager.instance.SendDeadShieldMessage( this.networkView.viewID );
 	}
