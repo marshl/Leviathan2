@@ -3,19 +3,20 @@ using System.Collections;
 
 public class CapitalShipWeapons : BaseWeaponManager
 {
+	public CapitalShipMaster master;
 	public WeaponBase weapon;
 
 	private void Update()
 	{
-		if ( (this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
-		    && Input.GetKeyDown( KeyCode.Space ) ) 
+#if UNITY_EDITOR
+		if ( this.master.dummyShip == false )
+#endif
 		{
-			this.weapon.SendFireMessage();
+			if ( (this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
+			    && Input.GetKeyDown( KeyCode.Space ) ) 
+			{
+				this.weapon.SendFireMessage();
+			}
 		}
-	}
-
-	public override void UpdateTargetList ()
-	{
-		throw new System.NotImplementedException ();
 	}
 }

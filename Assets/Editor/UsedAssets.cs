@@ -68,7 +68,7 @@ public class UsedAssets
 		}
 		catch (Exception E)
 		{
-			DebugConsole.Error("Error: " + E);
+			Debug.LogError("Error: " + E);
 		}
 	}
 }

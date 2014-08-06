@@ -60,8 +60,6 @@ public class GameMessages : MonoBehaviour
 				}
 			}
 		}
-
-
 	}
 
 	private void OnGUI()
@@ -73,10 +71,10 @@ public class GameMessages : MonoBehaviour
 			for ( int i = MessageManager.instance.messages.Count - 1; i >= 0; --i )
 			{
 				GUI.Label( new Rect( 0, Screen.height - 25 - index * 25, 500, 25 ), MessageManager.instance.GetFormattedMessage( i ) );
-				++ index;
+				++index;
 			}
 
-			if(typing)
+			if ( this.typing )
 			{
 				GUI.Label( new Rect( 0, Screen.height - 25,200,25 ), this.message );
 			}

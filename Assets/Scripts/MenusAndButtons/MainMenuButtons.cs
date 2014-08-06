@@ -133,12 +133,11 @@ public class MainMenuButtons : MonoBehaviour
 	{
 		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
 		{
-			DebugConsole.Error( "Unknown PLAYER_TYPE condicion " + _playerType );
+			DebugConsole.Error( "Unknown PLAYER_TYPE condition " + _playerType );
 		}
 		else
 		{
 			PLAYER_TYPE type = (PLAYER_TYPE)_playerType;
-			//MenuLobby.instance.ChangePlayerType( Common.MyNetworkID(), type );
 			GamePlayerManager.instance.ChangePlayerType( Common.MyNetworkID(), type );
 		}
 	}

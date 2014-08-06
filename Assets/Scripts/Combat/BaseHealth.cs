@@ -18,9 +18,10 @@ public class BaseHealth : MonoBehaviour
 	public float shieldRegenDelay; // Seconds after being hit for the shield to start regenerating again
 	protected float shieldRegenTimer;
 
-
-	 
 	public bool isIndestructible;
+
+	public NetworkViewID lastHitBy;
+
 #if UNITY_EDITOR
 	protected virtual void Start()
 	{
@@ -36,8 +37,9 @@ public class BaseHealth : MonoBehaviour
 		TargetManager.instance.AddTarget( this );
 	}
 
-	public virtual void DealDamage( float _damage, bool _broadcast )
+	public virtual void DealDamage( float _damage, bool _broadcast, NetworkViewID _source )
 	{
+		this.lastHitBy = _source;
 		if ( this.isIndestructible == true )
 		{
 			return;
@@ -64,7 +66,7 @@ public class BaseHealth : MonoBehaviour
 		  && this.networkView != null
 		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			TargetManager.instance.DealDamageNetwork( this.networkView.viewID, _damage );
+			TargetManager.instance.DealDamageNetwork( this.networkView.viewID, _damage, _source );
 		}
 
 	}

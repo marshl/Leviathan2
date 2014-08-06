@@ -5002,6 +5002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8ed82c1cafef548ac38e63832a185c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  master: {fileID: 11400002}
   rotationSegmentPrefab: {fileID: 100000, guid: d9588999404854d4eaf7d116dc88cf98,
     type: 2}
   tentativePathLine: {fileID: 0}
@@ -5048,6 +5049,7 @@ MonoBehaviour:
   turrets: {fileID: 11400036}
   depthControl: {fileID: 400002}
   health: {fileID: 11400024}
+  dummyShip: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5496,10 +5498,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f007f4ad6a8d5144b99ac76ad10fe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 11400024}
   currentTarget: {fileID: 0}
-  targetList: []
-  targetIndex: 0
   maxTargetDistance: 0
+  master: {fileID: 11400002}
   weapon: {fileID: 11400040}
 --- !u!114 &11400044
 MonoBehaviour:

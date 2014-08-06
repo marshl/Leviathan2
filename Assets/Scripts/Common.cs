@@ -87,6 +87,11 @@ public abstract class Common
 	{
 		return Common.RandomVector3( new Vector3( _min, _min, _min), new Vector3( _max, _max, _max ) );
 	}
+
+	public static Vector3 RandomDirection()
+	{
+		return Common.RandomVector3( -1.0f, 1.0f ).normalized;
+	}
 	
 	/// <summary>
 	/// Returns the point x on a gaussian bell curve (as copied from UnityGenetics)

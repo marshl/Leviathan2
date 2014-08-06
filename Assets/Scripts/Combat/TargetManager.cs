@@ -31,6 +31,15 @@ public class TargetManager : MonoBehaviour
 		public float distance;
 	};
 
+	public class TargetRestriction
+	{
+		public Transform transform;
+		public float maxDistance = -1.0f;
+		public bool ignoreBelowHorizon = false;
+		public int types = -1;
+		public int teams = -1;
+	};
+
 	public static TargetManager instance;
 	
 	public Dictionary<NetworkViewID, BaseHealth> targetMap;
@@ -73,7 +82,8 @@ public class TargetManager : MonoBehaviour
 			NetworkViewID viewID = _health.networkView.viewID;
 			if ( this.targetMap.ContainsKey( viewID ) )
 			{
-				DebugConsole.Warning( "Target Manager already contains " + viewID + " (" + this.GetTargetWithID( viewID ).gameObject.name+ ")", _health );
+				DebugConsole.Warning( "Target Manager already contains " + viewID
+				                     + " (" + this.GetTargetWithID( viewID ).gameObject.name+ ")", _health );
 				return;
 			}
 
@@ -145,24 +155,17 @@ public class TargetManager : MonoBehaviour
 	}
 #endif
 
-	public void GetTargets( BaseWeaponManager _weaponScript, Transform _transform, int _targetTypes,
-	                                float _maxDistance, TEAM _team )
+	public List<BaseHealth> GetTargets( BaseWeaponManager _weaponScript )
 	{
-		_weaponScript.targetList.Clear();
-
-		if ( _targetTypes == 0 )
-		{
-			return;
-		}
-
+		List<BaseHealth> targetList = new List<BaseHealth>();
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			foreach ( KeyValuePair<int, BaseHealth> pair in this.debugTargetMap )
 			{
-				if ( this.IsValidTarget( pair.Value, _transform, _targetTypes, _maxDistance, _team ) )
+				if ( this.IsValidTarget( pair.Value, _weaponScript ) )
 				{
-					_weaponScript.targetList.Add( pair.Value );
+					targetList.Add( pair.Value );
 				}
 			}
 		}
@@ -171,50 +174,61 @@ public class TargetManager : MonoBehaviour
 		{
 			foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
 			{
-				if ( this.IsValidTarget( pair.Value, _transform, _targetTypes, _maxDistance, _team ) )
+				if ( this.IsValidTarget( pair.Value, _weaponScript ) )
 				{
-					_weaponScript.targetList.Add( pair.Value );
+					targetList.Add( pair.Value );
 				}
 			}
 		}
+
+		return targetList;
 	}
 
-	private bool IsValidTarget( BaseHealth _health, Transform _transform, int _targetTypes,
-	                           float _maxDistance, TEAM _team )
+	public bool IsValidTarget( BaseHealth _health, BaseWeaponManager _weaponScript )
 	{
 		// Ignore dead targets
 		if ( _health == null
 		  || _health.currentHealth <= 0.0f 
 		  || _health.enabled == false 
 		  || _health.gameObject.activeInHierarchy == false
-		  || ((int)(_health.targetType) & _targetTypes) == 0 )
+		    // The target that is doing the search
+		  || _health == _weaponScript.health
+		    // And those that aren't of the type specfied
+		  || ((int)(_health.targetType) & _weaponScript.restrictions.types) == 0 ) 
+		{
+			return false;
+		}
+
+		Vector3 vectorToTarget = _health.transform.position - _weaponScript.transform.position;
+		if ( _weaponScript.restrictions.ignoreBelowHorizon && Vector3.Dot( vectorToTarget, _weaponScript.transform.up ) < 0.0f )
 		{
 			return false;
 		}
 		
 		// Ignore targets out of range
-		Vector3 v = _health.transform.position - _transform.position;
+		Vector3 v = _health.transform.position - _weaponScript.restrictions.transform.position;
 		float dist = v.magnitude;
-		if ( _maxDistance > 0.0f && dist > _maxDistance )
+		if ( _weaponScript.restrictions.maxDistance > 0.0f && dist > _weaponScript.restrictions.maxDistance )
 		{
 			return false;
 		}
-		
-		if ( _team != TEAM.NEUTRAL && _health.team != _team )
+
+		if ( ((int)_health.team & _weaponScript.restrictions.teams ) == 0 ) 
 		{
 			return false;
 		}
 		return true;
 	}
 
-	public void AreaOfEffectDamage( Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam )
+	public void AreaOfEffectDamage( Vector3 _position, float _radius, float _damage, 
+	                               bool _friendlyFire, TEAM _sourceTeam, NetworkViewID _sourceID )
 	{
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			foreach ( KeyValuePair<int, BaseHealth> pair in this.debugTargetMap )
 			{
-				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam );
+				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam, _sourceID );
 			}
 		}
 		else
@@ -222,13 +236,13 @@ public class TargetManager : MonoBehaviour
 		{
 			foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
 			{
-				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam );
+				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam, _sourceID );
 			}
 		}
 	}
 
 	private void AreaOfEffectDamageCheck( BaseHealth _health, 
-	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam )
+	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam, NetworkViewID _source )
 	{
 		if ( _friendlyFire == true && _sourceTeam == _health.team )
 		{
@@ -239,16 +253,16 @@ public class TargetManager : MonoBehaviour
 		if ( distance < _radius )
 		{
 			float multiplier = 1.0f - distance / _radius;
-			_health.DealDamage( _damage * multiplier, true );
+			_health.DealDamage( _damage * multiplier, true, _source );
 		}
 	}
 
-	public void DealDamageNetwork( NetworkViewID _id, float _damage )
+	public void DealDamageNetwork( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
 	{
-		GameNetworkManager.instance.SendDealDamageMessage( _id, _damage );
+		GameNetworkManager.instance.SendDealDamageMessage( _id, _damage, _sourceID );
 	}
 
-	public void OnNetworkDamageMessage( NetworkViewID _id, float _damage ) 
+	public void OnNetworkDamageMessage( NetworkViewID _id, float _damage, NetworkViewID _sourceID ) 
 	{
 		BaseHealth target;
 		if ( !this.targetMap.TryGetValue( _id, out target ) )
@@ -256,8 +270,67 @@ public class TargetManager : MonoBehaviour
 			DebugConsole.Error( "Cannot find target with ID " + _id );
 			return;
 		}
-		target.DealDamage( _damage, false );
+		target.DealDamage( _damage, false, _sourceID );
 		DebugConsole.Log( target.gameObject.name + " has been dealt " + _damage, target );
+	}
+
+	public BaseHealth GetCentreTarget( BaseWeaponManager _weaponScript )
+	{
+		List<BaseHealth> targets = this.GetTargets( _weaponScript );
+		
+		BaseHealth currentTarget = null;
+		float closestAngle = float.MaxValue;
+		foreach ( BaseHealth target in targets )
+		{
+			Vector3 vectorToTarget = target.transform.position - _weaponScript.restrictions.transform.position;
+			float angle = Vector3.Angle( _weaponScript.restrictions.transform.forward, vectorToTarget );
+			
+			if ( angle < closestAngle )
+			{
+				currentTarget = target;
+				closestAngle = angle;
+			}
+		}
+		return currentTarget;
+	}
+
+	public void ShiftTargetIndex( BaseWeaponManager _weaponScript, int _direction )
+	{
+		List<BaseHealth> validTargets = this.GetTargets( _weaponScript );
+
+		if ( validTargets.Count == 0 )
+		{
+			_weaponScript.currentTarget = null;
+			return;
+		}
+
+		if ( _weaponScript.currentTarget == null
+		  || validTargets.Count == 1 )
+		{
+			_weaponScript.currentTarget = validTargets[0];
+			return;
+		}
+
+		int index = validTargets.IndexOf( _weaponScript.currentTarget );
+
+		if ( index == -1 )
+		{
+			_weaponScript.currentTarget = validTargets[0];
+			return;
+		}
+
+		index += _direction;
+
+		while ( index >= validTargets.Count )
+		{
+			index -= validTargets.Count;
+		}
+
+		while ( index < 0 )
+		{
+			index += validTargets.Count;
+		}
+		_weaponScript.currentTarget = validTargets[index];
 	}
 
 	//TODO: Shift this into its own script on the capital ship LM 07/05/14

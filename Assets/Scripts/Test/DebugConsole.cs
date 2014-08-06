@@ -13,7 +13,7 @@ public static class DebugConsole
 	
 	public static void Log( string _str, Object _context  = null )
 	{
-		if ( _context != null )
+		if ( _context == null )
 		{
 			Debug.Log( _str );
 		}
@@ -26,7 +26,7 @@ public static class DebugConsole
 
 	public static void Warning( string _str, Object _context = null )
 	{
-		if ( _context != null )
+		if ( _context == null )
 		{
 			Debug.LogWarning( _str );
 		}
@@ -40,7 +40,7 @@ public static class DebugConsole
 
 	public static void Error( string _str, Object _context = null )
 	{
-		if ( _context != null )
+		if ( _context == null )
 		{
 			Debug.LogError( _str );
 		}

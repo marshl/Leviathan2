@@ -35,6 +35,10 @@ public class FighterMaster : MonoBehaviour
 			this.owner = GamePlayerManager.instance.myPlayer;
 			this.health.team = this.owner.team;
 			this.owner.fighter = this;
+			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+
+			this.capitalShip = this.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1.capitalShip
+				: GamePlayerManager.instance.commander2.capitalShip;
 		}
 	}
 #endif
@@ -92,7 +96,7 @@ public class FighterMaster : MonoBehaviour
 				else
 				{
 					this.respawnTimer = 0.0f;
-					if ( Input.GetKeyDown (KeyCode.Space) )
+					if ( Input.GetKeyDown( KeyCode.Space ) )
 					{
 						this.Respawn();
 					}
@@ -122,12 +126,9 @@ public class FighterMaster : MonoBehaviour
 			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		} 
 
-		//TODO: Shouls team be removed from health in favour of GamePlayer pointer? LM:7/7/14
 		this.health.team = this.owner.team;
-
-		//TODO: Add a helper function to shortcut this LM:24/07/2014
-		this.capitalShip = this.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1.capitalShip
-			: GamePlayerManager.instance.commander2.capitalShip;
+		this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+		this.capitalShip = GamePlayerManager.instance.GetCapitalShip( this.owner.team );
 		
 		foreach ( Renderer render in GetComponentsInChildren<Renderer>( ))
 		{
@@ -147,43 +148,57 @@ public class FighterMaster : MonoBehaviour
 		//Find an empty spot on the friendly capital ship and dock there
 		DockingBay[] bays = FindObjectsOfType( typeof(DockingBay) ) as DockingBay[];
 
+		DockingBay bay = null;
+
+		if ( bays.Length > 0 )
+		{
+			int index = (int)Random.Range( 0, bays.Length );
+			int startingIndex = index;
+
+			while ( true )
+			{
+				if ( index == bays.Length )
+				{
+					index = 0;
+				}
+				
+				if( bays[index].capitalShip.health.team == this.health.team )
+				{
+					bay = bays[index];
+
+					break;
+				}
+				++index;
+				if ( index == startingIndex )
+				{
+					DebugConsole.Warning("Could not find an empty docking bay (somehow)");
+					break;
+				}
+			}
+		}
+
 		this.health.FullHeal();
 		this.movement.OnRespawn();
 		this.weapons.OnRespawn();
-	
-		if ( bays.Length == 0 )
+
+		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
+			GameNetworkManager.instance.SendRespawnedFighterMessage( this.networkView.viewID );
+		}
+
+		if ( bay != null )
+		{
+			this.Dock( bay.GetFreeSlot() );
+		}
+		else
+		{
+
 			DebugConsole.Warning( "No docking bays found", this );
 			this.transform.position = Vector3.zero;
 			this.transform.rotation = Quaternion.identity;
 			this.rigidbody.velocity = Vector3.zero;
 			this.rigidbody.angularVelocity = Vector3.zero;
 			this.state = FIGHTERSTATE.FLYING;
-			return;
-		}
-
-		int index = (int)Random.Range( 0, bays.Length );
-		int startingIndex = index;
-
-		while ( true )
-		{
-			if ( index == bays.Length )
-			{
-				index = 0;
-			}
-			
-			if( bays[index].capitalShip.health.team == this.health.team )
-			{
-				GameNetworkManager.instance.SendRespawnedFighterMessage( this.networkView.viewID );
-				this.Dock( bays[index].GetFreeSlot() );
-				break;
-			}
-			++index;
-			if ( index == startingIndex )
-			{
-				DebugConsole.Warning("Could not find an empty docking bay (somehow)");
-				break;
-			}
 		}
 	}
 	
@@ -192,6 +207,15 @@ public class FighterMaster : MonoBehaviour
 		respawnTimer = respawnDelay; 
 		
 		this.state = FIGHTERSTATE.DEAD;
+
+		if ( this.health.lastHitBy != NetworkViewID.unassigned )
+		{
+			BaseHealth hitHealth = TargetManager.instance.GetTargetWithID( this.health.lastHitBy );
+			MessageManager.instance.AddMessage( Common.MyNetworkID(), -1,
+			    "Player " + Common.MyNetworkID() + " was killed by " + hitHealth.gameObject.name );
+
+		}
+
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
 			GameNetworkManager.instance.SendDeadFighterMessage( this.networkView.viewID );
@@ -219,8 +243,10 @@ public class FighterMaster : MonoBehaviour
 		this.state = FIGHTERSTATE.DOCKED;
 		this.transform.parent = _slot.landedPosition;
 
-		GameNetworkManager.instance.SendDockedMessage( this.networkView.viewID, _slot.slotID );
-		this.GetComponent<FighterWeapons>().enabled = false;
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendDockedMessage( this.networkView.viewID, _slot.slotID );
+		}
 	}
 
 	public void Undock()
@@ -237,7 +263,10 @@ public class FighterMaster : MonoBehaviour
 		this.transform.parent = null;
 		this.transform.localScale = Vector3.one;
 
-		GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, this.currentSlot.slotID );
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, this.currentSlot.slotID );
+		}
 		this.currentSlot = null;
 	}
 

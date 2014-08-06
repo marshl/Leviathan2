@@ -11,10 +11,10 @@ public enum PLAYER_TYPE : int
 };
 
 public enum TEAM : int
-{
-	NEUTRAL,
-	TEAM_1,
-	TEAM_2,
+{ // Yes, I know this looks obvious, but I'm ensuring the binary math works
+	NEUTRAL = 0,
+	TEAM_1 = 1,
+	TEAM_2 = 2,
 }
 
 [System.Serializable]
@@ -35,6 +35,8 @@ public class GamePlayer
 
 	public FighterMaster fighter;
 	public CapitalShipMaster capitalShip;
+
+	public NetworkPlayer networkPlayer;
 
 	public float GetKillDeathRatio()
 	{

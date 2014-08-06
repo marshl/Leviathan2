@@ -37,7 +37,12 @@ public class BulletManager : MonoBehaviour
 	/// </summary>
 	private Dictionary<BULLET_TYPE, BulletBucket> bulletDictionary;
 
-	public Dictionary<NetworkViewID, SeekingBullet> networkedBullets;
+	public Dictionary<NetworkViewID, SeekingBullet> seekingBulletMap;
+
+#if UNITY_EDITOR
+	public int debugSeekingID = 0;
+	public Dictionary<int, SeekingBullet> debugSeekingBulletMap;
+#endif
 
 	private void Awake()
 	{
@@ -48,7 +53,11 @@ public class BulletManager : MonoBehaviour
 		}
 		instance = this;
 
-		this.networkedBullets = new Dictionary<NetworkViewID, SeekingBullet>();
+		this.seekingBulletMap = new Dictionary<NetworkViewID, SeekingBullet>();
+
+#if UNITY_EDITOR
+		this.debugSeekingBulletMap = new Dictionary<int, SeekingBullet>();
+#endif
 	}
 
 	private void Start()
@@ -94,12 +103,12 @@ public class BulletManager : MonoBehaviour
 			if ( Network.peerType != NetworkPeerType.Disconnected )
 			{
 				bulletObj = Network.Instantiate( desc.prefab, _pos, Quaternion.LookRotation( _forward ), 0) as GameObject;
-				GameNetworkManager.instance.SendSetSmartBulletTeamMessage( bulletObj.networkView.viewID, _source.GetComponent<BaseHealth>().team );
+
 			}
 			else
 			{
 				bulletObj = GameObject.Instantiate( desc.prefab, _pos, Quaternion.LookRotation( _forward ) ) as GameObject;
-				bulletObj.GetComponent<BaseHealth>().team = _source.GetComponent<BaseHealth>().team;
+				bulletObj.GetComponent<BaseHealth>().team = _source.health.team;
 			}
 			bulletScript = bulletObj.GetComponent<BulletBase>();
 		}
@@ -134,6 +143,16 @@ public class BulletManager : MonoBehaviour
 
 		bulletScript.OnShoot();
 		_source.OnBulletCreated( bulletScript );
+
+		if ( desc.smartBullet == true 
+		    && Network.peerType != NetworkPeerType.Disconnected )
+		{
+			BaseHealth target = bulletObj.GetComponent<SeekingBullet>().target;
+			NetworkViewID viewID = target != null ? target.networkView.viewID : NetworkViewID.unassigned;
+			
+			GameNetworkManager.instance.SendSetSmartBulletTeamMessage( bulletObj.networkView.viewID, _source.health.team, viewID );
+		}
+
 		return bulletScript;
 	}
 
@@ -186,7 +205,8 @@ public class BulletManager : MonoBehaviour
 			{
 				if ( _bullet.networkView.isMine )
 				{
-					this.networkedBullets.Remove( _bullet.networkView.viewID );
+					this.seekingBulletMap.Remove( _bullet.networkView.viewID );
+
 					TargetManager.instance.RemoveTarget( _bullet.networkView.viewID );
 					Network.Destroy( _bullet.gameObject );
 					GameNetworkManager.instance.SendDestroySmartBulletMessage( _bullet.networkView.viewID );
@@ -197,6 +217,7 @@ public class BulletManager : MonoBehaviour
 				GameObject.Destroy( _bullet.gameObject );
 #if UNITY_EDITOR
 				TargetManager.instance.RemoveDebugTarget( _bullet.GetComponent<BaseHealth>().debugTargetID );
+				this.debugSeekingBulletMap.Remove( ((SeekingBullet)_bullet).debugID );
 #endif
 			}
 		}
@@ -227,9 +248,9 @@ public class BulletManager : MonoBehaviour
 		TargetManager.instance.RemoveTarget( _viewID );
 
 		SeekingBullet bullet = null; 
-		if ( this.networkedBullets.TryGetValue( _viewID, out bullet ) )
+		if ( this.seekingBulletMap.TryGetValue( _viewID, out bullet ) )
 		{
-			this.networkedBullets.Remove( _viewID );
+			this.seekingBulletMap.Remove( _viewID );
 			DebugConsole.Log( "Destroyed bullet with ID " + _viewID );
 		}
 		else
@@ -262,5 +283,53 @@ public class BulletManager : MonoBehaviour
 		bulletBucket.Initialise( _desc, false );
 		this.bulletDictionary.Add ( _desc.bulletType, bulletBucket );
 
+	}
+
+	public BaseHealth GetNextMissileLock( BaseWeaponManager _weaponManager, int _direction )
+	{
+		List<BaseHealth> missiles  = new List<BaseHealth>();
+
+		foreach ( KeyValuePair<NetworkViewID, SeekingBullet> pair in this.seekingBulletMap )
+		{
+			if ( pair.Value.target == _weaponManager.health )
+			{
+				missiles.Add( pair.Value.health );
+			}
+		}
+
+#if UNITY_EDITOR
+		foreach ( KeyValuePair<int, SeekingBullet> pair in this.debugSeekingBulletMap )
+		{
+			if ( pair.Value.target == _weaponManager.health )
+			{
+				missiles.Add( pair.Value.health );
+			}
+		}
+#endif
+
+		if ( missiles.Count == 0 )
+		{
+			return null;
+		}
+
+		int index = missiles.IndexOf( _weaponManager.currentTarget );
+
+		if ( index == -1 )
+		{
+			return missiles[0];
+		}
+		index += _direction;
+
+		while ( index >= missiles.Count )
+		{
+			index -= missiles.Count;
+		}
+
+		while ( index < 0 )
+		{
+			index += missiles.Count;
+		}
+
+		return missiles[index];
 	}
 }
