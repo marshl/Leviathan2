@@ -138,7 +138,15 @@ public class MainMenuButtons : MonoBehaviour
 		else
 		{
 			PLAYER_TYPE type = (PLAYER_TYPE)_playerType;
-			GamePlayerManager.instance.ChangePlayerType( Common.MyNetworkID(), type );
+
+			if ( Network.isServer )
+			{
+				MenuNetworking.instance.SendChangePlayerTypeMessage( Common.MyNetworkID(), type );
+			}
+			else
+			{
+				MenuNetworking.instance.SendValidatePlayerTypeChange( Common.MyNetworkID(), type );
+			}
 		}
 	}
 

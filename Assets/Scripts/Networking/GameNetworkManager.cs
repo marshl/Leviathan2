@@ -127,14 +127,12 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDestroySmartBulletMessage( NetworkViewID _viewID )
 	{
-		DebugConsole.Log( "Sending message to destroy" );
 		this.networkView.RPC( "OnDestroySmartBulletRPC", RPCMode.Others, _viewID );
 	}
 
 	[RPC]
 	private void OnDestroySmartBulletRPC( NetworkViewID _viewID )
 	{
-		DebugConsole.Log( "Received Destroy Message" );
 		BulletManager.instance.DestroySmartBulletRPC( _viewID );
 	}
 

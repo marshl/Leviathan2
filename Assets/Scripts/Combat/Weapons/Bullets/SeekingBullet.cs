@@ -22,7 +22,6 @@ public class SeekingBullet : BulletBase
 	
 	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		DebugConsole.Log( "Missile Team: " + this.health.team );
 		BulletManager.instance.seekingBulletMap.Add( this.networkView.viewID, this );
 		if ( this.networkView.isMine == false )
 		{

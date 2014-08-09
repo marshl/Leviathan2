@@ -9,8 +9,6 @@ public class Message
 	public int receiverID;
 	public string message;
 	public DateTime timeReceived;
-
-
 };
 
 public class MessageManager : MonoBehaviour

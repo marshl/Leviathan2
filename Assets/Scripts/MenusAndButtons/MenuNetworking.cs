@@ -249,6 +249,41 @@ public class MenuNetworking : BaseNetworkManager
 		Application.LoadLevel( _level );
 	}
 
+	public void SendChangePlayerTypeMessage( int _playerID, PLAYER_TYPE _playerType )
+	{
+		this.networkView.RPC( "OnChangePlayerTypeRPC", RPCMode.All, _playerID, (int)_playerType );
+	}
+
+	[RPC]
+	private void OnChangePlayerTypeRPC( int _playerID, int _playerType )
+	{
+		if ( !System.Enum.IsDefined( typeof(PLAYER_TYPE), _playerType ) )
+		{
+			DebugConsole.Error( "Player type " + _playerType + " not defined" );
+		}
+		GamePlayerManager.instance.ChangePlayerType( _playerID, (PLAYER_TYPE)_playerType );
+	}
+
+	public void SendValidatePlayerTypeChange( int _playerID, PLAYER_TYPE _playerType )
+	{
+		this.networkView.RPC( "OnValidatePlayerTypeChangeRPC", RPCMode.Server, _playerID, (int)_playerType );
+	}
+
+	[RPC]
+	private void OnValidatePlayerTypeChangeRPC( int _playerID, int _playerType )
+	{
+		if ( GamePlayerManager.instance.ValidTypeChange( _playerID, (PLAYER_TYPE)_playerType ) )
+		{
+			//GamePlayerManager.instance.ChangePlayerType( _playerID, (PLAYER_TYPE)_playerType );
+			this.SendChangePlayerTypeMessage( _playerID, (PLAYER_TYPE)_playerType );
+		}
+		else
+		{
+			DebugConsole.Warning( "Cannot change " + _playerID + " to " + _playerType );
+			//Send request denial
+		}
+	}
+
 	[RPC]
 	private void SendPlayerTeamInfo( int _playerID, int _playerType )
 	{

@@ -299,12 +299,53 @@ public class GamePlayerManager : MonoBehaviour
 		switch ( _team )
 		{
 		case TEAM.TEAM_1:
+			if ( this.commander1 == null )
+			{
+				DebugConsole.Warning( "Commander 1 not found" );
+				return null;
+			}
 			return this.commander1.capitalShip;
 		case TEAM.TEAM_2:
+			if ( this.commander2 == null )
+			{
+				DebugConsole.Warning( "Commander 2 not found" );
+				return null;
+			}
 			return this.commander2.capitalShip;
 		default:
 			DebugConsole.Error( "Could not find capital ship for team " + _team );
 			return null;
+		}
+	}
+
+	public bool ValidTypeChange( int _playerID, PLAYER_TYPE _playerType )
+	{
+		GamePlayer player = this.GetPlayerWithID( _playerID );
+		if ( player == null )
+		{
+			return false;
+		}
+
+		if ( player.playerType == _playerType )
+		{
+			return false;
+		}
+
+		switch ( _playerType )
+		{
+		case PLAYER_TYPE.COMMANDER1:
+		{
+			return this.commander1 == null;
+		}
+		case PLAYER_TYPE.COMMANDER2:
+		{
+			return this.commander2 == null;
+		}
+		//TODO: Fighter list size check
+		default:
+		{
+			return true;
+		}
 		}
 	}
 
