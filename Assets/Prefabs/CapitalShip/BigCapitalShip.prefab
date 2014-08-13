@@ -5530,7 +5530,7 @@ MonoBehaviour:
   chargePercentage: 100
   chargeDrain: 15
   chargeRegeneration: 10
-  strengthMultiplier: 1
+  strengthMultiplier: 5000
   dragOverride: 300
 --- !u!148 &14800000
 NetworkView:
