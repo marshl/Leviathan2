@@ -83,6 +83,7 @@ public class TractorBeam : MonoBehaviour {
 			Vector3 forceVector = new Vector3(currentTarget.transform.position.x - this.transform.position.x,
 			                                  currentTarget.transform.position.y - this.transform.position.y,
 			                                  currentTarget.transform.position.z - this.transform.position.z);
+			//Vector3 forceVector = new Vector3(1000000000,0,0);
 
 			forceVector.Normalize ();
 			forceVector *= tractorDirection * strengthMultiplier * dragOverride;
@@ -91,6 +92,8 @@ public class TractorBeam : MonoBehaviour {
 			DebugConsole.Log ("Magnitude is " + forceVector.magnitude.ToString());
 
 			currentTarget.rigidbody.AddForce (forceVector);
+
+			DebugConsole.Log ("Target name is " + currentTarget.name);
 			chargePercentage -= chargeDrain * Time.fixedDeltaTime;
 
 			if(chargePercentage <= 0)
