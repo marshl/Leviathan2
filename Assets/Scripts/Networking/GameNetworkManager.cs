@@ -327,4 +327,60 @@ public class GameNetworkManager : BaseNetworkManager
 		}
 
 	}
+
+	public void SendTractorStartMessage( NetworkViewID _viewID, TractorBeam.TractorFunction _tractorDirection, NetworkViewID _targetID)
+	{
+
+		switch(_tractorDirection)
+		{
+		case TractorBeam.TractorFunction.HOLD:
+			this.networkView.RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, 0, _targetID );
+			break;
+		case TractorBeam.TractorFunction.PULL:
+			this.networkView.RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, -1, _targetID );
+			break;
+		case TractorBeam.TractorFunction.PUSH:
+			this.networkView.RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, 1, _targetID );
+			break;
+
+		}
+
+
+	}
+
+	[RPC]
+	private void OnTractorStartRPC( NetworkViewID _viewID, int _tractorDirection, NetworkViewID _targetID)
+	{
+		NetworkView tractorSource = NetworkView.Find (_viewID);
+		NetworkView targetSource = NetworkView.Find (_targetID);
+
+		switch(_tractorDirection)
+		{
+		case 0:
+			tractorSource.GetComponent<TractorBeam>().FireAtTarget (targetSource.gameObject, TractorBeam.TractorFunction.HOLD);
+			break;
+		case -1:
+			tractorSource.GetComponent<TractorBeam>().FireAtTarget (targetSource.gameObject, TractorBeam.TractorFunction.PULL);
+			break;
+		case 1:
+			tractorSource.GetComponent<TractorBeam>().FireAtTarget (targetSource.gameObject, TractorBeam.TractorFunction.PUSH);
+			break;
+
+		}
+
+
+	}
+
+	public void SendTractorStopMessage(NetworkViewID _viewID)
+	{
+		this.networkView.RPC( "OnTractorStopRPC", RPCMode.Others, _viewID );
+	}
+
+	[RPC]
+	private void OnTractorStopRPC(NetworkViewID _viewID)
+	{
+		NetworkView TractorSource = NetworkView.Find (_viewID);
+
+		TractorSource.GetComponent<TractorBeam>().RefreshTarget();	
+	}
 }
