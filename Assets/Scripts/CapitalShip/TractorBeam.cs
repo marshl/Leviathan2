@@ -54,10 +54,12 @@ public class TractorBeam : MonoBehaviour {
 			if (this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
 			     
 			{
-				if(tractorUITargetting && Input.GetMouseButtonDown (0))
+				if(tractorUITargetting && Input.GetMouseButtonDown (1))
 				{
 					RaycastHit hit;
 					Ray toCast = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+
 					if( Physics.Raycast (toCast, out hit))
 					{
 						if(tractorActive)
@@ -81,11 +83,11 @@ public class TractorBeam : MonoBehaviour {
 			Vector3 forceVector = new Vector3(currentTarget.transform.position.x - this.transform.position.x,
 			                                  currentTarget.transform.position.y - this.transform.position.y,
 			                                  currentTarget.transform.position.z - this.transform.position.z);
-			forceVector.Scale (new Vector3(tractorDirection * strengthMultiplier, 
-			                               tractorDirection * strengthMultiplier, 
-			                               tractorDirection * strengthMultiplier));
+			forceVector.Scale (new Vector3(tractorDirection * strengthMultiplier * dragOverride, 
+			                               tractorDirection * strengthMultiplier * dragOverride, 
+			                               tractorDirection * strengthMultiplier * dragOverride));
 			currentTarget.rigidbody.AddForce (forceVector);
-			chargePercentage -= chargeDrain;
+			chargePercentage -= chargeDrain * Time.fixedDeltaTime;
 
 			if(chargePercentage <= 0)
 			{
@@ -93,6 +95,7 @@ public class TractorBeam : MonoBehaviour {
 				if(this.networkView.isMine)
 				{
 					StopTractor();
+					DebugConsole.Log ("Stopped tractor");
 				}
 			}
 		}
