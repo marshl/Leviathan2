@@ -112,7 +112,7 @@ public class MainMenuButtons : MonoBehaviour
 			return;
 		}
 
-		MenuNetworking.instance.StartServer( portNumber, gameNameString, gameDescString );
+		MenuNetworking.instance.StartServer( portNumber, gameNameString, gameDescString, "" );
 
 		this.hostPanelObj.SetActive( false );
 		this.lobbyPanelObj.SetActive( true );

@@ -4,28 +4,21 @@ using System.Collections.Generic;
 
 public class MenuNetworking : BaseNetworkManager
 {
-	// Static Variables 
 	public static MenuNetworking instance;
-
-	// Editor Variables
+	
 	public string gameTypeName;
 	public int connectionLimit;
-
-	// Public Variables
-	[HideInInspector]
+	
 	public string gameName;
-
-	[HideInInspector]
 	public string gameComment;
-
-	[HideInInspector]
-	public HostData connectionHost = null;
-
-	[HideInInspector]
 	public int portNumber;
 
-	// Private Variables
-	private HostData[] gameHosts;
+	public HostData connectionHost = null;
+
+	private float hostRefreshTimer;
+	public float hostRefreshRate;
+	
+	public HostData[] gameHosts;
 
 	protected void Awake()
 	{
@@ -33,19 +26,24 @@ public class MenuNetworking : BaseNetworkManager
 		MasterServer.RequestHostList( this.gameTypeName );
 	}
 
-	public void UpdateHostList()
+	private void Update()
 	{
-		MasterServer.RequestHostList( this.gameTypeName );
-		this.gameHosts = MasterServer.PollHostList();
+		this.hostRefreshTimer += Time.deltaTime;
+		if ( this.hostRefreshTimer >= this.hostRefreshRate )
+		{
+			this.hostRefreshTimer = 0.0f;
+			MasterServer.RequestHostList( this.gameTypeName );
+			this.gameHosts = MasterServer.PollHostList();
+		}
 	}
 
-	public NetworkConnectionError StartServer( int _port, string _gameName, string _comment )
+	public NetworkConnectionError StartServer( int _port, string _gameName, string _comment, string _password )
 	{
 		this.gameName = _gameName;
 		this.gameComment = _comment;
 		this.portNumber = _port;
 
-		DebugConsole.Log( "Starting server Port:" + this.portNumber + " GameName:" + this.gameName + " Comment:"+ this.gameComment );
+		DebugConsole.Log( "Starting server Port:" + this.portNumber + " GameName:" + this.gameName + " Comment:"+ this.gameComment + " Password:" + _password );
 		NetworkConnectionError result = NetworkConnectionError.NoError;
 		try
 		{
@@ -56,6 +54,8 @@ public class MenuNetworking : BaseNetworkManager
 			DebugConsole.Log( "Error starting server: " + result.ToString() );
 			return result;
 		}
+		Network.incomingPassword = _password;
+
 		DebugConsole.Log( "Start Server result: " + result.ToString() );
 		DebugConsole.Log( "Registering master server: " + this.gameTypeName );
 		MasterServer.RegisterHost( this.gameTypeName, this.gameName, this.gameComment );
@@ -63,10 +63,10 @@ public class MenuNetworking : BaseNetworkManager
 		return result;
 	}
 
-	public NetworkConnectionError Connect( string _ip, int _port )
+	public NetworkConnectionError Connect( string _ip, int _port, string _password )
 	{
-		DebugConsole.Log( "Connecting IP:" + _ip + " Port:" + _port );
-		NetworkConnectionError result = Network.Connect( _ip, _port );
+		DebugConsole.Log( "Connecting IP:" + _ip + " Port:" + _port + " Password:" + _password );
+		NetworkConnectionError result = Network.Connect( _ip, _port, _password );
 		DebugConsole.Log( "Connection result " + _ip + ":" + _port + " " + result.ToString() );
 
 		return result;
@@ -74,7 +74,7 @@ public class MenuNetworking : BaseNetworkManager
 
 	public bool IsValidHostIndex( int _index )
 	{
-		return _index >= 0 && _index < this.gameHosts.Length;
+		return this.gameHosts != null && _index >= 0 && _index < this.gameHosts.Length;
 	}
 
 	public NetworkConnectionError ConnectToHostIndex( int _index )
@@ -88,7 +88,7 @@ public class MenuNetworking : BaseNetworkManager
 		this.connectionHost = this.gameHosts[ _index ];
 		this.gameName = this.connectionHost.gameName;
 		this.gameComment = this.connectionHost.comment;
-		return this.Connect( this.connectionHost.ip[0], this.connectionHost.port );
+		return this.Connect( this.connectionHost.ip[0], this.connectionHost.port, "" );
 	}
 
 	public HostData GetHostData( int _index )
@@ -114,7 +114,15 @@ public class MenuNetworking : BaseNetworkManager
 	private void OnConnectedToServer()
 	{
 		DebugConsole.Log( "Connected to server." );
-		MainMenuButtons.instance.OpenGameLobby();
+		MenuGUI.instance.OpenGameLobby();
+
+		this.networkView.RPC( "OnSendConnectedInfoRPC", RPCMode.Others, Common.MyNetworkID(), PlayerOptions.instance.options.playerName );
+	}
+
+	[RPC]
+	private void OnSendConnectedInfoRPC( int _playerID, string _playerName )
+	{
+		GamePlayerManager.instance.GetPlayerWithID( _playerID ).name = _playerName;
 	}
 
 	// Unity Callback: Do not change signature
@@ -127,20 +135,21 @@ public class MenuNetworking : BaseNetworkManager
 		else if ( _info == NetworkDisconnection.LostConnection )
 		{
 			DebugConsole.Log( "Unexpected connection loss." );
-			MenuLobby.instance.ExitLobby();
+
+			//MenuLobby.instance.ExitLobby();
 		}
 		else if ( _info == NetworkDisconnection.Disconnected )
 		{
 			DebugConsole.Log( "Diconnected from server." );
 		}
-
-		MainMenuButtons.instance.ExitLobby();
+		//MenuGUI.instance.ExitLobby( _info );
+		//MainMenuButtons.instance.ExitLobby();
 	}
 
 	// Unity Callback: Do not change signature
 	private void OnFailedToConnect( NetworkConnectionError _info )
 	{
-		switch ( _info )
+		/*switch ( _info )
 		{
 		case NetworkConnectionError.ConnectionFailed:
 		{
@@ -152,9 +161,9 @@ public class MenuNetworking : BaseNetworkManager
 			DebugConsole.Error( "Uncaught connection failure \"" + _info.ToString() + "\"" );
 			break;
 		}
-		}
+		}*/
 
-		MainMenuButtons.instance.OnConnectionFailure( _info );
+		MenuGUI.instance.OnFailedToConnect( _info );
 	}
 
 	// Unity Callback: Do not change signature
@@ -163,10 +172,10 @@ public class MenuNetworking : BaseNetworkManager
 		DebugConsole.Log( "Player connected IP:" + _player.ipAddress + " Port;" + _player.port
 		          + " ExtIP:" + _player.externalIP + " ExtPort:" + _player.externalPort );
 
+		int playerID = Common.NetworkID( _player );
+
 		if ( Network.isServer == true )
 		{
-			int playerID = Common.NetworkID( _player );
-
 			PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();//MenuLobby.instance.GetNextFreePlayerType();//( playerID );
 
 			// If this is the server, tell the new guy who is in each of the teams
@@ -183,6 +192,8 @@ public class MenuNetworking : BaseNetworkManager
 			// Then tell everyone about the new guy
 			this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
 		}
+
+		MessageManager.instance.AddMessage( playerID, "Player " + playerID + " has connected", false );
 	}
 
 	// Unity Callback: Do not change signature
@@ -194,6 +205,8 @@ public class MenuNetworking : BaseNetworkManager
 		GamePlayerManager.instance.RemovePlayer( playerID );
 
 		this.networkView.RPC( "OnRemovePlayerRPC", RPCMode.Others, playerID );
+
+		MessageManager.instance.AddMessage( playerID, "Player " + playerID + " has disconnected", false );
 	}
 
 	// Unity Callback: Do not change signature
@@ -222,8 +235,6 @@ public class MenuNetworking : BaseNetworkManager
 		{
 			Network.Disconnect();
 			MasterServer.UnregisterHost();
-
-			this.networkView.RPC( "OnQuitLobbyRPC", RPCMode.Others );
 		}
 		else
 		{
@@ -309,11 +320,5 @@ public class MenuNetworking : BaseNetworkManager
 	private void OnRemovePlayerRPC( int _playerID )
 	{
 		GamePlayerManager.instance.RemovePlayer( _playerID );
-	}
-
-	[RPC]
-	private void OnQuitLobbyRPC()
-	{
-		DebugConsole.Log( "Server has closed" );
 	}
 }

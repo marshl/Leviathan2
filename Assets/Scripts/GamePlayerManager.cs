@@ -64,7 +64,7 @@ public class GamePlayerManager : MonoBehaviour
 
 			if ( GameNetworkManager.instance != null )
 			{
-				GameNetworkManager.instance.SendLobbyMessage( str, -1 );
+				GameNetworkManager.instance.SendLobbyMessage( str, true );
 			} 
 		}
 	}

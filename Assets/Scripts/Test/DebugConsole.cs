@@ -10,7 +10,8 @@ public static class DebugConsole
 	public static List<string> inputLines = new List<string>();
 	public static int currentInputLine = -1;
 	public static string input = "";
-	
+	public static bool newLine = false;
+
 	public static void Log( string _str, Object _context  = null )
 	{
 		if ( _context == null )
@@ -61,6 +62,7 @@ public static class DebugConsole
 	public static void AddLine( string _str )
 	{
 		outputLines.Add( _str );
+		newLine = true;
 	}
 
 	public static void ProcessInput()

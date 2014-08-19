@@ -6,9 +6,9 @@ using System;
 public class Message
 {
 	public int senderID;
-	public int receiverID;
 	public string message;
 	public DateTime timeReceived;
+	public bool showTimestamp;
 };
 
 public class MessageManager : MonoBehaviour
@@ -26,21 +26,15 @@ public class MessageManager : MonoBehaviour
 		this.messages = new List<Message>();
 	}
 
-	public void AddMessage( int _playerID, int _receiverID, string _message )
+	public void AddMessage( int _playerID, string _message, bool _showTimestamp )
 	{
-		// If this message isn't meant for me, don't add it
-		if ( _receiverID != -1 && _receiverID != Common.MyNetworkID() )
-		{
-			return;
-		}
-
 		_message = _message.Replace( ">", "" ).Replace( "<", "" );
 
 		Message msg = new Message();
 		msg.senderID = _playerID;
 		msg.message = _message;
 		msg.timeReceived = DateTime.Now;
-		msg.receiverID = _receiverID;
+		msg.showTimestamp = _showTimestamp;
 
 		this.messages.Add( msg );
 	}
@@ -56,9 +50,11 @@ public class MessageManager : MonoBehaviour
 		Message msg = this.messages[_messageIndex];
 		int colourID = msg.senderID > 0 ? msg.senderID % this.playerMessageColours.Length : 0;
 		string colour = this.playerMessageColours[ colourID ];
-		
-		return "<color=" + colour + "> Player " + msg.senderID + " ("
-			+ msg.timeReceived + "): " + msg.message + "</color>\n";
+
+		return (msg.showTimestamp ? msg.timeReceived.ToString( "hh:mm tt" ) + " - " : "")
+			+ "<color=" + colour + ">"
+			+ "Player " + msg.senderID + ": "
+			+ msg.message + "</color>\n";
 	}
 
 	public void Reset()

@@ -65,8 +65,8 @@ public class PlayerInstantiator : MonoBehaviour
 				0 ) as GameObject;
 		}
 
-		CapitalShipMovement movementScript = capitalObj.GetComponent<CapitalShipMovement>();
-		CapitalShipMaster masterScript = movementScript.master;
+		CapitalShipMaster masterScript = capitalObj.GetComponent<CapitalShipMaster>();
+		CapitalShipMovement movementScript = masterScript.movement;
 
 #if UNITY_EDITOR
 		masterScript.dummyShip = Network.peerType == NetworkPeerType.Disconnected 

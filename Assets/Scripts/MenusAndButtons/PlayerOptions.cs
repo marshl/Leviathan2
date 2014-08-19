@@ -24,6 +24,7 @@ public class PlayerOptions : MonoBehaviour
 
 	private void Awake()
 	{
+		instance = this;
 		this.options = new Options();
 		this.LoadOptions();
 		DontDestroyOnLoad( this );

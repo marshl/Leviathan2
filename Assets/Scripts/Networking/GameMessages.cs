@@ -22,7 +22,7 @@ public class GameMessages : MonoBehaviour
 			{
 				if ( this.message != "" )
 				{
-					GameNetworkManager.instance.SendLobbyMessage( this.message, -1 );
+					GameNetworkManager.instance.SendLobbyMessage( this.message, true );
 				}
 				this.message = "";
 

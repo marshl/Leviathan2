@@ -42,7 +42,7 @@ public class MenuServerList : MonoBehaviour
 
 	private void Update()
 	{
-		if ( MainMenuButtons.instance.currentState == MainMenuButtons.STATE.SERVER_LIST )
+		//if ( MainMenuButtons.instance.currentState == MainMenuButtons.STATE.SERVER_LIST )
 		{
 			this.hostRefreshTimer += Time.deltaTime;
 
@@ -56,7 +56,7 @@ public class MenuServerList : MonoBehaviour
 
 	private void RefreshServerList()
 	{ 
-		MenuNetworking.instance.UpdateHostList();
+		//MenuNetworking.instance.UpdateHostList();
 		for ( int i = 0; i < this.serverTableLength; ++i )
 		{
 			if ( MenuNetworking.instance.IsValidHostIndex( i ) )
@@ -107,6 +107,6 @@ public class MenuServerList : MonoBehaviour
 		}
 
 		MenuNetworking.instance.ConnectToHostIndex( index );
-		MainMenuButtons.instance.OpenConnectingWindow();
+		//MainMenuButtons.instance.OpenConnectingWindow();
 	}
 }

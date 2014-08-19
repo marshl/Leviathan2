@@ -133,7 +133,7 @@ public class MenuLobby : MonoBehaviour
 			return;
 		}   
 
-		MenuNetworking.instance.SendLobbyMessage( text, -1 );
+		MenuNetworking.instance.SendLobbyMessage( text, true );
 
 		this.messageTextField.GetComponent<GUITextField>().text = "";
 	}

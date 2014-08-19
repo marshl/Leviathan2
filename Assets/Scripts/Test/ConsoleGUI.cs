@@ -18,6 +18,8 @@ public class ConsoleGUI : MonoBehaviour
 			this.displaying = !this.displaying;
 		}
 
+
+
 		if ( this.displaying )
 		{
 			this.linesLong = (int)(( (float)Screen.height * 0.9f ) / lineHeight);
@@ -77,6 +79,12 @@ public class ConsoleGUI : MonoBehaviour
 
 			// Input field
 			DebugConsole.input = GUI.TextField( new Rect( 0.0f, Screen.height*0.9f, Screen.width, Screen.height * 0.1f ), DebugConsole.input );
+
+			if ( DebugConsole.newLine )
+			{
+				DebugConsole.newLine = false;
+				this.sliderValue = lineOverflow;
+			}
 
 			// Output slider
 			if ( lineOverflow > 0 )

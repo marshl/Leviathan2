@@ -213,10 +213,9 @@ public class FighterMaster : MonoBehaviour
 			BaseHealth hitHealth = TargetManager.instance.GetTargetWithID( this.health.lastHitBy );
 			if ( hitHealth != null )
 			{
-				MessageManager.instance.AddMessage( Common.MyNetworkID(), -1,
-				    "Player " + Common.MyNetworkID() + " was killed by " + hitHealth.gameObject.name );
+				string msg = "Player " + Common.MyNetworkID() + " was killed by " + hitHealth.gameObject.name;
+				MessageManager.instance.AddMessage( Common.MyNetworkID(), msg, true );
 			}
-
 		}
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
