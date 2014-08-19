@@ -129,6 +129,7 @@ public class BulletBase : MonoBehaviour
 		{
 			return;
 		}
+
 		if ( Network.peerType != NetworkPeerType.Disconnected
 		  && this.networkView != null
 		  && !this.networkView.isMine )

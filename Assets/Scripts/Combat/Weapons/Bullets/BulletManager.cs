@@ -226,12 +226,12 @@ public class BulletManager : MonoBehaviour
 			if ( _bullet.state == BulletBase.BULLET_STATE.INACTIVE
 			  || _bullet.gameObject.activeSelf == false )
 			{
+				DebugConsole.Log( "No point disabling a currently inactive bullet" );
 				return;
 			}
 
 			BulletBase bulletScript = this.bulletDictionary[_bullet.bulletType].GetAvailableBullet( _bullet.index, -1 );
 			bulletScript.gameObject.SetActive( false );
-			bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
 
 			if ( _bullet.state == BulletBase.BULLET_STATE.ACTIVE_OWNED )
 			{
@@ -240,6 +240,8 @@ public class BulletManager : MonoBehaviour
 					GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.bulletType, _bullet.index );
 				}
 			}
+
+			bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
 		}
 	}
 	
@@ -251,7 +253,6 @@ public class BulletManager : MonoBehaviour
 		if ( this.seekingBulletMap.TryGetValue( _viewID, out bullet ) )
 		{
 			this.seekingBulletMap.Remove( _viewID );
-			DebugConsole.Log( "Destroyed bullet with ID " + _viewID );
 		}
 		else
 		{
@@ -264,7 +265,6 @@ public class BulletManager : MonoBehaviour
 		BulletBase bulletScript = this.bulletDictionary[_bulletType].GetAvailableBullet( _index, -1 );
 		bulletScript.gameObject.SetActive( false );
 		bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
-		DebugConsole.Log( "Dumb bullet destroyed" );
 	}
 	
 	private void CreateBulletBucket( BulletDescriptor _desc )
