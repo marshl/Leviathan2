@@ -956,4 +956,26 @@ public class MenuGUI : MonoBehaviour
 
 		return returnVal;
 	}
+
+	public void OnDisconnectedFromServer( NetworkDisconnection _info )
+	{
+		switch ( _info )
+		{
+		case NetworkDisconnection.LostConnection:
+		{
+			this.StartMessagePopup( "Lost connection to server", "Close" );
+			break;
+		}
+		case NetworkDisconnection.Disconnected:
+		{
+			this.StartMessagePopup( "Disconnected from server", "Close" );
+			break;
+		}
+		default:
+		{
+			break;
+		}
+		}
+		this.state = STATE.MAIN;
+	}
 }

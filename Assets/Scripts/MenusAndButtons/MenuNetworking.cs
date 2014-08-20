@@ -115,7 +115,6 @@ public class MenuNetworking : BaseNetworkManager
 	{
 		DebugConsole.Log( "Connected to server." );
 		MenuGUI.instance.OpenGameLobby();
-
 		this.networkView.RPC( "OnSendConnectedInfoRPC", RPCMode.Others, Common.MyNetworkID(), PlayerOptions.instance.options.playerName );
 	}
 
@@ -135,15 +134,12 @@ public class MenuNetworking : BaseNetworkManager
 		else if ( _info == NetworkDisconnection.LostConnection )
 		{
 			DebugConsole.Log( "Unexpected connection loss." );
-
-			//MenuLobby.instance.ExitLobby();
 		}
 		else if ( _info == NetworkDisconnection.Disconnected )
 		{
 			DebugConsole.Log( "Diconnected from server." );
 		}
-		//MenuGUI.instance.ExitLobby( _info );
-		//MainMenuButtons.instance.ExitLobby();
+		MenuGUI.instance.OnDisconnectedFromServer( _info );
 	}
 
 	// Unity Callback: Do not change signature
@@ -193,6 +189,7 @@ public class MenuNetworking : BaseNetworkManager
 			this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
 		}
 
+		this.networkView.RPC( "OnSendConnectedInfoRPC", _player, Common.MyNetworkID(), GamePlayerManager.instance.myPlayer.name );
 		MessageManager.instance.AddMessage( playerID, "Player " + playerID + " has connected", false );
 	}
 
@@ -215,6 +212,7 @@ public class MenuNetworking : BaseNetworkManager
 		DebugConsole.Log( "Server initialised." );
 		PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();
 		GamePlayerManager.instance.AddPlayerOfType( Common.MyNetworkID(), playerType );
+		GamePlayerManager.instance.myPlayer.name = PlayerOptions.instance.options.playerName;
 	}
 
 	// Unity Callback: Do not modify signature
@@ -285,7 +283,6 @@ public class MenuNetworking : BaseNetworkManager
 	{
 		if ( GamePlayerManager.instance.ValidTypeChange( _playerID, (PLAYER_TYPE)_playerType ) )
 		{
-			//GamePlayerManager.instance.ChangePlayerType( _playerID, (PLAYER_TYPE)_playerType );
 			this.SendChangePlayerTypeMessage( _playerID, (PLAYER_TYPE)_playerType );
 		}
 		else
@@ -302,7 +299,13 @@ public class MenuNetworking : BaseNetworkManager
 		{
 			DebugConsole.Error( "Player type " + _playerType + " not defined" );
 		}
-		GamePlayerManager.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
+
+		GamePlayer newPlayer = GamePlayerManager.instance.AddPlayerOfType( _playerID, (PLAYER_TYPE)_playerType );
+
+		if ( newPlayer == GamePlayerManager.instance.myPlayer )
+		{
+			newPlayer.name = PlayerOptions.instance.options.playerName;
+		}
 	}
 
 	[RPC]

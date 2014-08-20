@@ -11,6 +11,7 @@ public static class DebugConsole
 	public static int currentInputLine = -1;
 	public static string input = "";
 	public static bool newLine = false;
+	public static GameObject pickedObject;
 
 	public static void Log( string _str, Object _context  = null )
 	{
@@ -100,6 +101,16 @@ public static class DebugConsole
 		case "die":
 		{
 			OnDie( chunks );
+			break;
+		}
+		case "gethealth":
+		{
+			OnGetHealth( chunks );
+			break;
+		}
+		case "kill":
+		{
+			OnKill( chunks );
 			break;
 		}
 		default:
@@ -246,4 +257,53 @@ public static class DebugConsole
 			return;
 		}
 	}
+
+	private static void OnGetHealth( string[] _chunks )
+	{
+		if ( _chunks.Length != 1 )
+		{
+			AddLine( "No parameters needed for gethealth" );
+		}
+
+		if ( pickedObject == null )
+		{
+			AddLine( "No object selected" );
+			return;
+		}
+
+		BaseHealth health = pickedObject.GetComponent<BaseHealth>();
+
+		if ( health == null )
+		{
+			AddLine( "Object has no health attached" );
+			return;
+		}
+
+		AddLine( pickedObject.name + " HP:" + health.currentHealth + "/" + health.maxHealth + " SP:" + health.currentShield + "/" + health.maxShield );
+	}
+
+	private static void OnKill( string[] _chunks )
+	{
+		if ( _chunks.Length != 1 )
+		{
+			AddLine( "No parameters needed for kill" );
+		}
+		
+		if ( pickedObject == null )
+		{
+			AddLine( "No object selected" );
+			return;
+		}
+		
+		BaseHealth health = pickedObject.GetComponent<BaseHealth>();
+		
+		if ( health == null )
+		{
+			AddLine( "Object has no health attached" );
+			return;
+		}
+		
+		health.currentHealth = 0;
+	}
+
 }

@@ -11,6 +11,8 @@ public class ConsoleGUI : MonoBehaviour
 
 	public float sliderValue = 0.0f;
 
+	private bool pickingObject = false;
+
 	private void Update()
 	{
 		if ( Input.GetKeyDown( KeyCode.BackQuote ) )
@@ -18,11 +20,9 @@ public class ConsoleGUI : MonoBehaviour
 			this.displaying = !this.displaying;
 		}
 
-
-
 		if ( this.displaying )
 		{
-			this.linesLong = (int)(( (float)Screen.height * 0.9f ) / lineHeight);
+			this.linesLong = (int)(( (float)Screen.height * 0.8f ) / lineHeight);
 			if ( DebugConsole.input.Length > 0 )
 			{
 				foreach ( char c in Input.inputString )
@@ -61,6 +61,28 @@ public class ConsoleGUI : MonoBehaviour
 				}
 			}
 		}
+
+		if ( this.pickingObject )
+		{
+			if ( Input.GetMouseButtonDown( 0 ) )
+			{
+				Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
+				RaycastHit info;
+				if ( Physics.Raycast( ray, out info ) )
+				{
+					DebugConsole.pickedObject = info.collider.gameObject;
+				}
+				else
+				{
+					DebugConsole.pickedObject = null;
+				}
+				this.pickingObject = false;
+			}
+			else if ( Input.GetMouseButtonDown( 1 ) )
+			{
+				this.pickingObject = false;
+			}
+		}
 	}
 
 	private void OnGUI()
@@ -76,6 +98,23 @@ public class ConsoleGUI : MonoBehaviour
 				int lineIndex = i + (int)this.sliderValue;
 				GUI.Label(  new Rect( 0.0f, (float)i * lineHeight, Screen.width, lineHeight ), DebugConsole.outputLines[lineIndex], this.style );
 			}
+			// Object picker
+
+
+			if ( DebugConsole.pickedObject != null )
+			{
+				GUI.Label( new Rect( 0.0f, Screen.height * 0.8f, Screen.width/2, Screen.height * 0.1f ), DebugConsole.pickedObject.name );
+			}
+
+			if ( this.pickingObject )
+			{
+				GUI.enabled = false;
+			}
+			if ( GUI.Button( new Rect( Screen.width / 2, Screen.height * 0.8f, Screen.width/2, Screen.height*0.1f ), "Pick Object" ) )
+			{
+				this.pickingObject = true;
+			}
+			GUI.enabled = true;
 
 			// Input field
 			DebugConsole.input = GUI.TextField( new Rect( 0.0f, Screen.height*0.9f, Screen.width, Screen.height * 0.1f ), DebugConsole.input );

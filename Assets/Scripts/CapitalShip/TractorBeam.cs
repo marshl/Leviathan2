@@ -1,9 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class TractorBeam : MonoBehaviour {
-
-
+public class TractorBeam : MonoBehaviour
+{
 	public enum TractorFunction
 	{
 		PUSH,
@@ -47,9 +46,9 @@ public class TractorBeam : MonoBehaviour {
 
 	private void Update()
 	{
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 		if ( this.master.dummyShip == false )
-			#endif
+#endif
 		{
 			if (this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
 			     
@@ -119,30 +118,35 @@ public class TractorBeam : MonoBehaviour {
 
 	void OnGUI()
 	{
-		if(this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
+#if UNITY_EDITOR 
+		if ( !this.master.dummyShip )
+#endif
 		{
-			GUI.Label(tractorStatusLableRect,"Tractor: " + chargePercentage + "%");
-			if( GUI.Button(tractorPushLableRect, "Engage push"))
+			if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 			{
-				tractorUITargetting = true;
-				tractorUITargetType = TractorFunction.PUSH;
-				print("Select target");
-			}
-			if(GUI.Button(tractorHoldLableRect, "Engage hold"))
-			{
-				tractorUITargetting = true;
-				tractorUITargetType = TractorFunction.HOLD;
-				print("Select target");
-			}
-			if(GUI.Button(tractorPullLableRect, "Engage pull"))
-			{
-				tractorUITargetting = true;
-				tractorUITargetType = TractorFunction.PULL;
-				print("Select target");
-			}
-			if(GUI.Button(tractorDisengageLableRect, "Disengage"))
-			{
-				StopTractor();
+				GUI.Label(tractorStatusLableRect,"Tractor: " + chargePercentage + "%");
+				if( GUI.Button(tractorPushLableRect, "Engage push"))
+				{
+					tractorUITargetting = true;
+					tractorUITargetType = TractorFunction.PUSH;
+					print("Select target");
+				}
+				if(GUI.Button(tractorHoldLableRect, "Engage hold"))
+				{
+					tractorUITargetting = true;
+					tractorUITargetType = TractorFunction.HOLD;
+					print("Select target");
+				}
+				if(GUI.Button(tractorPullLableRect, "Engage pull"))
+				{
+					tractorUITargetting = true;
+					tractorUITargetType = TractorFunction.PULL;
+					print("Select target");
+				}
+				if(GUI.Button(tractorDisengageLableRect, "Disengage"))
+				{
+					StopTractor();
+				}
 			}
 		}
 	}

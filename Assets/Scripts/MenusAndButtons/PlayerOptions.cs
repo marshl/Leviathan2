@@ -6,6 +6,7 @@ using System.Xml;
 using System.IO;
 using System.Xml.Serialization;
 
+[System.Serializable]
 public class Options
 {
 	public string playerName = "DefaultName";
