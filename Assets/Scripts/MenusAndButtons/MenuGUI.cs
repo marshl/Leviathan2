@@ -25,6 +25,11 @@ public class GUIPlaceholder
     {
         return GUI.Button( this.rect, this.text );
     }
+
+	public string TextField( int _maxLength )
+	{
+		return this.text = GUI.TextField( this.rect, this.text, _maxLength );
+	}
 };
 
 [System.Serializable]
@@ -67,6 +72,7 @@ public class MenuGUI : MonoBehaviour
 		CREATE_GAME,
 		SERVER_LIST,
 		CONNECTING,
+		OPTIONS,
 	};
 
 	public STATE state = STATE.MAIN;
@@ -82,6 +88,7 @@ public class MenuGUI : MonoBehaviour
 	private GUIPlaceholder mainCreateGameButton;
 	private GUIPlaceholder mainServerListButton;
 	private GUIPlaceholder mainQuitButton;
+	private GUIPlaceholder mainOptionsButton;
 
 	/*
 	 * CREATE GAME
@@ -177,6 +184,18 @@ public class MenuGUI : MonoBehaviour
 	private HostData targetHost;
 
 	/*
+	 * OPTIONS
+	 */ 
+
+	private GUIPlaceholder optionsBackButton;
+	private GUIPlaceholder optionsNameLabel;
+	private GUIPlaceholder optionsNameButton;
+	public Vector2 optionsBackButtonOffset;
+	public Vector2 optionsNameLabelOffset;
+	public float optionsNameButtonGap;
+	public float optionsNameLabelLength;
+
+	/*
 	 * POPUP
 	 */
 
@@ -184,22 +203,27 @@ public class MenuGUI : MonoBehaviour
 	{
 		NONE,
 		MESSAGE,
-		SERVER_PASSWORD,
+		ENTER_TEXT,
 	};
 	private POPUP_STATE popupState = POPUP_STATE.NONE;
 	
-	private string popupLabelText;
-	private string popupButtonText;
-	private string popupHeaderText;
-
 	public Vector2 popupWindowSize;
+
+	public float popupTitleGap;
+	public Vector2 popupTitleScale;
+	public float popupLabelGap;
+	public Vector2 popupLabelScale;
 
 	public Vector2 popupTextFieldScale;
 	public Vector2 popupButtonOffset;
-	public Vector2 popupTextFieldOffset;
-	private string popupPassword = "";
+	public float popupTextFieldGap;
 
-
+	private GUIPlaceholder popupTitleLabel;
+	private GUIPlaceholder popupLabelLabel;
+	private GUIPlaceholder popupCancelButton;
+	private GUIPlaceholder popupAcceptButton;
+	private GUIPlaceholder popupTextField;
+	private GUIPlaceholder popupCloseButton;
 
 
 	public void Start()
@@ -210,12 +234,19 @@ public class MenuGUI : MonoBehaviour
 		this.UpdateCreateGameGUI( true );
 		this.UpdateLobbyGUI( true );
 		this.UpdateServerListGUI( true );
+		this.UpdateOptionsGUI( true );
+		this.UpdatePopupWindow( true );
 
 		this.serverRows = new List<ServerDisplayRow>();
 	}
 
 	private void Update()
 	{
+		if ( this.popupState != POPUP_STATE.NONE )
+		{
+			this.UpdatePopupWindow( false );
+		}
+
 		switch ( this.state )
 		{
 		case STATE.MAIN:
@@ -241,6 +272,11 @@ public class MenuGUI : MonoBehaviour
 		case STATE.CONNECTING:
 		{
 			this.UpdateConnectingGUI( false );
+			break;
+		}
+		case STATE.OPTIONS:
+		{
+			this.UpdateOptionsGUI( false );
 			break;
 		}
 		default:
@@ -285,21 +321,17 @@ public class MenuGUI : MonoBehaviour
 			this.RenderConnectingGUI();
 			break;
 		}
+		case STATE.OPTIONS:
+		{
+			this.RenderOptionsGUI();
+			break;
+		}
 		default:
 		{
 			DebugConsole.Error( "Uncaught menu state \"" + this.state + "\"", this );
 			break;
 		}
 		}
-
-		/*if ( this.popupState != POPUP_STATE.NONE )
-		{
-			bool done = this.RenderPopUpWindow();
-			if ( done )
-			{
-				this.popupEnabled = false;
-			}
-		}*/
 
 		if ( this.popupState != POPUP_STATE.NONE )
 		{
@@ -326,25 +358,34 @@ public class MenuGUI : MonoBehaviour
 				this.GetTiledAreaRect( this.mainButtonOffset, this.buttonScale, this.mainButtonGap, new Vector2(0,1) ),
 				"Join Game" );
 
+			this.mainOptionsButton = new GUIPlaceholder( 
+			    this.GetTiledAreaRect( this.mainButtonOffset, this.buttonScale, this.mainButtonGap, new Vector2(0,2) ),
+			    "Options" );
+
 			this.mainQuitButton = new GUIPlaceholder(
-				this.GetTiledAreaRect( this.mainButtonOffset, this.buttonScale, this.mainButtonGap, new Vector2(0,2) ),
+				this.GetTiledAreaRect( this.mainButtonOffset, this.buttonScale, this.mainButtonGap, new Vector2(0,3) ),
 				"Quit Game" );
 		}
 	}
 	
 	private void RenderMainGUI()
 	{
-		if ( GUI.Button( this.mainCreateGameButton.rect, this.mainCreateGameButton.text ) )
+		if ( this.mainCreateGameButton.Button() )
 		{
 			this.state = STATE.CREATE_GAME;
 		}
 
-		if ( GUI.Button( this.mainServerListButton.rect, this.mainServerListButton.text ) ) 
+		if ( this.mainServerListButton.Button() ) 
 		{
 			this.state = STATE.SERVER_LIST;
 		}
 
-		if ( GUI.Button( this.mainQuitButton.rect, this.mainQuitButton.text ) ) 
+		if ( this.mainOptionsButton.Button() )
+		{
+			this.state = STATE.OPTIONS;
+		}
+
+		if ( this.mainQuitButton.Button() ) 
 		{
 			Application.Quit();
 		}
@@ -566,7 +607,7 @@ public class MenuGUI : MonoBehaviour
 		}
 		else
 		{
-			this.chatEnterField.text = GUI.TextField( this.chatEnterField.rect, this.chatEnterField.text );
+			this.chatEnterField.TextField( -1 );
 		}
 
 		style = GUI.skin.textArea;
@@ -652,28 +693,24 @@ public class MenuGUI : MonoBehaviour
 
 	private void RenderCreateGameGUI()
 	{
-		GUI.Label( this.createGameNameLabel.rect, this.createGameNameLabel.text );
-		GUI.Label( this.createGameDescriptionLabel.rect, this.createGameDescriptionLabel.text );
-		GUI.Label( this.createGamePortLabel.rect, this.createGamePortLabel.text );
-		GUI.Label( this.createGamePasswordLabel.rect, this.createGamePasswordLabel.text );
+		this.createGameNameLabel.Label();
+		this.createGameDescriptionLabel.Label();
+		this.createGamePortLabel.Label();
+		this.createGamePasswordLabel.Label();
 
-		this.createGameNameField.text = GUI.TextField( this.createGameNameField.rect, this.createGameNameField.text );
-		if ( this.createGameNameField.text.Length > this.gameNameLengthLimit )
-		{
-			this.createGameNameField.text = this.createGameNameField.text.Remove( this.gameNameLengthLimit );
-		}
+		this.createGameNameField.TextField( this.gameNameLengthLimit );
 
-		this.createGameDescriptionField.text = GUI.TextField( this.createGameDescriptionField.rect, this.createGameDescriptionField.text );
-		this.createGamePortField.text = GUI.TextField( this.createGamePortField.rect, this.createGamePortField.text );
-		this.createGamePasswordField.text = GUI.TextField( this.createGamePasswordField.rect, this.createGamePasswordField.text );
+		this.createGameDescriptionField.TextField( this.gameNameLengthLimit );
+		this.createGamePortField.TextField( this.gameNameLengthLimit );
+		this.createGamePasswordField.TextField( this.gameNameLengthLimit );
 
-		if ( GUI.Button( this.createGameBackButton.rect, this.createGameBackButton.text ) )
+		if ( this.createGameBackButton.Button() )
 		{
 			this.state = STATE.MAIN;
 			return;
 		}
 
-		if ( GUI.Button( this.createGameCreateButton.rect, this.createGameCreateButton.text ) )
+		if ( this.createGameCreateButton.Button() )
 		{
 			this.OnCreateGameButtonDown();
 			return;
@@ -746,16 +783,16 @@ public class MenuGUI : MonoBehaviour
 		for ( int i = 0; i < this.serverRows.Count; ++i )
 		{
 			ServerDisplayRow row = this.serverRows[i];
-			GUI.Label( row.nameLabel.rect, row.nameLabel.text );
-			GUI.Label( row.ipLabel.rect, row.ipLabel.text );
-			GUI.Label( row.pingLabel.rect, row.pingLabel.text );
+			row.nameLabel.Label();
+			row.ipLabel.Label();
+			row.pingLabel.Label();
 
-			if ( GUI.Button( row.connectButton.rect, row.connectButton.text ) )
+			if ( row.connectButton.Button() )
 			{
 				this.targetHost = MenuNetworking.instance.GetHostData( i );
 				if ( this.targetHost.passwordProtected )
 				{
-					this.StartPasswordPopup();
+					this.StartEnterTextPopup( "Password" , "Please enter the server password" );
 				}
 				else
 				{
@@ -764,7 +801,7 @@ public class MenuGUI : MonoBehaviour
 			}
 		}
 
-		if ( this.popupState == POPUP_STATE.SERVER_PASSWORD )
+		if ( this.popupState == POPUP_STATE.ENTER_TEXT )
 		{
 			int val = this.RenderPopUpWindow();
 
@@ -774,7 +811,72 @@ public class MenuGUI : MonoBehaviour
 			}
 			else if ( val == 1 )
 			{
-				this.TryServerConnect( this.targetHost, this.popupPassword );
+				this.TryServerConnect( this.targetHost, this.popupTextField.text );
+			}
+		}
+	}
+
+	private void UpdateOptionsGUI( bool _firstPass )
+	{
+		if ( _firstPass || Application.isEditor )
+		{
+			this.optionsBackButton = new GUIPlaceholder();
+			this.optionsBackButton.rect = new Rect( this.optionsBackButtonOffset.x, this.optionsBackButtonOffset.y,
+			                                        this.buttonScale.x, this.buttonScale.y );
+			this.optionsBackButton.text = "Back";
+
+			this.optionsNameLabel = new GUIPlaceholder();
+			this.optionsNameLabel.rect = new Rect( this.optionsNameLabelOffset.x, this.optionsNameLabelOffset.y,
+			                                  this.optionsNameLabelLength, this.buttonScale.y );
+			this.optionsNameLabel.text = PlayerOptions.instance.options.playerName;
+
+			this.optionsNameButton = new GUIPlaceholder();
+			this.optionsNameButton.rect = new Rect( this.optionsNameLabelOffset.x + this.optionsNameButtonGap + this.optionsNameLabelLength,
+			                                       this.optionsNameLabelOffset.y,
+			                                       this.buttonScale.x, this.buttonScale.y );
+			this.optionsNameButton.text = "Change";
+		}
+
+
+	}
+
+	private void RenderOptionsGUI()
+	{
+		if ( this.optionsBackButton.Button() )
+		{
+			this.state = STATE.MAIN;
+		}
+
+		this.optionsNameLabel.Label();
+
+		if ( this.optionsNameButton.Button() )
+		{
+			this.StartEnterTextPopup( "Name", "Edit your name:", this.optionsNameLabel.text );
+		}
+
+		if ( this.popupState != POPUP_STATE.NONE )
+		{
+			switch ( this.RenderPopUpWindow() )
+			{
+			case 0:
+			{
+				break;
+			}
+			case -1:
+			{
+				this.popupState = POPUP_STATE.NONE;
+				break;
+			}
+			case 1:
+			{
+				this.popupState = POPUP_STATE.NONE;
+				this.optionsNameLabel.text = PlayerOptions.instance.options.playerName = this.popupTextField.text;
+				break;
+			}
+			default:
+			{
+				break;
+			}
 			}
 		}
 	}
@@ -782,7 +884,7 @@ public class MenuGUI : MonoBehaviour
 	private void TryServerConnect( HostData _hostData, string _password )
 	{
 		NetworkConnectionError error = MenuNetworking.instance.Connect(
-			this.targetHost.ip[0], this.targetHost.port, this.popupPassword );
+			this.targetHost.ip[0], this.targetHost.port, _password );
 
 		switch ( error )
 		{
@@ -860,11 +962,6 @@ public class MenuGUI : MonoBehaviour
 		this.lobbyGameCommentLabel.text = MenuNetworking.instance.gameComment;
 	}
 
-	/*public void ExitLobby( NetworkDisconnection _info )
-	{
-		this.state = STATE.MAIN;
-	}*/
-
 	public void OnFailedToConnect( NetworkConnectionError _info )
 	{
 		this.StartMessagePopup( _info.ToString(), "Close" );
@@ -888,29 +985,69 @@ public class MenuGUI : MonoBehaviour
 		}
 	}
 
-	public void StartMessagePopup( string _labelText , string _buttonText )
+	public void StartMessagePopup( string _title , string _label, string _closeButtonString = "Close" )
 	{
 		this.popupState = POPUP_STATE.MESSAGE;
 
-		this.popupLabelText = _labelText;
-		this.popupButtonText = _buttonText;
+		//this.popupLabelText = _labelText;
+		//this.popupButtonText = _buttonText;
+		this.popupTitleLabel.text = _title;
+		this.popupLabelLabel.text = _label;
+		this.popupCloseButton.text = _closeButtonString;
 	}
 
-	public void StartPasswordPopup()
+	public void StartEnterTextPopup( string _title, string _label, string _startingString = "",
+	                                string _cancelButtonText = "Cancel", string _acceptButtonSString = "Accept" )
 	{
-		this.popupState = POPUP_STATE.SERVER_PASSWORD;
+		this.popupState = POPUP_STATE.ENTER_TEXT;
+		this.popupTitleLabel.text = _title;
+		this.popupLabelLabel.text = _label;
+		this.popupTextField.text = _startingString;
+		this.popupCancelButton.text = _cancelButtonText;
+		this.popupAcceptButton.text = _acceptButtonSString;
+	}
+
+	private void UpdatePopupWindow( bool _firstPass )
+	{
+		if ( _firstPass )
+		{
+			this.popupTitleLabel = new GUIPlaceholder();
+			this.popupTitleLabel.rect = new Rect( this.popupWindowSize.x/2 - this.popupTitleScale.x/2, this.popupTitleGap, 
+			                                     this.popupTitleScale.x, this.popupTitleScale.y );
+
+			this.popupLabelLabel = new GUIPlaceholder();
+			this.popupLabelLabel.rect = new Rect( this.popupWindowSize.x/2 - this.popupLabelScale.x/2, this.popupLabelGap,
+			                                     this.popupLabelScale.x, this.popupLabelScale.y );
+
+			this.popupCancelButton = new GUIPlaceholder();
+			this.popupCancelButton.rect = new Rect( this.popupWindowSize.x/2 - this.buttonScale.x - this.popupButtonOffset.x,
+			                                       this.popupButtonOffset.y, this.buttonScale.x, this.buttonScale.y );
+
+			this.popupAcceptButton = new GUIPlaceholder();
+			this.popupAcceptButton.rect = new Rect( this.popupWindowSize.x/2 + this.popupButtonOffset.x, this.popupButtonOffset.y,
+			                                       this.buttonScale.x, this.buttonScale.y );
+
+			this.popupTextField = new GUIPlaceholder();
+			this.popupTextField.rect = new Rect( this.popupWindowSize.x/2 - this.popupTextFieldScale.x/2, this.popupTextFieldGap,
+			                                    this.popupTextFieldScale.x, this.popupTextFieldScale.y );
+
+			this.popupCloseButton = new GUIPlaceholder();
+			this.popupCloseButton.rect = new Rect( this.popupWindowSize.x/2 - this.buttonScale.x, this.popupButtonOffset.y,
+			                                      this.buttonScale.x, this.buttonScale.y );
+		}
 	}
 
 	private int RenderPopUpWindow()
 	{
 		GUI.enabled = true;
 		GUI.BeginGroup( new Rect( Screen.width/2 - this.popupWindowSize.x/2,
-		                         Screen.height/2 - this.popupWindowSize.y/2,
-		                         this.popupWindowSize.x, this.popupWindowSize.y ), GUI.skin.box );
+		                          Screen.height/2 - this.popupWindowSize.y/2,
+		                          this.popupWindowSize.x, this.popupWindowSize.y ), GUI.skin.box );
 
 		int returnVal = 0;
 
-		GUI.Label( new Rect( this.popupWindowSize.x/2 - 50, 0, 100, 20 ), this.popupLabelText );
+		this.popupTitleLabel.Label();
+		this.popupLabelLabel.Label();
 
 		switch ( this.popupState )
 		{
@@ -920,25 +1057,20 @@ public class MenuGUI : MonoBehaviour
 		}
 		case POPUP_STATE.MESSAGE:
 		{
-			returnVal = GUI.Button( new Rect( this.popupWindowSize.x/2 - this.buttonScale.x/2, 50,
-			                                 this.buttonScale.x, this.buttonScale.y ), this.popupButtonText ) ? 1 : 0;
+			this.popupTitleLabel.Label();
+			this.popupLabelLabel.Label();
+			returnVal = this.popupCloseButton.Button() ? 1 : 0;
 			break;
 		}
-		case POPUP_STATE.SERVER_PASSWORD:
+		case POPUP_STATE.ENTER_TEXT:
 		{
-			this.popupPassword = GUI.TextField( 
-		       new Rect( this.popupWindowSize.x/2 - this.popupTextFieldScale.x/2,
-			             this.popupTextFieldOffset.y,
-			         this.popupTextFieldScale.x, this.popupTextFieldScale.y ),
-			                                   this.popupPassword );
+			this.popupTextField.TextField( 50 );
 
-			if ( GUI.Button( new Rect( this.popupWindowSize.x/2 - this.popupButtonOffset.x - this.buttonScale.x,
-			                          this.popupButtonOffset.y, this.buttonScale.x, this.buttonScale.y ), "Cancel" ) )
+			if (this.popupCancelButton.Button() )
 			{
 				returnVal = -1;
 			}
-			else if ( GUI.Button( new Rect( this.popupWindowSize.x/2 + this.popupButtonOffset.x,
-			                               this.popupButtonOffset.y, this.buttonScale.x, this.buttonScale.y ), "Accept" ) )
+			else if ( this.popupAcceptButton.Button() )
 			{
 				returnVal = 1;
 			}

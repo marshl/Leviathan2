@@ -30,6 +30,11 @@ public class PlayerOptions : MonoBehaviour
 		this.LoadOptions();
 		DontDestroyOnLoad( this );
 	}
+
+	private void OnApplicationQuit()
+	{
+		this.WriteToFile();
+	}
 	
 	private void LoadOptions()
 	{
@@ -41,30 +46,61 @@ public class PlayerOptions : MonoBehaviour
 		}
 		catch
 		{
-			this.WriteToFile();
+			if ( !this.WriteToFile() )
+			{
+				Debug.Log( "An error occurred trying to recitify the previous error" );
+				return;
+			}
 			stream = new FileStream( this.GetFilePath(), FileMode.Open );
 		}
 
 		XmlReader reader = XmlReader.Create( stream );
-		this.options = (Options)serialiser.Deserialize( reader );
-		stream.Close();
+		try
+		{
+			this.options = serialiser.Deserialize( reader ) as Options;
+			stream.Close();
+		}
+		catch ( XmlException _exception )
+		{ 
+			DebugConsole.Error( _exception.ToString() );
+			stream.Close();
+			this.options = new Options();
+			this.WriteToFile();
+			this.LoadOptions();
+		}
+
+		if ( this.options == null )
+		{
+			this.options = new Options();
+			DebugConsole.Error( "error loading options file, starting fresh" );
+		}
 	}
 
-	private void WriteToFile()
+	private bool WriteToFile()
 	{
 		XmlSerializer serialiser = new XmlSerializer( typeof(Options) );
-		FileStream stream = new FileStream( this.GetFilePath(), FileMode.CreateNew );
+
+		FileInfo fileInfo = new FileInfo( this.GetFilePath() ); 
+		if ( fileInfo.Exists ) 
+		{
+			fileInfo.Delete(); 
+		} 
+
+		FileStream stream = new FileStream( this.GetFilePath(), FileMode.OpenOrCreate );
 		if ( stream == null )
 		{
 			DebugConsole.Error( "Error creating default options file." );
-			return;
+			return false;
 		}
 		serialiser.Serialize( stream, this.options );
 		stream.Close();
+		return true;
 	}
 
 	private string GetFilePath()
 	{
 		return Application.dataPath + "\\" + this.filename;
 	}
+
+
 }

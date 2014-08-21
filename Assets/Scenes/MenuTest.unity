@@ -3495,10 +3495,18 @@ MonoBehaviour:
   serverRowXGap: 5
   serverRowButtonWidth: 75
   serverListButtonOffset: {x: 35, y: 400}
+  optionsBackButtonOffset: {x: 35, y: 400}
+  optionsNameLabelOffset: {x: 35, y: 50}
+  optionsNameButtonGap: 5
+  optionsNameLabelLength: 50
   popupWindowSize: {x: 225, y: 225}
+  popupTitleGap: 5
+  popupTitleScale: {x: 150, y: 25}
+  popupLabelGap: 50
+  popupLabelScale: {x: 200, y: 25}
   popupTextFieldScale: {x: 100, y: 25}
   popupButtonOffset: {x: 5, y: 150}
-  popupTextFieldOffset: {x: 0, y: 25}
+  popupTextFieldGap: 100
 --- !u!4 &1780295749
 Transform:
   m_ObjectHideFlags: 0
@@ -4169,6 +4177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filename: options.xml
+  options:
+    playerName: DefaultName
 --- !u!4 &2066020127
 Transform:
   m_ObjectHideFlags: 0
