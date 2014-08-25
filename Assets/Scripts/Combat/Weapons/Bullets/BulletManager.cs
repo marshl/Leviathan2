@@ -10,6 +10,8 @@ public enum BULLET_TYPE : int
 	LIGHT_LASER,
 
 	TURRET_SHREDDER,
+
+	CAPITAL_GAUSS,
 };
 
 public enum WEAPON_TYPE : int
@@ -22,6 +24,8 @@ public enum WEAPON_TYPE : int
 	CHARGE_UP_TEST,
 
 	TURRET_SHREDDER,
+
+	CAPITAL_GAUSS,
 };
 
 /// <summary>
@@ -122,7 +126,7 @@ public class BulletManager : MonoBehaviour
 		bulletObj.collider.enabled = true; 
 
 		bulletScript.source = _source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
-		if ( _source.collider != null )
+		if ( _source != null && _source.collider != null )
 		{
 			Physics.IgnoreCollision( bulletObj.collider, _source.collider );
 		}

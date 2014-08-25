@@ -29,6 +29,7 @@ public class TurretBehavior : BaseWeaponManager
 		this.restrictions.transform = this.arm;
 	}
 
+#if UNITY_EDITOR
 	private void Start()
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
@@ -36,7 +37,7 @@ public class TurretBehavior : BaseWeaponManager
 			this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
 		}
 	}
-
+#endif
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );

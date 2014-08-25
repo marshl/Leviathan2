@@ -43,6 +43,7 @@ GameObject:
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400018}
+  - 114: {fileID: 11400024}
   m_Layer: 0
   m_Name: BulletDescriptors
   m_TagString: Untagged
@@ -64,6 +65,7 @@ GameObject:
   - 114: {fileID: 11400014}
   - 114: {fileID: 11400016}
   - 114: {fileID: 11400020}
+  - 114: {fileID: 11400022}
   m_Layer: 0
   m_Name: WeaponDescriptors
   m_TagString: Untagged
@@ -129,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd65ba79403e43c4cbf3fddcf7027610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugSeekingID: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -302,6 +305,41 @@ MonoBehaviour:
   bulletDesc: {fileID: 0}
   timeBetweenBursts: 5
   shotsInBurst: 20
+--- !u!114 &11400022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 7
+  fireRate: 5
+  spread: 0
+  fireInSync: 0
+  bulletType: 4
+  bulletDesc: {fileID: 0}
+--- !u!114 &11400024
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletType: 4
+  prefab: {fileID: 100000, guid: 45a2992e1734b754f80ede03d4861c0e, type: 2}
+  count: 50
+  moveSpeed: 250
+  maxDistance: 1000
+  damage: 500
+  smartBullet: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

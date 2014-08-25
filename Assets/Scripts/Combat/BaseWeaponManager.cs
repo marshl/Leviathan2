@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class BaseWeaponManager : MonoBehaviour
+public class BaseWeaponManager : MonoBehaviour
 {
 	public BaseHealth health;
 

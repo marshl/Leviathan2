@@ -175,8 +175,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPauseDuration: .10000000149011612
-  defaultPlayerType: 3
-  createCapitalShip: 1
+  defaultPlayerType: 1
+  createCapitalShip: 0
 --- !u!4 &122270341
 Transform:
   m_ObjectHideFlags: 0
@@ -283,6 +283,7 @@ GameObject:
   - 114: {fileID: 375129946}
   - 114: {fileID: 375129945}
   - 114: {fileID: 375129948}
+  - 114: {fileID: 375129949}
   m_Layer: 0
   m_Name: BulletDescriptors
   m_TagString: Untagged
@@ -373,6 +374,25 @@ MonoBehaviour:
   moveSpeed: 150
   maxDistance: 125
   damage: 15
+  smartBullet: 0
+--- !u!114 &375129949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400024, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 1844711078}
+  m_GameObject: {fileID: 375129943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletType: 4
+  prefab: {fileID: 100000, guid: 45a2992e1734b754f80ede03d4861c0e, type: 2}
+  count: 50
+  moveSpeed: 250
+  maxDistance: 1000
+  damage: 500
   smartBullet: 0
 --- !u!1 &826805431
 GameObject:
@@ -763,11 +783,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: defaultPlayerType
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: createCapitalShip
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
@@ -788,6 +808,7 @@ GameObject:
   - 114: {fileID: 1271608246}
   - 114: {fileID: 1271608245}
   - 114: {fileID: 1271608250}
+  - 114: {fileID: 1271608251}
   m_Layer: 0
   m_Name: WeaponDescriptors
   m_TagString: Untagged
@@ -916,6 +937,24 @@ MonoBehaviour:
   bulletDesc: {fileID: 0}
   timeBetweenBursts: 5
   shotsInBurst: 20
+--- !u!114 &1271608251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400022, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 1844711078}
+  m_GameObject: {fileID: 1271608243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 7
+  fireRate: 5
+  spread: 0
+  fireInSync: 0
+  bulletType: 4
+  bulletDesc: {fileID: 0}
 --- !u!1 &1386790545
 GameObject:
   m_ObjectHideFlags: 0

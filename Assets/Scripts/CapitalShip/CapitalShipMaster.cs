@@ -31,6 +31,8 @@ public class CapitalShipMaster : MonoBehaviour
 
 			this.health.team = this.owner.team;
 			this.owner.capitalShip = this;
+
+			this.turrets.CreateTurrets();
 		}
 	}
 #endif
