@@ -11,12 +11,12 @@ public class TractorBeam : MonoBehaviour
 	};
 
 	public CapitalShipMaster master;
-	public float chargePercentage = 100.0f;
-	public float chargeDrain = 15.0f;
-	public float chargeRegeneration = 10.0f;
+	public float chargePercentage;
+	public float chargeDrain;
+	public float chargeRegeneration;
 	//public float maximumRange = 100000.0f;
-	public float strengthMultiplier = 1.0f;
-	public float dragOverride = 300;
+	public float strengthMultiplier;
+	public float dragOverride;
 
 	private bool tractorActive = false;
 	private GameObject currentTarget;

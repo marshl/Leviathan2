@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CapitalHealth : BaseHealth 
 {
-	public int shieldGenerators = 10;
+	public int shieldGenerators;
 	public float baseShields; //Our base shields, the capital ship gets this * shieldGenerators final max shield
 	public bool overrideShieldGenerators = false;
 

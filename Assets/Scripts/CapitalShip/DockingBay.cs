@@ -5,7 +5,7 @@ public class DockingBay : MonoBehaviour
 {
 	public CapitalShipMaster capitalShip;
 
-	public int maximumShips = 4;
+	public int maximumShips;
 	public int currentShips = 0;
 
 	[System.Serializable]
@@ -21,8 +21,6 @@ public class DockingBay : MonoBehaviour
 	
 	public int bayID;
 
-	public Renderer bayRenderer;
-
 	private void Start()
 	{
 		int idCounter = ((int)(this.capitalShip.health.team) * 1000) + (bayID * 10 + 1);
@@ -31,16 +29,6 @@ public class DockingBay : MonoBehaviour
 			newSlot.slotID = idCounter;
 			idCounter++;
 		}
-
-		if(capitalShip.owner.team == TEAM.TEAM_1)
-		{
-			bayRenderer.material.color = new Color(0.5f,1.0f,0.5f);
-		}
-		else
-		{
-			bayRenderer.material.color = new Color(0.5f, 0.5f, 1.0f);
-		}
-
 	}
 
 	private void OnTriggerEnter( Collider _other )
