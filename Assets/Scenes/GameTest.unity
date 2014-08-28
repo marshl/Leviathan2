@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPauseDuration: .10000000149011612
   defaultPlayerType: 1
-  createCapitalShip: 0
+  createCapitalShip: 1
 --- !u!4 &122270341
 Transform:
   m_ObjectHideFlags: 0
@@ -928,7 +928,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: createCapitalShip
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: capitalShipPrefab

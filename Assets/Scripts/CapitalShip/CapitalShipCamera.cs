@@ -4,49 +4,19 @@ using System.Xml;
 
 public class CapitalShipCamera : MonoBehaviour
 {
-	/// <summary>
-	/// The transform around which this camera will rotate
-	/// </summary>
-	public Transform targetTransform;
-
-	/// <summary>
-	/// The rate at which the camera will move to the left and right
-	/// </summary>
+	public CapitalShipMaster masterScript;
+	
 	public float xSpeed;
-
-	/// <summary>
-	/// The rate at which the camrea will move up and down
-	/// </summary>
 	public float ySpeed;
-
-	/// <summary>
-	/// The minimum distance the camera can be from the target
-	/// </summary>
+	
 	public float distanceMin;
-
-	/// <summary>
-	/// The maximum distance the camera can be from the target
-	/// </summary>
 	public float distanceMax;
-
-	/// <summary>
-	/// The rate at which the camera can be zoomed out per second
-	/// </summary>
+	
 	public float scrollRate;
-
-	/// <summary>
-	/// The current distance away from the target
-	/// </summary>
+	
 	public float currentDistance = 10.0f;
-
-	/// <summary>
-	/// The current left-right (longitudinal) angle around the target
-	/// </summary>
+	
 	private float x = 0.0f;
-
-	/// <summary>
-	/// The current up-down (latitudinal) angle around the target
-	/// </summary>
 	private float y = 0.0f;
 
 	public void Awake ()
@@ -70,7 +40,7 @@ public class CapitalShipCamera : MonoBehaviour
 		}
 
         Quaternion rotation = Quaternion.Euler( y, x, 0 );
-        Vector3 position = rotation * new Vector3( 0.0f, 0.0f, -this.currentDistance ) + this.targetTransform.position;
+        Vector3 position = rotation * new Vector3( 0.0f, 0.0f, -this.currentDistance ) + this.masterScript.transform.position;
         
         this.transform.rotation = rotation;
     	this.transform.position = position;

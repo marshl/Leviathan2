@@ -67,8 +67,11 @@ public class TractorBeam : MonoBehaviour
 							StopTractor();
 						}
 
-						FireAtTarget(hit.collider.gameObject, tractorUITargetType);
-						GameNetworkManager.instance.SendTractorStartMessage (this.networkView.viewID, tractorUITargetType, hit.collider.networkView.viewID);
+						if ( hit.collider.GetComponent<FighterMaster>() != null )
+						{
+							FireAtTarget(hit.collider.gameObject, tractorUITargetType);
+							GameNetworkManager.instance.SendTractorStartMessage (this.networkView.viewID, tractorUITargetType, hit.collider.networkView.viewID);
+						}
 					}
 				}
 			}

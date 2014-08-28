@@ -71,7 +71,7 @@ public class PlayerInstantiator : MonoBehaviour
 #if UNITY_EDITOR
 		masterScript.dummyShip = Network.peerType == NetworkPeerType.Disconnected 
 			&& GameNetworkManager.instance.createCapitalShip
-			&& GamePlayerManager.instance.myPlayer.playerType != PLAYER_TYPE.COMMANDER1;
+			&& _player != GamePlayerManager.instance.myPlayer;
 
 
 
@@ -88,7 +88,7 @@ public class PlayerInstantiator : MonoBehaviour
 				Quaternion.identity ) as GameObject;
 
 			CapitalShipCamera cameraScript = cameraObj.GetComponent<CapitalShipCamera>();
-			cameraScript.targetTransform = capitalObj.transform;
+			cameraScript.masterScript = masterScript;
 		}
 		DebugConsole.Log( "Creating capital ship for player " + _player.id + " on team " + _player.team, capitalObj );
 

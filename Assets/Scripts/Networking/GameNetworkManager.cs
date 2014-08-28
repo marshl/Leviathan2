@@ -274,14 +274,17 @@ public class GameNetworkManager : BaseNetworkManager
 	{
 		DebugConsole.Log( "Local game start" );
 
-		if ( this.createCapitalShip && GamePlayerManager.instance.myPlayer.playerType != PLAYER_TYPE.COMMANDER1 )
-		{
-			GamePlayer capitalPlayer = GamePlayerManager.instance.AddPlayerOfType( -2, PLAYER_TYPE.COMMANDER1 );
-			PlayerInstantiator.instance.CreatePlayerObject( capitalPlayer );
-		}
-
 		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
 		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer );
+
+		if ( this.createCapitalShip )
+		{
+			PLAYER_TYPE dummyType = GamePlayerManager.instance.myPlayer.playerType == PLAYER_TYPE.COMMANDER1
+				? PLAYER_TYPE.COMMANDER2 : PLAYER_TYPE.COMMANDER1;
+
+			GamePlayer capitalPlayer = GamePlayerManager.instance.AddPlayerOfType( -2, dummyType );
+			PlayerInstantiator.instance.CreatePlayerObject( capitalPlayer );
+		}
 	}
 #endif
 

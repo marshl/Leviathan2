@@ -3483,7 +3483,7 @@ MonoBehaviour:
   mainButtonOffset: {x: 50, y: 50}
   mainButtonGap: {x: 0, y: 5}
   defaultGameName: GAME_NAME
-  defaultGamePort: 
+  defaultGamePort: 25535
   defaultGameDescription: DESCRIPTION
   gameNameLengthLimit: 10
   createGameLabelScale: {x: 150, y: 20}
