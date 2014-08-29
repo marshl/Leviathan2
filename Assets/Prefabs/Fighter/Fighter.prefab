@@ -10,8 +10,8 @@ GameObject:
   - 4: {fileID: 400000}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
-  m_Layer: 0
-  m_Name: GameObject
+  m_Layer: 12
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,13 +253,15 @@ MonoBehaviour:
   turnSpeed: 11500
   rollSpeed: 50
   acceleration: 4500
-  maxSpeed: 9000
+  maxSpeed: 18000
   desiredSpeed: 0
   minSpeed: -400
   rollDamping: .300000012
-  undockingSpeed: 50
+  undockingSpeed: 25000
   contactPushForce: 4
   contactTorque: 75
+  deadFlyingSpeed: 8000
+  deadSpinSpeed: 1500
   turnExtents: .699999988
 --- !u!114 &11400002
 MonoBehaviour:
@@ -416,11 +418,13 @@ MonoBehaviour:
   capitalShip: {fileID: 0}
   respawnDelay: 5
   respawnTimer: 0
+  outOfControlDuration: 2.5
   currentSlot:
     landedPosition: {fileID: 0}
     landedFighter: {fileID: 0}
     occupied: 0
     slotID: 0
+  model: {fileID: 2300000}
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1

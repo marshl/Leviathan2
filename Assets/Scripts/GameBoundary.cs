@@ -23,9 +23,8 @@ public class GameBoundary : MonoBehaviour
 		}
 	} 
 
-	// Update the display ring of teh boundary in real time if in the editor, to give an idea on the scale
+	// Update the display ring of the boundary in real time if in the editor, to give an idea on the scale
 #if UNITY_EDITOR
-
 	private void Update()
 	{
 		LineRenderer line = this.GetComponent<LineRenderer>();
@@ -36,6 +35,5 @@ public class GameBoundary : MonoBehaviour
 			line.SetPosition( i, offset * this.radius + this.origin );
 		}
 	}
-
 #endif
 }

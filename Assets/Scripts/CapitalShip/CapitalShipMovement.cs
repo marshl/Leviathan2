@@ -551,11 +551,6 @@ public class CapitalShipMovement : MonoBehaviour
 			if ( i > 0 )
 			{
 				lineLength += (pos - _pointList[i-1]).magnitude;
-
-				if ( lineLength > pathLength )
-				{
-					DebugConsole.Error( "Not enough path length to cover curve. Need at least " + arcRadius * Mathf.PI );
-				}
 			}
 		}
 
@@ -590,7 +585,6 @@ public class CapitalShipMovement : MonoBehaviour
 
 		for ( int i = 0; i < this.rotationSegmentCount; ++i )
 		{
-
 			_segments[i].SetActive( i >= minActiveSegments && i <= maxActiveSegments );
 		}
 	}

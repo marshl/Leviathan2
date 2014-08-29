@@ -16,19 +16,24 @@ public class FighterHealth : BaseHealth
 
 	public override void Update()
 	{
-		if ( this.currentHealth <= 0
-		  && this.masterScript.state != FighterMaster.FIGHTERSTATE.DEAD )
+		if ( Network.peerType == NetworkPeerType.Disconnected
+		    || this.networkView.isMine )
 		{
-			this.currentHealth = 0;
-			this.masterScript.Die( this.DetermineExplosion() );
-		}
-		else
-		{
-			this.RegenerateShields();
+			if ( this.currentHealth <= 0
+			  && this.masterScript.state != FighterMaster.FIGHTERSTATE.DEAD
+			  && this.masterScript.state != FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL )
+			{
+				this.currentHealth = 0;
+				this.masterScript.OnLethalDamage();
+			}
+			else
+			{
+				this.RegenerateShields();
+			}
 		}
 	}
 
-	protected int DetermineExplosion()
+	/*protected int DetermineExplosion()
 	{
 		float leftoverDamage = this.currentHealth * -1;
 		int deathType = 0; //0 is the default death, 1 is if they really got wrecked
@@ -39,7 +44,5 @@ public class FighterHealth : BaseHealth
 		}
 
 		return deathType;
-	}
-
-
+	}*/
 }

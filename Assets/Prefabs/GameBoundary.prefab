@@ -41,7 +41,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0, z: 0}
-  radius: 15000
+  radius: 5000
   lineVertices: 90
 --- !u!120 &12000000
 LineRenderer:

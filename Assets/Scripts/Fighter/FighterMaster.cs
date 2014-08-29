@@ -8,6 +8,7 @@ public class FighterMaster : MonoBehaviour
 		DOCKED,
 		UNDOCKING,
 		FLYING,
+		OUT_OF_CONTROL,
 		DEAD
 	};
 	public FIGHTERSTATE state = FIGHTERSTATE.FLYING;
@@ -22,10 +23,13 @@ public class FighterMaster : MonoBehaviour
 
 	private bool ownerInitialised = false;
 	
-	public float respawnDelay = 5.0f;
-	public float respawnTimer = 0.0f;
+	public float respawnDelay;
+	public float respawnTimer;
+
+	public float outOfControlDuration;
 	
 	public DockingBay.DockingSlot currentSlot;
+	public Renderer model;
 
 #if UNITY_EDITOR
 	protected void Start()
@@ -65,35 +69,28 @@ public class FighterMaster : MonoBehaviour
 
 			if ( Input.GetKeyDown( KeyCode.P ) )
 			{
-				this.Die( 0 );
+				this.OnLethalDamage();
 			}
 
-			switch ( this.state )
-			{
-			case FIGHTERSTATE.FLYING:
-			{
-				break;
-			}
-			case FIGHTERSTATE.DOCKED:
+			if ( this.state == FIGHTERSTATE.DOCKED )
 			{
 				if ( Input.GetKeyDown( KeyCode.Space ) 
-				  && !GameMessages.instance.typing )
+				    && !GameMessages.instance.typing )
 				{
 					this.Undock();
 				}
-				break;
 			}
-			case FIGHTERSTATE.UNDOCKING:
+			else if ( this.state == FIGHTERSTATE.OUT_OF_CONTROL
+			       || this.state == FIGHTERSTATE.DEAD )
 			{
-				break;
-			}
-			case FIGHTERSTATE.DEAD:
-			{
-				if ( this.respawnTimer > 0 )
+				this.respawnTimer -= Time.deltaTime;
+
+				if ( this.respawnDelay - this.respawnTimer >= this.outOfControlDuration )
 				{
-					this.respawnTimer -= Time.deltaTime;
+					this.OnOutOfControlExpiration();
 				}
-				else
+
+				if ( this.respawnTimer <= 0.0f )
 				{
 					this.respawnTimer = 0.0f;
 					if ( Input.GetKeyDown( KeyCode.Space ) )
@@ -101,12 +98,6 @@ public class FighterMaster : MonoBehaviour
 						this.Respawn();
 					}
 				}
-				break;
-			}
-			default:
-			{
-				break;
-			}
 			}
 		}
 	}
@@ -177,9 +168,7 @@ public class FighterMaster : MonoBehaviour
 			}
 		}
 
-		this.health.FullHeal();
-		this.movement.OnRespawn();
-		this.weapons.OnRespawn();
+		this.ToggleEnabled( true, true );
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
@@ -192,7 +181,6 @@ public class FighterMaster : MonoBehaviour
 		}
 		else
 		{
-
 			DebugConsole.Warning( "No docking bays found", this );
 			this.transform.position = Vector3.zero;
 			this.transform.rotation = Quaternion.identity;
@@ -202,11 +190,11 @@ public class FighterMaster : MonoBehaviour
 		}
 	}
 	
-	public void Die( int explosionType )
+	public void OnLethalDamage()
 	{
 		respawnTimer = respawnDelay; 
-		
-		this.state = FIGHTERSTATE.DEAD;
+
+		this.state = FIGHTERSTATE.OUT_OF_CONTROL;
 
 		if ( this.health.lastHitBy != NetworkViewID.unassigned )
 		{
@@ -220,7 +208,33 @@ public class FighterMaster : MonoBehaviour
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendDeadFighterMessage( this.networkView.viewID );
+			GameNetworkManager.instance.SendDeadFighterMessage( Common.MyNetworkID() );
+		}
+
+		this.rigidbody.AddTorque( Common.RandomDirection() );
+	}
+
+	private void OnOutOfControlExpiration()
+	{
+		this.state = FIGHTERSTATE.DEAD;
+		this.ToggleEnabled( false, true );
+	}
+
+	private void ToggleEnabled( bool _enabled, bool _local )
+	{
+		this.collider.enabled = _enabled;
+		this.model.enabled = _enabled;
+
+		if ( _enabled )
+		{
+			this.health.FullHeal();
+			this.movement.OnRespawn();
+			this.weapons.OnRespawn();
+			this.health.lastHitBy = NetworkViewID.unassigned;
+		}
+		else
+		{
+			this.rigidbody.velocity = this.rigidbody.angularVelocity = Vector3.zero;
 		}
 	}
 
@@ -253,7 +267,6 @@ public class FighterMaster : MonoBehaviour
 
 	public void Undock()
 	{
-		DebugConsole.Log( "Undocking", this );
 		this.rigidbody.constraints = RigidbodyConstraints.None;
 	
 		this.state = FIGHTERSTATE.UNDOCKING;
@@ -277,31 +290,31 @@ public class FighterMaster : MonoBehaviour
 		this.state = FIGHTERSTATE.FLYING;
 	}
 	
-	private void OnGUI()
+	private void OnCollisionEnter( Collision _collision )
 	{
-		if ( this.state == FIGHTERSTATE.DEAD )
+		if ( Network.peerType == NetworkPeerType.Disconnected || this.networkView.isMine )
 		{
-			if(respawnTimer > 0)
+			if ( this.state == FIGHTERSTATE.OUT_OF_CONTROL )
 			{
-				GUI.Label (new Rect((Screen.width / 2) - 200, Screen.height / 2, 300, 50), "Respawn available in " + respawnTimer + " seconds");
-			}
-			else
-			{
-				GUI.Label (new Rect((Screen.width / 2) - 200, Screen.height / 2, 300, 50), "Press Space to respawn");
+				this.OnOutOfControlExpiration();
 			}
 		}
 	}
 
-	public void FighterDestroyedNetwork()
+	public void OnOutOfControlNetworkMessage()
 	{
-		this.state = FIGHTERSTATE.DEAD;
-		this.gameObject.collider.enabled = false;
+		this.state = FIGHTERSTATE.OUT_OF_CONTROL;
+	}
+
+	public void OnDestroyFighterNetworkMessage()
+	{
+		this.state = FIGHTERSTATE.OUT_OF_CONTROL;
+		this.ToggleEnabled( false, false );
 	}
 	
-	public void FighterRespawnedNetwork()
+	public void OnRespawnFighterNetworkMessage()
 	{
 		this.state = FIGHTERSTATE.FLYING;
-		this.gameObject.collider.enabled = true;
-		this.health.FullHeal();
+		this.ToggleEnabled( true, false );
 	}
 }

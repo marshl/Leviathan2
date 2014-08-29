@@ -20,7 +20,7 @@ public class BaseHealth : MonoBehaviour
 
 	public bool isIndestructible;
 
-	public NetworkViewID lastHitBy;
+	public NetworkViewID lastHitBy = NetworkViewID.unassigned;
 
 #if UNITY_EDITOR
 	protected virtual void Start()
@@ -68,7 +68,6 @@ public class BaseHealth : MonoBehaviour
 		{
 			TargetManager.instance.DealDamageNetwork( this.networkView.viewID, _damage, _source );
 		}
-
 	}
 
 	public virtual void Update()
@@ -92,7 +91,6 @@ public class BaseHealth : MonoBehaviour
 					this.currentShield = this.maxShield;
 				}
 			}
-			
 		}
 		else
 		{

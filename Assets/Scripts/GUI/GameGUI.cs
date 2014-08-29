@@ -90,7 +90,8 @@ public class GameGUI : MonoBehaviour
 		{
 			if ( this.player.fighter != null )
 			{
-				this.guiMode = this.player.fighter.state == FighterMaster.FIGHTERSTATE.DEAD
+				this.guiMode = ( this.player.fighter.state == FighterMaster.FIGHTERSTATE.DEAD
+					|| this.player.fighter.state == FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL )
 					? GUI_MODE.FIGHTER_RESPAWNING : GUI_MODE.FIGHTER;
 			}
 			else if ( this.player.capitalShip != null )
@@ -196,6 +197,15 @@ public class GameGUI : MonoBehaviour
 		}
 		case GUI_MODE.FIGHTER_RESPAWNING:
 		{
+			float respawnTimer = this.player.fighter.respawnTimer;
+			if ( respawnTimer > 0 )
+			{
+				GUI.Label (new Rect((Screen.width / 2) - 200, Screen.height / 2, 300, 50), "Respawn available in " + respawnTimer + " seconds");
+			}
+			else
+			{
+				GUI.Label (new Rect((Screen.width / 2) - 200, Screen.height / 2, 300, 50), "Press Space to respawn");
+			}
 			break;
 		}
 		case GUI_MODE.CAPITAL:

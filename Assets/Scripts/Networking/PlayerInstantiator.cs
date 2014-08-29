@@ -46,7 +46,15 @@ public class PlayerInstantiator : MonoBehaviour
  
 	private GameObject CreateCapitalShip( GamePlayer _player )
 	{   
-		Vector3 shipPos = _player.team == TEAM.TEAM_1 ? new Vector3( -500.0f, 0.0f, 0.0f ) : new Vector3( 500.0f, 0.0f, 0.0f );
+		Vector3 origin = GameBoundary.instance.transform.position;
+		Vector3 offset = new Vector3( GameBoundary.instance.radius, 0.0f, 0.0f );
+		Vector3 shipPos = _player.team == TEAM.TEAM_1 ? 
+			origin + offset : origin - offset;
+
+		Quaternion shipRot = Quaternion.LookRotation( _player.team == TEAM.TEAM_1
+			? new Vector3( -1, 0, 0 ) : new Vector3( 1, 0, 0 ) ); 
+
+		//Vector3 shipPos = _player.team == TEAM.TEAM_1 ? new Vector3( -500.0f, 0.0f, 0.0f ) : new Vector3( 500.0f, 0.0f, 0.0f );
 		GameObject capitalObj;
 		// Used for testing scenes
 		if ( Network.peerType == NetworkPeerType.Disconnected )
@@ -54,14 +62,14 @@ public class PlayerInstantiator : MonoBehaviour
 			capitalObj = GameObject.Instantiate(
 				this.capitalShipPrefab,
 				shipPos,
-				Quaternion.identity ) as GameObject;
+				shipRot ) as GameObject;
 		}
 		else // Normal operation
 		{
 			capitalObj = Network.Instantiate(
 				this.capitalShipPrefab,
 				shipPos,
-				Quaternion.identity,
+				shipRot,
 				0 ) as GameObject;
 		}
 
@@ -72,8 +80,6 @@ public class PlayerInstantiator : MonoBehaviour
 		masterScript.dummyShip = Network.peerType == NetworkPeerType.Disconnected 
 			&& GameNetworkManager.instance.createCapitalShip
 			&& _player != GamePlayerManager.instance.myPlayer;
-
-
 
 		if ( masterScript.dummyShip == false )
 #endif
@@ -116,13 +122,15 @@ public class PlayerInstantiator : MonoBehaviour
 				0 ) as GameObject;
 		}
 
+		FighterMaster fighterScript = fighterObj.GetComponent<FighterMaster>();
+
 		GameObject cameraObj = GameObject.Instantiate(
 			this.fighterCameraPrefab,
 			fighterObj.transform.position,
 			Quaternion.identity ) as GameObject;
 
 		FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
-		cameraScript.fighter = fighterObj;
+		cameraScript.fighter = fighterScript;
 
 		DebugConsole.Log( "Creating fighter for player " + _player.id + " on team " + _player.team, fighterObj );
 

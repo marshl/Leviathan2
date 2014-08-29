@@ -68,8 +68,8 @@ public static class DebugConsole
 
 	public static void ProcessInput()
 	{
+		input = input.ToLower();
 		AddLine( "> " + input );
-
 		string[] chunks = input.Split( ' ' );
 
 		if ( chunks.Length == 0 )

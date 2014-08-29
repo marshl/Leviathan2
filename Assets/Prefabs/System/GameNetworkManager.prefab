@@ -30,6 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -42,7 +43,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPauseDuration: .10000000149011612
-  defaultPlayerType: 1
+  defaultPlayerType: 3
+  createCapitalShip: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -56,12 +58,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fighterPrefab: {fileID: 100006, guid: e152e05dbd9d77f42958a061d50fa1ff, type: 2}
   fighterCameraPrefab: {fileID: 100000, guid: 6670cb600fcb2e145ae5c47826b0ec9a, type: 2}
-  capitalShipPrefab: {fileID: 100000, guid: 2fab836f6ab441a4caa7b26fee1fa13f, type: 2}
+  capitalShipPrefab: {fileID: 100000, guid: 4b394748051739844ab21be399e4ca34, type: 2}
   capitalPathLinePrefab: {fileID: 100000, guid: 97ee7467a0e155b478e63dcc80140dc5,
     type: 2}
   capitalCameraPrefab: {fileID: 100000, guid: 82ddd68b8858ea9449b324333a204b4d, type: 2}
-  testingFighters: 0
-  overrideSelection: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1

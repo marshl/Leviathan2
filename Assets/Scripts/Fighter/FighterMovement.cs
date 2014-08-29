@@ -17,7 +17,10 @@ public class FighterMovement : MonoBehaviour
 
 	public float contactPushForce;
 	public float contactTorque;
-	
+
+	public float deadFlyingSpeed;
+	public float deadSpinSpeed;
+
 	/// <summary>
 	/// The distance from the centre of the screen at which the turn amout will be maximum
 	/// Example: A value of 1/3 means that the the mouse outside an ellipse with extentes 1/3
@@ -46,21 +49,17 @@ public class FighterMovement : MonoBehaviour
 				{
 					this.CheckFlightControls();
 				}
-				this.ApplyDrag();
 				break;
 			}
 			case FighterMaster.FIGHTERSTATE.UNDOCKING:
 			{
-				if ( this.masterScript.capitalShip != null )
-				{
-					float speed = this.masterScript.capitalShip.movement.currentMovementSpeed;
-					Vector3 direction = this.masterScript.capitalShip.transform.forward;
-					this.rigidbody.velocity = direction * speed + this.transform.forward * this.undockingSpeed;
-				}
+				this.rigidbody.AddForce( this.transform.forward * this.undockingSpeed * Time.deltaTime );
 				break;
 			}
-			default:
+			case FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL:
 			{
+				this.rigidbody.AddForce( this.transform.forward * this.deadFlyingSpeed * Time.deltaTime );
+				this.rigidbody.AddTorque( this.rigidbody.angularVelocity.normalized * this.deadSpinSpeed * Time.deltaTime );
 				break;
 			}
 			}

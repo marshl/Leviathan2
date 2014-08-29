@@ -141,46 +141,44 @@ public class GameNetworkManager : BaseNetworkManager
 		this.networkView.RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_bulletType, _index );
 	}
 
-	public void SendDeadFighterMessage( NetworkViewID _id)
+	public void SendOutOfControlFigherMessage( int _playerID )
 	{
-		this.networkView.RPC ("OnDeadFighterRPC",RPCMode.All,_id);
+		this.networkView.RPC( "OnOutOfControlFighterRPC", RPCMode.Others, _playerID );
 	}
 
 	[RPC]
-	private void OnDeadFighterRPC( NetworkViewID _id)
+	private void OnOutOfControlFighterRPC( int _playerID )
 	{
-		BaseHealth health = TargetManager.instance.GetTargetWithID( _id );
-		if ( health == null )
-		{
-			DebugConsole.Error( "Could not find fighter" );
-			return;
-		}
-		FighterHealth fighterHealth = health as FighterHealth;
-		if ( fighterHealth == null )
-		{
-			DebugConsole.Error( "Could not convert BaseHealth to FigherHealth" );
-			return;
-		}
-
-		fighterHealth.masterScript.FighterDestroyedNetwork();
+		GamePlayerManager.instance.GetPlayerWithID( _playerID ).fighter.OnOutOfControlNetworkMessage();
 	}
+
+
+	public void SendDeadFighterMessage( int _playerID )
+	{
+		this.networkView.RPC( "OnDeadFighterRPC", RPCMode.Others, _playerID );
+	}
+	[RPC]
+	private void OnDeadFighterRPC( int _playerID )
+	{
+		GamePlayerManager.instance.GetPlayerWithID( _playerID ).fighter.OnDestroyFighterNetworkMessage();
+	}
+
 
 	public void SendDeadShieldMessage( NetworkViewID _id)
 	{
 		this.networkView.RPC ("OnDeadShieldRPC",RPCMode.All,_id);
 	}
-	
 	[RPC]
-	private void OnDeadShieldRPC( NetworkViewID _id)
+	private void OnDeadShieldRPC( NetworkViewID _id )
 	{
-		TargetManager.instance.GetTargetWithID(_id).GetComponent<ShieldGeneratorHealth>().ShieldDestroyedNetwork();
+		TargetManager.instance.GetTargetWithID( _id ).GetComponent<ShieldGeneratorHealth>().ShieldDestroyedNetwork();
 	}
+
 
 	public void SendRespawnedFighterMessage( NetworkViewID _id )
 	{
-		this.networkView.RPC ("OnRespawnedFighterRPC",RPCMode.All,_id);
+		this.networkView.RPC( "OnRespawnedFighterRPC", RPCMode.Others, _id );
 	}
-
 	[RPC]
 	private void OnRespawnedFighterRPC( NetworkViewID _id )
 	{
@@ -196,7 +194,7 @@ public class GameNetworkManager : BaseNetworkManager
 			DebugConsole.Error( "Could not convert BaseHealth to FigherHealth" );
 			return;
 		}
-		fighterHealth.masterScript.FighterRespawnedNetwork();
+		fighterHealth.masterScript.OnRespawnFighterNetworkMessage();
 	}
 
 	[RPC]

@@ -163,8 +163,7 @@ public class NetworkPositionControl : MonoBehaviour
 			 Quaternion.Angle( this.olderData.rotation, this.newerData.rotation ) * multiplier, this.axis
 	    );
 
-
-		if ( this.rigidbody != null )
+		if ( this.rigidbody != null && this.olderData.velocity.magnitude > 0.0f )
 		{
 			Vector3 velocityGuess = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, multiplier );
 			Vector3 desiredPos = this.newerData.position + (float)timeSince * velocityGuess;
