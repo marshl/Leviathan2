@@ -20,11 +20,13 @@ public class BaseHealth : MonoBehaviour
 
 	public bool isIndestructible;
 
-	public NetworkViewID lastHitBy = NetworkViewID.unassigned;
+	public NetworkViewID lastHitBy;// = NetworkViewID.unassigned;
 
 #if UNITY_EDITOR
 	protected virtual void Start()
 	{
+		this.lastHitBy = NetworkViewID.unassigned;
+
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			TargetManager.instance.AddTarget( this );
