@@ -18,6 +18,7 @@ public class TurretBehavior : BaseWeaponManager
 	public float fireLockAngle;
 	
 	public NetworkOwnerControl ownerControl;
+	private Quaternion awakeRot;
 	private bool ownerInitialised = false;
 
 	protected override void Awake()
@@ -27,6 +28,7 @@ public class TurretBehavior : BaseWeaponManager
 		this.restrictions.types = (int)( TARGET_TYPE.FIGHTER );
 		this.restrictions.ignoreBelowHorizon = true;
 		this.restrictions.transform = this.arm;
+		awakeRot = this.transform.rotation;
 	}
 
 #if UNITY_EDITOR
@@ -122,10 +124,10 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			Quaternion yRot = Quaternion.Euler( new Vector3(0, newRot.eulerAngles.y, 0) );
 
-			joint.rotation = Quaternion.Slerp( joint.rotation, yRot, Time.deltaTime * rotationSpeed );
+			//joint.rotation = awakeRot * Quaternion.Slerp( joint.rotation, yRot, Time.deltaTime * rotationSpeed );
 
 			Quaternion zRot = Quaternion.Euler( new Vector3( newRot.eulerAngles.x, joint.rotation.eulerAngles.y, joint.rotation.eulerAngles.z ) );
-			arm.rotation = Quaternion.Slerp( arm.rotation, zRot, Time.deltaTime * rotationSpeed );
+			arm.rotation = awakeRot * Quaternion.Slerp( arm.rotation, zRot, Time.deltaTime * rotationSpeed );
 		}
 		else
 		{

@@ -34,6 +34,14 @@ public class FighterMovement : MonoBehaviour
 	private void Start()
 	{
 		screenRatio = (float)Screen.width / (float)Screen.height;
+
+		turnSpeed *= this.transform.localScale.x;
+		rollSpeed *= this.transform.localScale.x;
+		acceleration *= this.transform.localScale.x; 
+		maxSpeed *= this.transform.localScale.x;
+		undockingSpeed *= this.transform.localScale.x;
+		deadFlyingSpeed *= this.transform.localScale.x;
+		deadSpinSpeed *= this.transform.localScale.x;
 	}
 	
 	private void LateUpdate()
