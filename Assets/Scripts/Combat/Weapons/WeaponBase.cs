@@ -44,6 +44,12 @@ public class WeaponBase : MonoBehaviour
 		this.timeSinceShot += Time.deltaTime;
 	}
 
+	public void SetWeaponType( WEAPON_TYPE _weaponType )
+	{
+		this.weaponType = _weaponType;
+		this.InitialiseDescriptors();
+	}
+
 	/// <summary>
 	/// Initialises all of the descriptors on this weapon, including all inherited weapon types
 	/// </summary>

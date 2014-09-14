@@ -24,7 +24,6 @@ public class FighterWeapons : BaseWeaponManager
 #if UNITY_EDITOR
 		if ( this.master.dummyShip == false )
 #endif
-		{
 		if ( ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		 && this.master.state == FighterMaster.FIGHTERSTATE.FLYING )
 		{
@@ -71,7 +70,19 @@ public class FighterWeapons : BaseWeaponManager
 			{
 				this.SwitchToNextMissileTargettingMe();
 			}
-		}
+
+			if ( Input.GetKeyDown( KeyCode.Alpha1 ) )
+			{
+				this.laserWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_1 );
+			}
+			else if ( Input.GetKeyDown( KeyCode.Alpha2 ) )
+			{
+				this.laserWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_2 );
+			}
+			else if ( Input.GetKeyDown( KeyCode.Alpha3 ) )
+			{
+				this.laserWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_3 );
+			}
 		}
 	}
 

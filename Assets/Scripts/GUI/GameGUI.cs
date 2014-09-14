@@ -96,6 +96,7 @@ public class GameGUI : MonoBehaviour
 			this.RenderFighterTargets();
 			this.RenderCapitalShipDisplay();
 			this.RenderFighterSpeed();
+			this.RenderFighterWeapons();
 			break;
 		}
 		case GUI_MODE.FIGHTER_RESPAWNING:
@@ -246,5 +247,9 @@ public class GameGUI : MonoBehaviour
 		}
 	}
 
-
+	private void RenderFighterWeapons()
+	{
+		FighterWeapons weaponScript = this.player.fighter.weapons;
+		GUI.Label( new Rect( 0, 200, 150, 50 ), "Weapon: " + weaponScript.laserWeapon.weaponDesc.label );
+	}
 }

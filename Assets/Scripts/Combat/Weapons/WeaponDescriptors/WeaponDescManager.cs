@@ -30,7 +30,7 @@ public class WeaponDescManager : MonoBehaviour
 	/// </summary>
 	private void FindWeaponDescriptors()
 	{
-		WeaponDescriptor[] descArray = this.gameObject.GetComponents<WeaponDescriptor>();
+		WeaponDescriptor[] descArray = this.gameObject.GetComponentsInChildren<WeaponDescriptor>();
 		foreach ( WeaponDescriptor weaponDesc in descArray )
 		{
 			if ( descriptorMap.ContainsKey( weaponDesc.weaponType ) )
