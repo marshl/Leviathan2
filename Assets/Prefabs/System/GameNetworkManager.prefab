@@ -44,7 +44,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPauseDuration: .10000000149011612
   defaultPlayerType: 3
-  createCapitalShip: 1
+  createDummies: 1
+  dummiesToCreate: 0100000002000000
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

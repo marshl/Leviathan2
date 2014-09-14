@@ -21,7 +21,11 @@ public class FighterWeapons : BaseWeaponManager
 
 	private void Update()
 	{
-		if( ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+#if UNITY_EDITOR
+		if ( this.master.dummyShip == false )
+#endif
+		{
+		if ( ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		 && this.master.state == FighterMaster.FIGHTERSTATE.FLYING )
 		{
 			if ( TargetManager.instance.IsValidTarget( this.currentTarget, this ) == false )
@@ -67,6 +71,7 @@ public class FighterWeapons : BaseWeaponManager
 			{
 				this.SwitchToNextMissileTargettingMe();
 			}
+		}
 		}
 	}
 

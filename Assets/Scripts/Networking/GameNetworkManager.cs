@@ -11,7 +11,10 @@ public class GameNetworkManager : BaseNetworkManager
 
 #if UNITY_EDITOR
 	public PLAYER_TYPE defaultPlayerType;
-	public bool createCapitalShip;
+	public bool createDummies;
+	public PLAYER_TYPE[] dummiesToCreate;
+
+	public PLAYER_TYPE lastCreatedDummy;
 #endif
 
 	protected void Awake()
@@ -103,7 +106,7 @@ public class GameNetworkManager : BaseNetworkManager
 	{
 		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( Common.MyNetworkID() );
 
-		PlayerInstantiator.instance.CreatePlayerObject( player );
+		PlayerInstantiator.instance.CreatePlayerObject( player, false );
 		this.gameHasStarted = true;
 	}
 
@@ -273,15 +276,33 @@ public class GameNetworkManager : BaseNetworkManager
 		DebugConsole.Log( "Local game start" );
 
 		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
-		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer );
+		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer, false );
 
-		if ( this.createCapitalShip )
+		/*if ( this.createCapitalShip1 )
 		{
 			PLAYER_TYPE dummyType = GamePlayerManager.instance.myPlayer.playerType == PLAYER_TYPE.COMMANDER1
 				? PLAYER_TYPE.COMMANDER2 : PLAYER_TYPE.COMMANDER1;
 
 			GamePlayer capitalPlayer = GamePlayerManager.instance.AddPlayerOfType( -2, dummyType );
 			PlayerInstantiator.instance.CreatePlayerObject( capitalPlayer );
+		}
+		if ( this.createCapitalShip2 )
+		{
+
+		}*/
+
+		if ( this.createDummies )
+		{
+			for ( int i = 0; i < this.dummiesToCreate.Length; ++i )
+			{
+				DebugConsole.Log( "Creating dummy #" + i + " " + this.dummiesToCreate[i] );
+
+				// -1 is reserved for the controlled player, start going below that
+				int playerID = -2 - i;
+				GamePlayer dummyPlayer = GamePlayerManager.instance.AddPlayerOfType( playerID, this.dummiesToCreate[i] );
+				this.lastCreatedDummy = this.dummiesToCreate[i];
+				PlayerInstantiator.instance.CreatePlayerObject( dummyPlayer, true );
+			}
 		}
 	}
 #endif

@@ -19,6 +19,9 @@ public class GameGUI : MonoBehaviour
 	public Texture shieldBarTexture;
 	public Texture reticuleTexture;
 
+	public float capitalHealthBarThickness;
+	public float capitalHealthBarOffset;
+
 	private Rect capitalShipHealthRect1;
 	private Rect capitalShipHealthRect2;
 	private Rect capitalShipShieldRect1;
@@ -79,6 +82,48 @@ public class GameGUI : MonoBehaviour
 		}
 	}
 
+	private void OnGUI()
+	{
+		switch ( this.guiMode )
+		{
+		case GUI_MODE.NONE:
+		{
+			return;
+		}
+		case GUI_MODE.FIGHTER:
+		{
+			this.RenderFighterHealth();
+			this.RenderFighterTargets();
+			this.RenderCapitalShipDisplay();
+			this.RenderFighterSpeed();
+			break;
+		}
+		case GUI_MODE.FIGHTER_RESPAWNING:
+		{
+			float respawnTimer = this.player.fighter.respawnTimer;
+			if ( respawnTimer > 0 )
+			{
+				GUI.Label (new Rect((Screen.width / 2) - 200, Screen.height / 2, 300, 50), "Respawn available in " + respawnTimer + " seconds");
+			}
+			else
+			{
+				GUI.Label (new Rect((Screen.width / 2) - 200, Screen.height / 2, 300, 50), "Press Space to respawn");
+			}
+			break;
+		}
+		case GUI_MODE.CAPITAL:
+		{
+			this.RenderCapitalShipDisplay();
+			break;
+		}
+		default:
+		{
+			DebugConsole.Error( "Uncaught GUIMODE state " + this.guiMode );
+			break;
+		}
+		}
+	}
+
 	private void DetermineGUIMode()
 	{
 		if ( this.player == null )
@@ -111,6 +156,8 @@ public class GameGUI : MonoBehaviour
 
 	private void UpdateCapitalShipDisplay()
 	{
+		float halfWidth = (float)Screen.width * 0.5f;;
+
 		GamePlayer p1 = GamePlayerManager.instance.commander1;
 		if ( p1 != null && p1.capitalShip != null )
 		{
@@ -121,8 +168,8 @@ public class GameGUI : MonoBehaviour
 			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
 			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
 
-			this.capitalShipHealthRect1.Set( 5, 0, healthRatio * (Screen.width * 0.5f), 3 );
-			this.capitalShipShieldRect1.Set( 5, 0, shieldRatio * (Screen.width * 0.5f), 3 );
+			this.capitalShipHealthRect1.Set( this.capitalHealthBarOffset, 0, healthRatio * halfWidth, this.capitalHealthBarThickness );
+			this.capitalShipShieldRect1.Set( this.capitalHealthBarOffset, 0, shieldRatio * halfWidth, this.capitalHealthBarThickness );
 		}
 
 		GamePlayer p2  = GamePlayerManager.instance.commander2;
@@ -135,8 +182,8 @@ public class GameGUI : MonoBehaviour
 			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
 			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
 
-			this.capitalShipHealthRect2.Set( Screen.width * 0.5f, 0, healthRatio * (Screen.width * 0.5f), 3 );
-			this.capitalShipShieldRect2.Set( Screen.width * 0.5f, 0, shieldRatio * (Screen.width * 0.5f), 3 );
+			this.capitalShipHealthRect2.Set( halfWidth, 0, healthRatio * halfWidth, this.capitalHealthBarThickness );
+			this.capitalShipShieldRect2.Set( halfWidth, 0, shieldRatio * halfWidth, this.capitalHealthBarThickness );
 		}
 	}
 	
@@ -161,6 +208,24 @@ public class GameGUI : MonoBehaviour
 		GUI.DrawTexture( this.capitalShipShieldRect2, this.shieldBarTexture ); 
 	}
 
+	private void RenderFighterHealth()
+	{
+		FighterHealth health = this.player.fighter.health;
+		GUI.Label( new Rect(0, 50, 150, 50), "Shields: " + health.currentShield + " / " + health.maxShield );
+		GUI.Label( new Rect(0, 0, 150, 50), "Hull: " + health.currentHealth + " / " + health.maxHealth );
+	}
+
+	private void UpdateFighterSpeed()
+	{
+
+	}
+
+	private void RenderFighterSpeed()
+	{
+		FighterMovement movement = this.player.fighter.movement;
+		GUI.Label( new Rect( 0, 100, 150, 50 ), "Speed: " + movement.desiredSpeed + " / " + movement.maxSpeed );
+	}
+
 	private void RenderFighterTargets()
 	{
 		BaseHealth target = this.player.fighter.weapons.currentTarget;
@@ -181,43 +246,5 @@ public class GameGUI : MonoBehaviour
 		}
 	}
 
-	private void OnGUI()
-	{
-		switch ( this.guiMode )
-		{
-		case GUI_MODE.NONE:
-		{
-			return;
-		}
-		case GUI_MODE.FIGHTER:
-		{
-			this.RenderFighterTargets();
-			this.RenderCapitalShipDisplay();
-			break;
-		}
-		case GUI_MODE.FIGHTER_RESPAWNING:
-		{
-			float respawnTimer = this.player.fighter.respawnTimer;
-			if ( respawnTimer > 0 )
-			{
-				GUI.Label (new Rect((Screen.width / 2) - 200, Screen.height / 2, 300, 50), "Respawn available in " + respawnTimer + " seconds");
-			}
-			else
-			{
-				GUI.Label (new Rect((Screen.width / 2) - 200, Screen.height / 2, 300, 50), "Press Space to respawn");
-			}
-			break;
-		}
-		case GUI_MODE.CAPITAL:
-		{
-			this.RenderCapitalShipDisplay();
-			break;
-		}
-		default:
-		{
-			DebugConsole.Error( "Uncaught GUIMODE state " + this.guiMode );
-			break;
-		}
-		}
-	}
+
 }

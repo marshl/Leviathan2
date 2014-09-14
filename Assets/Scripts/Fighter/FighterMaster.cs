@@ -32,17 +32,24 @@ public class FighterMaster : MonoBehaviour
 	public Renderer model;
 
 #if UNITY_EDITOR
+	public bool dummyShip;
+	public int ownerID;
+
 	protected void Start()
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			this.owner = GamePlayerManager.instance.myPlayer;
+			this.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
+			//this.owner = GamePlayerManager.instance.myPlayer;
 			this.health.team = this.owner.team;
 			this.owner.fighter = this;
 			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
 
 			this.capitalShip = this.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1.capitalShip
 				: GamePlayerManager.instance.commander2.capitalShip;
+
+			Debug.Log( this.owner );
+			DebugConsole.Log( "Player " + this.owner.id + " now owns " + this.name, this );
 		}
 	}
 #endif
@@ -60,8 +67,13 @@ public class FighterMaster : MonoBehaviour
 			this.OwnerInitialise();
 		}
 
+
 		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
 		{
+			#if UNITY_EDITOR
+			if ( this.dummyShip == false )
+				#endif
+			{
 			if ( Input.GetKeyDown( KeyCode.G ) )
 			{
 				this.Respawn();
@@ -80,7 +92,9 @@ public class FighterMaster : MonoBehaviour
 					this.Undock();
 				}
 			}
-			else if ( this.state == FIGHTERSTATE.OUT_OF_CONTROL
+			}
+
+			if ( this.state == FIGHTERSTATE.OUT_OF_CONTROL
 			       || this.state == FIGHTERSTATE.DEAD )
 			{
 				this.respawnTimer -= Time.deltaTime;

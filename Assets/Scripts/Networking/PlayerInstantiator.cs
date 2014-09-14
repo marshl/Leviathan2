@@ -16,25 +16,25 @@ public class PlayerInstantiator : MonoBehaviour
 		PlayerInstantiator.instance = this;
 	}
 
-	public GameObject CreatePlayerObject( GamePlayer _player )
+	public GameObject CreatePlayerObject( GamePlayer _player, bool _dummyPlayer )
 	{
 		switch ( _player.playerType )
 		{
 		case PLAYER_TYPE.COMMANDER1:
 		{
-			return this.CreateCapitalShip( _player );
+			return this.CreateCapitalShip( _player, _dummyPlayer );
 		}
 		case PLAYER_TYPE.COMMANDER2:
 		{
-			return this.CreateCapitalShip( _player );
+			return this.CreateCapitalShip( _player, _dummyPlayer);
 		}
 		case PLAYER_TYPE.FIGHTER1:
 		{
-			return this.CreateFighter( _player );
+			return this.CreateFighter( _player, _dummyPlayer );
 		}
 		case PLAYER_TYPE.FIGHTER2:
 		{
-			return this.CreateFighter( _player );
+			return this.CreateFighter( _player, _dummyPlayer );
 		}
 		default:
 		{
@@ -44,7 +44,7 @@ public class PlayerInstantiator : MonoBehaviour
 		}
 	}
  
-	private GameObject CreateCapitalShip( GamePlayer _player )
+	private GameObject CreateCapitalShip( GamePlayer _player, bool _dummyShip )
 	{   
 		Vector3 origin = GameBoundary.instance.transform.position;
 		Vector3 offset = new Vector3( GameBoundary.instance.radius, 0.0f, 0.0f );
@@ -77,9 +77,7 @@ public class PlayerInstantiator : MonoBehaviour
 		CapitalShipMovement movementScript = masterScript.movement;
 
 #if UNITY_EDITOR
-		masterScript.dummyShip = Network.peerType == NetworkPeerType.Disconnected 
-			&& GameNetworkManager.instance.createCapitalShip
-			&& _player != GamePlayerManager.instance.myPlayer;
+		masterScript.dummyShip = _dummyShip;
 
 		if ( masterScript.dummyShip == false )
 #endif
@@ -101,13 +99,17 @@ public class PlayerInstantiator : MonoBehaviour
 		return capitalObj;
 	}
 
-	private GameObject CreateFighter( GamePlayer _player )
+	private GameObject CreateFighter( GamePlayer _player, bool _dummyShip )
 	{
 		Vector3 fighterPos = Common.RandomVector3( -25.0f, 25.0f );
 		GameObject fighterObj;
 		// Used for testing scenes
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
+			this.fighterPrefab.GetComponent<FighterMaster>().dummyShip = _dummyShip;
+			//this.fighterPrefab.GetComponent<FighterMaster>().owner = _player;
+			this.fighterPrefab.GetComponent<FighterMaster>().ownerID = _player.id;
+
 			fighterObj = GameObject.Instantiate( 
 			    this.fighterPrefab, 
 			    fighterPos, 
@@ -124,14 +126,16 @@ public class PlayerInstantiator : MonoBehaviour
 
 		FighterMaster fighterScript = fighterObj.GetComponent<FighterMaster>();
 
-		GameObject cameraObj = GameObject.Instantiate(
-			this.fighterCameraPrefab,
-			fighterObj.transform.position,
-			Quaternion.identity ) as GameObject;
+		if ( !_dummyShip )
+		{
+			GameObject cameraObj = GameObject.Instantiate(
+				this.fighterCameraPrefab,
+				fighterObj.transform.position,
+				Quaternion.identity ) as GameObject;
 
-		FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
-		cameraScript.fighter = fighterScript;
-
+			FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
+			cameraScript.fighter = fighterScript;
+		}
 		DebugConsole.Log( "Creating fighter for player " + _player.id + " on team " + _player.team, fighterObj );
 
 		return fighterObj;

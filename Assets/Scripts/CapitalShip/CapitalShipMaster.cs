@@ -16,13 +16,19 @@ public class CapitalShipMaster : MonoBehaviour
 #if UNITY_EDITOR
 	public bool dummyShip = false;
 
-	protected void Start()
+	private void Awake()
+	{
+		this.owner = GameNetworkManager.instance.lastCreatedDummy == PLAYER_TYPE.COMMANDER1
+			? GamePlayerManager.instance.commander1 : GamePlayerManager.instance.commander2;
+	}
+
+	private void Start()
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			if ( this.dummyShip )
 			{
-				this.owner = GamePlayerManager.instance.commander1;
+				//this.owner = GamePlayerManager.instance.commander1;
 			}
 			else
 			{

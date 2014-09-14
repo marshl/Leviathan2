@@ -119,7 +119,7 @@ public class TractorBeam : MonoBehaviour
 		}
 	}
 
-	void OnGUI()
+	private void OnGUI()
 	{
 #if UNITY_EDITOR 
 		if ( !this.master.dummyShip )
