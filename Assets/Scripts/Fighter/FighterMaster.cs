@@ -32,7 +32,7 @@ public class FighterMaster : MonoBehaviour
 	public Renderer model;
 
 #if UNITY_EDITOR
-	public bool dummyShip;
+	public bool dummyShip = false;
 	public int ownerID;
 
 	protected void Start()
@@ -50,6 +50,10 @@ public class FighterMaster : MonoBehaviour
 
 			Debug.Log( this.owner );
 			DebugConsole.Log( "Player " + this.owner.id + " now owns " + this.name, this );
+		}
+		else
+		{
+			this.dummyShip = false;
 		}
 	}
 #endif

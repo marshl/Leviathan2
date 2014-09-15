@@ -56,9 +56,11 @@ public class FighterMovement : MonoBehaviour
 				#if UNITY_EDITOR
 				if ( this.masterScript.dummyShip == false )
 				#endif
+				{
 				if ( !GameMessages.instance.typing )
 				{
 					this.CheckFlightControls();
+				}
 				}
 				break;
 			}

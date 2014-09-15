@@ -74,7 +74,7 @@ public class GameNetworkManager : BaseNetworkManager
 	protected override void OnDisconnectedFromServer( NetworkDisconnection _info )
 	{
 		DebugConsole.Log( "Disconnected from server" );
-		Application.LoadLevel( "MenuTest" );
+		Application.LoadLevel( "MenuScene" );
 	}
 
 	// Unity Callback

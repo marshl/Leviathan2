@@ -243,11 +243,11 @@ public class MenuNetworking : BaseNetworkManager
 	public void StartGame()
 	{
 		MasterServer.UnregisterHost();
-		this.networkView.RPC( "LoadLevel", RPCMode.All, "GameTest" );
+		this.networkView.RPC( "OnLoadGameSceneRPC", RPCMode.All );
 	}
 
 	[RPC]
-	private void LoadLevel( string _level )
+	private void OnLoadGameSceneRPC()
 	{
 		GameObject menuInfoObj = new GameObject();
 		DontDestroyOnLoad( menuInfoObj );
@@ -255,7 +255,7 @@ public class MenuNetworking : BaseNetworkManager
 		MenuToGameInfo.instance = infoScript;
 		GamePlayerManager.instance.CopyInformationIntoGameInfo( infoScript );
 
-		Application.LoadLevel( _level );
+		Application.LoadLevel( "GameScene" );
 	}
 
 	public void SendChangePlayerTypeMessage( int _playerID, PLAYER_TYPE _playerType )

@@ -106,10 +106,10 @@ public class PlayerInstantiator : MonoBehaviour
 		// Used for testing scenes
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
+#if UNITY_EDITOR
 			this.fighterPrefab.GetComponent<FighterMaster>().dummyShip = _dummyShip;
-			//this.fighterPrefab.GetComponent<FighterMaster>().owner = _player;
 			this.fighterPrefab.GetComponent<FighterMaster>().ownerID = _player.id;
-
+#endif
 			fighterObj = GameObject.Instantiate( 
 			    this.fighterPrefab, 
 			    fighterPos, 
