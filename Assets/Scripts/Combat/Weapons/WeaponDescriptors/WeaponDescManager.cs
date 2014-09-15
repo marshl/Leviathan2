@@ -35,17 +35,19 @@ public class WeaponDescManager : MonoBehaviour
 		{
 			if ( descriptorMap.ContainsKey( weaponDesc.weaponType ) )
 			{
-				DebugConsole.Warning( "Duplicate descriptor \"" + weaponDesc.name + "\" found.", weaponDesc );
+				DebugConsole.Warning( "Duplicate descriptor for " + weaponDesc.weaponType + " found.", weaponDesc );
+				DebugConsole.Warning( "And " + this.descriptorMap[weaponDesc.weaponType].gameObject.name,
+				                     this.descriptorMap[weaponDesc.weaponType] );
 				continue;
 			}
 
-			if ( weaponDesc.bulletType == BULLET_TYPE.NONE )
+			if ( weaponDesc.weaponType == WEAPON_TYPE.NONE )
 			{
 				DebugConsole.Warning( "No bullet type set on Weapon Descriptor \"" + weaponDesc + "\"", weaponDesc );
 				continue;
 			}
 
-			weaponDesc.bulletDesc = BulletDescriptorManager.instance.GetDescOfType( weaponDesc.bulletType );
+			weaponDesc.bulletDesc = BulletDescriptorManager.instance.GetDescOfType( weaponDesc.weaponType );
 
 			this.descriptorMap.Add( weaponDesc.weaponType, weaponDesc );
 		}

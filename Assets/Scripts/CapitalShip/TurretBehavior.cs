@@ -88,7 +88,7 @@ public class TurretBehavior : BaseWeaponManager
 
 	protected Vector3 TurretAim()
 	{
-		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponDesc.bulletType ).moveSpeed;
+		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponType ).moveSpeed;
 
 		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, this.currentTarget.transform, speed );
 

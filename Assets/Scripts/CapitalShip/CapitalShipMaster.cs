@@ -18,8 +18,7 @@ public class CapitalShipMaster : MonoBehaviour
 
 	private void Awake()
 	{
-		this.owner = GameNetworkManager.instance.lastCreatedDummy == PLAYER_TYPE.COMMANDER1
-			? GamePlayerManager.instance.commander1 : GamePlayerManager.instance.commander2;
+		this.owner = GameNetworkManager.instance.lastCreatedDummy;
 	}
 
 	private void Start()

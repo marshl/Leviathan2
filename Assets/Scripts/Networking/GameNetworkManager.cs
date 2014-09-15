@@ -14,7 +14,7 @@ public class GameNetworkManager : BaseNetworkManager
 	public bool createDummies;
 	public PLAYER_TYPE[] dummiesToCreate;
 
-	public PLAYER_TYPE lastCreatedDummy;
+	public GamePlayer lastCreatedDummy;
 #endif
 
 	protected void Awake()
@@ -110,22 +110,22 @@ public class GameNetworkManager : BaseNetworkManager
 		this.gameHasStarted = true;
 	}
 
-	public void SendShootBulletMessage( BULLET_TYPE _bulletType, int _index, Vector3 _pos, Quaternion _rot )
+	public void SendShootBulletMessage( WEAPON_TYPE _weaponType, int _index, Vector3 _pos, Quaternion _rot )
 	{
-		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.MyNetworkID(), (float)Network.time, (int)_bulletType, _index, _pos, _rot );// _forward );
+		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.MyNetworkID(), (float)Network.time, (int)_weaponType, _index, _pos, _rot );// _forward );
 	}
 
 	[RPC]
-	private void OnShootBulletRPC( int _ownerID, float _creationTime, int _bulletType,
+	private void OnShootBulletRPC( int _ownerID, float _creationTime, int _weaponType,
 	                              int _index,
 	                              Vector3 _pos, Quaternion _rot )
 	{
-		if ( !System.Enum.IsDefined( typeof(BULLET_TYPE), _bulletType ) )
+		if ( !System.Enum.IsDefined( typeof(WEAPON_TYPE), _weaponType ) )
 		{
-			DebugConsole.Error( "Bullet type " + _bulletType + " not defined" );
+			DebugConsole.Error( "Bullet type " + _weaponType + " not defined" );
 		}
 
-		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (BULLET_TYPE)_bulletType, _index, _pos, _rot );
+		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (WEAPON_TYPE)_weaponType, _index, _pos, _rot );
 	}
 
 	public void SendDestroySmartBulletMessage( NetworkViewID _viewID )
@@ -139,9 +139,9 @@ public class GameNetworkManager : BaseNetworkManager
 		BulletManager.instance.DestroySmartBulletRPC( _viewID );
 	}
 
-	public void SendDestroyDumbBulletMessage( BULLET_TYPE _bulletType, int _index )
+	public void SendDestroyDumbBulletMessage( WEAPON_TYPE _weaponType, int _index )
 	{
-		this.networkView.RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_bulletType, _index );
+		this.networkView.RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_weaponType, _index );
 	}
 
 	public void SendOutOfControlFigherMessage( int _playerID )
@@ -201,15 +201,15 @@ public class GameNetworkManager : BaseNetworkManager
 	}
 
 	[RPC]
-	private void OnDestroyDumbBulletRPC( int _bulletType, int _index )
+	private void OnDestroyDumbBulletRPC( int _weaponType, int _index )
 	{
 		//TODO: Enum check
-		if ( System.Enum.IsDefined( typeof(BULLET_TYPE), _bulletType ) == false )
+		if ( System.Enum.IsDefined( typeof(WEAPON_TYPE), _weaponType ) == false )
 		{
-			DebugConsole.Error( "Undefined bullet type " + _bulletType );
+			DebugConsole.Error( "Undefined bullet type " + _weaponType );
 			return;
 		}
-		BulletManager.instance.DestroyDumbBulletRPC( (BULLET_TYPE)_bulletType, _index );
+		BulletManager.instance.DestroyDumbBulletRPC( (WEAPON_TYPE)_weaponType, _index );
 	}
 
 	public void SendDealDamageMessage( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
@@ -300,7 +300,7 @@ public class GameNetworkManager : BaseNetworkManager
 				// -1 is reserved for the controlled player, start going below that
 				int playerID = -2 - i;
 				GamePlayer dummyPlayer = GamePlayerManager.instance.AddPlayerOfType( playerID, this.dummiesToCreate[i] );
-				this.lastCreatedDummy = this.dummiesToCreate[i];
+				this.lastCreatedDummy = dummyPlayer;
 				PlayerInstantiator.instance.CreatePlayerObject( dummyPlayer, true );
 			}
 		}

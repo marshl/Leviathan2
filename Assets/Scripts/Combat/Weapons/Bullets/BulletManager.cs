@@ -3,27 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public enum BULLET_TYPE : int
-{
-	NONE,
-	MISSILE,
-	LIGHT_LASER,
-
-	TURRET_SHREDDER,
-
-	CAPITAL_GAUSS,
-};
-
 public enum WEAPON_TYPE : int
 {
 	NONE,
-	LIGHT_LASER,
-	MISSILE_LAUNCHER,
-	GATLING_LASER,
-	BURST_FIRE_TEST,
-	CHARGE_UP_TEST,
 
 	TURRET_SHREDDER,
+	TURRET_RIPPER,
 
 	CAPITAL_GAUSS,
 
@@ -52,7 +37,7 @@ public class BulletManager : MonoBehaviour
 	/// <summary>
 	/// The map of bullet types to bullet bucket
 	/// </summary>
-	private Dictionary<BULLET_TYPE, BulletBucket> bulletDictionary;
+	private Dictionary<WEAPON_TYPE, BulletBucket> bulletDictionary;
 
 	public Dictionary<NetworkViewID, SeekingBullet> seekingBulletMap;
 
@@ -82,9 +67,9 @@ public class BulletManager : MonoBehaviour
 		GameObject bulletBucketObj = new GameObject();
 		bulletBucketObj.name = "BulletContainer";
 	
-		this.bulletDictionary = new Dictionary<BULLET_TYPE, BulletBucket>();
+		this.bulletDictionary = new Dictionary<WEAPON_TYPE, BulletBucket>();
 	
-		foreach ( KeyValuePair<BULLET_TYPE, BulletDescriptor> pair in BulletDescriptorManager.instance.descMap )
+		foreach ( KeyValuePair<WEAPON_TYPE, BulletDescriptor> pair in BulletDescriptorManager.instance.descMap )
 		{ 
 			if ( pair.Value.smartBullet == false )
 			{
@@ -93,21 +78,21 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 
-	public BulletBase CreateBullet( BaseWeaponManager _source, BULLET_TYPE _bulletType, 
+	public BulletBase CreateBullet( BaseWeaponManager _source, WEAPON_TYPE _weaponType, 
 	                              Vector3 _pos, Vector3 _forward,
 	                              float _spread = 0.0f )
 	{
-		BulletDescriptor desc = BulletDescriptorManager.instance.GetDescOfType( _bulletType );
+		BulletDescriptor desc = BulletDescriptorManager.instance.GetDescOfType( _weaponType );
 
 		BulletBase bulletScript = null;
 		GameObject bulletObj = null;
 		if ( desc.smartBullet == false )
 		{
-			bulletScript = this.bulletDictionary[ _bulletType ].GetAvailableBullet( -1, -1 );
+			bulletScript = this.bulletDictionary[ _weaponType ].GetAvailableBullet( -1, -1 );
 
 			if ( bulletScript == null )
 			{
-				DebugConsole.Error( "Error shooting bullet of type \"" + _bulletType + "\"", this );
+				DebugConsole.Error( "Error shooting bullet of type \"" + _weaponType + "\"", this );
 				return null;
 			}
 
@@ -139,7 +124,7 @@ public class BulletManager : MonoBehaviour
 		bulletObj.collider.enabled = true; 
 
 		bulletScript.source = _source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
-		//if ( _source != null && _source.collider != null )
+		if ( _source.collider != null )
 		{
 			Physics.IgnoreCollision( bulletObj.collider, _source.collider );
 		}
@@ -155,7 +140,7 @@ public class BulletManager : MonoBehaviour
 		if ( desc.smartBullet == false
 		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendShootBulletMessage( _bulletType, bulletScript.index, _pos, bulletObj.transform.rotation );
+			GameNetworkManager.instance.SendShootBulletMessage( _weaponType, bulletScript.index, _pos, bulletObj.transform.rotation );
 		}
 
 		bulletScript.OnShoot();
@@ -182,9 +167,9 @@ public class BulletManager : MonoBehaviour
 	/// <param name="_index">_index.</param>
 	/// <param name="_position">_position.</param>
 	/// <param name="_forward">The forward direction of the bullet</param>
-	public void CreateBulletRPC( int _ownerID, float _creationTime, BULLET_TYPE _bulletType, int _index, Vector3 _position, Quaternion _rot )//Vector3 _forward )
+	public void CreateBulletRPC( int _ownerID, float _creationTime, WEAPON_TYPE _weaponType, int _index, Vector3 _position, Quaternion _rot )//Vector3 _forward )
 	{  
-		BulletBase bulletScript = this.bulletDictionary[_bulletType].GetAvailableBullet( _index, _ownerID );
+		BulletBase bulletScript = this.bulletDictionary[_weaponType].GetAvailableBullet( _index, _ownerID );
 
 		bulletScript.Reset();
 		bulletScript.state = BulletBase.BULLET_STATE.ACTIVE_NOT_OWNED;
@@ -247,14 +232,14 @@ public class BulletManager : MonoBehaviour
 				return;
 			}
 
-			BulletBase bulletScript = this.bulletDictionary[_bullet.bulletType].GetAvailableBullet( _bullet.index, -1 );
+			BulletBase bulletScript = this.bulletDictionary[_bullet.weaponType].GetAvailableBullet( _bullet.index, -1 );
 			bulletScript.gameObject.SetActive( false );
 
 			if ( _bullet.state == BulletBase.BULLET_STATE.ACTIVE_OWNED )
 			{
 				if ( Network.peerType != NetworkPeerType.Disconnected )
 				{
-					GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.bulletType, _bullet.index );
+					GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.weaponType, _bullet.index );
 				}
 			}
 
@@ -277,28 +262,28 @@ public class BulletManager : MonoBehaviour
 		}
 	} 
 
-	public void DestroyDumbBulletRPC( BULLET_TYPE _bulletType, int _index )
+	public void DestroyDumbBulletRPC( WEAPON_TYPE _weaponType, int _index )
 	{
-		BulletBase bulletScript = this.bulletDictionary[_bulletType].GetAvailableBullet( _index, -1 );
+		BulletBase bulletScript = this.bulletDictionary[_weaponType].GetAvailableBullet( _index, -1 );
 		bulletScript.gameObject.SetActive( false );
 		bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
 	}
 	
 	private void CreateBulletBucket( BulletDescriptor _desc )
 	{
-		if ( this.bulletDictionary.ContainsKey( _desc.bulletType ) )
+		if ( this.bulletDictionary.ContainsKey( _desc.weaponType ) )
 		{
-			DebugConsole.Error( "Bullet type \"" + _desc.bulletType.ToString() + "\" already used.", _desc.prefab );
+			DebugConsole.Error( "Bullet type \"" + _desc.weaponType + "\" already used.", _desc.prefab );
 			return;
 		}
 
 		GameObject bucketObj = new GameObject();
-		bucketObj.name = _desc.bulletType.ToString() + "Bucket";
+		bucketObj.name = _desc.weaponType + "Bucket";
 		bucketObj.transform.parent = this.transform;
 
 		LocalBulletBucket bulletBucket = bucketObj.AddComponent<LocalBulletBucket>();
 		bulletBucket.Initialise( _desc, false );
-		this.bulletDictionary.Add ( _desc.bulletType, bulletBucket );
+		this.bulletDictionary.Add ( _desc.weaponType, bulletBucket );
 
 	}
 

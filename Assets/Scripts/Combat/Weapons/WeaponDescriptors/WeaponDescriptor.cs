@@ -12,6 +12,5 @@ public class WeaponDescriptor : MonoBehaviour
 	public float fireRate;
 	public float spread;
 	public bool fireInSync;
-	public BULLET_TYPE bulletType;
 	public BulletDescriptor bulletDesc;
 }

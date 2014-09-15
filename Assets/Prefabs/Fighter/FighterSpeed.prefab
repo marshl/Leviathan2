@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 1
+  weaponType: 4
   weaponDesc: {fileID: 0}
   firePoints:
   - {fileID: 11400010}
@@ -320,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 2
+  weaponType: 14
   weaponDesc: {fileID: 0}
   firePoints:
   - {fileID: 11400002}
@@ -425,6 +425,8 @@ MonoBehaviour:
     occupied: 0
     slotID: 0
   model: {fileID: 2300000}
+  dummyShip: 1
+  ownerID: -4
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1

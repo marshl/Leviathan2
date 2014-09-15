@@ -45,7 +45,18 @@ MonoBehaviour:
   startPauseDuration: .10000000149011612
   defaultPlayerType: 3
   createDummies: 1
-  dummiesToCreate: 0100000002000000
+  dummiesToCreate: 010000000200000003000000
+  lastCreatedDummy:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

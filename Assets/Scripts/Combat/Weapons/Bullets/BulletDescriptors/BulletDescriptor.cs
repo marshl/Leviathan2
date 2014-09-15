@@ -9,7 +9,7 @@ using System;
 /// </summary>
 public class BulletDescriptor : MonoBehaviour
 {
-	public BULLET_TYPE bulletType;
+	public WEAPON_TYPE weaponType;
 
 	public GameObject prefab;
 

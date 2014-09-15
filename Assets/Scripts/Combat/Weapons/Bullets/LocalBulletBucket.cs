@@ -22,6 +22,8 @@ public class LocalBulletBucket : BulletBucket
 			DebugConsole.Error( "Bullet list for " + this.bulletDesc + " has unusable count of " + this.bulletDesc.count, this.bulletDesc );
 		}
 		this.bulletList = new BulletBase[ this.bulletDesc.count ];
+		this.bulletDesc.prefab.GetComponent<BulletBase>().weaponType = this.bulletDesc.weaponType;
+
 		for ( int i = 0; i < this.bulletDesc.count; ++i )
 		{
 			BulletBase bulletScript = this.CreateNewBullet( i );
@@ -43,7 +45,7 @@ public class LocalBulletBucket : BulletBucket
 		{
 			bulletObj = GameObject.Instantiate( this.bulletDesc.prefab ) as GameObject;
 		}
-		bulletObj.name = this.bulletDesc.bulletType + "-"+ _index ;
+		bulletObj.name = this.bulletDesc.weaponType + "-"+ _index ;
 		bulletObj.transform.parent = this.transform;
 		bulletObj.SetActive( false );
 		
@@ -91,7 +93,8 @@ public class LocalBulletBucket : BulletBucket
 			// If we've wrapped the search, no bullets are free: increase the bucket size and return a new bullet
 			if ( currentIndex == startIndex )
 			{
-				DebugConsole.Warning( "Bucket size " + this.bulletList.Length + " for " + this.bulletDesc.bulletType + " was inadequate: increasing bucket size." );
+				DebugConsole.Warning( "Bucket size " + this.bulletList.Length + " for "
+				     + this.bulletDesc.weaponType + " was inadequate: increasing bucket size." );
 				// Lets try again, starting from the first of the new bullets
 				if ( this.DoubleBucketSize() == true )
 				{

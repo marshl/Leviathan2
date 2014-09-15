@@ -14,9 +14,10 @@ public class CapitalShipComponent : MonoBehaviour
 	}
 
 #if UNITY_EDITOR
-	private void Start()
+	private void Awake()
 	{
-		if ( Network.peerType == NetworkPeerType.Disconnected )
+		if ( Network.peerType == NetworkPeerType.Disconnected
+		    && GamePlayerManager.instance.myPlayer.capitalShip != null )
 		{
 			this.ParentToOwnerShip( GamePlayerManager.instance.myPlayer );
 		}

@@ -109,7 +109,7 @@ public class WeaponBase : MonoBehaviour
 				BulletBase bullet = BulletManager.instance.CreateBullet
 				(
 					this.source,
-					this.weaponDesc.bulletType,
+					this.weaponDesc.weaponType,
 					currentFirePoint.transform.position, 
 					currentFirePoint.transform.forward, 
 					this.weaponDesc.spread
@@ -124,7 +124,7 @@ public class WeaponBase : MonoBehaviour
 			BulletBase bullet = BulletManager.instance.CreateBullet
 			(
 				this.source,
-				this.weaponDesc.bulletType,
+				this.weaponDesc.weaponType,
 				currentFirePoint.transform.position, 
 					currentFirePoint.transform.forward, 
 				this.weaponDesc.spread

@@ -18,7 +18,7 @@ public class BulletBase : MonoBehaviour
 
 	public int index;
 
-	public BULLET_TYPE bulletType;
+	public WEAPON_TYPE weaponType;
 
 	public LocalBulletBucket parentBucket;
 
@@ -39,7 +39,7 @@ public class BulletBase : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		this.desc = BulletDescriptorManager.instance.GetDescOfType( this.bulletType );
+		this.desc = BulletDescriptorManager.instance.GetDescOfType( this.weaponType );
 	}
 
 	protected virtual void Start()
