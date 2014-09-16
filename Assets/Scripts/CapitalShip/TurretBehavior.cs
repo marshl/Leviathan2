@@ -8,17 +8,15 @@ public class TurretBehavior : BaseWeaponManager
 	public Transform arm;
 	public float rotationSpeed;
 
-	public bool chrisTurret = false;
-	public float pitchOffset = 0;
-
-	public float minimumPitchAngle = 180;
+	public float minPitchAngle;
+	public float maxPitchAngle;
+	public float pitchSpeed;
 
 	public WeaponBase weapon;
 
 	public float fireLockAngle;
 	
 	public NetworkOwnerControl ownerControl;
-	private Quaternion awakeRot;
 	private bool ownerInitialised = false;
 
 	protected override void Awake()
@@ -28,18 +26,19 @@ public class TurretBehavior : BaseWeaponManager
 		this.restrictions.types = (int)( TARGET_TYPE.FIGHTER );
 		this.restrictions.ignoreBelowHorizon = true;
 		this.restrictions.transform = this.arm;
-		awakeRot = this.transform.rotation;
 	}
 
 #if UNITY_EDITOR
 	private void Start()
 	{
-		if ( Network.peerType == NetworkPeerType.Disconnected )
+		if ( Network.peerType == NetworkPeerType.Disconnected
+		  && this.health != null )
 		{
 			this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
 		}
 	}
 #endif
+
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
@@ -73,7 +72,7 @@ public class TurretBehavior : BaseWeaponManager
 
 			if ( this.currentTarget != null )
 			{
-				Vector3 leadPos = this.TurretAim();
+				Vector3 leadPos = this.TurretAim( this.currentTarget.transform );
 				Vector3 vectorToLeadPos = (leadPos - this.transform.position).normalized;
 				Vector3 vectorToFront = this.arm.transform.forward;
 				float angleToLeadPos = Vector3.Dot( vectorToLeadPos, vectorToFront );
@@ -86,11 +85,11 @@ public class TurretBehavior : BaseWeaponManager
 		}
 	}
 
-	protected Vector3 TurretAim()
+	protected Vector3 TurretAim( Transform _target )
 	{
 		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponType ).moveSpeed;
 
-		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, this.currentTarget.transform, speed );
+		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, _target, speed );
 
 		if ( leadPosition == this.arm.position )
 		{
@@ -99,40 +98,17 @@ public class TurretBehavior : BaseWeaponManager
 
 		//Predict the target's location ahead based on the shot speed and current velocity
 		Vector3 direction = (leadPosition - this.arm.position).normalized;
+	
+		float yawAngle = Mathf.Rad2Deg * Mathf.Acos( Vector3.Dot( direction, this.transform.forward ) );
+		yawAngle *= Vector3.Dot( this.transform.up, Vector3.Cross( direction, this.transform.forward ) ) <= 0.0f ? 1.0f : -1.0f;
+		Quaternion targetYaw = Quaternion.AngleAxis( yawAngle, Vector3.up );
+		this.joint.localRotation = Quaternion.Slerp( this.joint.localRotation, targetYaw, Time.deltaTime * this.rotationSpeed );
 
-		//create the rotation we need to be in to look at the target
-		Quaternion lookRotation = Quaternion.LookRotation( direction );
-
-		//copy the quaternion into a new variable so we can mess with it safely
-		Quaternion newRot = lookRotation;
-
-		//Wrapping code
-		float threshold = lookRotation.eulerAngles.x;
-
-		if ( threshold > 180 )
-		{
-			threshold -= 360 ;
-		}
-
-		//Turret pitch clamp
-		if ( threshold > minimumPitchAngle )
-		{
-			newRot = Quaternion.Euler(minimumPitchAngle,lookRotation.eulerAngles.y,lookRotation.eulerAngles.z);
-		}
-
-		if ( chrisTurret )
-		{
-			Quaternion yRot = Quaternion.Euler( new Vector3(0, newRot.eulerAngles.y, 0) );
-
-			//joint.rotation = awakeRot * Quaternion.Slerp( joint.rotation, yRot, Time.deltaTime * rotationSpeed );
-
-			Quaternion zRot = Quaternion.Euler( new Vector3( newRot.eulerAngles.x, joint.rotation.eulerAngles.y, joint.rotation.eulerAngles.z ) );
-			arm.rotation = awakeRot * Quaternion.Slerp( arm.rotation, zRot, Time.deltaTime * rotationSpeed );
-		}
-		else
-		{
-			transform.rotation = Quaternion.Slerp( transform.rotation, newRot, Time.deltaTime * rotationSpeed );
-		}
+		float pitchAngle = Mathf.Rad2Deg * Mathf.Acos( Vector3.Dot( direction, this.transform.up ) ) - 90.0f;
+		pitchAngle = Mathf.Clamp( pitchAngle, this.minPitchAngle, this.maxPitchAngle );
+		Quaternion targetPitch = Quaternion.AngleAxis( pitchAngle, Vector3.right );
+		this.arm.localRotation = Quaternion.Slerp( this.arm.localRotation, targetPitch, Time.deltaTime * this.pitchSpeed );
+	
 		return leadPosition;
 	}
 

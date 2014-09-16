@@ -242,4 +242,18 @@ public abstract class Common
 			return TEAM.NEUTRAL;
 		} 
 	}
+
+	// The angle between dirA and dirB around axis
+	static public float AngleAroundAxis( Vector3 _from, Vector3 _to, Vector3 _axis )
+	{
+		// Project A and B onto the plane orthogonal target axis
+		_from = _from - Vector3.Project( _from, _axis );
+		_to = _to - Vector3.Project( _to, _axis );
+		
+		// Find (positive) angle between A and B
+		float angle = Vector3.Angle( _from, _to );
+		
+		// Return angle multiplied with 1 or -1
+		return angle * ( Vector3.Dot( _axis, Vector3.Cross(_from, _to) ) < 0 ? -1.0f : 1.0f );
+	}
 }

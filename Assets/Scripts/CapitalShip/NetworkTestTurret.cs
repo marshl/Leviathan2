@@ -7,7 +7,7 @@ public class NetworkTestTurret : TurretBehavior
 
 	protected override void Update()
 	{
-		this.dummy.transform.position = this.TurretAim();
+		this.dummy.transform.position = this.TurretAim( this.currentTarget.transform );
 		this.gameObject.GetComponent<WeaponBase>().SendFireMessage();
 	}
 }

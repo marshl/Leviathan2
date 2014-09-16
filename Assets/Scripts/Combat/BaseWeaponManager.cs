@@ -16,7 +16,6 @@ public class BaseWeaponManager : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		this.currentTarget = null;
 		this.restrictions = new TargetManager.TargetRestriction();
 		this.restrictions.transform = this.transform;
 		this.restrictions.ignoreBelowHorizon = false;
