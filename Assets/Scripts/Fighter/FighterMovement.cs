@@ -39,7 +39,7 @@ public class FighterMovement : MonoBehaviour
 		rollSpeed *= this.transform.localScale.x;
 		acceleration *= this.transform.localScale.x; 
 		maxSpeed *= this.transform.localScale.x;
-		undockingSpeed *= this.transform.localScale.x;
+		//undockingSpeed *= this.transform.localScale.x;
 		deadFlyingSpeed *= this.transform.localScale.x;
 		deadSpinSpeed *= this.transform.localScale.x;
 	}
@@ -66,7 +66,8 @@ public class FighterMovement : MonoBehaviour
 			}
 			case FighterMaster.FIGHTERSTATE.UNDOCKING:
 			{
-				this.rigidbody.AddForce( this.transform.forward * this.undockingSpeed * Time.deltaTime );
+				this.desiredSpeed = this.undockingSpeed;
+				this.rigidbody.AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
 				break;
 			}
 			case FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL:

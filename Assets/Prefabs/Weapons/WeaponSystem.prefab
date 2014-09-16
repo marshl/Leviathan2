@@ -1063,9 +1063,9 @@ MonoBehaviour:
   weaponType: 1
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
-  moveSpeed: 50
-  maxDistance: 500
-  damage: 10
+  moveSpeed: 450
+  maxDistance: 1500
+  damage: 25
   smartBullet: 0
 --- !u!114 &11400004
 MonoBehaviour:
@@ -1080,8 +1080,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 1
   label: 
-  fireRate: .5
-  spread: 0
+  fireRate: .200000003
+  spread: .100000001
   fireInSync: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400006

@@ -45,9 +45,13 @@ public class FighterMaster : MonoBehaviour
 			this.owner.fighter = this;
 			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
 
-			this.capitalShip = this.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1.capitalShip
-				: GamePlayerManager.instance.commander2.capitalShip;
+			GamePlayer commanderPlayer = this.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1
+				: GamePlayerManager.instance.commander2;
 
+			if ( commanderPlayer != null )
+			{
+				this.capitalShip = commanderPlayer.capitalShip;
+			}
 			Debug.Log( this.owner );
 			DebugConsole.Log( "Player " + this.owner.id + " now owns " + this.name, this );
 		}
@@ -291,10 +295,9 @@ public class FighterMaster : MonoBehaviour
 		this.currentSlot.occupied = false;
 		this.currentSlot.landedFighter = null;
 
-		this.movement.desiredSpeed = this.movement.maxSpeed;
+		//this.movement.desiredSpeed = this.movement.maxSpeed;
 		
 		this.transform.parent = null;
-		this.transform.localScale = Vector3.one;
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
