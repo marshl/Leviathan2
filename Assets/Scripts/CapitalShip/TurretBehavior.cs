@@ -22,6 +22,8 @@ public class TurretBehavior : BaseWeaponManager
 	public Transform[] gunArms;
 	public float gunArmTiltLimit;
 
+	public Transform orientationPoint;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -98,7 +100,7 @@ public class TurretBehavior : BaseWeaponManager
 			return Vector3.zero;
 		}
 	
-		Vector3 direction = (leadPosition - this.pivot.position).normalized;
+		Vector3 direction = (leadPosition - this.orientationPoint.position).normalized;
 	
 		float yawAngle = Common.AngleAroundAxis( this.transform.forward, direction, this.transform.up );
 		Quaternion targetYaw = Quaternion.AngleAxis( yawAngle, Vector3.up );
