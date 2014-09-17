@@ -22,19 +22,10 @@ public class BulletBase : MonoBehaviour
 
 	public LocalBulletBucket parentBucket;
 
-	/// <summary>
-	/// The distance this bullet has travelled so far (used for deletion)
-	/// </summary>
 	public float distanceTravelled;
 	
 	public BaseWeaponManager source;
 
-	//public Vector3 lastPosition;
-
-	/// <summary>
-	/// The associated bullet desciptor (set elsewhere)
-	/// </summary>
-	[HideInInspector]
 	public BulletDescriptor desc;
 
 	protected virtual void Awake()

@@ -272,7 +272,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 159.494629}
+  m_LocalPosition: {x: .936922073, y: 7.2803545, z: -186.281845}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400020}
@@ -505,8 +505,8 @@ MonoBehaviour:
   joint: {fileID: 400026}
   arm: {fileID: 400024}
   rotationSpeed: 5
-  minPitchAngle: -10
-  maxPitchAngle: 75
+  minPitchAngle: 15
+  maxPitchAngle: 100
   pitchSpeed: 3
   weapon: {fileID: 11400006}
   fireLockAngle: .100000001
@@ -553,7 +553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 2
-  team: 0
+  team: 2
   debugTargetID: 0
   currentHealth: 100
   maxHealth: 100

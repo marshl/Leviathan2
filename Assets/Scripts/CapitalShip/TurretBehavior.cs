@@ -88,24 +88,21 @@ public class TurretBehavior : BaseWeaponManager
 	protected Vector3 TurretAim( Transform _target )
 	{
 		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponType ).moveSpeed;
-
 		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, _target, speed );
 
 		if ( leadPosition == this.arm.position )
 		{
 			return Vector3.zero;
 		}
-
-		//Predict the target's location ahead based on the shot speed and current velocity
+	
 		Vector3 direction = (leadPosition - this.arm.position).normalized;
 	
-		float yawAngle = Mathf.Rad2Deg * Mathf.Acos( Vector3.Dot( direction, this.transform.forward ) );
-		yawAngle *= Vector3.Dot( this.transform.up, Vector3.Cross( direction, this.transform.forward ) ) <= 0.0f ? 1.0f : -1.0f;
+		float yawAngle = Common.AngleAroundAxis( this.transform.forward, direction, this.transform.up );
 		Quaternion targetYaw = Quaternion.AngleAxis( yawAngle, Vector3.up );
 		this.joint.localRotation = Quaternion.Slerp( this.joint.localRotation, targetYaw, Time.deltaTime * this.rotationSpeed );
 
-		float pitchAngle = Mathf.Rad2Deg * Mathf.Acos( Vector3.Dot( direction, this.transform.up ) ) - 90.0f;
-		pitchAngle = Mathf.Clamp( pitchAngle, this.minPitchAngle, this.maxPitchAngle );
+		float pitchAngle = Common.AngleAroundAxis( this.transform.up, direction, this.joint.right);
+		pitchAngle = Mathf.Clamp( pitchAngle, this.minPitchAngle, this.maxPitchAngle ) - 90.0f;
 		Quaternion targetPitch = Quaternion.AngleAxis( pitchAngle, Vector3.right );
 		this.arm.localRotation = Quaternion.Slerp( this.arm.localRotation, targetPitch, Time.deltaTime * this.pitchSpeed );
 	
