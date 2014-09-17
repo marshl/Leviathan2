@@ -2705,6 +2705,33 @@ NetworkView:
   m_ViewID:
     m_ID: 10
     m_Type: 1
+--- !u!1 &534825744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 534825745}
+  m_Layer: 0
+  m_Name: ShredderTurretPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &534825745
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 534825744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 115.106201, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1522303086}
+  m_RootOrder: 4
 --- !u!1 &541001251
 GameObject:
   m_ObjectHideFlags: 0
@@ -3678,9 +3705,9 @@ MonoBehaviour:
   joint: {fileID: 541001252}
   arm: {fileID: 1060464430}
   rotationSpeed: 5
-  chrisTurret: 1
-  pitchOffset: 0
-  minimumPitchAngle: 0
+  minPitchAngle: 0
+  maxPitchAngle: 0
+  pitchSpeed: 0
   weapon: {fileID: 710904223}
   fireLockAngle: .25
   ownerControl: {fileID: 710904225}
@@ -9011,6 +9038,7 @@ Transform:
   - {fileID: 103866743}
   - {fileID: 1998653850}
   - {fileID: 987248725}
+  - {fileID: 534825745}
   m_Father: {fileID: 1977968259}
   m_RootOrder: 0
 --- !u!1 &1529049290
@@ -9333,7 +9361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   index: 0
-  weaponType: 0
+  weaponType: 3
   parentBucket: {fileID: 0}
   distanceTravelled: 0
   source: {fileID: 0}
@@ -11014,7 +11042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 2
-  team: 0
+  team: 2
   debugTargetID: 0
   currentHealth: 100
   maxHealth: 100
@@ -11086,10 +11114,10 @@ MonoBehaviour:
   maxTargetDistance: 500
   joint: {fileID: 1460682110}
   arm: {fileID: 1184498505}
-  rotationSpeed: 500
-  chrisTurret: 1
-  pitchOffset: 0
-  minimumPitchAngle: 0
+  rotationSpeed: 5
+  minPitchAngle: 15
+  maxPitchAngle: 100
+  pitchSpeed: 3
   weapon: {fileID: 1831618981}
   fireLockAngle: .100000001
   ownerControl: {fileID: 1831618979}
@@ -11682,9 +11710,9 @@ MonoBehaviour:
   weaponType: 1
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
-  moveSpeed: 50
-  maxDistance: 500
-  damage: 10
+  moveSpeed: 450
+  maxDistance: 1500
+  damage: 25
   smartBullet: 0
 --- !u!114 &1940721070
 MonoBehaviour:
@@ -11700,8 +11728,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 1
   label: 
-  fireRate: .5
-  spread: 0
+  fireRate: .200000003
+  spread: .100000001
   fireInSync: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &1940721071
@@ -12666,7 +12694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   index: 0
-  weaponType: 0
+  weaponType: 13
   parentBucket: {fileID: 0}
   distanceTravelled: 0
   source: {fileID: 0}
