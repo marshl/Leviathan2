@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class TurretBehavior : BaseWeaponManager
 {
-	public Transform joint;
-	public Transform arm;
+	public Transform swivel;
+	public Transform pivot;
 	public float rotationSpeed;
 
 	public float minPitchAngle;
@@ -19,13 +19,16 @@ public class TurretBehavior : BaseWeaponManager
 	public NetworkOwnerControl ownerControl;
 	private bool ownerInitialised = false;
 
+	public Transform[] gunArms;
+	public float gunArmTiltLimit;
+
 	protected override void Awake()
 	{
 		base.Awake();
 
 		this.restrictions.types = (int)( TARGET_TYPE.FIGHTER );
 		this.restrictions.ignoreBelowHorizon = true;
-		this.restrictions.transform = this.arm;
+		this.restrictions.transform = this.pivot;
 	}
 
 #if UNITY_EDITOR
@@ -74,7 +77,7 @@ public class TurretBehavior : BaseWeaponManager
 			{
 				Vector3 leadPos = this.TurretAim( this.currentTarget.transform );
 				Vector3 vectorToLeadPos = (leadPos - this.transform.position).normalized;
-				Vector3 vectorToFront = this.arm.transform.forward;
+				Vector3 vectorToFront = this.pivot.transform.forward;
 				float angleToLeadPos = Vector3.Dot( vectorToLeadPos, vectorToFront );
 
 				if ( angleToLeadPos >= 1.0f - this.fireLockAngle )
@@ -88,24 +91,32 @@ public class TurretBehavior : BaseWeaponManager
 	protected Vector3 TurretAim( Transform _target )
 	{
 		float speed = BulletDescriptorManager.instance.GetDescOfType( this.weapon.weaponType ).moveSpeed;
-		Vector3 leadPosition = Common.GetTargetLeadPosition( this.arm.position, _target, speed );
+		Vector3 leadPosition = Common.GetTargetLeadPosition( this.pivot.position, _target, speed );
 
-		if ( leadPosition == this.arm.position )
+		if ( leadPosition == this.pivot.position )
 		{
 			return Vector3.zero;
 		}
 	
-		Vector3 direction = (leadPosition - this.arm.position).normalized;
+		Vector3 direction = (leadPosition - this.pivot.position).normalized;
 	
 		float yawAngle = Common.AngleAroundAxis( this.transform.forward, direction, this.transform.up );
 		Quaternion targetYaw = Quaternion.AngleAxis( yawAngle, Vector3.up );
-		this.joint.localRotation = Quaternion.Slerp( this.joint.localRotation, targetYaw, Time.deltaTime * this.rotationSpeed );
+		this.swivel.localRotation = Quaternion.Slerp( this.swivel.localRotation, targetYaw, 1.0f );//Time.deltaTime * this.rotationSpeed );
 
-		float pitchAngle = Common.AngleAroundAxis( this.transform.up, direction, this.joint.right);
+		float pitchAngle = Common.AngleAroundAxis( this.transform.up, direction, this.swivel.right);
 		pitchAngle = Mathf.Clamp( pitchAngle, this.minPitchAngle, this.maxPitchAngle ) - 90.0f;
 		Quaternion targetPitch = Quaternion.AngleAxis( pitchAngle, Vector3.right );
-		this.arm.localRotation = Quaternion.Slerp( this.arm.localRotation, targetPitch, Time.deltaTime * this.pitchSpeed );
-	
+		this.pivot.localRotation = Quaternion.Slerp( this.pivot.localRotation, targetPitch, 1.0f );//Time.deltaTime * this.pitchSpeed );
+		foreach ( Transform gunArm in this.gunArms )
+		{
+			float tiltAngle = Common.AngleAroundAxis( this.pivot.forward, (leadPosition - gunArm.position).normalized, this.pivot.up );
+
+			tiltAngle = Mathf.Clamp ( tiltAngle, -this.gunArmTiltLimit, this.gunArmTiltLimit );
+			Quaternion targetTilt = Quaternion.AngleAxis( tiltAngle, this.pivot.up );
+			gunArm.localRotation = targetTilt;
+		}
+
 		return leadPosition;
 	}
 
@@ -114,8 +125,8 @@ public class TurretBehavior : BaseWeaponManager
 	{
 		if ( _stream.isWriting )
 		{
-			Quaternion jointRot = this.joint.rotation;
-			Quaternion armRot = this.arm.rotation;
+			Quaternion jointRot = this.swivel.rotation;
+			Quaternion armRot = this.pivot.rotation;
 			NetworkViewID viewID = this.currentTarget == null ? NetworkViewID.unassigned : this.currentTarget.networkView.viewID;
 			_stream.Serialize( ref jointRot );
 			_stream.Serialize( ref armRot );
@@ -130,8 +141,8 @@ public class TurretBehavior : BaseWeaponManager
 			_stream.Serialize( ref armRot );
 			_stream.Serialize( ref viewID );
 
-			this.joint.rotation = jointRot;
-			this.arm.rotation = armRot;
+			this.swivel.rotation = jointRot;
+			this.pivot.rotation = armRot;
 			if ( viewID != NetworkViewID.unassigned )
 			{
 				this.currentTarget = TargetManager.instance.GetTargetWithID( viewID );
