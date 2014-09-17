@@ -65,6 +65,13 @@ public class GameNetworkManager : BaseNetworkManager
 #endif
 	}
 
+	public void OnFighterTypeSelected( FIGHTER_TYPE _fighterType )
+	{
+		GamePlayerManager.instance.myPlayer.fighterType = _fighterType;
+		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer,
+		     Application.isEditor && Network.peerType == NetworkPeerType.Disconnected );
+	}
+
 	private void OnGUI()
 	{
 		GUI.Label( new Rect( Screen.width - 50, 25, 50, 25 ), "Player " + Common.MyNetworkID() );  
@@ -106,7 +113,10 @@ public class GameNetworkManager : BaseNetworkManager
 	{
 		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( Common.MyNetworkID() );
 
-		PlayerInstantiator.instance.CreatePlayerObject( player, false );
+		if ( player.playerType == PLAYER_TYPE.COMMANDER1 || player.playerType == PLAYER_TYPE.COMMANDER2 )
+		{
+			PlayerInstantiator.instance.CreatePlayerObject( player, false );
+		}
 		this.gameHasStarted = true;
 	}
 
@@ -276,7 +286,7 @@ public class GameNetworkManager : BaseNetworkManager
 		DebugConsole.Log( "Local game start" );
 
 		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
-		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer, false );
+		//PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer, false );
 
 		/*if ( this.createCapitalShip1 )
 		{

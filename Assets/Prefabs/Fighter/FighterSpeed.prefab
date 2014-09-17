@@ -260,7 +260,7 @@ MonoBehaviour:
   undockingSpeed: 25000
   contactPushForce: 4
   contactTorque: 75
-  deadFlyingSpeed: 8000
+  deadFlyingSpeed: 25000
   deadSpinSpeed: 1500
   turnExtents: .699999988
 --- !u!114 &11400002
@@ -404,6 +404,7 @@ MonoBehaviour:
     id: 0
     name: DEFAULT
     playerType: 0
+    fighterType: 0
     isConnected: 0
     kills: 0
     assists: 0
@@ -425,8 +426,8 @@ MonoBehaviour:
     occupied: 0
     slotID: 0
   model: {fileID: 2300000}
-  dummyShip: 1
-  ownerID: -4
+  dummyShip: 0
+  ownerID: -1
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1

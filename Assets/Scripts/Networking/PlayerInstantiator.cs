@@ -5,7 +5,9 @@ public class PlayerInstantiator : MonoBehaviour
 {
 	public static PlayerInstantiator instance;
 
-	public GameObject fighterPrefab;
+	public GameObject speedFighterPrefab;
+	public GameObject agileFighterPrefab;
+	public GameObject heavyFighterPrefab;
 	public GameObject fighterCameraPrefab;
 	public GameObject capitalShipPrefab;
 	public GameObject capitalPathLinePrefab;
@@ -21,17 +23,11 @@ public class PlayerInstantiator : MonoBehaviour
 		switch ( _player.playerType )
 		{
 		case PLAYER_TYPE.COMMANDER1:
-		{
-			return this.CreateCapitalShip( _player, _dummyPlayer );
-		}
 		case PLAYER_TYPE.COMMANDER2:
 		{
 			return this.CreateCapitalShip( _player, _dummyPlayer);
 		}
 		case PLAYER_TYPE.FIGHTER1:
-		{
-			return this.CreateFighter( _player, _dummyPlayer );
-		}
 		case PLAYER_TYPE.FIGHTER2:
 		{
 			return this.CreateFighter( _player, _dummyPlayer );
@@ -102,23 +98,26 @@ public class PlayerInstantiator : MonoBehaviour
 	private GameObject CreateFighter( GamePlayer _player, bool _dummyShip )
 	{
 		Vector3 fighterPos = Common.RandomVector3( -25.0f, 25.0f );
+
+		GameObject fighterPrefab = this.GetFighterPrefab( _player.fighterType );
+
 		GameObject fighterObj;
 		// Used for testing scenes
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 #if UNITY_EDITOR
-			this.fighterPrefab.GetComponent<FighterMaster>().dummyShip = _dummyShip;
-			this.fighterPrefab.GetComponent<FighterMaster>().ownerID = _player.id;
+			fighterPrefab.GetComponent<FighterMaster>().dummyShip = _dummyShip;
+			fighterPrefab.GetComponent<FighterMaster>().ownerID = _player.id;
 #endif
 			fighterObj = GameObject.Instantiate( 
-			    this.fighterPrefab, 
+			                                    fighterPrefab, 
 			    fighterPos, 
 			    Quaternion.identity ) as GameObject;
 		}
 		else
 		{
 			fighterObj = Network.Instantiate(
-				this.fighterPrefab,
+				fighterPrefab,
 				fighterPos,
 				Quaternion.identity,
 				0 ) as GameObject;
@@ -139,5 +138,21 @@ public class PlayerInstantiator : MonoBehaviour
 		DebugConsole.Log( "Creating fighter for player " + _player.id + " on team " + _player.team, fighterObj );
 
 		return fighterObj;
+	}
+
+	private GameObject GetFighterPrefab( FIGHTER_TYPE _fighterType )
+	{
+		switch ( _fighterType )
+		{
+		case FIGHTER_TYPE.AGILE:
+			return this.agileFighterPrefab;
+		case FIGHTER_TYPE.HEAVY:
+			return this.heavyFighterPrefab;
+		case FIGHTER_TYPE.SPEED:
+			return this.speedFighterPrefab;
+		default:
+			DebugConsole.Error( "Uncaught fighter type " + _fighterType );
+			return null;
+		}
 	}
 }

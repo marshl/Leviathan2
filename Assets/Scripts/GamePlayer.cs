@@ -23,8 +23,8 @@ public class GamePlayer
 	public int id;
 	
 	public string name = "DEFAULT";
-	public PLAYER_TYPE playerType;
-
+	public PLAYER_TYPE playerType = PLAYER_TYPE.UNDEFINED;
+	public FIGHTER_TYPE fighterType = FIGHTER_TYPE.NONE;
 	public bool isConnected;
 
 	public int kills;

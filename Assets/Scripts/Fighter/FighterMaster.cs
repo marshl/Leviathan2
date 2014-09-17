@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum FIGHTER_TYPE
+{
+	NONE, 
+	SPEED,
+	AGILE,
+	HEAVY,
+};
+
 public class FighterMaster : MonoBehaviour 
 {
 	public enum FIGHTERSTATE

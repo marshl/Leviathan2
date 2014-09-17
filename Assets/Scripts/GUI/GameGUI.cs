@@ -11,6 +11,7 @@ public class GameGUI : MonoBehaviour
 		FIGHTER,
 		FIGHTER_RESPAWNING,
 		CAPITAL,
+		FIGHTER_PICKER,
 	};
 
 	public GUI_MODE guiMode = GUI_MODE.NONE;
@@ -74,6 +75,10 @@ public class GameGUI : MonoBehaviour
 			this.UpdateCapitalShipDisplay();
 			break;
 		}
+		case GUI_MODE.FIGHTER_PICKER:
+		{
+			break;
+		}
 		default:
 		{
 			DebugConsole.Error( "Uncaught GUIMODE state " + this.guiMode );
@@ -117,6 +122,23 @@ public class GameGUI : MonoBehaviour
 			this.RenderCapitalShipDisplay();
 			break;
 		}
+		case GUI_MODE.FIGHTER_PICKER:
+		{
+			if ( GUI.Button( new Rect( 0, Screen.height/3, Screen.width/3, Screen.height/3 ), "SPEED" ) )
+			{
+				GameNetworkManager.instance.OnFighterTypeSelected( FIGHTER_TYPE.SPEED );
+			}
+			else if ( GUI.Button( new Rect( Screen.width/3, Screen.height/3, Screen.width/3, Screen.height/3 ), "AGILITY" ) )
+			{
+				GameNetworkManager.instance.OnFighterTypeSelected( FIGHTER_TYPE.AGILE );
+			}
+			else if ( GUI.Button( new Rect( Screen.width*2/3, Screen.height/3, Screen.width/3, Screen.height/3 ), "HEAVY" ) )
+			{
+				GameNetworkManager.instance.OnFighterTypeSelected( FIGHTER_TYPE.HEAVY );
+			}
+
+			break;
+		}
 		default:
 		{
 			DebugConsole.Error( "Uncaught GUIMODE state " + this.guiMode );
@@ -132,22 +154,26 @@ public class GameGUI : MonoBehaviour
 			this.player = GamePlayerManager.instance.myPlayer;
 		}
 
-		if ( this.player != null )
+		if ( this.player == null )
 		{
-			if ( this.player.fighter != null )
-			{
-				this.guiMode = ( this.player.fighter.state == FighterMaster.FIGHTERSTATE.DEAD
-					|| this.player.fighter.state == FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL )
-					? GUI_MODE.FIGHTER_RESPAWNING : GUI_MODE.FIGHTER;
-			}
-			else if ( this.player.capitalShip != null )
-			{
-				this.guiMode = GUI_MODE.CAPITAL;
-			}
-			else
-			{
-				this.guiMode = GUI_MODE.NONE;
-			}
+			this.guiMode = GUI_MODE.NONE;
+			return;
+		}
+
+		if ( this.player.fighter != null )
+		{
+			this.guiMode = ( this.player.fighter.state == FighterMaster.FIGHTERSTATE.DEAD
+				|| this.player.fighter.state == FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL )
+				? GUI_MODE.FIGHTER_RESPAWNING : GUI_MODE.FIGHTER;
+		}
+		else if ( this.player.capitalShip != null )
+		{
+			this.guiMode = GUI_MODE.CAPITAL;
+		}
+		else if ( (this.player.playerType == PLAYER_TYPE.FIGHTER1 || this.player.playerType == PLAYER_TYPE.FIGHTER2 )
+		         && this.player.fighterType == FIGHTER_TYPE.NONE )
+		{
+			this.guiMode = GUI_MODE.FIGHTER_PICKER;
 		}
 		else
 		{

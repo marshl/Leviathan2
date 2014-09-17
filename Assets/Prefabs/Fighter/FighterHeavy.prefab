@@ -178,7 +178,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100010}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.17749214, z: -14.4427032}
+  m_LocalPosition: {x: 0, y: 1.89579582, z: 4.63497925}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400004}
@@ -288,6 +288,7 @@ MonoBehaviour:
     id: 0
     name: DEFAULT
     playerType: 0
+    fighterType: 0
     isConnected: 0
     kills: 0
     assists: 0
@@ -309,6 +310,8 @@ MonoBehaviour:
     occupied: 0
     slotID: 0
   model: {fileID: 2300000}
+  dummyShip: 0
+  ownerID: 0
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
