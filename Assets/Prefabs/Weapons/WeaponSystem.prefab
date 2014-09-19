@@ -1081,6 +1081,7 @@ MonoBehaviour:
   weaponType: 1
   label: 
   fireRate: .200000003
+  energyCost: 0
   spread: .25
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1250,6 +1251,7 @@ MonoBehaviour:
   weaponType: 9
   label: 
   fireRate: 1
+  energyCost: 10
   spread: 0
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1267,6 +1269,7 @@ MonoBehaviour:
   weaponType: 6
   label: Light Laser 3
   fireRate: .100000001
+  energyCost: 1
   spread: .100000001
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1284,6 +1287,7 @@ MonoBehaviour:
   weaponType: 5
   label: Light Laser 2
   fireRate: .150000006
+  energyCost: 1.5
   spread: .100000001
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1301,6 +1305,7 @@ MonoBehaviour:
   weaponType: 14
   label: Guided Missile
   fireRate: 1
+  energyCost: 0
   spread: 0
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1317,7 +1322,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 13
   label: 
-  fireRate: 1
+  fireRate: .699999988
+  energyCost: 12
   spread: 0
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1333,8 +1339,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 12
-  label: 
-  fireRate: 1
+  label: Meson Blaster
+  fireRate: .300000012
+  energyCost: 4
   spread: 0
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1350,8 +1357,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 11
-  label: 
-  fireRate: 1
+  label: Plasma Cannon
+  fireRate: .400000006
+  energyCost: 6
   spread: 0
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1369,6 +1377,7 @@ MonoBehaviour:
   weaponType: 10
   label: Heavy Laser
   fireRate: .5
+  energyCost: 4
   spread: 0
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1386,6 +1395,7 @@ MonoBehaviour:
   weaponType: 8
   label: 
   fireRate: 1
+  energyCost: 5
   spread: 0
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1403,6 +1413,7 @@ MonoBehaviour:
   weaponType: 7
   label: 
   fireRate: .100000001
+  energyCost: 1
   spread: 0
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1420,6 +1431,7 @@ MonoBehaviour:
   weaponType: 4
   label: Light Laser 1
   fireRate: .200000003
+  energyCost: 2
   spread: .100000001
   fireInSync: 0
   bulletDesc: {fileID: 0}
@@ -1545,6 +1557,7 @@ MonoBehaviour:
   weaponType: 2
   label: Ripper Turret
   fireRate: .5
+  energyCost: 0
   spread: .100000001
   fireInSync: 0
   bulletDesc: {fileID: 0}

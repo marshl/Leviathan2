@@ -28,9 +28,12 @@ public class BulletBase : MonoBehaviour
 
 	public BulletDescriptor desc;
 
+	public float damage;
+
 	protected virtual void Awake()
 	{
 		this.desc = BulletDescriptorManager.instance.GetDescOfType( this.weaponType );
+		this.damage = desc.damage;
 	}
 
 	protected virtual void Start()
@@ -162,7 +165,7 @@ public class BulletBase : MonoBehaviour
 		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
 		if ( _health.GetComponent<SeekingBullet>() == null )
 		{
-			_health.DealDamage( this.desc.damage, true, this.source.networkView.viewID );
+			_health.DealDamage( this.damage, true, this.source.networkView.viewID );
 		}
 
 		BulletManager.instance.DestroyLocalBullet( this );
@@ -188,6 +191,7 @@ public class BulletBase : MonoBehaviour
 
 		this.rigidbody.velocity = Vector3.zero;
 		this.rigidbody.angularVelocity = Vector3.zero;
+		this.damage = desc.damage;
 
 		//this.lastPosition = this.transform.position;
 	}

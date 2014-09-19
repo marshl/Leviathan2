@@ -87,6 +87,22 @@ public class WeaponBase : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Starts the firing procedure, accepting in a damage scale parameter
+	/// </summary>
+
+	public virtual bool SendFireMessage(float damageScale)
+	{
+		if ( this.CanFire() == false )
+		{
+			return false;
+		}
+		
+		this.Fire(damageScale);
+		DebugConsole.Log ("Fired weapon at " + damageScale + " effectiveness");
+		return true;
+	}
+
+	/// <summary>
 	/// Fires a bullet, or a series of bullets if FireInSync = true, and returns a list of them
 	/// </summary>
 	public virtual List<BulletBase> Fire()
@@ -136,6 +152,68 @@ public class WeaponBase : MonoBehaviour
 			}
 			this.IncrementFireIndex();
 
+			bulletsFired.Add( bullet );
+		}
+		return bulletsFired;
+	}
+
+	// <summary>
+	/// Fires a bullet, or a series of bullets if FireInSync = true, and returns a list of them. Takes in a damage scale amount
+	/// to modify the bullet damage for when running low on energy
+	/// </summary>
+	public virtual List<BulletBase> Fire(float damageScale)
+	{
+		//Reusing the entire method. Shoot me - RB
+		if ( this.firePoints.Length == 0 )
+		{
+			DebugConsole.Error( "No fire points found on weapon \"" + this.ToString() + "\"", this );
+			return null;
+		}
+		this.timeSinceShot = 0.0f;
+		
+		// Create a new list of bullets with capacity equal to number of bullets to be fired
+		List<BulletBase> bulletsFired = new List<BulletBase>( this.weaponDesc.fireInSync ? this.firePoints.Length : 1 );
+		
+		if ( this.weaponDesc.fireInSync == true )
+		{
+			for ( int i = 0; i < this.firePoints.Length; ++i )
+			{
+				WeaponFirePoint currentFirePoint = this.firePoints[i];
+				BulletBase bullet = BulletManager.instance.CreateBullet
+					(
+						this.source,
+						this.weaponDesc.weaponType,
+						currentFirePoint.transform.position, 
+						currentFirePoint.transform.forward, 
+						this.weaponDesc.spread
+						);
+				//Added line here from regular fire method
+				bullet.damage *= damageScale;
+				
+				bulletsFired.Add( bullet );
+			}
+		}
+		else
+		{
+			WeaponFirePoint currentFirePoint = this.firePoints[this.firePointIndex];
+			BulletBase bullet = BulletManager.instance.CreateBullet
+				(
+					this.source,
+					this.weaponDesc.weaponType,
+					currentFirePoint.transform.position, 
+					currentFirePoint.transform.forward, 
+					this.weaponDesc.spread
+					);
+
+			//Added line here from regular fire method
+			bullet.damage *= damageScale;
+
+			if ( bullet == null )
+			{
+				DebugConsole.Error( "Error firing weapon \"" + this.GetType().ToString() + "\"", this );
+			}
+			this.IncrementFireIndex();
+			
 			bulletsFired.Add( bullet );
 		}
 		return bulletsFired;
