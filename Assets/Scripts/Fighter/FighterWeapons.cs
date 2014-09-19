@@ -5,11 +5,6 @@ using System.Collections.Generic;
 public class FighterWeapons : BaseWeaponManager
 {
 	public FighterMaster master;
-	public float maxLaserEnergy = 100.0f;
-	public float currentLaserEnergy = 100.0f;
-	public float energyRechargePerSecond = 10.0f;
-	public float laserPenaltyThreshold = 25.0f;
-	public float laserMinimumScale = 0.1f;
 
 	public WeaponBase laserWeapon;
 	public WeaponBase missileWeapon;
@@ -40,7 +35,7 @@ public class FighterWeapons : BaseWeaponManager
 			if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
 			{
 				this.laserWeapon.FocusFirePoints( Common.MousePointHitDirection( this.gameObject ) );
-				AttemptToFireLasers();
+				this.laserWeapon.SendFireMessage();
 			}
 			
 			if ( Input.GetKey( KeyCode.Space ) ) // Space bar - Fire missile
@@ -88,54 +83,11 @@ public class FighterWeapons : BaseWeaponManager
 			{
 				this.laserWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_3 );
 			}
-
-			RegenerateLaserEnergy();
 		}
 	}
 
 	public void OnRespawn()
 	{
 		this.currentTarget = null;
-	}
-
-	public void AttemptToFireLasers()
-	{
-		if(currentLaserEnergy > laserPenaltyThreshold)
-		{
-			if(this.laserWeapon.SendFireMessage())
-			{
-				currentLaserEnergy -= this.laserWeapon.weaponDesc.energyCost; //Fire as normal
-			}
-		}
-		else
-		{
-			//Damage is modified by the percentage under the threshold the energy is at
-			float damageScale = (currentLaserEnergy / laserPenaltyThreshold );
-
-			if(damageScale < laserMinimumScale)
-			{
-				damageScale = laserMinimumScale;
-			}
-			if(this.laserWeapon.SendFireMessage (damageScale)) //Fire with penalty
-			{
-				currentLaserEnergy -= this.laserWeapon.weaponDesc.energyCost;
-				if(currentLaserEnergy < 0)
-				{
-					currentLaserEnergy = 0;
-				}
-			}
-		}
-	}
-
-	public void RegenerateLaserEnergy()
-	{
-		if(currentLaserEnergy < maxLaserEnergy)
-		{
-			currentLaserEnergy += energyRechargePerSecond * Time.deltaTime;
-			if(currentLaserEnergy > maxLaserEnergy)
-			{
-				currentLaserEnergy = maxLaserEnergy;
-			}
-		}
 	}
 }

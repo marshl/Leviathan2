@@ -80,7 +80,8 @@ public class BulletManager : MonoBehaviour
 
 	public BulletBase CreateBullet( BaseWeaponManager _source, WEAPON_TYPE _weaponType, 
 	                              Vector3 _pos, Vector3 _forward,
-	                              float _spread = 0.0f )
+	                              float _spread,
+	                              float _damageScale )
 	{
 		BulletDescriptor desc = BulletDescriptorManager.instance.GetDescOfType( _weaponType );
 
@@ -118,6 +119,7 @@ public class BulletManager : MonoBehaviour
 		bulletScript.Reset();
 		bulletScript.state = BulletBase.BULLET_STATE.ACTIVE_OWNED;
 		bulletScript.enabled = true;
+		bulletScript.damageScale = _damageScale;
 
 		bulletObj.SetActive( true );
 		// If it was fired by another player, its collider would be turned off

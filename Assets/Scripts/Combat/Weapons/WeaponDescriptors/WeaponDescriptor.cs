@@ -10,8 +10,13 @@ public class WeaponDescriptor : MonoBehaviour
 	public WEAPON_TYPE weaponType;
 	public string label;
 	public float fireRate;
-	public float energyCost;
+
 	public float spread;
 	public bool fireInSync;
+
+	public bool usesEnergy;
+	public float energyCostPerShot;
+	public float energyRechargePerSecond;
+
 	public BulletDescriptor bulletDesc;
 }

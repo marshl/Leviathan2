@@ -4,30 +4,23 @@ using System.Collections;
 public class WeaponTest : BaseWeaponManager
 {
 	public WeaponBase weapon;
-
-	public bool usesEnergy = false;
-	public float maxLaserEnergy = 100.0f;
-	public float currentLaserEnergy = 100.0f;
-	public float energyRechargePerSecond = 10.0f;
-	public float laserPenaltyThreshold = 25.0f;
-	public float laserMinimumScale = 0.1f;
-
+	
 	public BaseHealth[] targetDummies;
 
 	public float turnRate;
 
+	public bool firing;
+
 	private void Update()
 	{
-		if ( Input.GetKey( KeyCode.Space ) )
+		if ( Input.GetKeyDown( KeyCode.Space ) )
 		{
-			if(usesEnergy)
-			{
-				AttemptToFireLasers();
-			}
-			else
-			{
-				weapon.SendFireMessage();
-			}
+			this.firing = !this.firing;
+		}
+
+		if ( this.firing )
+		{
+			this.weapon.SendFireMessage();
 		}
 
 		if ( Input.GetKey( KeyCode.A ) )
@@ -38,8 +31,6 @@ public class WeaponTest : BaseWeaponManager
 		{
 			this.transform.Rotate( this.transform.up, Time.deltaTime * this.turnRate );
 		}
-
-		RegenerateLaserEnergy();
 	}
 
 	private void OnGUI()
@@ -57,45 +48,10 @@ public class WeaponTest : BaseWeaponManager
 		}
 	}
 
-	public void AttemptToFireLasers()
+	public override void OnBulletCreated( BulletBase _bullet )
 	{
-		if(currentLaserEnergy > laserPenaltyThreshold)
-		{
-			if(this.weapon.SendFireMessage())
-			{
-				currentLaserEnergy -= this.weapon.weaponDesc.energyCost; //Fire as normal
-			}
-		}
-		else
-		{
-			//Damage is modified by the percentage under the threshold the energy is at
-			float damageScale = (currentLaserEnergy / laserPenaltyThreshold );
+		base.OnBulletCreated( _bullet );
 
-			if(damageScale < laserMinimumScale)
-			{
-				damageScale = laserMinimumScale;
-			}
-
-			if(this.weapon.SendFireMessage (damageScale)) //Fire with penalty
-			{
-				currentLaserEnergy -= this.weapon.weaponDesc.energyCost;
-				if(currentLaserEnergy < 0)
-				{
-					currentLaserEnergy = 0;
-				}
-			}
-		}
-	}
-
-	public void RegenerateLaserEnergy()
-	{
-		if(currentLaserEnergy < maxLaserEnergy)
-		{
-			currentLaserEnergy += energyRechargePerSecond * Time.deltaTime;
-			if(currentLaserEnergy > maxLaserEnergy)
-			{
-				currentLaserEnergy = maxLaserEnergy;
-			}
-		}
+		Debug.Log( "Damage: " + _bullet.damageScale, _bullet );
 	}
 }

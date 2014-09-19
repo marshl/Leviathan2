@@ -15,25 +15,18 @@ public class BulletBase : MonoBehaviour
 		ACTIVE_NOT_OWNED,
 	};
 	public BULLET_STATE state;
-
 	public int index;
-
 	public WEAPON_TYPE weaponType;
-
 	public LocalBulletBucket parentBucket;
-
-	public float distanceTravelled;
-	
-	public BaseWeaponManager source;
-
 	public BulletDescriptor desc;
 
-	public float damage;
+	public BaseWeaponManager source;
+	public float distanceTravelled;
+	public float damageScale = 1.0f;
 
 	protected virtual void Awake()
 	{
 		this.desc = BulletDescriptorManager.instance.GetDescOfType( this.weaponType );
-		this.damage = desc.damage;
 	}
 
 	protected virtual void Start()
@@ -165,7 +158,7 @@ public class BulletBase : MonoBehaviour
 		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
 		if ( _health.GetComponent<SeekingBullet>() == null )
 		{
-			_health.DealDamage( this.damage, true, this.source.networkView.viewID );
+			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.networkView.viewID );
 		}
 
 		BulletManager.instance.DestroyLocalBullet( this );
@@ -191,7 +184,7 @@ public class BulletBase : MonoBehaviour
 
 		this.rigidbody.velocity = Vector3.zero;
 		this.rigidbody.angularVelocity = Vector3.zero;
-		this.damage = desc.damage;
+		this.damageScale = 1.0f;
 
 		//this.lastPosition = this.transform.position;
 	}

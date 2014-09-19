@@ -1081,9 +1081,13 @@ MonoBehaviour:
   weaponType: 1
   label: 
   fireRate: .200000003
-  energyCost: 0
   spread: .25
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400006
 MonoBehaviour:
@@ -1251,9 +1255,13 @@ MonoBehaviour:
   weaponType: 9
   label: 
   fireRate: 1
-  energyCost: 10
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400026
 MonoBehaviour:
@@ -1269,9 +1277,13 @@ MonoBehaviour:
   weaponType: 6
   label: Light Laser 3
   fireRate: .100000001
-  energyCost: 1
   spread: .100000001
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400028
 MonoBehaviour:
@@ -1287,9 +1299,13 @@ MonoBehaviour:
   weaponType: 5
   label: Light Laser 2
   fireRate: .150000006
-  energyCost: 1.5
   spread: .100000001
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400030
 MonoBehaviour:
@@ -1305,9 +1321,13 @@ MonoBehaviour:
   weaponType: 14
   label: Guided Missile
   fireRate: 1
-  energyCost: 0
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400032
 MonoBehaviour:
@@ -1323,9 +1343,13 @@ MonoBehaviour:
   weaponType: 13
   label: 
   fireRate: .699999988
-  energyCost: 12
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400034
 MonoBehaviour:
@@ -1341,9 +1365,13 @@ MonoBehaviour:
   weaponType: 12
   label: Meson Blaster
   fireRate: .300000012
-  energyCost: 4
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400036
 MonoBehaviour:
@@ -1359,9 +1387,13 @@ MonoBehaviour:
   weaponType: 11
   label: Plasma Cannon
   fireRate: .400000006
-  energyCost: 6
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400038
 MonoBehaviour:
@@ -1377,9 +1409,13 @@ MonoBehaviour:
   weaponType: 10
   label: Heavy Laser
   fireRate: .5
-  energyCost: 4
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400040
 MonoBehaviour:
@@ -1395,9 +1431,13 @@ MonoBehaviour:
   weaponType: 8
   label: 
   fireRate: 1
-  energyCost: 5
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400042
 MonoBehaviour:
@@ -1413,9 +1453,13 @@ MonoBehaviour:
   weaponType: 7
   label: 
   fireRate: .100000001
-  energyCost: 1
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400044
 MonoBehaviour:
@@ -1431,9 +1475,13 @@ MonoBehaviour:
   weaponType: 4
   label: Light Laser 1
   fireRate: .200000003
-  energyCost: 2
   spread: .100000001
   fireInSync: 0
+  usesEnergy: 1
+  energyCostPerShot: .0500000007
+  energyRechargePerSecond: .200000003
+  energyPenaltyThreshold: .25
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400046
 MonoBehaviour:
@@ -1557,9 +1605,13 @@ MonoBehaviour:
   weaponType: 2
   label: Ripper Turret
   fireRate: .5
-  energyCost: 0
   spread: .100000001
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  energyRechargePerSecond: 0
+  energyPenaltyThreshold: 0
+  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
