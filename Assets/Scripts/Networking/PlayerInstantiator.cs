@@ -110,7 +110,7 @@ public class PlayerInstantiator : MonoBehaviour
 			fighterPrefab.GetComponent<FighterMaster>().ownerID = _player.id;
 #endif
 			fighterObj = GameObject.Instantiate( 
-			                                    fighterPrefab, 
+			    fighterPrefab, 
 			    fighterPos, 
 			    Quaternion.identity ) as GameObject;
 		}

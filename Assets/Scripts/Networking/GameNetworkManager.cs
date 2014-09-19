@@ -68,8 +68,7 @@ public class GameNetworkManager : BaseNetworkManager
 	public void OnFighterTypeSelected( FIGHTER_TYPE _fighterType )
 	{
 		GamePlayerManager.instance.myPlayer.fighterType = _fighterType;
-		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer,
-		     Application.isEditor && Network.peerType == NetworkPeerType.Disconnected );
+		PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer, false );
 	}
 
 	private void OnGUI()

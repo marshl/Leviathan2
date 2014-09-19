@@ -100,22 +100,27 @@ public class TurretBehavior : BaseWeaponManager
 			return Vector3.zero;
 		}
 	
-		Vector3 direction = (leadPosition - this.orientationPoint.position).normalized;
+		Vector3 direction = ( leadPosition - this.orientationPoint.position ).normalized;
 	
+		// Yaw
 		float yawAngle = Common.AngleAroundAxis( this.transform.forward, direction, this.transform.up );
 		Quaternion targetYaw = Quaternion.AngleAxis( yawAngle, Vector3.up );
-		this.swivel.localRotation = Quaternion.Slerp( this.swivel.localRotation, targetYaw, 1.0f );//Time.deltaTime * this.rotationSpeed );
+		this.swivel.localRotation = Quaternion.Slerp( this.swivel.localRotation, targetYaw, Time.deltaTime * this.rotationSpeed );
 
+		// Pitch
 		float pitchAngle = Common.AngleAroundAxis( this.transform.up, direction, this.swivel.right);
+		// Take off 90 degrees because the angle is measured from the up vector, but the pivot has angle 0 when pointed out the front
 		pitchAngle = Mathf.Clamp( pitchAngle, this.minPitchAngle, this.maxPitchAngle ) - 90.0f;
 		Quaternion targetPitch = Quaternion.AngleAxis( pitchAngle, Vector3.right );
-		this.pivot.localRotation = Quaternion.Slerp( this.pivot.localRotation, targetPitch, 1.0f );//Time.deltaTime * this.pitchSpeed );
+		this.pivot.localRotation = Quaternion.Slerp( this.pivot.localRotation, targetPitch, Time.deltaTime * this.pitchSpeed );
+
+		// Gun tilt
 		foreach ( Transform gunArm in this.gunArms )
 		{
 			float tiltAngle = Common.AngleAroundAxis( this.pivot.forward, (leadPosition - gunArm.position).normalized, this.pivot.up );
 
 			tiltAngle = Mathf.Clamp ( tiltAngle, -this.gunArmTiltLimit, this.gunArmTiltLimit );
-			Quaternion targetTilt = Quaternion.AngleAxis( tiltAngle, this.pivot.up );
+			Quaternion targetTilt = Quaternion.AngleAxis( tiltAngle, gunArm.up );
 			gunArm.localRotation = targetTilt;
 		}
 

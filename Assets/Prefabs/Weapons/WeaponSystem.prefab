@@ -27,7 +27,7 @@ GameObject:
   m_Layer: 0
   m_Name: BulletManager
   m_TagString: Untagged
-  m_Icon: {fileID: -1376725286, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -59,7 +59,7 @@ GameObject:
   m_Layer: 0
   m_Name: WeaponDescriptors
   m_TagString: Untagged
-  m_Icon: {fileID: -1376725286, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -577,7 +577,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 10.9559727, y: .59168148, z: 9.63763618}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -1081,7 +1081,7 @@ MonoBehaviour:
   weaponType: 1
   label: 
   fireRate: .200000003
-  spread: .100000001
+  spread: .25
   fireInSync: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400006
