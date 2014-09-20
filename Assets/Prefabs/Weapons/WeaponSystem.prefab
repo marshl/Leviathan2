@@ -1085,9 +1085,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400006
 MonoBehaviour:
@@ -1151,6 +1148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f985b5eb6f7cdc4ea93ffd05947642f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  energyDamagePenalty: .25
+  minEnergyDamageMultiplier: .100000001
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1259,9 +1258,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400026
 MonoBehaviour:
@@ -1281,9 +1277,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400028
 MonoBehaviour:
@@ -1303,9 +1296,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400030
 MonoBehaviour:
@@ -1325,9 +1315,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400032
 MonoBehaviour:
@@ -1347,9 +1334,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400034
 MonoBehaviour:
@@ -1369,9 +1353,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400036
 MonoBehaviour:
@@ -1391,9 +1372,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400038
 MonoBehaviour:
@@ -1413,9 +1391,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400040
 MonoBehaviour:
@@ -1435,9 +1410,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400042
 MonoBehaviour:
@@ -1457,9 +1429,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400044
 MonoBehaviour:
@@ -1479,9 +1448,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 1
   energyCostPerShot: .0500000007
-  energyRechargePerSecond: .200000003
-  energyPenaltyThreshold: .25
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!114 &11400046
 MonoBehaviour:
@@ -1609,9 +1575,6 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  energyRechargePerSecond: 0
-  energyPenaltyThreshold: 0
-  minEnergyDamageMultiplier: .100000001
   bulletDesc: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:

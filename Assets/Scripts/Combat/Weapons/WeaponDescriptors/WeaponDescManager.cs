@@ -12,7 +12,7 @@ public class WeaponDescManager : MonoBehaviour
 
 	private Dictionary<WEAPON_TYPE, WeaponDescriptor> descriptorMap;
 
-	public float energyPenaltyThreshold;
+	public float energyDamagePenalty;
 	public float minEnergyDamageMultiplier = 0.1f;
 
 	private void Awake()

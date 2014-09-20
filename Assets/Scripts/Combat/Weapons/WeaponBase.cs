@@ -18,8 +18,6 @@ public class WeaponBase : MonoBehaviour
 	public int firePointIndex;
 	public float timeSinceShot;
 
-	public float currentEnergy = 1.0f;
-
 	public BaseWeaponManager source;
 
 	protected virtual void Start()
@@ -30,10 +28,6 @@ public class WeaponBase : MonoBehaviour
 	protected virtual void Update()
 	{
 		this.timeSinceShot += Time.deltaTime;
-
-		this.currentEnergy = Mathf.Clamp( this.currentEnergy
-		                                      + this.weaponDesc.energyRechargePerSecond * Time.deltaTime,
-		                                      0.0f, 1.0f );
 	}
 
 	public void SetWeaponType( WEAPON_TYPE _weaponType )
@@ -108,9 +102,16 @@ public class WeaponBase : MonoBehaviour
 		float damageScale = 1.0f;
 		if ( this.weaponDesc.usesEnergy )
 		{
-			this.currentEnergy -= this.weaponDesc.energyCostPerShot;
-			damageScale = Mathf.Max( this.currentEnergy / WeaponDescManager.instance.energyPenaltyThreshold,
-			                        WeaponDescManager.instance.minEnergyDamageMultiplier );
+			EnergySystem energySystem = this.GetComponent<EnergySystem>();
+			if ( energySystem != null )
+			{
+				energySystem.ReduceEnergy( this.weaponDesc.energyCostPerShot );
+				damageScale = energySystem.GetDamageScale();
+			}
+			else
+			{
+				DebugConsole.Error( this.weaponDesc.weaponType + " Weapon requires energy system", this );
+			}
 		}
 
 		// Create a new list of bullets with capacity equal to number of bullets to be fired

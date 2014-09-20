@@ -184,10 +184,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 11
-  label: 
-  fireRate: 1
+  label: Plasma Cannon
+  fireRate: .400000006
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &112039260
 GameObject:
@@ -568,6 +570,8 @@ MonoBehaviour:
   fireRate: .100000001
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &375129943
 GameObject:
@@ -683,10 +687,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 12
-  label: 
-  fireRate: 1
+  label: Meson Blaster
+  fireRate: .300000012
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &485729536
 GameObject:
@@ -1031,6 +1037,8 @@ MonoBehaviour:
   fireRate: .5
   spread: .100000001
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &759172559
 GameObject:
@@ -1586,7 +1594,7 @@ GameObject:
   m_Layer: 0
   m_Name: WeaponDescriptors
   m_TagString: Untagged
-  m_Icon: {fileID: -1376725286, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1617,6 +1625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f985b5eb6f7cdc4ea93ffd05947642f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  energyDamagePenalty: .25
+  minEnergyDamageMultiplier: .100000001
 --- !u!1 &1302165926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1794,7 +1804,7 @@ GameObject:
   m_Layer: 0
   m_Name: BulletManager
   m_TagString: Untagged
-  m_Icon: {fileID: -1376725286, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2354,9 +2364,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 13
   label: 
-  fireRate: 1
+  fireRate: .699999988
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &1628480956
 GameObject:
@@ -2403,6 +2415,8 @@ MonoBehaviour:
   fireRate: 1
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &1661388356
 GameObject:
@@ -2632,6 +2646,10 @@ Prefab:
       propertyPath: m_ViewID.m_Type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: 5798065926fbd344e8a5659c6a276ca0, type: 2}
+      propertyPath: team
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5798065926fbd344e8a5659c6a276ca0, type: 2}
   m_RootGameObject: {fileID: 1961599338}
@@ -2730,6 +2748,8 @@ MonoBehaviour:
   fireRate: .200000003
   spread: .25
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &1831819241
 GameObject:
@@ -2776,6 +2796,8 @@ MonoBehaviour:
   fireRate: 1
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &1906495559
 GameObject:
@@ -2917,6 +2939,8 @@ MonoBehaviour:
   fireRate: .5
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!4 &1954209445
 Transform:
@@ -3198,6 +3222,8 @@ MonoBehaviour:
   fireRate: .200000003
   spread: .100000001
   fireInSync: 0
+  usesEnergy: 1
+  energyCostPerShot: .0500000007
   bulletDesc: {fileID: 0}
 --- !u!114 &2061263137
 MonoBehaviour:
@@ -3216,6 +3242,8 @@ MonoBehaviour:
   fireRate: .100000001
   spread: .100000001
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &2061263138
 MonoBehaviour:
@@ -3234,6 +3262,8 @@ MonoBehaviour:
   fireRate: .150000006
   spread: .100000001
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}
 --- !u!1 &2085318311
 GameObject:
@@ -3322,4 +3352,6 @@ MonoBehaviour:
   fireRate: 1
   spread: 0
   fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   bulletDesc: {fileID: 0}

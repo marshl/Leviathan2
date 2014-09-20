@@ -16,7 +16,7 @@ public class WeaponDescriptor : MonoBehaviour
 
 	public bool usesEnergy;
 	public float energyCostPerShot;
-	public float energyRechargePerSecond;
+
 
 	public BulletDescriptor bulletDesc;
 }
