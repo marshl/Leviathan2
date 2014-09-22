@@ -1066,6 +1066,8 @@ MonoBehaviour:
   moveSpeed: 450
   maxDistance: 1500
   damage: 25
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400004
 MonoBehaviour:
@@ -1114,6 +1116,8 @@ MonoBehaviour:
   moveSpeed: 750
   maxDistance: 5000
   damage: 500
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400010
 MonoBehaviour:
@@ -1132,6 +1136,8 @@ MonoBehaviour:
   moveSpeed: 50
   maxDistance: 500
   damage: 100
+  areaOfEffect: 1
+  aoeRadius: 25
   smartBullet: 1
   turnRate: 25
   canAngleOut: 0
@@ -1163,10 +1169,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 13
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 500
-  moveSpeed: 50
+  count: 50
+  moveSpeed: 500
   maxDistance: 500
-  damage: 10
+  damage: 1000
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400016
 MonoBehaviour:
@@ -1185,6 +1193,8 @@ MonoBehaviour:
   moveSpeed: 50
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400018
 MonoBehaviour:
@@ -1203,6 +1213,8 @@ MonoBehaviour:
   moveSpeed: 50
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400020
 MonoBehaviour:
@@ -1221,6 +1233,8 @@ MonoBehaviour:
   moveSpeed: 50
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400022
 MonoBehaviour:
@@ -1239,6 +1253,8 @@ MonoBehaviour:
   moveSpeed: 250
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400024
 MonoBehaviour:
@@ -1324,17 +1340,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 100010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Script: {fileID: 11500000, guid: 88974183b4398c245862faca40cdcdc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 13
-  label: 
-  fireRate: .699999988
+  label: Tachyon Cannon
+  fireRate: 5
   spread: 0
   fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
+  usesEnergy: 1
+  energyCostPerShot: 1
   bulletDesc: {fileID: 0}
+  chargeUpTime: 2.5
+  depleteOnPrerelease: 1
 --- !u!114 &11400034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1419,17 +1437,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 100020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Script: {fileID: 11500000, guid: d76124284df936942af5592f7c3a93d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 7
-  label: 
-  fireRate: .100000001
-  spread: 0
+  label: Energy Chaingun
+  fireRate: .25
+  spread: 2.5
   fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
+  usesEnergy: 1
+  energyCostPerShot: .0250000004
   bulletDesc: {fileID: 0}
+  spinUpTime: 1
+  spinDownTime: 1
+  spinDownDelay: .25
+  maxFireRate: .100000001
 --- !u!114 &11400044
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1466,6 +1488,8 @@ MonoBehaviour:
   moveSpeed: 50
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400048
 MonoBehaviour:
@@ -1484,6 +1508,8 @@ MonoBehaviour:
   moveSpeed: 50
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400050
 MonoBehaviour:
@@ -1499,9 +1525,11 @@ MonoBehaviour:
   weaponType: 7
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
-  moveSpeed: 50
+  moveSpeed: 250
   maxDistance: 500
-  damage: 10
+  damage: 5
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400052
 MonoBehaviour:
@@ -1520,6 +1548,8 @@ MonoBehaviour:
   moveSpeed: 250
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400054
 MonoBehaviour:
@@ -1538,6 +1568,8 @@ MonoBehaviour:
   moveSpeed: 250
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400056
 MonoBehaviour:
@@ -1556,6 +1588,8 @@ MonoBehaviour:
   moveSpeed: 50
   maxDistance: 500
   damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   smartBullet: 0
 --- !u!114 &11400058
 MonoBehaviour:

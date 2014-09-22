@@ -5,13 +5,20 @@ public class EnergySystem : MonoBehaviour
 {
 	public float currentEnergy = 1.0f;
 
-	public float energyRechargePerSecond;
+	public float rechargePerSecond;
+	public float rechargeDelay;
+	public float delayTimer;
+
 
 	private void Update()
 	{
-		this.currentEnergy = Mathf.Clamp(
-			this.currentEnergy + this.energyRechargePerSecond * Time.deltaTime,
-		    0.0f, 1.0f );
+		this.delayTimer += Time.deltaTime;
+
+		if ( this.delayTimer >= this.rechargeDelay )
+		{
+			this.currentEnergy = Mathf.Min( 
+			   this.currentEnergy + this.rechargePerSecond * Time.deltaTime, 1.0f );
+		}
 	}
 
 	public void ReduceEnergy( float _amount )
@@ -22,6 +29,7 @@ public class EnergySystem : MonoBehaviour
 		}
 
 		this.currentEnergy = Mathf.Max( 0.0f, this.currentEnergy - _amount );
+		this.delayTimer = 0.0f;
 	}
 
 	public float GetDamageScale()

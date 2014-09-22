@@ -130,6 +130,16 @@ public class BulletBase : MonoBehaviour
 			return;
 		}
 
+		if ( this.desc.areaOfEffect )
+		{
+			TargetManager.instance.AreaOfEffectDamage( this.transform.position,
+			                                          this.desc.aoeRadius,
+			                                          this.desc.damage,
+			                                          false, //TODO: Friendly fire bool
+			                                          this.source.health.team,
+			                                          this.source.networkView.viewID );
+		}
+
 		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
 		if ( health != null )
 		{

@@ -3,13 +3,19 @@ using System.Collections;
 
 public class WeaponTest : BaseWeaponManager
 {
-	public WeaponBase weapon;
-	
 	public BaseHealth[] targetDummies;
 
 	public float turnRate;
 
 	public bool firing;
+
+	public int weaponIndex = 0;
+	private WeaponBase[] weapons;
+
+	private void Start()
+	{
+		this.weapons = this.GetComponents<WeaponBase>();
+	}
 
 	private void Update()
 	{
@@ -20,7 +26,7 @@ public class WeaponTest : BaseWeaponManager
 
 		if ( this.firing )
 		{
-			this.weapon.SendFireMessage();
+			this.weapons[this.weaponIndex].SendFireMessage();
 		}
 
 		if ( Input.GetKey( KeyCode.A ) )
@@ -30,6 +36,23 @@ public class WeaponTest : BaseWeaponManager
 		if ( Input.GetKey( KeyCode.D ) )
 		{
 			this.transform.Rotate( this.transform.up, Time.deltaTime * this.turnRate );
+		}
+
+		if ( Input.GetKeyDown( KeyCode.Q ) )
+		{
+			--this.weaponIndex;
+			if ( this.weaponIndex < 0 )
+			{
+				this.weaponIndex = this.weapons.Length - 1;
+			}
+		}
+		if ( Input.GetKeyDown( KeyCode.E ) )
+		{
+			++this.weaponIndex;
+			if ( this.weaponIndex >= this.weapons.Length )
+			{
+				this.weaponIndex = 0;
+			}
 		}
 
 		foreach ( BaseHealth dummy in this.targetDummies )
@@ -60,6 +83,7 @@ public class WeaponTest : BaseWeaponManager
 		EnergySystem energy = this.GetComponent<EnergySystem>();
 		GUI.Label( new Rect( 15, 15, 150, 50 ), "Energy: " + energy.currentEnergy.ToString("0.00") + "/1.0" );
 		GUI.Label( new Rect( 15, 50, 150, 50 ), "Damage Scale: " + energy.GetDamageScale().ToString("0.00") );
+		GUI.Label( new Rect( 15, 85, 150, 50 ), "Current Weapon: " + this.weapons[this.weaponIndex].weaponDesc.label );
 	}
 
 	public override void OnBulletCreated( BulletBase _bullet )

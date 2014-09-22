@@ -12,23 +12,14 @@ public class BulletDescriptor : MonoBehaviour
 	public WEAPON_TYPE weaponType;
 
 	public GameObject prefab;
-
-	/// <summary>
-	/// The number of bullet objects that will be initially created in the scene
-	/// </summary>
 	public int count;
-
-	/// <summary>
-	/// The speed at which the bullet travels 
-	/// </summary>
+	
 	public float moveSpeed;
-
-	/// <summary>
-	/// The point at which the bullet will expire
-	/// </summary>
 	public float maxDistance;
 
 	public float damage;
+	public bool areaOfEffect = false;
+	public float aoeRadius;
 
 	public bool smartBullet;
 }
