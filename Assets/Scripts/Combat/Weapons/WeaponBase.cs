@@ -17,12 +17,14 @@ public class WeaponBase : MonoBehaviour
 	public WeaponFirePoint[] firePoints;
 	public int firePointIndex;
 	public float timeSinceShot;
+	public int ammunition;
 
 	public BaseWeaponManager source;
 
 	protected virtual void Start()
 	{
 		this.InitialiseDescriptors();
+		this.ammunition = this.weaponDesc.ammunitionMax;
 	}
 
 	protected virtual void Update()
@@ -58,7 +60,8 @@ public class WeaponBase : MonoBehaviour
 
 	public virtual bool CanFire()
 	{
-		return this.timeSinceShot > this.weaponDesc.fireRate;
+		return this.timeSinceShot > this.weaponDesc.fireRate
+		  && ( this.weaponDesc.usesAmmunition == false || this.ammunition > 0 );
 	}
 
 	public virtual bool SendFireMessage()
@@ -133,6 +136,7 @@ public class WeaponBase : MonoBehaviour
 				);
 			
 				bulletsFired.Add( bullet );
+				--this.ammunition;
 			}
 		}
 		else
@@ -155,6 +159,7 @@ public class WeaponBase : MonoBehaviour
 			this.IncrementFireIndex();
 
 			bulletsFired.Add( bullet );
+			--this.ammunition;
 		}
 		return bulletsFired;
 	}

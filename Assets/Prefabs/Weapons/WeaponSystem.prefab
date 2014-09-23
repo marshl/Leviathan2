@@ -1087,6 +1087,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400006
 MonoBehaviour:
@@ -1209,12 +1211,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 11
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 500
-  moveSpeed: 50
+  count: 150
+  moveSpeed: 100
   maxDistance: 500
-  damage: 10
-  areaOfEffect: 0
-  aoeRadius: 0
+  damage: 100
+  areaOfEffect: 1
+  aoeRadius: 5
   smartBullet: 0
 --- !u!114 &11400020
 MonoBehaviour:
@@ -1274,6 +1276,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400026
 MonoBehaviour:
@@ -1293,6 +1297,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400028
 MonoBehaviour:
@@ -1312,6 +1318,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400030
 MonoBehaviour:
@@ -1331,6 +1339,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400032
 MonoBehaviour:
@@ -1350,6 +1360,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 1
   energyCostPerShot: 1
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
   chargeUpTime: 2.5
   depleteOnPrerelease: 1
@@ -1371,6 +1383,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400036
 MonoBehaviour:
@@ -1380,17 +1394,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 100014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 11
   label: Plasma Cannon
-  fireRate: .400000006
+  fireRate: .125
   spread: 0
   fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
+  usesEnergy: 1
+  energyCostPerShot: .125
+  usesAmmunition: 1
+  ammunitionMax: 80
   bulletDesc: {fileID: 0}
+  timeBetweenBursts: 5
+  shotsInBurst: 8
 --- !u!114 &11400038
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1409,6 +1427,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400040
 MonoBehaviour:
@@ -1428,6 +1448,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400042
 MonoBehaviour:
@@ -1447,6 +1469,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 1
   energyCostPerShot: .0250000004
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
   spinUpTime: 1
   spinDownTime: 1
@@ -1470,6 +1494,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 1
   energyCostPerShot: .0500000007
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400046
 MonoBehaviour:
@@ -1609,6 +1635,8 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
   bulletDesc: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:

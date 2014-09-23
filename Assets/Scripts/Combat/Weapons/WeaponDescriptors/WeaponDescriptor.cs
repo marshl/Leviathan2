@@ -17,6 +17,8 @@ public class WeaponDescriptor : MonoBehaviour
 	public bool usesEnergy;
 	public float energyCostPerShot;
 
+	public bool usesAmmunition = false;
+	public int ammunitionMax;
 
 	public BulletDescriptor bulletDesc;
 }

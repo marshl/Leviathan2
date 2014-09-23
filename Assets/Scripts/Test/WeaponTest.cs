@@ -93,5 +93,17 @@ public class WeaponTest : BaseWeaponManager
 		GUI.Label( new Rect( 15, 15, 150, 50 ), "Energy: " + energy.currentEnergy.ToString("0.00") + "/1.0" );
 		GUI.Label( new Rect( 15, 50, 150, 50 ), "Damage Scale: " + energy.GetDamageScale().ToString("0.00") );
 		GUI.Label( new Rect( 15, 85, 150, 50 ), "Current Weapon: " + this.weapons[this.weaponIndex].weaponDesc.label );
+	
+		SpinUpWeapon spinUpWeapon = this.weapons[this.weaponIndex] as SpinUpWeapon;
+		if ( spinUpWeapon != null )
+		{
+			GUI.Label( new Rect( 15, 120, 150, 50 ), "Spin: " + spinUpWeapon.currentSpin + "/" + spinUpWeapon.spinUpDesc.spinUpTime );
+		}
+
+		ChargeUpWeapon chargeUpWeapon = this.weapons[this.weaponIndex] as ChargeUpWeapon;
+		if ( chargeUpWeapon != null )
+		{
+			GUI.Label( new Rect( 15, 155, 150, 50 ), "Charge: " + chargeUpWeapon.currentCharge + "/" + chargeUpWeapon.chargeUpDesc.chargeUpTime );
+		}
 	}
 }
