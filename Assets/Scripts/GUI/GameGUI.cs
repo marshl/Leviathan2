@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameGUI : MonoBehaviour 
 {
@@ -268,6 +269,24 @@ public class GameGUI : MonoBehaviour
 				r.x += screenPos.x;
 				r.y += Screen.height - screenPos.y;
 
+				GUI.DrawTexture( r, this.reticuleTexture );
+			}
+		}
+
+		List<BaseHealth> targets = TargetManager.instance.GetTargets( this.player.fighter.weapons );
+
+		foreach ( BaseHealth t in targets )
+		{
+			Vector3 toTarget = t.transform.position - this.player.fighter.transform.position;
+			if ( Vector3.Dot( this.player.fighter.transform.forward, toTarget.normalized ) > 0.0f )
+			{
+				Vector3 worldPos = t.transform.position;
+				
+				Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
+				Rect r = this.targetReticuleScale;
+				r.x += screenPos.x;
+				r.y += Screen.height - screenPos.y;
+				
 				GUI.DrawTexture( r, this.reticuleTexture );
 			}
 		}

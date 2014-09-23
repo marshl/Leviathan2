@@ -15,6 +15,7 @@ public class WeaponTest : BaseWeaponManager
 	private void Start()
 	{
 		this.weapons = this.GetComponents<WeaponBase>();
+		this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
 	}
 
 	private void Update()
@@ -55,39 +56,42 @@ public class WeaponTest : BaseWeaponManager
 			}
 		}
 
+		if ( Input.GetKeyDown( KeyCode.W ) )
+		{
+			this.currentTarget = TargetManager.instance.GetCentreTarget( this );
+		}
+		Debug.DrawRay( this.transform.position, this.transform.forward );
+
 		foreach ( BaseHealth dummy in this.targetDummies )
 		{
 			if ( dummy.currentHealth <= 0.0f )
 			{
 				dummy.gameObject.SetActive( false );
+				if ( this.currentTarget == dummy )
+				{
+					this.currentTarget = null;
+				}
 			}
 		}
 	}
 
 	private void OnGUI()
 	{
-		foreach ( BaseHealth dummy in this.targetDummies )
+		if ( this.currentTarget != null )
 		{
-			if ( dummy.gameObject.activeSelf == false )
-				continue;
-
-			Vector2 screenPos = Camera.main.WorldToViewportPoint( dummy.transform.position );
+			Vector2 screenPos = Camera.main.WorldToViewportPoint( this.currentTarget.transform.position );
 
 			screenPos.x *= Screen.width;
 			screenPos.y *= Screen.height;
+			screenPos.y = Screen.height - screenPos.y;
 
-			GUI.Label( new Rect( screenPos.x, screenPos.y, 200, 50 ), (int)dummy.currentHealth + "/" + (int)dummy.maxHealth );
-			GUI.Label( new Rect( screenPos.x, screenPos.y+15, 200, 50 ), (int)dummy.currentShield + "/" + (int)dummy.maxShield );
+			GUI.Label( new Rect( screenPos.x, screenPos.y, 200, 50 ), (int)this.currentTarget.currentHealth + "/" + (int)this.currentTarget.maxHealth );
+			GUI.Label( new Rect( screenPos.x, screenPos.y+15, 200, 50 ), (int)this.currentTarget.currentShield + "/" + (int)this.currentTarget.maxShield );
 		}
 
 		EnergySystem energy = this.GetComponent<EnergySystem>();
 		GUI.Label( new Rect( 15, 15, 150, 50 ), "Energy: " + energy.currentEnergy.ToString("0.00") + "/1.0" );
 		GUI.Label( new Rect( 15, 50, 150, 50 ), "Damage Scale: " + energy.GetDamageScale().ToString("0.00") );
 		GUI.Label( new Rect( 15, 85, 150, 50 ), "Current Weapon: " + this.weapons[this.weaponIndex].weaponDesc.label );
-	}
-
-	public override void OnBulletCreated( BulletBase _bullet )
-	{
-		base.OnBulletCreated( _bullet );
 	}
 }

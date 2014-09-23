@@ -104,8 +104,28 @@ public class TurretBehavior : BaseWeaponManager
 	
 		// Yaw
 		float yawAngle = Common.AngleAroundAxis( this.transform.forward, direction, this.transform.up );
-		Quaternion targetYaw = Quaternion.AngleAxis( yawAngle, Vector3.up );
-		this.swivel.localRotation = Quaternion.Slerp( this.swivel.localRotation, targetYaw, Time.deltaTime * this.rotationSpeed );
+		float maxYaw = this.rotationSpeed * Time.deltaTime;
+		float currentYaw = Common.AngleAroundAxis( this.transform.forward, this.swivel.transform.forward, this.transform.up );
+
+		if ( yawAngle < 0 && currentYaw > 0 )
+		{
+			yawAngle += 360.0f;
+		}
+		else if ( yawAngle > 0 && currentYaw < 0 )
+		{
+			yawAngle -= 360.0f;
+		}
+
+		float yawDiff = yawAngle - currentYaw;
+		float yawChange = Mathf.Sign( yawDiff ) * Mathf.Min( maxYaw, Mathf.Abs( yawDiff ) );
+		//Debug.Log( "YawAngle:" + yawAngle + " MaxYaw:" + maxYaw + " CurrentYaw:" + currentYaw + " YawDiff:" + yawDiff + " NewYaw:" + yawChange );
+
+		if ( Mathf.Abs( yawDiff ) >= 180.0f )
+		{
+			yawChange *= -1.0f;
+		}
+		Quaternion targetYaw = Quaternion.AngleAxis( yawChange + currentYaw, Vector3.up );
+		this.swivel.localRotation = targetYaw;
 
 		// Pitch
 		float pitchAngle = Common.AngleAroundAxis( this.transform.up, direction, this.swivel.right);

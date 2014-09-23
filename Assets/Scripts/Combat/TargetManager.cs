@@ -181,6 +181,7 @@ public class TargetManager : MonoBehaviour
 			}
 		}
 
+
 		return targetList;
 	}
 
@@ -217,6 +218,16 @@ public class TargetManager : MonoBehaviour
 		{
 			return false;
 		}
+
+		RaycastHit hitInfo;
+		int layerMask = ~LayerMask.NameToLayer( "Bullets" );
+		bool hit = Physics.Linecast( _weaponScript.transform.position, _health.transform.position, out hitInfo, layerMask ); 
+
+		if ( hit && hitInfo.collider.gameObject != _health.gameObject )
+		{
+			return false;
+		}
+
 		return true;
 	}
 
@@ -282,6 +293,9 @@ public class TargetManager : MonoBehaviour
 		float closestAngle = float.MaxValue;
 		foreach ( BaseHealth target in targets )
 		{
+			if ( target.currentHealth <= 0.0f )
+				continue;
+
 			Vector3 vectorToTarget = target.transform.position - _weaponScript.restrictions.transform.position;
 			float angle = Vector3.Angle( _weaponScript.restrictions.transform.forward, vectorToTarget );
 			

@@ -509,7 +509,7 @@ MonoBehaviour:
   maxTargetDistance: 500
   swivel: {fileID: 400000}
   pivot: {fileID: 400006}
-  rotationSpeed: 5
+  rotationSpeed: 90
   minPitchAngle: 15
   maxPitchAngle: 100
   pitchSpeed: 1

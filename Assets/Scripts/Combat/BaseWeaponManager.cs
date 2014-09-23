@@ -24,10 +24,10 @@ public class BaseWeaponManager : MonoBehaviour
 	public virtual void OnBulletCreated( BulletBase _bullet )
 	{
 		SeekingBullet seekingScript = _bullet as SeekingBullet;
-		if ( seekingScript != null
-		  && this.currentTarget != null )
+		if ( seekingScript != null )
 		{
 			seekingScript.target = this.currentTarget;
+			seekingScript.health.team = this.health.team;
 		}
 	}
 

@@ -492,7 +492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 1
-  team: 0
+  team: 2
   debugTargetID: 0
   currentHealth: 250
   maxHealth: 250
@@ -849,7 +849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 1
-  team: 0
+  team: 2
   debugTargetID: 0
   currentHealth: 250
   maxHealth: 250
@@ -1452,7 +1452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 1
-  team: 0
+  team: 2
   debugTargetID: 0
   currentHealth: 250
   maxHealth: 250
@@ -2145,7 +2145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: {fileID: 1775487571}
   currentTarget: {fileID: 0}
-  maxTargetDistance: 0
+  maxTargetDistance: 500
   targetDummies:
   - {fileID: 1795290883}
   - {fileID: 221174809}
@@ -2197,7 +2197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 0
-  team: 0
+  team: 1
   debugTargetID: 0
   currentHealth: 0
   maxHealth: 0
@@ -2250,7 +2250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 1
-  team: 0
+  team: 2
   debugTargetID: 0
   currentHealth: 250
   maxHealth: 250
@@ -2804,7 +2804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 1
-  team: 0
+  team: 2
   debugTargetID: 0
   currentHealth: 250
   maxHealth: 250
