@@ -21,10 +21,11 @@ public class BaseWeaponManager : MonoBehaviour
 		this.restrictions.ignoreBelowHorizon = false;
 	}
 
-	public virtual void OnBulletCreated( BulletBase _bullet )
+	public virtual void OnBulletCreated( WeaponBase _weapon, BulletBase _bullet )
 	{
 		SeekingBullet seekingScript = _bullet as SeekingBullet;
-		if ( seekingScript != null )
+		if ( seekingScript != null
+		&& ( _weapon.weaponDesc.requiresWeaponLock == false || _weapon.IsLockedOntoTarget() ) )
 		{
 			seekingScript.target = this.currentTarget;
 			seekingScript.health.team = this.health.team;

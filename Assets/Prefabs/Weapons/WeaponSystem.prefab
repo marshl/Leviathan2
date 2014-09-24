@@ -1089,6 +1089,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400006
 MonoBehaviour:
@@ -1278,6 +1281,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400026
 MonoBehaviour:
@@ -1299,6 +1305,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400028
 MonoBehaviour:
@@ -1320,6 +1329,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400030
 MonoBehaviour:
@@ -1341,6 +1353,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 1
+  lockOnDuration: 3
+  lockOnAngle: 15
   bulletDesc: {fileID: 0}
 --- !u!114 &11400032
 MonoBehaviour:
@@ -1362,6 +1377,9 @@ MonoBehaviour:
   energyCostPerShot: 1
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
   chargeUpTime: 2.5
   depleteOnPrerelease: 1
@@ -1385,6 +1403,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400036
 MonoBehaviour:
@@ -1406,6 +1427,9 @@ MonoBehaviour:
   energyCostPerShot: .125
   usesAmmunition: 1
   ammunitionMax: 80
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
   timeBetweenBursts: 5
   shotsInBurst: 8
@@ -1429,6 +1453,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400040
 MonoBehaviour:
@@ -1450,6 +1477,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400042
 MonoBehaviour:
@@ -1471,6 +1501,9 @@ MonoBehaviour:
   energyCostPerShot: .0250000004
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
   spinUpTime: 1
   spinDownTime: 1
@@ -1496,6 +1529,9 @@ MonoBehaviour:
   energyCostPerShot: .0500000007
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!114 &11400046
 MonoBehaviour:
@@ -1637,6 +1673,9 @@ MonoBehaviour:
   energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
   bulletDesc: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:

@@ -20,5 +20,9 @@ public class WeaponDescriptor : MonoBehaviour
 	public bool usesAmmunition = false;
 	public int ammunitionMax;
 
+	public bool requiresWeaponLock = false;
+	public float lockOnDuration;
+	public float lockOnAngle;
+
 	public BulletDescriptor bulletDesc;
 }

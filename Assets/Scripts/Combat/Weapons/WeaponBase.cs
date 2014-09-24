@@ -13,13 +13,16 @@ public class WeaponBase : MonoBehaviour
 
 	[HideInInspector]
 	public WeaponDescriptor weaponDesc;
-	
+
 	public WeaponFirePoint[] firePoints;
 	public int firePointIndex;
+	public EnergySystem energySystem;
+	public BaseWeaponManager source;
+
 	public float timeSinceShot;
 	public int ammunition;
 
-	public BaseWeaponManager source;
+	public float currentLockOn;
 
 	protected virtual void Start()
 	{
@@ -76,21 +79,6 @@ public class WeaponBase : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Starts the firing procedure, accepting in a damage scale parameter
-	/// </summary>
-
-	public virtual bool SendFireMessage(float damageScale)
-	{
-		if ( this.CanFire() == false )
-		{
-			return false;
-		}
-		
-		this.Fire();
-		return true;
-	}
-
-	/// <summary>
 	/// Fires a bullet, or a series of bullets if FireInSync = true, and returns a list of them
 	/// </summary>
 	public virtual List<BulletBase> Fire()
@@ -105,16 +93,8 @@ public class WeaponBase : MonoBehaviour
 		float damageScale = 1.0f;
 		if ( this.weaponDesc.usesEnergy )
 		{
-			EnergySystem energySystem = this.GetComponent<EnergySystem>();
-			if ( energySystem != null )
-			{
-				energySystem.ReduceEnergy( this.weaponDesc.energyCostPerShot );
-				damageScale = energySystem.GetDamageScale();
-			}
-			else
-			{
-				DebugConsole.Error( this.weaponDesc.weaponType + " Weapon requires energy system", this );
-			}
+			this.energySystem.ReduceEnergy( this.weaponDesc.energyCostPerShot );
+			damageScale = this.energySystem.GetDamageScale();
 		}
 
 		// Create a new list of bullets with capacity equal to number of bullets to be fired
@@ -125,43 +105,29 @@ public class WeaponBase : MonoBehaviour
 			for ( int i = 0; i < this.firePoints.Length; ++i )
 			{
 				WeaponFirePoint currentFirePoint = this.firePoints[i];
-				BulletBase bullet = BulletManager.instance.CreateBullet
-				(
-					this.source,
-					this.weaponDesc.weaponType,
-					currentFirePoint.transform.position, 
-					currentFirePoint.transform.forward, 
-					this.weaponDesc.spread,
-					damageScale
-				);
-			
-				bulletsFired.Add( bullet );
-				--this.ammunition;
+				bulletsFired.Add( this.FireBulletFromFirePoint( currentFirePoint, damageScale ) );     
 			}
 		}
 		else
 		{
 			WeaponFirePoint currentFirePoint = this.firePoints[this.firePointIndex];
-			BulletBase bullet = BulletManager.instance.CreateBullet
-			(
-				this.source,
-				this.weaponDesc.weaponType,
-				currentFirePoint.transform.position, 
-				currentFirePoint.transform.forward, 
-				this.weaponDesc.spread,
-				damageScale
-			);
-
-			if ( bullet == null )
-			{
-				DebugConsole.Error( "Error firing weapon \"" + this.GetType().ToString() + "\"", this );
-			}
+			bulletsFired.Add( this.FireBulletFromFirePoint( currentFirePoint, damageScale ) );
 			this.IncrementFireIndex();
-
-			bulletsFired.Add( bullet );
-			--this.ammunition;
 		}
 		return bulletsFired;
+	}
+
+	private BulletBase FireBulletFromFirePoint( WeaponFirePoint _firePoint, float _damageScale )
+	{
+		BulletBase bullet = BulletManager.instance.CreateBullet
+		(
+			this,
+			_firePoint, 
+			_damageScale );
+
+		--this.ammunition;
+
+		return bullet;
 	}
 
 	protected void IncrementFireIndex()
@@ -179,5 +145,41 @@ public class WeaponBase : MonoBehaviour
 		{
 			firePoint.transform.LookAt( firePoint.transform.position + _direction );
 		}
+	}
+
+	public void LockOnUpdate()
+	{
+		if ( this.IsTrackingTarget() )
+		{
+			this.currentLockOn += Time.deltaTime;
+		}
+		else
+		{
+			this.currentLockOn = 0.0f;
+		}
+	}
+
+	public void ResetLockOn()
+	{
+		this.currentLockOn = 0.0f;
+	}
+
+	public bool IsTrackingTarget()
+	{
+		if ( this.source.currentTarget == null )
+		{
+			return false;
+		}
+
+		Vector3 direction = this.source.currentTarget.transform.position - this.transform.position;
+		float angle = Vector3.Angle( this.transform.forward, direction );
+		
+		return angle < this.weaponDesc.lockOnAngle;
+	}
+
+	public bool IsLockedOntoTarget()
+	{
+		return this.source.currentTarget != null
+			&& this.currentLockOn >= this.weaponDesc.lockOnDuration;
 	}
 }

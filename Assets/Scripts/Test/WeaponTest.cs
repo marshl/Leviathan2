@@ -73,6 +73,17 @@ public class WeaponTest : BaseWeaponManager
 				}
 			}
 		}
+
+		WeaponBase currentWeapon = this.weapons[this.weaponIndex];
+
+		if ( currentWeapon.weaponDesc.requiresWeaponLock )
+		{
+			currentWeapon.LockOnUpdate();
+		}
+		else
+		{
+			currentWeapon.ResetLockOn();
+		}
 	}
 
 	private void OnGUI()

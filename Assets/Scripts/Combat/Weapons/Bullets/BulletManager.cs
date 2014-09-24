@@ -78,40 +78,44 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 
-	public BulletBase CreateBullet( BaseWeaponManager _source, WEAPON_TYPE _weaponType, 
-	                              Vector3 _pos, Vector3 _forward,
-	                              float _spread,
-	                              float _damageScale )
+	public BulletBase CreateBullet( WeaponBase _weapon, WeaponFirePoint _firePoint, float _damageScale )
 	{
-		BulletDescriptor desc = BulletDescriptorManager.instance.GetDescOfType( _weaponType );
+		BulletDescriptor desc = BulletDescriptorManager.instance.GetDescOfType( _weapon.weaponType );
 
 		BulletBase bulletScript = null;
 		GameObject bulletObj = null;
 		if ( desc.smartBullet == false )
 		{
-			bulletScript = this.bulletDictionary[ _weaponType ].GetAvailableBullet( -1, -1 );
+			bulletScript = this.bulletDictionary[ _weapon.weaponType ].GetAvailableBullet( -1, -1 );
 
 			if ( bulletScript == null )
 			{
-				DebugConsole.Error( "Error shooting bullet of type \"" + _weaponType + "\"", this );
+				DebugConsole.Error( "Error shooting bullet of type \"" + _weapon.weaponType + "\"", this );
 				return null;
 			}
 
 			bulletObj = bulletScript.gameObject;
-			bulletObj.transform.position = _pos;
-			bulletObj.transform.rotation = Quaternion.LookRotation( _forward );
+			bulletObj.transform.position = _firePoint.transform.position;
+			bulletObj.transform.rotation = Quaternion.LookRotation( _firePoint.transform.forward );
 		}
 		else 
 		{
 			if ( Network.peerType != NetworkPeerType.Disconnected )
 			{
-				bulletObj = Network.Instantiate( desc.prefab, _pos, Quaternion.LookRotation( _forward ), 0) as GameObject;
+				bulletObj = Network.Instantiate( 
+			        desc.prefab,
+			        _firePoint.transform.position,
+			        Quaternion.LookRotation( _firePoint.transform.forward ),
+			        0) as GameObject;
 
 			}
 			else
 			{
-				bulletObj = GameObject.Instantiate( desc.prefab, _pos, Quaternion.LookRotation( _forward ) ) as GameObject;
-				bulletObj.GetComponent<BaseHealth>().team = _source.health.team;
+				bulletObj = GameObject.Instantiate( 
+		           desc.prefab,
+		           _firePoint.transform.position, 
+		           Quaternion.LookRotation( _firePoint.transform.forward ) ) as GameObject;
+				bulletObj.GetComponent<BaseHealth>().team = _weapon.source.health.team;
 			}
 			bulletScript = bulletObj.GetComponent<BulletBase>();
 		}
@@ -125,28 +129,33 @@ public class BulletManager : MonoBehaviour
 		// If it was fired by another player, its collider would be turned off
 		bulletObj.collider.enabled = true; 
 
-		bulletScript.source = _source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
-		if ( _source.collider != null )
+		bulletScript.source = _weapon.source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
+		if ( _weapon.source.collider != null )
 		{
-			Physics.IgnoreCollision( bulletObj.collider, _source.collider );
+			Physics.IgnoreCollision( bulletObj.collider, _weapon.source.collider );
 		}
 		  
-		if ( _spread != 0.0f )
+		if ( _weapon.weaponDesc.spread != 0.0f )
 		{
-			Vector3 perp = new Vector3( UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f );
+			Vector3 perp = Common.RandomDirection();
+			perp.z = 0.0f;
 			perp.Normalize();
 			perp = bulletObj.transform.TransformDirection( perp );
-			bulletObj.transform.Rotate( perp, UnityEngine.Random.Range( -_spread, _spread ) );
+			bulletObj.transform.Rotate( perp, UnityEngine.Random.Range( -_weapon.weaponDesc.spread, _weapon.weaponDesc.spread ) );
 		}
 
 		if ( desc.smartBullet == false
 		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendShootBulletMessage( _weaponType, bulletScript.index, _pos, bulletObj.transform.rotation );
+			GameNetworkManager.instance.SendShootBulletMessage( 
+	           _weapon.weaponType,
+	           bulletScript.index,
+	           _firePoint.transform.position,
+	           bulletObj.transform.rotation );
 		}
 
 		bulletScript.OnShoot();
-		_source.OnBulletCreated( bulletScript );
+		_weapon.source.OnBulletCreated( _weapon, bulletScript );
 
 		if ( desc.smartBullet == true 
 		    && Network.peerType != NetworkPeerType.Disconnected )
@@ -154,7 +163,7 @@ public class BulletManager : MonoBehaviour
 			BaseHealth target = bulletObj.GetComponent<SeekingBullet>().target;
 			NetworkViewID viewID = target != null ? target.networkView.viewID : NetworkViewID.unassigned;
 			
-			GameNetworkManager.instance.SendSetSmartBulletTeamMessage( bulletObj.networkView.viewID, _source.health.team, viewID );
+			GameNetworkManager.instance.SendSetSmartBulletTeamMessage( bulletObj.networkView.viewID, _weapon.source.health.team, viewID );
 		}
 
 		return bulletScript;
