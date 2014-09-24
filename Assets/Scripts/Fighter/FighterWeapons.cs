@@ -83,6 +83,8 @@ public class FighterWeapons : BaseWeaponManager
 			{
 				this.laserWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_3 );
 			}
+
+			this.missileWeapon.LockOnUpdate();
 		}
 	}
 

@@ -29,7 +29,7 @@ public class GameGUI : MonoBehaviour
 	private Rect capitalShipShieldRect1;
 	private Rect capitalShipShieldRect2;
 
-	public Rect targetReticuleScale;
+	public float targetReticuleScale;
 
 	public float targetCameraDistance;
 
@@ -262,12 +262,13 @@ public class GameGUI : MonoBehaviour
 			Vector3 toTarget = target.transform.position - this.player.fighter.transform.position;
 			if ( Vector3.Dot( this.player.fighter.transform.forward, toTarget.normalized ) > 0.0f )
 			{
-				Vector3 worldPos = target.transform.position;
+				Rect r = this.GetHealthGUIRect( target );
 
-				Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
-				Rect r = this.targetReticuleScale;
-				r.x += screenPos.x;
-				r.y += Screen.height - screenPos.y;
+				GUI.DrawTexture( r, this.reticuleTexture );
+			
+				WeaponBase missileWeapon = this.player.fighter.weapons.missileWeapon;
+				float lockScale = 2.0f - Mathf.Clamp01( missileWeapon.currentLockOn / missileWeapon.weaponDesc.lockOnDuration );
+				r.size = Vector2.one * this.targetReticuleScale * lockScale;
 
 				GUI.DrawTexture( r, this.reticuleTexture );
 			}
@@ -283,10 +284,9 @@ public class GameGUI : MonoBehaviour
 				Vector3 worldPos = t.transform.position;
 				
 				Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
-				Rect r = this.targetReticuleScale;
-				r.x += screenPos.x;
-				r.y += Screen.height - screenPos.y;
-				
+				screenPos.y = Screen.height - screenPos.y;
+
+				Rect r = this.GetHealthGUIRect( t );
 				GUI.DrawTexture( r, this.reticuleTexture );
 			}
 		}
@@ -296,5 +296,36 @@ public class GameGUI : MonoBehaviour
 	{
 		FighterWeapons weaponScript = this.player.fighter.weapons;
 		GUI.Label( new Rect( 0, 200, 150, 50 ), "Weapon: " + weaponScript.laserWeapon.weaponDesc.label );
+	}
+
+	public Rect GetHealthGUIRect( BaseHealth _health )
+	{
+		Rect r = new Rect();
+
+		if ( _health.guiExtents.Length == 0 )
+		{
+			Vector3 pos = Camera.main.WorldToScreenPoint( _health.transform.position );
+			pos.y = Screen.height - pos.y;
+			r.x = pos.x; r.y = pos.y;
+			r.height = r.width = this.targetReticuleScale;
+		}
+		else
+		{
+			r.xMin = r.yMin = float.MaxValue;
+			r.xMax = r.yMax = float.MinValue;
+
+			foreach ( Transform extent in _health.guiExtents )
+			{
+				Vector2 pos = Camera.main.WorldToScreenPoint( extent.position );
+				pos.y = Screen.height - pos.y;
+
+				r.xMin = Mathf.Min( r.xMin, pos.x );
+				r.xMax = Mathf.Max( r.xMax, pos.x );
+
+				r.yMin = Mathf.Min( r.yMin, pos.y );
+				r.yMax = Mathf.Max( r.yMax, pos.y );
+			}
+		}
+		return r;
 	}
 }

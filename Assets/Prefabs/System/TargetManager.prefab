@@ -23,10 +23,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.1091518, y: -9.06598663, z: -39.6420059}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -38,12 +39,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aee74e3c85223d6498d39c58b85d09e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team1Fighters: []
-  team2Fighters:
-  - {fileID: 0}
-  team1Capital: {fileID: 0}
-  team2Capital: {fileID: 0}
-  targetList: []
+  lineOfSightBlockers:
+    serializedVersion: 2
+    m_Bits: 6145
+  debugTargets: []
+  currentDebugID: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -43,6 +43,7 @@ public class TargetManager : MonoBehaviour
 	public static TargetManager instance;
 	
 	public Dictionary<NetworkViewID, BaseHealth> targetMap;
+	public LayerMask lineOfSightBlockers;
 
 #if UNITY_EDITOR
 	public List<BaseHealth> debugTargets;
@@ -220,10 +221,12 @@ public class TargetManager : MonoBehaviour
 		}
 
 		RaycastHit hitInfo;
-		int layerMask = ~LayerMask.NameToLayer( "Bullets" );
-		bool hit = Physics.Linecast( _weaponScript.transform.position, _health.transform.position, out hitInfo, layerMask ); 
+		bool hit = Physics.Linecast( _weaponScript.transform.position, _health.transform.position,
+		                            out hitInfo, this.lineOfSightBlockers ); 
 
-		if ( hit && hitInfo.collider.gameObject != _health.gameObject )
+		if ( hit
+		  && hitInfo.collider.gameObject != _health.gameObject 
+		  && hitInfo.collider.gameObject != _weaponScript.gameObject )
 		{
 			return false;
 		}

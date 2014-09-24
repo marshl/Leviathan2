@@ -22,6 +22,8 @@ public class BaseHealth : MonoBehaviour
 
 	public NetworkViewID lastHitBy;// = NetworkViewID.unassigned;
 
+	public Transform[] guiExtents;
+
 #if UNITY_EDITOR
 	protected virtual void Start()
 	{

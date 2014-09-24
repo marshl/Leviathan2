@@ -138,7 +138,7 @@ Transform:
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 24.2828197, y: 0, z: -200}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: .200000003, y: .200000003, z: .200000003}
   m_Children:
   - {fileID: 400000}
   - {fileID: 400010}
@@ -311,7 +311,7 @@ MonoBehaviour:
     slotID: 0
   model: {fileID: 2300000}
   dummyShip: 0
-  ownerID: 0
+  ownerID: -1
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -370,8 +370,11 @@ MonoBehaviour:
   - {fileID: 11400000}
   - {fileID: 11400020}
   firePointIndex: 0
-  timeSinceShot: 0
+  energySystem: {fileID: 0}
   source: {fileID: 11400016}
+  timeSinceShot: 0
+  ammunition: 0
+  currentLockOn: 0
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -388,8 +391,11 @@ MonoBehaviour:
   firePoints:
   - {fileID: 11400002}
   firePointIndex: 0
-  timeSinceShot: 0
+  energySystem: {fileID: 0}
   source: {fileID: 11400016}
+  timeSinceShot: 0
+  ammunition: 0
+  currentLockOn: 0
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
