@@ -45,11 +45,12 @@ MonoBehaviour:
   startPauseDuration: .10000000149011612
   defaultPlayerType: 3
   createDummies: 1
-  dummiesToCreate: 010000000200000003000000
+  dummiesToCreate: 010000000200000003000000040000000400000004000000
   lastCreatedDummy:
     id: 0
     name: DEFAULT
     playerType: 0
+    fighterType: 0
     isConnected: 0
     kills: 0
     assists: 0
@@ -68,7 +69,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375654712391f8e4780c9f2d4f71052e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fighterPrefab: {fileID: 100006, guid: e152e05dbd9d77f42958a061d50fa1ff, type: 2}
+  speedFighterPrefab: {fileID: 100006, guid: e152e05dbd9d77f42958a061d50fa1ff, type: 2}
+  agileFighterPrefab: {fileID: 100004, guid: 5b8be30df40ac8f4e8313eef8dce5ad3, type: 2}
+  heavyFighterPrefab: {fileID: 100004, guid: 1f6839198cb8a0248b39810a19109c1d, type: 2}
   fighterCameraPrefab: {fileID: 100000, guid: 6670cb600fcb2e145ae5c47826b0ec9a, type: 2}
   capitalShipPrefab: {fileID: 100000, guid: 4b394748051739844ab21be399e4ca34, type: 2}
   capitalPathLinePrefab: {fileID: 100000, guid: 97ee7467a0e155b478e63dcc80140dc5,

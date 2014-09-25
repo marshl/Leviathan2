@@ -285,31 +285,34 @@ public class GameNetworkManager : BaseNetworkManager
 		DebugConsole.Log( "Local game start" );
 
 		GamePlayerManager.instance.AddPlayerOfType( -1, this.defaultPlayerType );
-		//PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer, false );
 
-		/*if ( this.createCapitalShip1 )
+		if ( GamePlayerManager.instance.myPlayer.playerType == PLAYER_TYPE.COMMANDER1
+		  || GamePlayerManager.instance.myPlayer.playerType == PLAYER_TYPE.COMMANDER2 )
 		{
-			PLAYER_TYPE dummyType = GamePlayerManager.instance.myPlayer.playerType == PLAYER_TYPE.COMMANDER1
-				? PLAYER_TYPE.COMMANDER2 : PLAYER_TYPE.COMMANDER1;
-
-			GamePlayer capitalPlayer = GamePlayerManager.instance.AddPlayerOfType( -2, dummyType );
-			PlayerInstantiator.instance.CreatePlayerObject( capitalPlayer );
+			PlayerInstantiator.instance.CreatePlayerObject( GamePlayerManager.instance.myPlayer, false );
 		}
-		if ( this.createCapitalShip2 )
-		{
 
-		}*/
+		FIGHTER_TYPE[] fighterTypes = { FIGHTER_TYPE.AGILE, FIGHTER_TYPE.HEAVY, FIGHTER_TYPE.SPEED, };
 
 		if ( this.createDummies )
 		{
 			for ( int i = 0; i < this.dummiesToCreate.Length; ++i )
 			{
-				DebugConsole.Log( "Creating dummy #" + i + " " + this.dummiesToCreate[i] );
+				PLAYER_TYPE playerType = this.dummiesToCreate[i];
+				if ( GamePlayerManager.instance.myPlayer.playerType == playerType
+				  && ( playerType == PLAYER_TYPE.COMMANDER1 || playerType == PLAYER_TYPE.COMMANDER2 ) )
+					continue;
+
+				DebugConsole.Log( "Creating dummy #" + i + " " + playerType );
 
 				// -1 is reserved for the controlled player, start going below that
 				int playerID = -2 - i;
-				GamePlayer dummyPlayer = GamePlayerManager.instance.AddPlayerOfType( playerID, this.dummiesToCreate[i] );
+				GamePlayer dummyPlayer = GamePlayerManager.instance.AddPlayerOfType( playerID, playerType );
 				this.lastCreatedDummy = dummyPlayer;
+				if ( playerType == PLAYER_TYPE.FIGHTER1 || playerType == PLAYER_TYPE.FIGHTER2 )
+				{
+					dummyPlayer.fighterType = fighterTypes[ i % 3];
+				}
 				PlayerInstantiator.instance.CreatePlayerObject( dummyPlayer, true );
 			}
 		}

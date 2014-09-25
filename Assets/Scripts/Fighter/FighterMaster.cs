@@ -48,7 +48,7 @@ public class FighterMaster : MonoBehaviour
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			this.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-			//this.owner = GamePlayerManager.instance.myPlayer;
+
 			this.health.team = this.owner.team;
 			this.owner.fighter = this;
 			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
@@ -60,7 +60,6 @@ public class FighterMaster : MonoBehaviour
 			{
 				this.capitalShip = commanderPlayer.capitalShip;
 			}
-			Debug.Log( this.owner );
 			DebugConsole.Log( "Player " + this.owner.id + " now owns " + this.name, this );
 		}
 		else
@@ -78,7 +77,7 @@ public class FighterMaster : MonoBehaviour
 	private void Update()
 	{
 		if ( this.ownerInitialised == false 
-		    && this.ownerControl.ownerID != -1 )
+		    && this.ownerControl.ownerID != null )
 		{
 			this.OwnerInitialise();
 		}
@@ -136,7 +135,7 @@ public class FighterMaster : MonoBehaviour
 	{
 		this.ownerInitialised = true;
 
-		int id = this.ownerControl.ownerID;
+		int id = this.ownerControl.ownerID.GetValueOrDefault();
 		this.owner = GamePlayerManager.instance.GetPlayerWithID( id );
 		this.owner.fighter = this;
 		DebugConsole.Log( "Set player " + id + " to own fighter", this.gameObject );
@@ -236,11 +235,6 @@ public class FighterMaster : MonoBehaviour
 			}
 		}
 
-		if ( Network.peerType != NetworkPeerType.Disconnected )
-		{
-			GameNetworkManager.instance.SendDeadFighterMessage( Common.MyNetworkID() );
-		}
-
 		this.rigidbody.AddTorque( Common.RandomDirection() );
 	}
 
@@ -248,6 +242,11 @@ public class FighterMaster : MonoBehaviour
 	{
 		this.state = FIGHTERSTATE.DEAD;
 		this.ToggleEnabled( false, true );
+
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendDeadFighterMessage( Common.MyNetworkID() );
+		}
 	}
 
 	private void ToggleEnabled( bool _enabled, bool _local )
@@ -337,7 +336,7 @@ public class FighterMaster : MonoBehaviour
 
 	public void OnDestroyFighterNetworkMessage()
 	{
-		this.state = FIGHTERSTATE.OUT_OF_CONTROL;
+		this.state = FIGHTERSTATE.DEAD;
 		this.ToggleEnabled( false, false );
 	}
 	

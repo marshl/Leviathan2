@@ -102,6 +102,7 @@ Transform:
   m_LocalScale: {x: 3.96759248, y: 3.96759224, z: 3.96758938}
   m_Children: []
   m_Father: {fileID: 400004}
+  m_RootOrder: 2
 --- !u!4 &400002
 Transform:
   m_ObjectHideFlags: 1
@@ -113,6 +114,7 @@ Transform:
   m_LocalScale: {x: 5.37741661, y: 2.83647203, z: 5.37741661}
   m_Children: []
   m_Father: {fileID: 400004}
+  m_RootOrder: 1
 --- !u!4 &400004
 Transform:
   m_ObjectHideFlags: 1
@@ -128,6 +130,7 @@ Transform:
   - {fileID: 400000}
   - {fileID: 400008}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!4 &400006
 Transform:
   m_ObjectHideFlags: 1
@@ -139,6 +142,7 @@ Transform:
   m_LocalScale: {x: 7.40540171, y: 5.55405092, z: 7.40540171}
   m_Children: []
   m_Father: {fileID: 400004}
+  m_RootOrder: 0
 --- !u!4 &400008
 Transform:
   m_ObjectHideFlags: 1
@@ -150,6 +154,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400004}
+  m_RootOrder: 3
 --- !u!23 &2300000
 Renderer:
   m_ObjectHideFlags: 1
@@ -168,9 +173,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!23 &2300002
 Renderer:
   m_ObjectHideFlags: 1
@@ -189,9 +193,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!23 &2300004
 Renderer:
   m_ObjectHideFlags: 1
@@ -210,9 +213,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!33 &3300000
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -256,13 +258,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 7
+  weaponType: 3
   weaponDesc: {fileID: 0}
   firePoints:
   - {fileID: 11400000}
   firePointIndex: 0
-  timeSinceShot: 0
+  energySystem: {fileID: 0}
   source: {fileID: 11400010}
+  timeSinceShot: 0
+  ammunition: 0
+  currentLockOn: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -284,6 +289,7 @@ MonoBehaviour:
   shieldRegen: 0
   shieldRegenDelay: 0
   isIndestructible: 0
+  guiExtents: []
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1

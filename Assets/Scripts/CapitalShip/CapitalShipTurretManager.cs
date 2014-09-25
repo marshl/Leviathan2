@@ -21,13 +21,10 @@ public class CapitalShipTurretManager : MonoBehaviour
 	{
 		foreach ( Transform pos in this.turretPositions )
 		{
-			GameObject turret;
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
-				this.lightLaserPrefab.GetComponent<BaseHealth>().team = TEAM.TEAM_2;
-				turret = GameObject.Instantiate( this.lightLaserPrefab, pos.position, pos.rotation ) as GameObject;
-				//turret.GetComponent<BaseHealth>().team = this.master.health.team;
-				Debug.Log( turret.GetComponent<BaseHealth>().team );
+				GameObject turret = GameObject.Instantiate( this.lightLaserPrefab, pos.position, pos.rotation ) as GameObject;
+				turret.GetComponent<NetworkOwnerControl>().ownerID = this.master.owner.id;
 			}
 			else
 			{
@@ -41,26 +38,27 @@ public class CapitalShipTurretManager : MonoBehaviour
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
 				turret = GameObject.Instantiate( this.missileTurretPrefab, pos.position, pos.rotation ) as GameObject;
-				turret.GetComponent<BaseHealth>().team = this.master.health.team;
+				turret.GetComponent<NetworkOwnerControl>().ownerID = this.master.owner.id;
 			}
 			else
 			{
-				Network.Instantiate( this.missileTurretPrefab, pos.position, pos.rotation, 0 );
+				turret = Network.Instantiate( this.missileTurretPrefab, pos.position, pos.rotation, 0 ) as GameObject;
 			}
 		}
 
 		foreach ( Transform pos in this.gaussCannonPositions )
 		{
-			GameObject obj;
+			GameObject gaussCannon;
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
-				obj = GameObject.Instantiate( this.gaussCannonPrefab, pos.position, pos.rotation ) as GameObject;
+				gaussCannon = GameObject.Instantiate( this.gaussCannonPrefab, pos.position, pos.rotation ) as GameObject;
+				gaussCannon.GetComponent<NetworkOwnerControl>().ownerID = this.master.owner.id;
 			}
 			else
 			{
-				obj = Network.Instantiate( this.gaussCannonPrefab, pos.position, pos.rotation, 0 ) as GameObject;
+				gaussCannon = Network.Instantiate( this.gaussCannonPrefab, pos.position, pos.rotation, 0 ) as GameObject;
 			}
-			this.gaussCannons.Add( obj.GetComponent<WeaponBase>() );
+			this.gaussCannons.Add( gaussCannon.GetComponent<WeaponBase>() );
 		}
 	}
 }

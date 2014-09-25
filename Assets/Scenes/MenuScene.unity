@@ -1708,6 +1708,7 @@ GameObject:
   - 124: {fileID: 1089146468}
   - 81: {fileID: 1089146467}
   - 114: {fileID: 1089146472}
+  - 45: {fileID: 1089146473}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1798,6 +1799,14 @@ MonoBehaviour:
   maxHeight: 5
   heightInterval: 10
   rotationRate: -.25
+--- !u!45 &1089146473
+Skybox:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1089146466}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 41a84e25775005544a7ec6197ddeb719, type: 3}
 --- !u!1 &1151699254
 GameObject:
   m_ObjectHideFlags: 0
@@ -2532,6 +2541,7 @@ MonoBehaviour:
     id: 0
     name: DEFAULT
     playerType: 0
+    fighterType: 0
     isConnected: 0
     kills: 0
     assists: 0
@@ -2543,6 +2553,7 @@ MonoBehaviour:
     id: 0
     name: DEFAULT
     playerType: 0
+    fighterType: 0
     isConnected: 0
     kills: 0
     assists: 0
@@ -2556,6 +2567,7 @@ MonoBehaviour:
     id: 0
     name: DEFAULT
     playerType: 0
+    fighterType: 0
     isConnected: 0
     kills: 0
     assists: 0

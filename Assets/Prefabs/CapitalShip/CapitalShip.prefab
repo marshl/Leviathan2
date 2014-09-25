@@ -305,6 +305,51 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100038
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400038}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100040
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400040}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100042
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400042}
+  m_Layer: 0
+  m_Name: ShredderTurretPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -369,6 +414,7 @@ Transform:
   - {fileID: 400004}
   - {fileID: 400018}
   - {fileID: 400036}
+  - {fileID: 400042}
   m_Father: {fileID: 400000}
   m_RootOrder: 0
 --- !u!4 &400010
@@ -551,6 +597,44 @@ Transform:
   - {fileID: 400020}
   m_Father: {fileID: 400008}
   m_RootOrder: 3
+--- !u!4 &400038
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100038}
+  m_LocalRotation: {x: 0, y: 0, z: .382683486, w: .923879564}
+  m_LocalPosition: {x: -110.759888, y: 23.4973965, z: -151.548706}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400042}
+  m_RootOrder: 1
+--- !u!4 &400040
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100040}
+  m_LocalRotation: {x: 0, y: 0, z: -.382683486, w: .923879564}
+  m_LocalPosition: {x: 110.759888, y: 23.4973965, z: -151.548706}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400042}
+  m_RootOrder: 0
+--- !u!4 &400042
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100042}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 400040}
+  - {fileID: 400038}
+  m_Father: {fileID: 400008}
+  m_RootOrder: 4
 --- !u!23 &2300000
 Renderer:
   m_ObjectHideFlags: 1
@@ -747,9 +831,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   master: {fileID: 11400016}
-  turretPositions: []
+  turretPositions:
+  - {fileID: 400040}
+  - {fileID: 400038}
   missileTurretPositions: []
-  lightLaserPrefab: {fileID: 100004, guid: 93eff1912e406df4f92fa083149c32ca, type: 2}
+  lightLaserPrefab: {fileID: 100012, guid: 5798065926fbd344e8a5659c6a276ca0, type: 2}
   missileTurretPrefab: {fileID: 100012, guid: 3a511d11aaeeb3e43b0f400d8603abb0, type: 2}
   gaussCannonPrefab: {fileID: 100004, guid: 8f53859051a0cc44ca26f34f045f36c7, type: 2}
   gaussCannonPositions:
@@ -783,6 +869,7 @@ MonoBehaviour:
   shieldRegen: .00999999978
   shieldRegenDelay: 0
   isIndestructible: 0
+  guiExtents: []
   shieldGenerators: 10
   baseShields: 500
   overrideShieldGenerators: 0
@@ -848,6 +935,7 @@ MonoBehaviour:
     id: 0
     name: DEFAULT
     playerType: 0
+    fighterType: 0
     isConnected: 0
     kills: 0
     assists: 0

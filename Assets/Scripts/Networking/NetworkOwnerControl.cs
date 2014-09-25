@@ -3,6 +3,5 @@ using System.Collections;
 
 public class NetworkOwnerControl : MonoBehaviour
 {
-	public int ownerID = -1;
-
+	public int? ownerID = null;
 }

@@ -50,7 +50,7 @@ public class CapitalShipMaster : MonoBehaviour
 	private void Update()
 	{
 		if ( this.ownerInitialised == false 
-		  && this.ownerControl.ownerID != -1 )
+		  && this.ownerControl.ownerID != null )
 		{
 			this.OwnerInitialise();
 		}
@@ -60,7 +60,7 @@ public class CapitalShipMaster : MonoBehaviour
 	{
 		this.ownerInitialised = true;
 		
-		int playerID = this.ownerControl.ownerID;
+		int playerID = this.ownerControl.ownerID.GetValueOrDefault();
 		this.owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
 		if ( this.owner.capitalShip != null ) 
 		{
@@ -84,14 +84,14 @@ public class CapitalShipMaster : MonoBehaviour
 			this.movement.enabled = false;
 		}
 
-		
-		foreach (Renderer render in GetComponentsInChildren<Renderer>())
+		//TODO: Colouring doesn't work with the new model yet
+		foreach ( Renderer render in GetComponentsInChildren<Renderer>() )
 		{
-			if(render.gameObject.name == "Port" || 
-			   render.gameObject.name == "Bow" ||
-			   render.gameObject.name == "Starboard" )
+			if( render.gameObject.name == "Port" || 
+			    render.gameObject.name == "Bow" ||
+			    render.gameObject.name == "Starboard" )
 			{
-				if(owner.team == TEAM.TEAM_1)
+				if ( owner.team == TEAM.TEAM_1 )
 					render.material.color = new Color(1.0f,1.0f,0.5f);
 				else
 					render.material.color = new Color(1,0f,0.2f,1.0f);

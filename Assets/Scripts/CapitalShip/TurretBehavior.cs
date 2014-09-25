@@ -33,17 +33,6 @@ public class TurretBehavior : BaseWeaponManager
 		this.restrictions.transform = this.pivot;
 	}
 
-#if UNITY_EDITOR
-	private void Start()
-	{
-		if ( Network.peerType == NetworkPeerType.Disconnected
-		  && this.health != null )
-		{
-			this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
-		}
-	}
-#endif
-
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
@@ -52,9 +41,9 @@ public class TurretBehavior : BaseWeaponManager
 	protected virtual void Update()
 	{
 		if ( this.ownerInitialised == false 
-		    && this.ownerControl.ownerID != -1 )
+		  && this.ownerControl.ownerID != null )
 		{
-			int playerID = this.ownerControl.ownerID;
+			int playerID = this.ownerControl.ownerID.GetValueOrDefault();
 			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( playerID );
 			if ( player != null && player.capitalShip != null )
 			{
@@ -186,7 +175,7 @@ public class TurretBehavior : BaseWeaponManager
 	{
 		this.ownerInitialised = false;
 
-		int ownerID = this.ownerControl.ownerID;
+		int ownerID = this.ownerControl.ownerID.GetValueOrDefault();
 		GamePlayer ownerPlayer = GamePlayerManager.instance.GetPlayerWithID( ownerID );
 		
 		if ( ownerPlayer.capitalShip == null )

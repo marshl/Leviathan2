@@ -13,44 +13,27 @@ public class CapitalShipComponent : MonoBehaviour
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
 	}
 
-#if UNITY_EDITOR
-	private void Awake()
-	{
-		if ( Network.peerType == NetworkPeerType.Disconnected
-		    && GamePlayerManager.instance.myPlayer.capitalShip != null )
-		{
-			this.ParentToOwnerShip( GamePlayerManager.instance.myPlayer );
-		}
-	}
-#endif
-
-
 	private void Update()
 	{
 		if ( this.ownerInitialised == false 
-		  && this.ownerControl.ownerID != -1 )
+		  && this.ownerControl.ownerID != null )
 		{
-			int playerID = this.ownerControl.ownerID;
-			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( playerID );
-			if ( player != null && player.capitalShip != null )
-			{
-				this.OwnerInitialise();
-			}
+			this.OwnerInitialise();
 		}
 	}
 
 	private void OwnerInitialise()
 	{
-		this.ownerInitialised = false;
+		this.ownerInitialised = true;
 		
-		int ownerID = this.ownerControl.ownerID;
+		int ownerID = this.ownerControl.ownerID.GetValueOrDefault();
 		GamePlayer ownerPlayer = GamePlayerManager.instance.GetPlayerWithID( ownerID );
 		
 		if ( ownerPlayer.capitalShip == null )
 		{
 			DebugConsole.Warning( "Turret instantiated by non-commander player", this );
 		}
-		
+
 		this.ParentToOwnerShip( ownerPlayer );
 		this.health.team = ownerPlayer.team;
 	

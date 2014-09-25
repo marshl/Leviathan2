@@ -238,7 +238,7 @@ public abstract class Common
 		}
 		else
 		{
-			DebugConsole.Error( "Cannot find opposing team for netural" );
+			DebugConsole.Error( "Cannot find opposing team for neutral" );
 			return TEAM.NEUTRAL;
 		} 
 	}

@@ -71,8 +71,19 @@ public class GamePlayerManager : MonoBehaviour
 
 	public void DisconnectPlayer( int _playerID )
 	{
+		DebugConsole.Log( "Player (" + _playerID + ") disconnected" );
 		this.GetPlayerWithID( _playerID ).isConnected = false;
 		//TODO: Blow up their ship etc LM 24/04/14
+
+		if ( Network.isServer )
+		{
+			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( _playerID );
+			if ( player.fighter != null )
+			{
+				DebugConsole.Log( "Destroyed fighter object" );
+				Network.Destroy( player.fighter.networkView.viewID );
+			}
+		}
 	}
 
 	public GamePlayer GetNetworkPlayer( NetworkPlayer _player )
@@ -91,11 +102,6 @@ public class GamePlayerManager : MonoBehaviour
 		}
 		return player;
 	}
-
-	/*public GamePlayer GetMe()
-	{
-		return this.GetPlayerWithID( Common.MyNetworkID() );
-	}*/
 
 	// To be used by the server only
 	public PLAYER_TYPE GetNextFreePlayerType()
@@ -136,6 +142,7 @@ public class GamePlayerManager : MonoBehaviour
 
 		if ( _playerID == Common.MyNetworkID() )
 		{
+			Debug.Log( "Setting my player to " + _playerID );
 			this.myPlayer = newPlayer;
 		}
 
