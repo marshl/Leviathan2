@@ -14,6 +14,7 @@ public class BulletBase : MonoBehaviour
 		ACTIVE_OWNED,
 		ACTIVE_NOT_OWNED,
 	};
+	
 	public BULLET_STATE state;
 	public int index;
 	public WEAPON_TYPE weaponType;
@@ -23,6 +24,9 @@ public class BulletBase : MonoBehaviour
 	public BaseWeaponManager source;
 	public float distanceTravelled;
 	public float damageScale = 1.0f;
+
+	public Vector3 lastPosition;
+	private bool specialCollision = false; //Have we tripped a special collision detection check?
 
 	protected virtual void Awake()
 	{
@@ -43,7 +47,8 @@ public class BulletBase : MonoBehaviour
 	public virtual void OnShoot()
 	{
 		this.rigidbody.velocity = this.transform.forward * this.desc.moveSpeed;
-		//this.lastPosition = this.transform.position;
+		this.lastPosition = this.transform.position;
+		this.specialCollision = false;
 	}
 
 	/// <summary>
@@ -58,54 +63,79 @@ public class BulletBase : MonoBehaviour
 		} 
 
 		//Advanced collision checking - note that it calls OnTriggerEnter by hand.
+		switch(desc.collisionType)
+		{
+		case COLLISION_TYPE.COLLISION_SPHERE:
+				DetectSphereCollision();
+			break;
+		case COLLISION_TYPE.COLLISION_DEFAULT:
+			break;
+		case COLLISION_TYPE.COLLISION_RAY:
+				DetectRaycastCollision();
+			break;
+		default:
+			break;
 
-		//DetectCollision();
+		}
 
-		//lastPosition = this.transform.position;
+
+		lastPosition = this.transform.position;
 	}
 	/// <summary>
 	/// Custom collision detection method to handle high-speed physics.
 	/// </summary>
-	/*protected virtual void DetectCollision()
+	protected virtual void DetectRaycastCollision()
 	{
 		//TODO: Convert raycast to spherecast for shot radius to matter, using the collider radius as the size
 
 		Ray positionCheckRay = new Ray(this.transform.position, this.lastPosition - this.transform.position);
 		RaycastHit[] rayInfo;
 		float distance = Vector3.Distance (this.transform.position, this.lastPosition);
-		rayInfo = Physics.RaycastAll (positionCheckRay, distance);
-		
-		bool hitOccurred = false;
-		
+		int layerMask = ~(1 << 10);
+		//print(layerMask);
+		rayInfo = Physics.RaycastAll (positionCheckRay, distance, layerMask );
+
 		foreach (RaycastHit hit in rayInfo)
 		{
+			//	DebugConsole.Log("Collided with " + hit.collider.name + " at distance " + distance);
+				OnTriggerEnter(hit.collider);
+				
+		}
 
-			//Ugly fix here - namecheck for capital collider should eventually be the physics layer
-			if(hit.collider != null && hit.collider != source.collider && hit.transform.name != "CapitalCollider")
-			{
-				//DebugConsole.Log("Collided with " + hit.collider.name + " at distance " + distance);
-				//OnTriggerEnter(hit.collider);
-				
-				BaseHealth health = hit.collider.gameObject.GetComponent<BaseHealth>();
-				if ( health != null )
-				{
-					//_health.DealDamage( this.desc.damage, true );
-					this.OnTargetCollision( health );
-					hitOccurred = true;
-				}
-				else
-				{
-					//this.OnEmptyCollision();
-				}
-				
-			}
-		}
-		if(hitOccurred)
+		if(rayInfo.Length > 0)
 		{
-			BulletManager.instance.DestroyLocalBullet( this );
+			this.specialCollision = true;
 		}
+
 	}
-*/
+
+	protected virtual void DetectSphereCollision()
+	{
+		//TODO: Convert raycast to spherecast for shot radius to matter, using the collider radius as the size
+
+		RaycastHit[] sphereInfo;
+		float distance = Vector3.Distance (this.transform.position, this.lastPosition);
+		int layerMask = ~(1 << 10);
+		//print(layerMask);
+		float sphereRadius = this.GetComponent<SphereCollider>().radius;
+		//print(sphereRadius);
+		sphereInfo = Physics.SphereCastAll (this.lastPosition, sphereRadius, 
+		                                 this.transform.position - this.lastPosition, distance, layerMask );
+		
+		foreach (RaycastHit hit in sphereInfo)
+		{
+			//DebugConsole.Log("Sphere collision with " + hit.collider.name + " at distance " + distance);
+			OnTriggerEnter(hit.collider);
+			//this.specialCollision = true;
+			//BulletManager.instance.DestroyLocalBullet (this);
+		}
+		if(sphereInfo.Length > 0)
+		{
+			this.specialCollision = true;
+		}
+		
+	}
+
 	/// <summary>
 	/// Unity callback on collision with another object
 	/// </summary>
@@ -129,6 +159,18 @@ public class BulletBase : MonoBehaviour
 		{
 			return;
 		}
+
+		if(this.specialCollision)
+		{
+			Debug.Log("Caught a double trigger event after a freak cosmic ray or something.");
+			Debug.Log("Contact me - Rigel");
+			return;
+		}
+
+		//print("Collision with " + _collider.name + " at time " + Time.time);
+
+
+
 
 		if ( this.desc.areaOfEffect )
 		{
