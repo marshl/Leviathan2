@@ -485,6 +485,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400060}
+  - 114: {fileID: 11400064}
   m_Layer: 0
   m_Name: IonBurst
   m_TagString: Untagged
@@ -1063,7 +1064,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 450
@@ -1119,7 +1119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
-  collisionType: 0
   prefab: {fileID: 100000, guid: 45a2992e1734b754f80ede03d4861c0e, type: 2}
   count: 50
   moveSpeed: 750
@@ -1140,7 +1139,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 14
-  collisionType: 0
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
   count: 0
   moveSpeed: 50
@@ -1178,7 +1176,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 13
-  collisionType: 2
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 50
   moveSpeed: 5000
@@ -1199,12 +1196,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 12
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
-  moveSpeed: 50
+  moveSpeed: 200
   maxDistance: 500
-  damage: 10
+  damage: 60
   areaOfEffect: 0
   aoeRadius: 0
   smartBullet: 0
@@ -1220,13 +1216,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 11
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 300
   moveSpeed: 150
   maxDistance: 500
-  damage: 100
-  areaOfEffect: 1
+  damage: 45
+  areaOfEffect: 0
   aoeRadius: 5
   smartBullet: 0
 --- !u!114 &11400020
@@ -1241,7 +1236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 10
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 150
@@ -1262,7 +1256,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 4
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -1294,7 +1287,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 11400048}
 --- !u!114 &11400026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1318,7 +1311,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 11400022}
 --- !u!114 &11400028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1342,7 +1335,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 11400022}
 --- !u!114 &11400030
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1414,7 +1407,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 11400016}
 --- !u!114 &11400036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1462,7 +1455,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 11400020}
 --- !u!114 &11400040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1510,7 +1503,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 11400050}
   spinUpTime: 1
   spinDownTime: 1
   spinDownDelay: .25
@@ -1538,7 +1531,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 11400022}
 --- !u!114 &11400046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1551,7 +1544,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 8
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 350
@@ -1572,7 +1564,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 9
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 200
@@ -1593,7 +1584,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 7
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -1614,7 +1604,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 6
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -1635,7 +1624,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 5
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -1656,7 +1644,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
-  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 50
@@ -1724,16 +1711,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 0
-  collisionType: 0
-  prefab: {fileID: 0}
-  count: 0
-  moveSpeed: 0
-  maxDistance: 0
-  damage: 0
+  weaponType: 15
+  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  count: 500
+  moveSpeed: 200
+  maxDistance: 200
+  damage: 200
   areaOfEffect: 0
   aoeRadius: 0
   smartBullet: 0
+--- !u!114 &11400064
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 15
+  label: 
+  fireRate: 0
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  bulletDesc: {fileID: 11400062}
+  timeBetweenBursts: 0
+  shotsInBurst: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
