@@ -10,7 +10,7 @@ using System;
 public class BulletDescriptor : MonoBehaviour
 {
 	public WEAPON_TYPE weaponType;
-	public COLLISION_TYPE collisionType;
+	//public COLLISION_TYPE collisionType;
 
 	public GameObject prefab;
 	public int count;

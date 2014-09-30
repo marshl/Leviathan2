@@ -63,7 +63,7 @@ public class BulletBase : MonoBehaviour
 		} 
 
 		//Advanced collision checking - note that it calls OnTriggerEnter by hand.
-		switch(desc.collisionType)
+		/*switch(desc.collisionType)
 		{
 		case COLLISION_TYPE.COLLISION_SPHERE:
 				DetectSphereCollision();
@@ -76,7 +76,7 @@ public class BulletBase : MonoBehaviour
 		default:
 			break;
 
-		}
+		}*/
 
 
 		lastPosition = this.transform.position;
