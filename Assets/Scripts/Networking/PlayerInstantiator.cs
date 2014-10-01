@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Player instantiator.
+/// 
+/// "Is it done Yuri?"
+/// "No comrade Premier, it has only begun"
+/// </summary>
+
+
+using UnityEngine;
 using System.Collections;
 
 public class PlayerInstantiator : MonoBehaviour

@@ -32,8 +32,8 @@ public class ShieldGeneratorHealth : BaseHealth {
           this.explosionRadius,
           this.explosionDamage,
           false, 
-          this.team, 
-          this.networkView.viewID );
+          this.capitalShip.health.owner.team, 
+          this.capitalShip.health.owner );
 
 		GameNetworkManager.instance.SendDeadShieldMessage( this.networkView.viewID );
 	}

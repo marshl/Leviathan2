@@ -107,7 +107,7 @@ public class BulletManager : MonoBehaviour
 			bulletObj.transform.position = _firePoint.transform.position;
 			bulletObj.transform.rotation = Quaternion.LookRotation( _firePoint.transform.forward );
 		}
-		else 
+		else // Smart bullets
 		{
 			if ( Network.peerType != NetworkPeerType.Disconnected )
 			{
@@ -124,7 +124,7 @@ public class BulletManager : MonoBehaviour
 		           desc.prefab,
 		           _firePoint.transform.position, 
 		           Quaternion.LookRotation( _firePoint.transform.forward ) ) as GameObject;
-				bulletObj.GetComponent<BaseHealth>().team = _weapon.source.health.team;
+				bulletObj.GetComponent<BaseHealth>().owner = _weapon.source.health.owner;
 			}
 			bulletScript = bulletObj.GetComponent<BulletBase>();
 		}
@@ -172,7 +172,10 @@ public class BulletManager : MonoBehaviour
 			BaseHealth target = bulletObj.GetComponent<SeekingBullet>().target;
 			NetworkViewID viewID = target != null ? target.networkView.viewID : NetworkViewID.unassigned;
 			
-			GameNetworkManager.instance.SendSetSmartBulletTeamMessage( bulletObj.networkView.viewID, _weapon.source.health.team, viewID );
+			GameNetworkManager.instance.SendSetSmartBulletTeamMessage( 
+                  bulletObj.networkView.viewID, 
+			      GamePlayerManager.instance.myPlayer.id, 
+                  viewID );
 		}
 
 		return bulletScript;

@@ -221,15 +221,17 @@ public class GameNetworkManager : BaseNetworkManager
 		BulletManager.instance.DestroyDumbBulletRPC( (WEAPON_TYPE)_weaponType, _index );
 	}
 
-	public void SendDealDamageMessage( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
+	public void SendDealDamageMessage( NetworkViewID _id, float _damage, GamePlayer _sourcePlayer )
 	{
-		this.networkView.RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage, _sourceID );
+		int playerID = _sourcePlayer.id;
+		this.networkView.RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage, playerID );
 	}
 
 	[RPC]
-	private void OnDealDamageRPC( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
+	private void OnDealDamageRPC( NetworkViewID _id, float _damage, int _playerID )
 	{
-		TargetManager.instance.OnNetworkDamageMessage( _id, _damage, _sourceID );
+		GamePlayer sourcePlayer = GamePlayerManager.instance.GetPlayerWithID( _playerID );
+		TargetManager.instance.OnNetworkDamageMessage( _id, _damage, sourcePlayer );
 	}
 
 	public void SendDockedMessage( NetworkViewID _id, int landedSlot )
@@ -330,25 +332,19 @@ public class GameNetworkManager : BaseNetworkManager
 		NetworkOwnerManager.instance.ReceiveSetViewID( _ownerID, _id );
 	}
 
-	public void SendSetSmartBulletTeamMessage( NetworkViewID _viewID, TEAM _team, NetworkViewID _targetID )
+	public void SendSetSmartBulletTeamMessage( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
 	{
-		this.networkView.RPC( "OnSetSmartBulletTeamRPC", RPCMode.Others, _viewID, (int)_team, _targetID );
+		this.networkView.RPC( "OnSetSmartBulletTeamRPC", RPCMode.Others, _viewID, (int)_playerID, _targetID );
 	}
 
 	[RPC]
-	private void OnSetSmartBulletTeamRPC( NetworkViewID _viewID, int _team, NetworkViewID _targetID )
+	private void OnSetSmartBulletTeamRPC( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
 	{
-		if ( !System.Enum.IsDefined( typeof(TEAM), _team ) )
-		{
-			DebugConsole.Error( "Parameter could not be converted to team: " + _team );
-			return;
-		}
-
 		if ( BulletManager.instance.seekingBulletMap.ContainsKey( _viewID ) )
 		{
 			SeekingBullet bullet = BulletManager.instance.seekingBulletMap[_viewID];
-			DebugConsole.Log( "Changing smart bullet " + _viewID + " to team " + (TEAM)_team, bullet  );
-			bullet.health.team = (TEAM)_team;
+			DebugConsole.Log( "Changing smart bullet " + _viewID + " owner to " + _playerID, bullet  );
+			bullet.health.owner = GamePlayerManager.instance.GetPlayerWithID( _playerID );
 
 			if ( _targetID != NetworkViewID.unassigned )
 			{
@@ -401,8 +397,6 @@ public class GameNetworkManager : BaseNetworkManager
 			break;
 
 		}
-
-
 	}
 
 	public void SendTractorStopMessage(NetworkViewID _viewID)
@@ -416,5 +410,19 @@ public class GameNetworkManager : BaseNetworkManager
 		NetworkView TractorSource = NetworkView.Find (_viewID);
 
 		TractorSource.GetComponent<TractorBeam>().RefreshTarget();	
+	}
+
+
+	public void SendAddScoreMessage( SCORE_TYPE _scoreType, GamePlayer _player )
+	{
+		this.networkView.RPC( "OnAddScoreMessage", RPCMode.Others, (int)_scoreType, _player.id );
+	}
+
+	[RPC]
+	private void OnAddScoreMessage( int _scoreType, int _playerID )
+	{
+		//TODO: Score type enum check
+		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( _playerID );
+		ScoreManager.instance.OnNetworkAddScore( (SCORE_TYPE)_scoreType, player );
 	}
 }

@@ -16,21 +16,6 @@ public enum TARGET_TYPE : int
 
 public class TargetManager : MonoBehaviour
 {
-	[System.Serializable]
-	public class Target
-	{
-		public Target( BaseHealth _health, float _angle, float _distance )
-		{
-			this.health = _health;
-			this.angle = _angle;
-			this.distance = _distance;
-		}
-
-		public BaseHealth health;
-		public float angle;
-		public float distance;
-	};
-
 	public class TargetRestriction
 	{
 		public Transform transform;
@@ -43,7 +28,7 @@ public class TargetManager : MonoBehaviour
 	public static TargetManager instance;
 	
 	public Dictionary<NetworkViewID, BaseHealth> targetMap;
-	public LayerMask lineOfSightBlockers;
+	public LayerMask lineOfSightBlockingLayers;
 
 #if UNITY_EDITOR
 	public List<BaseHealth> debugTargets;
@@ -215,14 +200,15 @@ public class TargetManager : MonoBehaviour
 			return false;
 		}
 
-		if ( ((int)_health.team & _weaponScript.restrictions.teams ) == 0 ) 
+		// Ignore targets not in the team target list
+		if ( ((int)_health.owner.team & _weaponScript.restrictions.teams ) == 0 ) 
 		{
 			return false;
 		}
 
 		RaycastHit hitInfo;
 		bool hit = Physics.Linecast( _weaponScript.transform.position, _health.transform.position,
-		                            out hitInfo, this.lineOfSightBlockers ); 
+		                            out hitInfo, this.lineOfSightBlockingLayers ); 
 
 		if ( hit
 		  && hitInfo.collider.gameObject != _health.gameObject 
@@ -235,14 +221,17 @@ public class TargetManager : MonoBehaviour
 	}
 
 	public void AreaOfEffectDamage( Vector3 _position, float _radius, float _damage, 
-	                               bool _friendlyFire, TEAM _sourceTeam, NetworkViewID _sourceID )
+	                               bool _friendlyFire, TEAM _sourceTeam, GamePlayer _sourcePlayer )
 	{
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			foreach ( KeyValuePair<int, BaseHealth> pair in this.debugTargetMap )
 			{
-				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam, _sourceID );
+				this.AreaOfEffectDamageCheck( pair.Value,
+		             _position, _radius, _damage,
+		             _friendlyFire, _sourceTeam,
+				     _sourcePlayer );
 			}
 		}
 		else
@@ -250,15 +239,19 @@ public class TargetManager : MonoBehaviour
 		{
 			foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
 			{
-				this.AreaOfEffectDamageCheck( pair.Value, _position, _radius, _damage, _friendlyFire, _sourceTeam, _sourceID );
+				this.AreaOfEffectDamageCheck( pair.Value,
+                     _position, _radius, _damage,
+                     _friendlyFire, _sourceTeam,
+				     _sourcePlayer );
 			}
 		}
 	}
 
 	private void AreaOfEffectDamageCheck( BaseHealth _health, 
-	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam, NetworkViewID _source )
+	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam,
+	      GamePlayer _sourcePlayer )
 	{
-		if ( _friendlyFire == true && _sourceTeam == _health.team )
+		if ( _friendlyFire && _sourceTeam == _health.owner.team )
 		{
 			return;
 		}
@@ -267,16 +260,11 @@ public class TargetManager : MonoBehaviour
 		if ( distance < _radius )
 		{
 			float multiplier = 1.0f - distance / _radius;
-			_health.DealDamage( _damage * multiplier, true, _source );
+			_health.DealDamage( _damage * multiplier, true, _sourcePlayer );
 		}
 	}
 
-	public void DealDamageNetwork( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
-	{
-		GameNetworkManager.instance.SendDealDamageMessage( _id, _damage, _sourceID );
-	}
-
-	public void OnNetworkDamageMessage( NetworkViewID _id, float _damage, NetworkViewID _sourceID ) 
+	public void OnNetworkDamageMessage( NetworkViewID _id, float _damage, GamePlayer _sourcePlayer ) 
 	{
 		BaseHealth target;
 		if ( !this.targetMap.TryGetValue( _id, out target ) )
@@ -284,7 +272,7 @@ public class TargetManager : MonoBehaviour
 			DebugConsole.Error( "Cannot find target with ID " + _id );
 			return;
 		}
-		target.DealDamage( _damage, false, _sourceID );
+		target.DealDamage( _damage, false, _sourcePlayer );
 		DebugConsole.Log( target.gameObject.name + " has been dealt " + _damage, target );
 	}
 

@@ -155,7 +155,8 @@ public class BulletBase : MonoBehaviour
 		}
 
 		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
-		if ( this.source.collider == _collider )
+		if ( this.source != null
+		  && this.source.collider == _collider )
 		{
 			return;
 		}
@@ -167,19 +168,15 @@ public class BulletBase : MonoBehaviour
 			return;
 		}
 
-		//print("Collision with " + _collider.name + " at time " + Time.time);
-
-
-
-
 		if ( this.desc.areaOfEffect )
 		{
-			TargetManager.instance.AreaOfEffectDamage( this.transform.position,
-			                                          this.desc.aoeRadius,
-			                                          this.desc.damage,
-			                                          false, //TODO: Friendly fire bool
-			                                          this.source.health.team,
-			                                          this.source.networkView.viewID );
+			TargetManager.instance.AreaOfEffectDamage( 
+	          this.transform.position,
+	          this.desc.aoeRadius,
+	          this.desc.damage,
+	          false, //TODO: Friendly fire bool
+	          this.source.health.owner.team,
+	          this.source.health.owner );
 		}
 
 		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
@@ -210,7 +207,7 @@ public class BulletBase : MonoBehaviour
 		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
 		if ( _health.GetComponent<SeekingBullet>() == null )
 		{
-			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.networkView.viewID );
+			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.owner );
 		}
 
 		BulletManager.instance.DestroyLocalBullet( this );

@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Game player manager.
+/// 
+/// "Who are they?" - Helix
+/// </summary>
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -73,7 +79,6 @@ public class GamePlayerManager : MonoBehaviour
 	{
 		DebugConsole.Log( "Player (" + _playerID + ") disconnected" );
 		this.GetPlayerWithID( _playerID ).isConnected = false;
-		//TODO: Blow up their ship etc LM 24/04/14
 
 		if ( Network.isServer )
 		{

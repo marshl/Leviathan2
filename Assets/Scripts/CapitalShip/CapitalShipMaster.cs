@@ -3,8 +3,6 @@ using System.Collections;
 
 public class CapitalShipMaster : MonoBehaviour
 {
-	public GamePlayer owner;
-
 	public CapitalShipMovement movement;
 	public NetworkOwnerControl ownerControl;
 	public CapitalShipTurretManager turrets;
@@ -18,7 +16,7 @@ public class CapitalShipMaster : MonoBehaviour
 
 	private void Awake()
 	{
-		this.owner = GameNetworkManager.instance.lastCreatedDummy;
+		this.health.owner = GameNetworkManager.instance.lastCreatedDummy;
 	}
 
 	private void Start()
@@ -31,12 +29,10 @@ public class CapitalShipMaster : MonoBehaviour
 			}
 			else
 			{
-				this.owner = GamePlayerManager.instance.myPlayer;
+				this.health.owner = GamePlayerManager.instance.myPlayer;
 			}
-
-			this.health.team = this.owner.team;
-			this.owner.capitalShip = this;
-
+			this.health.ownerID = GamePlayerManager.instance.myPlayer.id;
+			this.health.owner.capitalShip = this;
 			this.turrets.CreateTurrets();
 		}
 	}
@@ -60,20 +56,22 @@ public class CapitalShipMaster : MonoBehaviour
 	{
 		this.ownerInitialised = true;
 		
-		int playerID = this.ownerControl.ownerID.GetValueOrDefault();
-		this.owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
-		if ( this.owner.capitalShip != null ) 
+		int playerID = this.ownerControl.ownerID.Value;
+		this.health.owner = GamePlayerManager.instance.GetPlayerWithID( playerID );
+#if UNITY_EDITOR
+		this.health.ownerID = playerID;
+#endif
+
+		if ( this.health.owner.capitalShip != null ) 
 		{
 			DebugConsole.Warning( "Capital ship already set for " + playerID, this );
 		}
 		else
 		{
-			this.owner.capitalShip = this; 
+			this.health.owner.capitalShip = this; 
 			DebugConsole.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
 		}
-
-		this.health.team = this.owner.team;
-
+	
 		if ( this.networkView.isMine )
 		{
 			this.turrets.CreateTurrets();
@@ -91,7 +89,7 @@ public class CapitalShipMaster : MonoBehaviour
 			    render.gameObject.name == "Bow" ||
 			    render.gameObject.name == "Starboard" )
 			{
-				if ( owner.team == TEAM.TEAM_1 )
+				if ( this.health.owner.team == TEAM.TEAM_1 )
 					render.material.color = new Color(1.0f,1.0f,0.5f);
 				else
 					render.material.color = new Color(1,0f,0.2f,1.0f);

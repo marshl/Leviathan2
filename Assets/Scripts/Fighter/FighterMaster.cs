@@ -20,8 +20,7 @@ public class FighterMaster : MonoBehaviour
 		DEAD
 	};
 	public FIGHTERSTATE state = FIGHTERSTATE.FLYING;
-
-	public GamePlayer owner;
+	
 	public FighterMovement movement;
 	public FighterHealth health;
 	public FighterWeapons weapons; 
@@ -47,20 +46,21 @@ public class FighterMaster : MonoBehaviour
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			this.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
+			this.health.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
+#if UNITY_EDITOR
+			this.health.ownerID = ownerID;
+#endif
+			this.health.owner.fighter = this;
+			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.owner.team );
 
-			this.health.team = this.owner.team;
-			this.owner.fighter = this;
-			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
-
-			GamePlayer commanderPlayer = this.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1
+			GamePlayer commanderPlayer = this.health.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1
 				: GamePlayerManager.instance.commander2;
 
 			if ( commanderPlayer != null )
 			{
 				this.capitalShip = commanderPlayer.capitalShip;
 			}
-			DebugConsole.Log( "Player " + this.owner.id + " now owns " + this.name, this );
+			DebugConsole.Log( "Player " + ownerID + " now owns " + this.name, this );
 		}
 		else
 		{
@@ -88,33 +88,34 @@ public class FighterMaster : MonoBehaviour
 			#if UNITY_EDITOR
 			if ( this.dummyShip == false )
 				#endif
-			{
-			if ( Input.GetKeyDown( KeyCode.G ) )
-			{
-				this.Respawn();
-			}
-
-			if ( Input.GetKeyDown( KeyCode.P ) )
-			{
-				this.OnLethalDamage();
-			}
-
-			if ( this.state == FIGHTERSTATE.DOCKED )
-			{
-				if ( Input.GetKeyDown( KeyCode.Space ) 
-				    && !GameMessages.instance.typing )
 				{
-					this.Undock();
+				if ( Input.GetKeyDown( KeyCode.G ) )
+				{
+					this.Respawn();
 				}
-			}
+
+				if ( Input.GetKeyDown( KeyCode.P ) )
+				{
+					this.OnLethalDamage();
+				}
+
+				if ( this.state == FIGHTERSTATE.DOCKED )
+				{
+					if ( Input.GetKeyDown( KeyCode.Space ) 
+					    && !GameMessages.instance.typing )
+					{
+						this.Undock();
+					}
+				}
 			}
 
 			if ( this.state == FIGHTERSTATE.OUT_OF_CONTROL
-			       || this.state == FIGHTERSTATE.DEAD )
+			  || this.state == FIGHTERSTATE.DEAD )
 			{
 				this.respawnTimer -= Time.deltaTime;
 
-				if ( this.respawnDelay - this.respawnTimer >= this.outOfControlDuration )
+				if ( this.state == FIGHTERSTATE.OUT_OF_CONTROL
+				  && this.respawnDelay - this.respawnTimer >= this.outOfControlDuration )
 				{
 					this.OnOutOfControlExpiration();
 				}
@@ -135,9 +136,9 @@ public class FighterMaster : MonoBehaviour
 	{
 		this.ownerInitialised = true;
 
-		int id = this.ownerControl.ownerID.GetValueOrDefault();
-		this.owner = GamePlayerManager.instance.GetPlayerWithID( id );
-		this.owner.fighter = this;
+		int id = this.ownerControl.ownerID.Value;
+		this.health.owner = GamePlayerManager.instance.GetPlayerWithID( id );
+		this.health.owner.fighter = this;
 		DebugConsole.Log( "Set player " + id + " to own fighter", this.gameObject );
 		if ( this.networkView.isMine == false )
 		{
@@ -146,13 +147,12 @@ public class FighterMaster : MonoBehaviour
 			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		} 
 
-		this.health.team = this.owner.team;
-		this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
-		this.capitalShip = GamePlayerManager.instance.GetCapitalShip( this.owner.team );
+		this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.owner.team );
+		this.capitalShip = GamePlayerManager.instance.GetCapitalShip( this.health.owner.team );
 		
 		foreach ( Renderer render in GetComponentsInChildren<Renderer>( ))
 		{
-			if ( owner.team == TEAM.TEAM_1 )
+			if ( this.health.owner.team == TEAM.TEAM_1 )
 			{
 				render.material.color = new Color(1.0f,1.0f,0.2f);
 			}
@@ -182,10 +182,9 @@ public class FighterMaster : MonoBehaviour
 					index = 0;
 				}
 				
-				if( bays[index].capitalShip.health.team == this.health.team )
+				if( bays[index].capitalShip.health.owner.team == this.health.owner.team )
 				{
 					bay = bays[index];
-
 					break;
 				}
 				++index;
@@ -225,16 +224,13 @@ public class FighterMaster : MonoBehaviour
 
 		this.state = FIGHTERSTATE.OUT_OF_CONTROL;
 
-		if ( this.health.lastHitBy != NetworkViewID.unassigned )
+		if ( this.health.lastHitBy != null )
 		{
-			BaseHealth hitHealth = TargetManager.instance.GetTargetWithID( this.health.lastHitBy );
-			if ( hitHealth != null )
-			{
-				string msg = "Player " + Common.MyNetworkID() + " was killed by " + hitHealth.gameObject.name;
-				MessageManager.instance.AddMessage( Common.MyNetworkID(), msg, true );
-			}
+			string msg = "Player " + Common.MyNetworkID() + " was killed by " + this.health.lastHitBy.id;
+			MessageManager.instance.AddMessage( Common.MyNetworkID(), msg, true );
+			ScoreManager.instance.AddScoreLocal( SCORE_TYPE.FIGHTER_KILL, this.health.lastHitBy );
 		}
-
+	
 		this.rigidbody.AddTorque( Common.RandomDirection() );
 	}
 
@@ -259,7 +255,7 @@ public class FighterMaster : MonoBehaviour
 			this.health.FullHeal();
 			this.movement.OnRespawn();
 			this.weapons.OnRespawn();
-			this.health.lastHitBy = NetworkViewID.unassigned;
+			this.health.lastHitBy = null;
 		}
 		else
 		{

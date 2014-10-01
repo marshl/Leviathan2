@@ -26,16 +26,20 @@ public class CapitalShipComponent : MonoBehaviour
 	{
 		this.ownerInitialised = true;
 		
-		int ownerID = this.ownerControl.ownerID.GetValueOrDefault();
-		GamePlayer ownerPlayer = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-		
-		if ( ownerPlayer.capitalShip == null )
-		{
-			DebugConsole.Warning( "Turret instantiated by non-commander player", this );
-		}
+		int ownerID = this.ownerControl.ownerID.Value;
+		this.health.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
+#if UNITY_EDITOR
+		this.health.ownerID = ownerID;
+#endif
 
-		this.ParentToOwnerShip( ownerPlayer );
-		this.health.team = ownerPlayer.team;
+		if ( this.health.owner.capitalShip == null )
+		{
+			DebugConsole.Warning( "Owner (" + ownerID + ") does not have capital ship to attach to", this );
+		}
+		else
+		{
+			this.ParentToOwnerShip( this.health.owner );
+		}
 	
 		if ( !this.networkView.isMine )
 		{

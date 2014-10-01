@@ -33,6 +33,8 @@ public class GamePlayer
 	
 	public TEAM team;
 
+	public int personalScore; // Only used for display purposes
+
 	public FighterMaster fighter;
 	public CapitalShipMaster capitalShip;
 

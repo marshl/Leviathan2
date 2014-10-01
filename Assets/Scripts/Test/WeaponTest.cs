@@ -15,7 +15,7 @@ public class WeaponTest : BaseWeaponManager
 	private void Start()
 	{
 		this.weapons = this.GetComponents<WeaponBase>();
-		this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+		this.restrictions.teams = (int)Common.OpposingTeam( this.health.owner.team );
 	}
 
 	private void Update()
