@@ -8,6 +8,7 @@ public class BaseHealth : MonoBehaviour
 #if UNITY_EDITOR
 	public int ownerID;
 #endif
+	[HideInInspector]
 	public GamePlayer owner;
 
 	public int debugTargetID;
