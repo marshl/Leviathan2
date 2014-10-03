@@ -82,7 +82,7 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			if ( this.health.lastHitBy != null )
 			{
-				ScoreManager.instance.AddScoreLocal( SCORE_TYPE.TURRET_KILL, this.health.lastHitBy );
+				ScoreManager.instance.AddScore( SCORE_TYPE.TURRET_KILL, this.health.lastHitBy, true );
 			}
 
 			if ( Network.peerType == NetworkPeerType.Disconnected )
@@ -194,7 +194,10 @@ public class TurretBehavior : BaseWeaponManager
 
 		int ownerID = this.ownerControl.ownerID.Value;
 		this.health.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-		
+#if UNITY_EDITOR
+		this.health.ownerID = ownerID;
+#endif
+
 		if ( this.health.owner.capitalShip == null )
 		{
 			DebugConsole.Warning( "Turret instantiated by non-commander player", this );

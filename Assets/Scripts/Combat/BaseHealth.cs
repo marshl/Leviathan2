@@ -6,10 +6,10 @@ public class BaseHealth : MonoBehaviour
 {
 	public TARGET_TYPE targetType;
 #if UNITY_EDITOR
-	public int ownerID;
+	public int ownerID = int.MinValue;
 #endif
 	[HideInInspector]
-	public GamePlayer owner;
+	public GamePlayer owner = null;
 
 	public int debugTargetID;
 
@@ -23,6 +23,7 @@ public class BaseHealth : MonoBehaviour
 
 	public bool isIndestructible;
 
+	[HideInInspector]
 	public GamePlayer lastHitBy = null;
 
 	public Transform[] guiExtents;

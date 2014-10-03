@@ -35,6 +35,7 @@ GameObject:
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
   - 64: {fileID: 6400000}
+  - 114: {fileID: 11400020}
   m_Layer: 0
   m_Name: polySurface6721_MeshPart1
   m_TagString: Untagged
@@ -53,6 +54,7 @@ GameObject:
   - 33: {fileID: 3300002}
   - 23: {fileID: 2300002}
   - 64: {fileID: 6400002}
+  - 114: {fileID: 11400022}
   m_Layer: 0
   m_Name: polySurface6721_MeshPart0
   m_TagString: Untagged
@@ -818,7 +820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ef634c3f5055643a216109a4ac4517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ownerID: -1
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -860,7 +861,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 4
-  team: 0
+  ownerID: 0
+  owner:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    fighterType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    personalScore: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
   debugTargetID: 0
   currentHealth: 1000
   maxHealth: 1000
@@ -869,6 +883,19 @@ MonoBehaviour:
   shieldRegen: .00999999978
   shieldRegenDelay: 0
   isIndestructible: 0
+  lastHitBy:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    fighterType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    personalScore: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
   guiExtents: []
   shieldGenerators: 10
   baseShields: 500
@@ -931,18 +958,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 804fa07989b1800449c1c807b5492e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner:
-    id: 0
-    name: DEFAULT
-    playerType: 0
-    fighterType: 0
-    isConnected: 0
-    kills: 0
-    assists: 0
-    deaths: 0
-    team: 0
-    fighter: {fileID: 0}
-    capitalShip: {fileID: 0}
   movement: {fileID: 11400014}
   ownerControl: {fileID: 11400006}
   turrets: {fileID: 11400008}
@@ -981,6 +996,106 @@ MonoBehaviour:
     occupied: 0
     slotID: 0
   bayID: 0
+--- !u!114 &11400020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetType: 0
+  ownerID: -2147483648
+  owner:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    fighterType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    personalScore: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  debugTargetID: 0
+  currentHealth: 0
+  maxHealth: 0
+  currentShield: 0
+  maxShield: 0
+  shieldRegen: 0
+  shieldRegenDelay: 0
+  isIndestructible: 0
+  lastHitBy:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    fighterType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    personalScore: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  guiExtents: []
+  mainHealth: {fileID: 11400010}
+  damageMultiplier: 1
+--- !u!114 &11400022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetType: 0
+  ownerID: -2147483648
+  owner:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    fighterType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    personalScore: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  debugTargetID: 0
+  currentHealth: 0
+  maxHealth: 0
+  currentShield: 0
+  maxShield: 0
+  shieldRegen: 0
+  shieldRegenDelay: 0
+  isIndestructible: 0
+  lastHitBy:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    fighterType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    personalScore: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
+  guiExtents: []
+  mainHealth: {fileID: 11400010}
+  damageMultiplier: 1
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1

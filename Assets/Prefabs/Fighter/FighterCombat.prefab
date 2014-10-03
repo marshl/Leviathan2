@@ -796,18 +796,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 2
-  owner:
-    id: 0
-    name: DEFAULT
-    playerType: 0
-    fighterType: 0
-    isConnected: 0
-    kills: 0
-    assists: 0
-    deaths: 0
-    team: 0
-    fighter: {fileID: 0}
-    capitalShip: {fileID: 0}
   movement: {fileID: 11400008}
   health: {fileID: 11400018}
   weapons: {fileID: 11400016}
@@ -937,15 +925,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 1
-  team: 0
+  ownerID: -2147483648
+  owner:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    fighterType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    personalScore: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
   debugTargetID: 0
-  currentHealth: 100
-  maxHealth: 100
-  currentShield: 100
-  maxShield: 100
+  currentHealth: 1500
+  maxHealth: 1500
+  currentShield: 1000
+  maxShield: 1000
   shieldRegen: .25
   shieldRegenDelay: 1
   isIndestructible: 0
+  lastHitBy:
+    id: 0
+    name: DEFAULT
+    playerType: 0
+    fighterType: 0
+    isConnected: 0
+    kills: 0
+    assists: 0
+    deaths: 0
+    team: 0
+    personalScore: 0
+    fighter: {fileID: 0}
+    capitalShip: {fileID: 0}
   guiExtents:
   - {fileID: 400028}
   - {fileID: 400026}

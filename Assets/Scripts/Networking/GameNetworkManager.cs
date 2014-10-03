@@ -15,6 +15,9 @@ public class GameNetworkManager : BaseNetworkManager
 	public PLAYER_TYPE[] dummiesToCreate;
 
 	public GamePlayer lastCreatedDummy;
+
+	public GameObject turretPrefab;
+	public Transform[] turretPositions;
 #endif
 
 	protected void Awake()
@@ -318,6 +321,16 @@ public class GameNetworkManager : BaseNetworkManager
 				PlayerInstantiator.instance.CreatePlayerObject( dummyPlayer, true );
 			}
 		}
+
+		if ( GamePlayerManager.instance.commander2 != null )
+		{
+			foreach ( Transform pos in turretPositions )
+			{
+				GameObject turretObj = GameObject.Instantiate( this.turretPrefab, pos.position, pos.rotation ) as GameObject;
+				turretObj.GetComponent<TurretBehavior>().health.owner = GamePlayerManager.instance.commander2;
+				//turretObj.GetComponent<NetworkOwnerControl>().ownerID = GamePlayerManager.instance.commander2.id;
+			}
+		}
 	}
 #endif
 
@@ -345,6 +358,9 @@ public class GameNetworkManager : BaseNetworkManager
 			SeekingBullet bullet = BulletManager.instance.seekingBulletMap[_viewID];
 			DebugConsole.Log( "Changing smart bullet " + _viewID + " owner to " + _playerID, bullet  );
 			bullet.health.owner = GamePlayerManager.instance.GetPlayerWithID( _playerID );
+#if UNITY_EDITOR
+			bullet.health.ownerID = _playerID;
+#endif
 
 			if ( _targetID != NetworkViewID.unassigned )
 			{
@@ -384,6 +400,7 @@ public class GameNetworkManager : BaseNetworkManager
 		NetworkView tractorSource = NetworkView.Find (_viewID);
 		NetworkView targetSource = NetworkView.Find (_targetID);
 
+		//TODO: Enum this
 		switch(_tractorDirection)
 		{
 		case 0:
@@ -423,6 +440,6 @@ public class GameNetworkManager : BaseNetworkManager
 	{
 		//TODO: Score type enum check
 		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( _playerID );
-		ScoreManager.instance.OnNetworkAddScore( (SCORE_TYPE)_scoreType, player );
+		ScoreManager.instance.AddScore( (SCORE_TYPE)_scoreType, player, false );
 	}
 }

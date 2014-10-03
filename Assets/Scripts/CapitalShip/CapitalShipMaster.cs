@@ -17,6 +17,7 @@ public class CapitalShipMaster : MonoBehaviour
 	private void Awake()
 	{
 		this.health.owner = GameNetworkManager.instance.lastCreatedDummy;
+		this.health.ownerID = this.health.owner.id;
 	}
 
 	private void Start()

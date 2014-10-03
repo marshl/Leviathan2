@@ -29,6 +29,9 @@ public class BaseWeaponManager : MonoBehaviour
 		{
 			seekingScript.target = this.currentTarget;
 			seekingScript.health.owner = this.health.owner;
+#if UNITY_EDITOR
+			seekingScript.health.ownerID = this.health.ownerID;
+#endif
 		}
 	}
 

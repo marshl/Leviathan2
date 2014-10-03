@@ -6,7 +6,6 @@ using System.Collections;
 /// </summary>
 public class LocalBulletBucket : BulletBucket
 {
-	public int ownerID = -1;
 	private BulletBase[] bulletList;
 	private int currentIndex = 0;
 

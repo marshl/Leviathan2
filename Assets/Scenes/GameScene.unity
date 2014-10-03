@@ -299,6 +299,9 @@ MonoBehaviour:
     personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
+  turretPrefab: {fileID: 100012, guid: 5798065926fbd344e8a5659c6a276ca0, type: 2}
+  turretPositions:
+  - {fileID: 1928740082}
 --- !u!4 &122270341
 Transform:
   m_ObjectHideFlags: 0
@@ -2558,6 +2561,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: turretPositions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2606,11 +2613,46 @@ Prefab:
       propertyPath: defaultPlayerType
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: turretPositions.Array.data[0]
+      value: 
+      objectReference: {fileID: 1928740082}
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: turretPrefab
+      value: 
+      objectReference: {fileID: 100012, guid: 5798065926fbd344e8a5659c6a276ca0, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
   m_RootGameObject: {fileID: 122270339}
   m_IsPrefabParent: 0
   m_IsExploded: 1
+--- !u!1 &1928740081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1928740082}
+  m_Layer: 0
+  m_Name: TurretPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1928740082
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1928740081}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.87806916, y: 7.09414625, z: -30.0161972}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
 --- !u!1 &1954209443
 GameObject:
   m_ObjectHideFlags: 0

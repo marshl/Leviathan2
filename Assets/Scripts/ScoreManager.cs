@@ -35,31 +35,24 @@ public class ScoreManager : MonoBehaviour
 		this.teamScores.Add ( TEAM.TEAM_2, new TeamScore() );
 	}
 
-	public void AddScoreLocal( SCORE_TYPE _scoreType, GamePlayer _player )
+	public void AddScore( SCORE_TYPE _scoreType, GamePlayer _player, bool _broadcast )
 	{
 		TEAM team = _player.team;
 		int points = this.GetScoreTypeAmount( _scoreType );
 
-		this.teamScores[team].score += points;
+		if ( this.teamScores.ContainsKey( team ) )
+		{
+			this.teamScores[team].score += points;
+		}
+
 		_player.personalScore += points;
 
-		DebugConsole.Log( "Earned " + points + " points for " + _scoreType );
+		DebugConsole.Log( "Player " + _player.id + " earned " + points + " points for " + _scoreType );
 
-		if ( Network.peerType != NetworkPeerType.Disconnected )
+		if ( _broadcast && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			GameNetworkManager.instance.SendAddScoreMessage( _scoreType, _player );
 		}
-	}
-
-	public void OnNetworkAddScore( SCORE_TYPE _scoreType, GamePlayer _player )
-	{
-		int points = this.GetScoreTypeAmount( _scoreType );
-		TEAM team = _player.team;
-
-		_player.personalScore += points;
-		this.teamScores[team].score += points;
-
-		DebugConsole.Log( "Player " + _player.id + " earned " + points + " points for " + _scoreType );
 	}
 
 	public int GetTeamScore( TEAM _team )

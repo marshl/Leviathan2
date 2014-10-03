@@ -138,6 +138,10 @@ public class FighterMaster : MonoBehaviour
 
 		int id = this.ownerControl.ownerID.Value;
 		this.health.owner = GamePlayerManager.instance.GetPlayerWithID( id );
+#if UNITY_EDITOR
+		this.health.ownerID = id;
+#endif
+
 		this.health.owner.fighter = this;
 		DebugConsole.Log( "Set player " + id + " to own fighter", this.gameObject );
 		if ( this.networkView.isMine == false )
@@ -228,7 +232,7 @@ public class FighterMaster : MonoBehaviour
 		{
 			string msg = "Player " + Common.MyNetworkID() + " was killed by " + this.health.lastHitBy.id;
 			MessageManager.instance.AddMessage( Common.MyNetworkID(), msg, true );
-			ScoreManager.instance.AddScoreLocal( SCORE_TYPE.FIGHTER_KILL, this.health.lastHitBy );
+			ScoreManager.instance.AddScore( SCORE_TYPE.FIGHTER_KILL, this.health.lastHitBy, true );
 		}
 	
 		this.rigidbody.AddTorque( Common.RandomDirection() );

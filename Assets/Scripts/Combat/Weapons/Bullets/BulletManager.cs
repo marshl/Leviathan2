@@ -73,9 +73,6 @@ public class BulletManager : MonoBehaviour
 
 	private void Start()
 	{
-		GameObject bulletBucketObj = new GameObject();
-		bulletBucketObj.name = "BulletContainer";
-	
 		this.bulletDictionary = new Dictionary<WEAPON_TYPE, BulletBucket>();
 	
 		foreach ( KeyValuePair<WEAPON_TYPE, BulletDescriptor> pair in BulletDescriptorManager.instance.descMap )
@@ -124,7 +121,12 @@ public class BulletManager : MonoBehaviour
 		           desc.prefab,
 		           _firePoint.transform.position, 
 		           Quaternion.LookRotation( _firePoint.transform.forward ) ) as GameObject;
-				bulletObj.GetComponent<BaseHealth>().owner = _weapon.source.health.owner;
+
+				BaseHealth bulletHealth = bulletObj.GetComponent<BaseHealth>();
+				bulletHealth.owner = _weapon.source.health.owner;
+#if UNITY_EDITOR
+				bulletHealth.ownerID = bulletHealth.owner.id;
+#endif
 			}
 			bulletScript = bulletObj.GetComponent<BulletBase>();
 		}

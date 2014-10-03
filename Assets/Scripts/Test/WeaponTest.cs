@@ -23,6 +23,9 @@ public class WeaponTest : BaseWeaponManager
 		foreach ( BaseHealth dummy in this.targetDummies )
 		{
 			dummy.owner = dummyOwner;
+#if UNITY_EDITOR
+			dummy.ownerID = dummy.owner.id;
+#endif
 		}
 	}
 
