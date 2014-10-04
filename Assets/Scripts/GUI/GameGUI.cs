@@ -9,10 +9,12 @@ public class GameGUI : MonoBehaviour
 	public enum GUI_MODE
 	{
 		NONE,
+		PRE_GAME,
 		FIGHTER,
 		FIGHTER_RESPAWNING,
 		CAPITAL,
 		FIGHTER_PICKER,
+		POST_GAME,
 	};
 
 	public GUI_MODE guiMode = GUI_MODE.NONE;
@@ -33,6 +35,9 @@ public class GameGUI : MonoBehaviour
 
 	public float targetCameraDistance;
 
+	public Camera targetCamera;
+	public Camera idleCamera;
+
 	private void Update () 
 	{
 		this.DetermineGUIMode();
@@ -41,11 +46,25 @@ public class GameGUI : MonoBehaviour
 		{
 		case GUI_MODE.NONE:
 		{
-			this.camera.enabled = false;
-			return;
+			this.targetCamera.enabled = false;
+			this.idleCamera.enabled = true;
+			break;
+		}
+		case GUI_MODE.PRE_GAME:
+		{
+			this.targetCamera.enabled = false;
+			this.idleCamera.enabled = true;
+			break;
+		}
+		case GUI_MODE.POST_GAME:
+		{
+			this.targetCamera.enabled = false;
+			this.idleCamera.enabled = true;
+			break;
 		}
 		case GUI_MODE.FIGHTER:
 		{
+			this.idleCamera.enabled = false;
 			this.camera.enabled = true;
 			this.UpdateCapitalShipDisplay();
 
@@ -61,23 +80,26 @@ public class GameGUI : MonoBehaviour
 			}
 			else
 			{
-				this.camera.enabled = false;
+				this.targetCamera.enabled = false;
 			}
 			break;
 		}
 		case GUI_MODE.FIGHTER_RESPAWNING:
 		{
-			this.camera.enabled = false;
+			this.targetCamera.enabled = false;
 			break;
 		}
 		case GUI_MODE.CAPITAL:
 		{
-			this.camera.enabled = false;
+			this.idleCamera.enabled = false;
+			this.targetCamera.enabled = false;
 			this.UpdateCapitalShipDisplay();
 			break;
 		}
 		case GUI_MODE.FIGHTER_PICKER:
 		{
+			this.targetCamera.enabled = false;
+			this.idleCamera.enabled = true;
 			break;
 		}
 		default:
@@ -94,7 +116,19 @@ public class GameGUI : MonoBehaviour
 		{
 		case GUI_MODE.NONE:
 		{
-			return;
+			break;
+		}
+		case GUI_MODE.PRE_GAME:
+		{
+			break;
+		}
+		case GUI_MODE.POST_GAME:
+		{
+			if ( GUI.Button( new Rect( Screen.width/3, Screen.height/3, Screen.width/3, Screen.height/3 ), "QUIT" ) )
+			{
+				GameNetworkManager.instance.QuitGame();
+			}
+			break;
 		}
 		case GUI_MODE.FIGHTER:
 		{
@@ -153,6 +187,17 @@ public class GameGUI : MonoBehaviour
 		if ( this.player == null )
 		{
 			this.player = GamePlayerManager.instance.myPlayer;
+		}
+
+		if ( GameNetworkManager.instance.gameState == GameNetworkManager.GAME_STATE.PRE_GAME )
+		{
+			this.guiMode = GUI_MODE.PRE_GAME;
+			return;
+		}
+		else if ( GameNetworkManager.instance.gameState == GameNetworkManager.GAME_STATE.POST_GAME )
+		{
+			this.guiMode = GUI_MODE.POST_GAME;
+			return;
 		}
 
 		if ( this.player == null )

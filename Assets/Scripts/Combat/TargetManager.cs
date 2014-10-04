@@ -201,7 +201,7 @@ public class TargetManager : MonoBehaviour
 		}
 
 		// Ignore targets not in the team target list
-		if ( ((int)_health.owner.team & _weaponScript.restrictions.teams ) == 0 ) 
+		if ( ((int)_health.Owner.team & _weaponScript.restrictions.teams ) == 0 ) 
 		{
 			return false;
 		}
@@ -251,7 +251,7 @@ public class TargetManager : MonoBehaviour
 	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam,
 	      GamePlayer _sourcePlayer )
 	{
-		if ( _friendlyFire && _sourceTeam == _health.owner.team )
+		if ( _friendlyFire && _sourceTeam == _health.Owner.team )
 		{
 			return;
 		}

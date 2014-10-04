@@ -123,10 +123,7 @@ public class BulletManager : MonoBehaviour
 		           Quaternion.LookRotation( _firePoint.transform.forward ) ) as GameObject;
 
 				BaseHealth bulletHealth = bulletObj.GetComponent<BaseHealth>();
-				bulletHealth.owner = _weapon.source.health.owner;
-#if UNITY_EDITOR
-				bulletHealth.ownerID = bulletHealth.owner.id;
-#endif
+				bulletHealth.Owner = _weapon.source.health.Owner;
 			}
 			bulletScript = bulletObj.GetComponent<BulletBase>();
 		}

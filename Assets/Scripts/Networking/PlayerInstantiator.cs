@@ -97,6 +97,7 @@ public class PlayerInstantiator : MonoBehaviour
 
 			CapitalShipCamera cameraScript = cameraObj.GetComponent<CapitalShipCamera>();
 			cameraScript.masterScript = masterScript;
+			masterScript.capitalCamera = cameraScript;
 		}
 		DebugConsole.Log( "Creating capital ship for player " + _player.id + " on team " + _player.team, capitalObj );
 
@@ -142,6 +143,7 @@ public class PlayerInstantiator : MonoBehaviour
 
 			FighterCamera cameraScript = cameraObj.GetComponent<FighterCamera>();
 			cameraScript.fighter = fighterScript;
+			fighterScript.fighterCamera = cameraScript;
 		}
 		DebugConsole.Log( "Creating fighter for player " + _player.id + " on team " + _player.team, fighterObj );
 

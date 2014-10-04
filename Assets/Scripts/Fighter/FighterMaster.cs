@@ -38,6 +38,8 @@ public class FighterMaster : MonoBehaviour
 	public DockingBay.DockingSlot currentSlot;
 	public Renderer model;
 
+	public FighterCamera fighterCamera;
+
 #if UNITY_EDITOR
 	public bool dummyShip = false;
 	public int ownerID;
@@ -46,14 +48,11 @@ public class FighterMaster : MonoBehaviour
 	{
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			this.health.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-#if UNITY_EDITOR
-			this.health.ownerID = ownerID;
-#endif
-			this.health.owner.fighter = this;
-			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.owner.team );
+			this.health.Owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
+			this.health.Owner.fighter = this;
+			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 
-			GamePlayer commanderPlayer = this.health.owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1
+			GamePlayer commanderPlayer = this.health.Owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1
 				: GamePlayerManager.instance.commander2;
 
 			if ( commanderPlayer != null )
@@ -137,12 +136,9 @@ public class FighterMaster : MonoBehaviour
 		this.ownerInitialised = true;
 
 		int id = this.ownerControl.ownerID.Value;
-		this.health.owner = GamePlayerManager.instance.GetPlayerWithID( id );
-#if UNITY_EDITOR
-		this.health.ownerID = id;
-#endif
+		this.health.Owner = GamePlayerManager.instance.GetPlayerWithID( id );
 
-		this.health.owner.fighter = this;
+		this.health.Owner.fighter = this;
 		DebugConsole.Log( "Set player " + id + " to own fighter", this.gameObject );
 		if ( this.networkView.isMine == false )
 		{
@@ -151,12 +147,12 @@ public class FighterMaster : MonoBehaviour
 			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		} 
 
-		this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.owner.team );
-		this.capitalShip = GamePlayerManager.instance.GetCapitalShip( this.health.owner.team );
+		this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
+		this.capitalShip = GamePlayerManager.instance.GetCapitalShip( this.health.Owner.team );
 		
 		foreach ( Renderer render in GetComponentsInChildren<Renderer>( ))
 		{
-			if ( this.health.owner.team == TEAM.TEAM_1 )
+			if ( this.health.Owner.team == TEAM.TEAM_1 )
 			{
 				render.material.color = new Color(1.0f,1.0f,0.2f);
 			}
@@ -174,6 +170,7 @@ public class FighterMaster : MonoBehaviour
 
 		DockingBay bay = null;
 
+		//TODO: This could be done better with a script on the capital ship
 		if ( bays.Length > 0 )
 		{
 			int index = (int)Random.Range( 0, bays.Length );
@@ -186,7 +183,7 @@ public class FighterMaster : MonoBehaviour
 					index = 0;
 				}
 				
-				if( bays[index].capitalShip.health.owner.team == this.health.owner.team )
+				if( bays[index].capitalShip.health.Owner.team == this.health.Owner.team )
 				{
 					bay = bays[index];
 					break;

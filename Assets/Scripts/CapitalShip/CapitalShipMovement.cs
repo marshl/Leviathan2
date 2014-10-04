@@ -151,9 +151,11 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void Update()
 	{
-		#if UNITY_EDITOR
-		if ( this.master.dummyShip == false )
-#endif
+		if ( this.master.isDying == false 
+#if UNITY_EDITOR
+		  && this.master.dummyShip == false
+#endif 
+		)
 		{
 			this.UpdateAccelerationInput();
 			this.UpdateTurnLine();
@@ -648,5 +650,24 @@ public class CapitalShipMovement : MonoBehaviour
 		this.followingAvoidanceCurve = false;
 		this.currentAvoidHeight = this.avoidanceCurveEndHeight;
 		this.currentAvoidAngle = 0.0f;
+	}
+
+	public void OnFinaleSequenceStart()
+	{
+#if UNITY_EDITOR
+		if ( this.master.dummyShip == false )
+#endif
+		{
+			GameObject.Destroy( this.tentativePathLine );
+			foreach ( GameObject obj in this.rotationSegmentsActual )
+			{
+				GameObject.Destroy( obj );
+			}
+
+			foreach ( GameObject obj in this.rotationSegmentsTentative )
+			{
+				GameObject.Destroy( obj );
+			}
+		}
 	}
 }

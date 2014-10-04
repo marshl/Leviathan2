@@ -97,6 +97,26 @@ public class GamePlayerManager : MonoBehaviour
 		return this.GetPlayerWithID( id );
 	}
 
+	public GamePlayer GetCommander( TEAM _team )
+	{
+		switch ( _team )
+		{
+		case TEAM.TEAM_1:
+		{
+			return this.commander1;
+		}
+		case TEAM.TEAM_2:
+		{
+			return this.commander2;
+		}
+		default:
+		{
+			Debug.LogError( "Cannot fetch commander of team type " + _team );
+			return null;
+		}
+		}
+	}
+
 	public GamePlayer GetPlayerWithID( int _playerID )
 	{
 		GamePlayer player;

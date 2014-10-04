@@ -193,19 +193,16 @@ public class TurretBehavior : BaseWeaponManager
 		this.ownerInitialised = false;
 
 		int ownerID = this.ownerControl.ownerID.Value;
-		this.health.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-#if UNITY_EDITOR
-		this.health.ownerID = ownerID;
-#endif
+		this.health.Owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
 
-		if ( this.health.owner.capitalShip == null )
+		if ( this.health.Owner.capitalShip == null )
 		{
 			DebugConsole.Warning( "Turret instantiated by non-commander player", this );
 		}
 		
-		this.ParentToOwnerShip( this.health.owner );
+		this.ParentToOwnerShip( this.health.Owner );
 
-		this.restrictions.teams = (int)Common.OpposingTeam( this.health.owner.team );
+		this.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 
 		if ( !this.networkView.isMine )
 		{

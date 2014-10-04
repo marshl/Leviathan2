@@ -27,18 +27,15 @@ public class CapitalShipComponent : MonoBehaviour
 		this.ownerInitialised = true;
 		
 		int ownerID = this.ownerControl.ownerID.Value;
-		this.health.owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-#if UNITY_EDITOR
-		this.health.ownerID = ownerID;
-#endif
+		this.health.Owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
 
-		if ( this.health.owner.capitalShip == null )
+		if ( this.health.Owner.capitalShip == null )
 		{
 			DebugConsole.Warning( "Owner (" + ownerID + ") does not have capital ship to attach to", this );
 		}
 		else
 		{
-			this.ParentToOwnerShip( this.health.owner );
+			this.ParentToOwnerShip( this.health.Owner );
 		}
 	
 		if ( !this.networkView.isMine )

@@ -175,8 +175,8 @@ public class BulletBase : MonoBehaviour
 	          this.desc.aoeRadius,
 	          this.desc.damage,
 	          false, //TODO: Friendly fire bool
-	          this.source.health.owner.team,
-	          this.source.health.owner );
+	          this.source.health.Owner.team,
+	          this.source.health.Owner );
 		}
 
 		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
@@ -207,7 +207,7 @@ public class BulletBase : MonoBehaviour
 		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
 		if ( _health.GetComponent<SeekingBullet>() == null )
 		{
-			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.owner );
+			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.Owner );
 		}
 
 		BulletManager.instance.DestroyLocalBullet( this );
@@ -218,7 +218,6 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public virtual void OnEmptyCollision()
 	{
-		//DebugConsole.Log("Empty collision");
 		BulletManager.instance.DestroyLocalBullet( this );
 	}
 

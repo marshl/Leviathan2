@@ -92,6 +92,11 @@ public abstract class Common
 	{
 		return Common.RandomVector3( -1.0f, 1.0f ).normalized;
 	}
+
+	public static Quaternion RandomRotation()
+	{
+		return Quaternion.AngleAxis( Random.Range( -180, 180 ), RandomDirection() );
+	}
 	
 	/// <summary>
 	/// Returns the point x on a gaussian bell curve (as copied from UnityGenetics)

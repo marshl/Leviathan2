@@ -8,8 +8,22 @@ public class BaseHealth : MonoBehaviour
 #if UNITY_EDITOR
 	public int ownerID = int.MinValue;
 #endif
-	[HideInInspector]
-	public GamePlayer owner = null;
+	private GamePlayer owner = null;
+
+	public GamePlayer Owner
+	{
+		get
+		{
+			return this.owner;
+		}
+		set
+		{
+			this.owner = value;
+#if UNITY_EDITOR
+			this.ownerID = value != null ? value.id : 0;
+#endif
+		}
+	}
 
 	public int debugTargetID;
 
