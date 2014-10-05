@@ -3,11 +3,23 @@ using System.Collections;
 
 public class GameNetworkManager : BaseNetworkManager
 {
+	public enum GAME_STATE
+	{
+		UNDEF,
+		PRE_GAME,
+		PLAYING,
+		CAPITAL_DESTRUCTION,
+		POST_GAME,
+	}
+
 	public static GameNetworkManager instance;
+
+	public GAME_STATE gameState = GAME_STATE.PRE_GAME;
 
 	public double startPauseDuration;
 	private double timeStarted;
-	private bool gameHasStarted = false;
+
+	public int disconnectionTimeoutMS;
 
 #if UNITY_EDITOR
 	public PLAYER_TYPE defaultPlayerType;
@@ -15,6 +27,9 @@ public class GameNetworkManager : BaseNetworkManager
 	public PLAYER_TYPE[] dummiesToCreate;
 
 	public GamePlayer lastCreatedDummy;
+
+	public GameObject turretPrefab;
+	public Transform[] turretPositions;
 #endif
 
 	protected void Awake()
@@ -47,22 +62,74 @@ public class GameNetworkManager : BaseNetworkManager
 	protected void Update()
 	{
 		if ( Network.peerType != NetworkPeerType.Disconnected
-		  && Network.isServer && !this.gameHasStarted
-		  && Network.time - this.timeStarted > this.startPauseDuration )
+		  && Network.isServer && this.gameState == GAME_STATE.PRE_GAME
+		  && Network.time - this.timeStarted >= this.startPauseDuration )
 		{
-			this.gameHasStarted = true;
+			this.gameState = GAME_STATE.PRE_GAME;
 
 			this.networkView.RPC( "OnGameStartedRPC", RPCMode.All );
 		}
 
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected
-		  && !this.gameHasStarted )
+		  && this.gameState == GAME_STATE.PRE_GAME )
 		{
-			this.gameHasStarted = true;
+			this.gameState = GAME_STATE.PLAYING;
 			this.LocalGameStart();
 		}
 #endif
+	}
+	
+	public void SendCapitalShipDeathMessage( CapitalShipMaster _capitalShip )
+	{
+		if ( this.gameState == GAME_STATE.CAPITAL_DESTRUCTION
+		  || this.gameState == GAME_STATE.POST_GAME )
+		{
+			//TODO: Capital ship has already died, now another one has, hm
+			return;
+		}
+		else if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			this.networkView.RPC( "OnCapitalShipDeathRPC", RPCMode.Others, _capitalShip.health.Owner.id );
+		}
+
+		this.OnCapitalShipDeathRPC( _capitalShip.health.Owner.id );
+	}
+
+	[RPC]
+	private void OnCapitalShipDeathRPC( int _playerID )
+	{
+		DebugConsole.Log( "Capital ship has reached critical damage, moving into Capital Destruction" );
+		GamePlayer commander = GamePlayerManager.instance.GetPlayerWithID( _playerID );
+		commander.capitalShip.isDying = true;
+		this.gameState = GAME_STATE.CAPITAL_DESTRUCTION;
+	}
+
+	public void SendCapitalShipExplodedMessage( CapitalShipMaster _capitalShip )
+	{
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			this.networkView.RPC( "OnCapitalShipExplodedRPC", RPCMode.Others );
+		}
+
+		this.OnCapitalShipExplodedRPC();
+	}
+
+	[RPC]
+	private void OnCapitalShipExplodedRPC()
+	{
+		DebugConsole.Log( "Capital ship has exploded, moving into post-game" );
+		this.gameState = GAME_STATE.POST_GAME;
+
+		GamePlayer myPlayer = GamePlayerManager.instance.myPlayer;
+		if ( myPlayer.fighter != null )
+		{
+			myPlayer.fighter.fighterCamera.gameObject.SetActive( false );
+		}
+		else if ( myPlayer.capitalShip != null )
+		{
+			//TODO: Disable capital camera
+		}
 	}
 
 	public void OnFighterTypeSelected( FIGHTER_TYPE _fighterType )
@@ -116,7 +183,7 @@ public class GameNetworkManager : BaseNetworkManager
 		{
 			PlayerInstantiator.instance.CreatePlayerObject( player, false );
 		}
-		this.gameHasStarted = true;
+		this.gameState = GAME_STATE.PLAYING;
 	}
 
 	public void SendShootBulletMessage( WEAPON_TYPE _weaponType, int _index, Vector3 _pos, Quaternion _rot )
@@ -221,15 +288,17 @@ public class GameNetworkManager : BaseNetworkManager
 		BulletManager.instance.DestroyDumbBulletRPC( (WEAPON_TYPE)_weaponType, _index );
 	}
 
-	public void SendDealDamageMessage( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
+	public void SendDealDamageMessage( NetworkViewID _id, float _damage, GamePlayer _sourcePlayer )
 	{
-		this.networkView.RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage, _sourceID );
+		int playerID = _sourcePlayer.id;
+		this.networkView.RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage, playerID );
 	}
 
 	[RPC]
-	private void OnDealDamageRPC( NetworkViewID _id, float _damage, NetworkViewID _sourceID )
+	private void OnDealDamageRPC( NetworkViewID _id, float _damage, int _playerID )
 	{
-		TargetManager.instance.OnNetworkDamageMessage( _id, _damage, _sourceID );
+		GamePlayer sourcePlayer = GamePlayerManager.instance.GetPlayerWithID( _playerID );
+		TargetManager.instance.OnNetworkDamageMessage( _id, _damage, sourcePlayer );
 	}
 
 	public void SendDockedMessage( NetworkViewID _id, int landedSlot )
@@ -316,6 +385,15 @@ public class GameNetworkManager : BaseNetworkManager
 				PlayerInstantiator.instance.CreatePlayerObject( dummyPlayer, true );
 			}
 		}
+
+		if ( GamePlayerManager.instance.commander2 != null )
+		{
+			foreach ( Transform pos in turretPositions )
+			{
+				GameObject turretObj = GameObject.Instantiate( this.turretPrefab, pos.position, pos.rotation ) as GameObject;
+				turretObj.GetComponent<TurretBehavior>().health.Owner = GamePlayerManager.instance.commander2;
+			}
+		}
 	}
 #endif
 
@@ -330,25 +408,19 @@ public class GameNetworkManager : BaseNetworkManager
 		NetworkOwnerManager.instance.ReceiveSetViewID( _ownerID, _id );
 	}
 
-	public void SendSetSmartBulletTeamMessage( NetworkViewID _viewID, TEAM _team, NetworkViewID _targetID )
+	public void SendSetSmartBulletTeamMessage( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
 	{
-		this.networkView.RPC( "OnSetSmartBulletTeamRPC", RPCMode.Others, _viewID, (int)_team, _targetID );
+		this.networkView.RPC( "OnSetSmartBulletTeamRPC", RPCMode.Others, _viewID, (int)_playerID, _targetID );
 	}
 
 	[RPC]
-	private void OnSetSmartBulletTeamRPC( NetworkViewID _viewID, int _team, NetworkViewID _targetID )
+	private void OnSetSmartBulletTeamRPC( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
 	{
-		if ( !System.Enum.IsDefined( typeof(TEAM), _team ) )
-		{
-			DebugConsole.Error( "Parameter could not be converted to team: " + _team );
-			return;
-		}
-
 		if ( BulletManager.instance.seekingBulletMap.ContainsKey( _viewID ) )
 		{
 			SeekingBullet bullet = BulletManager.instance.seekingBulletMap[_viewID];
-			DebugConsole.Log( "Changing smart bullet " + _viewID + " to team " + (TEAM)_team, bullet  );
-			bullet.health.team = (TEAM)_team;
+			DebugConsole.Log( "Changing smart bullet " + _viewID + " owner to " + _playerID, bullet  );
+			bullet.health.Owner = GamePlayerManager.instance.GetPlayerWithID( _playerID );
 
 			if ( _targetID != NetworkViewID.unassigned )
 			{
@@ -364,45 +436,17 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendTractorStartMessage( NetworkViewID _viewID, TractorBeam.TractorFunction _tractorDirection, NetworkViewID _targetID)
 	{
-
-		switch(_tractorDirection)
-		{
-		case TractorBeam.TractorFunction.HOLD:
-			this.networkView.RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, 0, _targetID );
-			break;
-		case TractorBeam.TractorFunction.PULL:
-			this.networkView.RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, -1, _targetID );
-			break;
-		case TractorBeam.TractorFunction.PUSH:
-			this.networkView.RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, 1, _targetID );
-			break;
-
-		}
-
-
+		this.networkView.RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, (int)_tractorDirection, _targetID );
 	}
 
 	[RPC]
-	private void OnTractorStartRPC( NetworkViewID _viewID, int _tractorDirection, NetworkViewID _targetID)
+	private void OnTractorStartRPC( NetworkViewID _viewID, int _tractorDirection, NetworkViewID _targetID )
 	{
-		NetworkView tractorSource = NetworkView.Find (_viewID);
-		NetworkView targetSource = NetworkView.Find (_targetID);
+		NetworkView tractorSource = NetworkView.Find( _viewID );
+		NetworkView targetSource = NetworkView.Find( _targetID );
 
-		switch(_tractorDirection)
-		{
-		case 0:
-			tractorSource.GetComponent<TractorBeam>().FireAtTarget (targetSource.gameObject, TractorBeam.TractorFunction.HOLD);
-			break;
-		case -1:
-			tractorSource.GetComponent<TractorBeam>().FireAtTarget (targetSource.gameObject, TractorBeam.TractorFunction.PULL);
-			break;
-		case 1:
-			tractorSource.GetComponent<TractorBeam>().FireAtTarget (targetSource.gameObject, TractorBeam.TractorFunction.PUSH);
-			break;
-
-		}
-
-
+		TractorBeam.TractorFunction tractorFuntion = (TractorBeam.TractorFunction)_tractorDirection;
+		tractorSource.GetComponent<TractorBeam>().FireAtTarget( targetSource.gameObject, tractorFuntion );
 	}
 
 	public void SendTractorStopMessage(NetworkViewID _viewID)
@@ -416,5 +460,27 @@ public class GameNetworkManager : BaseNetworkManager
 		NetworkView TractorSource = NetworkView.Find (_viewID);
 
 		TractorSource.GetComponent<TractorBeam>().RefreshTarget();	
+	}
+	
+
+	public void SendAddScoreMessage( SCORE_TYPE _scoreType, GamePlayer _player )
+	{
+		this.networkView.RPC( "OnAddScoreMessage", RPCMode.Others, (int)_scoreType, _player.id );
+	}
+
+	[RPC]
+	private void OnAddScoreMessage( int _scoreType, int _playerID )
+	{
+		//TODO: Score type enum check
+		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( _playerID );
+		ScoreManager.instance.AddScore( (SCORE_TYPE)_scoreType, player, false );
+	}
+
+	public void QuitGame()
+	{
+		Network.Disconnect( this.disconnectionTimeoutMS );
+
+		// Go back to the menu
+		Application.LoadLevel( 0 );
 	}
 }

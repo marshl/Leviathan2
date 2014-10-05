@@ -24,7 +24,7 @@ public class CapitalShipTurretManager : MonoBehaviour
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
 				GameObject turret = GameObject.Instantiate( this.lightLaserPrefab, pos.position, pos.rotation ) as GameObject;
-				turret.GetComponent<NetworkOwnerControl>().ownerID = this.master.owner.id;
+				turret.GetComponent<NetworkOwnerControl>().ownerID = this.master.health.Owner.id;
 			}
 			else
 			{
@@ -38,7 +38,7 @@ public class CapitalShipTurretManager : MonoBehaviour
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
 				turret = GameObject.Instantiate( this.missileTurretPrefab, pos.position, pos.rotation ) as GameObject;
-				turret.GetComponent<NetworkOwnerControl>().ownerID = this.master.owner.id;
+				turret.GetComponent<NetworkOwnerControl>().ownerID = this.master.health.Owner.id;
 			}
 			else
 			{
@@ -52,7 +52,7 @@ public class CapitalShipTurretManager : MonoBehaviour
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
 				gaussCannon = GameObject.Instantiate( this.gaussCannonPrefab, pos.position, pos.rotation ) as GameObject;
-				gaussCannon.GetComponent<NetworkOwnerControl>().ownerID = this.master.owner.id;
+				gaussCannon.GetComponent<NetworkOwnerControl>().ownerID = this.master.health.Owner.id;
 			}
 			else
 			{

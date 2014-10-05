@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Message.
+/// 
+/// "GLA postal service!" - Bomb truck
+/// </summary>
+
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;

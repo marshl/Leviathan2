@@ -51,7 +51,7 @@ public abstract class Common
 		RaycastHit targetAim;
 		Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
 		
-		if ( Physics.Raycast( ray, out targetAim ) )
+		if ( Physics.Raycast( ray, out targetAim, TargetManager.instance.lineOfSightBlockingLayers ) )
 		{
 			if ( _source.collider != null
 			  && targetAim.collider == _source.collider )
@@ -91,6 +91,11 @@ public abstract class Common
 	public static Vector3 RandomDirection()
 	{
 		return Common.RandomVector3( -1.0f, 1.0f ).normalized;
+	}
+
+	public static Quaternion RandomRotation()
+	{
+		return Quaternion.AngleAxis( Random.Range( -180, 180 ), RandomDirection() );
 	}
 	
 	/// <summary>

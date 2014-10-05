@@ -29,7 +29,6 @@ public class NetworkBulletBucket : BulletBucket
 
 		obj.transform.parent = this.transform;
 		LocalBulletBucket bucket = obj.AddComponent<LocalBulletBucket>();
-		bucket.ownerID = _playerID;
 		bucket.Initialise( this.bulletDesc, true );
 		this.buckets.Add( _playerID, bucket );
 	}

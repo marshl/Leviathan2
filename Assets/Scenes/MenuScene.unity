@@ -2547,6 +2547,7 @@ MonoBehaviour:
     assists: 0
     deaths: 0
     team: 0
+    personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
   commander2:
@@ -2559,6 +2560,7 @@ MonoBehaviour:
     assists: 0
     deaths: 0
     team: 0
+    personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
   fighters1: []
@@ -2573,6 +2575,7 @@ MonoBehaviour:
     assists: 0
     deaths: 0
     team: 0
+    personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
 --- !u!4 &1435433309

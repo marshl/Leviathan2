@@ -18,6 +18,9 @@ public class BulletDescriptorManager : MonoBehaviour
 		{
 			this.descMap.Add( desc.weaponType, desc );
 		}
+#if UNITY_EDITOR
+		this.CheckDescriptors();
+#endif
 	}
 
 	public BulletDescriptor GetDescOfType( WEAPON_TYPE _weaponType )
@@ -30,5 +33,23 @@ public class BulletDescriptorManager : MonoBehaviour
 		}
 
 		return desc;
+	}
+
+	private void CheckDescriptors()
+	{
+		WEAPON_TYPE[] weaponTypes = System.Enum.GetValues( typeof(WEAPON_TYPE) ) as WEAPON_TYPE[];
+
+		foreach ( WEAPON_TYPE weaponType in weaponTypes )
+		{
+			if ( weaponType == WEAPON_TYPE.NONE )
+			{
+				continue;
+			}
+
+			if ( this.descMap.ContainsKey( weaponType ) == false )
+			{
+				throw new System.Exception( "No bullet descriptor found for " + weaponType );
+			}
+		}
 	}
 }

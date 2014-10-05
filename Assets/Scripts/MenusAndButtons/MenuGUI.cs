@@ -1007,6 +1007,7 @@ public class MenuGUI : MonoBehaviour
 		}
 	}
 
+	//TODO: Enum those return values
 	private int RenderPopUpWindow()
 	{
 		GUI.enabled = true;

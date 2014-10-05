@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Game player manager.
+/// 
+/// "Who are they?" - Helix
+/// </summary>
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -73,7 +79,6 @@ public class GamePlayerManager : MonoBehaviour
 	{
 		DebugConsole.Log( "Player (" + _playerID + ") disconnected" );
 		this.GetPlayerWithID( _playerID ).isConnected = false;
-		//TODO: Blow up their ship etc LM 24/04/14
 
 		if ( Network.isServer )
 		{
@@ -90,6 +95,26 @@ public class GamePlayerManager : MonoBehaviour
 	{
 		int id = Common.NetworkID( _player );
 		return this.GetPlayerWithID( id );
+	}
+
+	public GamePlayer GetCommander( TEAM _team )
+	{
+		switch ( _team )
+		{
+		case TEAM.TEAM_1:
+		{
+			return this.commander1;
+		}
+		case TEAM.TEAM_2:
+		{
+			return this.commander2;
+		}
+		default:
+		{
+			Debug.LogError( "Cannot fetch commander of team type " + _team );
+			return null;
+		}
+		}
 	}
 
 	public GamePlayer GetPlayerWithID( int _playerID )

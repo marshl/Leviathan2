@@ -28,31 +28,31 @@ public class BaseWeaponManager : MonoBehaviour
 		&& ( _weapon.weaponDesc.requiresWeaponLock == false || _weapon.IsLockedOntoTarget() ) )
 		{
 			seekingScript.target = this.currentTarget;
-			seekingScript.health.team = this.health.team;
+			seekingScript.health.Owner = this.health.Owner;
 		}
 	}
 
 	public void SwitchToNextTarget()
 	{
-		this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+		this.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 		TargetManager.instance.ShiftTargetIndex( this, 1 );
 	}
 
 	public void SwitchToPreviousTarget()
 	{
-		this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+		this.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 		TargetManager.instance.ShiftTargetIndex( this, -1 );
 	}
 
 	public void SwitchToNextFriendlyTarget()
 	{
-		this.restrictions.teams = (int)this.health.team;
+		this.restrictions.teams = (int)this.health.Owner.team;
 		TargetManager.instance.ShiftTargetIndex( this, 1 );
 	}
 
 	public void SwitchToPreviousFriendlyTarget()
 	{
-		this.restrictions.teams = (int)this.health.team;
+		this.restrictions.teams = (int)this.health.Owner.team;
 		TargetManager.instance.ShiftTargetIndex( this, -1 );
 	}
 

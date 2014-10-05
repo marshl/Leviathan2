@@ -15,7 +15,15 @@ public class WeaponTest : BaseWeaponManager
 	private void Start()
 	{
 		this.weapons = this.GetComponents<WeaponBase>();
-		this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+		this.restrictions.teams = (int)TEAM.TEAM_2;
+
+		GamePlayer dummyOwner = new GamePlayer();
+		dummyOwner.team = TEAM.TEAM_2;
+
+		foreach ( BaseHealth dummy in this.targetDummies )
+		{
+			dummy.Owner = dummyOwner;
+		}
 	}
 
 	private void Update()

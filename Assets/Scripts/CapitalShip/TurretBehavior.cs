@@ -43,7 +43,7 @@ public class TurretBehavior : BaseWeaponManager
 		if ( this.ownerInitialised == false 
 		  && this.ownerControl.ownerID != null )
 		{
-			int playerID = this.ownerControl.ownerID.GetValueOrDefault();
+			int playerID = this.ownerControl.ownerID.Value;
 			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( playerID );
 			if ( player != null && player.capitalShip != null )
 			{
@@ -75,6 +75,23 @@ public class TurretBehavior : BaseWeaponManager
 				{
 					this.weapon.SendFireMessage();
 				}
+			}
+		}
+
+		if ( this.health.currentHealth <= 0.0f )
+		{
+			if ( this.health.lastHitBy != null )
+			{
+				ScoreManager.instance.AddScore( SCORE_TYPE.TURRET_KILL, this.health.lastHitBy, true );
+			}
+
+			if ( Network.peerType == NetworkPeerType.Disconnected )
+			{
+				GameObject.Destroy( this.gameObject );
+			}
+			else
+			{
+				Network.Destroy( this.gameObject );
 			}
 		}
 	}
@@ -175,18 +192,17 @@ public class TurretBehavior : BaseWeaponManager
 	{
 		this.ownerInitialised = false;
 
-		int ownerID = this.ownerControl.ownerID.GetValueOrDefault();
-		GamePlayer ownerPlayer = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-		
-		if ( ownerPlayer.capitalShip == null )
+		int ownerID = this.ownerControl.ownerID.Value;
+		this.health.Owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
+
+		if ( this.health.Owner.capitalShip == null )
 		{
 			DebugConsole.Warning( "Turret instantiated by non-commander player", this );
 		}
 		
-		this.ParentToOwnerShip( ownerPlayer );
-		this.health.team = ownerPlayer.team;
+		this.ParentToOwnerShip( this.health.Owner );
 
-		this.restrictions.teams = (int)Common.OpposingTeam( this.health.team );
+		this.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 
 		if ( !this.networkView.isMine )
 		{

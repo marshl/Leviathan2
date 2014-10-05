@@ -21,9 +21,10 @@ public class DockingBay : MonoBehaviour
 	
 	public int bayID;
 
+	//TODO: Something broke here when networked
 	private void Start()
 	{
-		int idCounter = ((int)(this.capitalShip.health.team) * 1000) + (bayID * 10 + 1);
+		int idCounter = ((int)(this.capitalShip.health.Owner.team) * 1000) + (bayID * 10 + 1);
 		foreach ( DockingSlot newSlot in slots )
 		{
 			newSlot.slotID = idCounter;
@@ -42,7 +43,7 @@ public class DockingBay : MonoBehaviour
 			DebugConsole.Log("Fighter received");
 
 			//If we're on the same team
-			if ( fighterScript.health.team == this.capitalShip.health.team ) 
+			if ( fighterScript.health.Owner.team == this.capitalShip.health.Owner.team ) 
 			{
 				FriendlyDockingProcedure( fighterScript ); //You may dock
 			}
@@ -102,8 +103,8 @@ public class DockingBay : MonoBehaviour
 
 	private void EnemyDockingProcedure( FighterMaster _fighter )
 	{
-		TargetManager.instance.DealDamageNetwork( _fighter.networkView.viewID,
-		                                         _fighter.health.currentHealth + _fighter.health.currentShield,
-		                                         this.capitalShip.networkView.viewID);
+		_fighter.health.DealDamage( _fighter.health.currentHealth + _fighter.health.currentShield,
+		                           true,
+		                           this.capitalShip.health.Owner );
 	}
 }

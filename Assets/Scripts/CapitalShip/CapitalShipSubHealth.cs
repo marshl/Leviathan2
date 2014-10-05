@@ -18,8 +18,8 @@ public class CapitalShipSubHealth : BaseHealth
 		// Do nothing
 	}
 
-	public override void DealDamage( float _damage, bool _broadcast, NetworkViewID _source )
+	public override void DealDamage( float _damage, bool _broadcast, GamePlayer _sourcePlayer )
 	{
-		this.mainHealth.DealDamage( _damage * this.damageMultiplier, _broadcast, _source );
+		this.mainHealth.DealDamage( _damage * this.damageMultiplier, _broadcast, _sourcePlayer );
 	}
 }

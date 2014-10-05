@@ -5,10 +5,27 @@ using System.Collections;
 public class BaseHealth : MonoBehaviour 
 {
 	public TARGET_TYPE targetType;
-	public TEAM team;
 #if UNITY_EDITOR
-	public int debugTargetID;
+	public int ownerID = int.MinValue;
 #endif
+	private GamePlayer owner = null;
+
+	public GamePlayer Owner
+	{
+		get
+		{
+			return this.owner;
+		}
+		set
+		{
+			this.owner = value;
+#if UNITY_EDITOR
+			this.ownerID = value != null ? value.id : 0;
+#endif
+		}
+	}
+
+	public int debugTargetID;
 
 	public float currentHealth;
 	public float maxHealth;
@@ -20,15 +37,14 @@ public class BaseHealth : MonoBehaviour
 
 	public bool isIndestructible;
 
-	public NetworkViewID lastHitBy;// = NetworkViewID.unassigned;
+	[HideInInspector]
+	public GamePlayer lastHitBy = null;
 
 	public Transform[] guiExtents;
 
 #if UNITY_EDITOR
 	protected virtual void Start()
 	{
-		this.lastHitBy = NetworkViewID.unassigned;
-
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			TargetManager.instance.AddTarget( this );
@@ -41,9 +57,11 @@ public class BaseHealth : MonoBehaviour
 		TargetManager.instance.AddTarget( this );
 	}
 
-	public virtual void DealDamage( float _damage, bool _broadcast, NetworkViewID _source )
+	public virtual void DealDamage( float _damage, bool _broadcast, GamePlayer _sourcePlayer )
 	{
-		this.lastHitBy = _source;
+		this.lastHitBy = _sourcePlayer;
+		//TODO: Should this be set at all if indestructible?
+
 		if ( this.isIndestructible == true )
 		{
 			return;
@@ -70,7 +88,7 @@ public class BaseHealth : MonoBehaviour
 		  && this.networkView != null
 		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			TargetManager.instance.DealDamageNetwork( this.networkView.viewID, _damage, _source );
+			GameNetworkManager.instance.SendDealDamageMessage( this.networkView.viewID, _damage, _sourcePlayer );
 		}
 	}
 

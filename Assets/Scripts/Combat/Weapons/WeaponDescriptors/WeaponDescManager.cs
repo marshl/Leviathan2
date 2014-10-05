@@ -26,6 +26,9 @@ public class WeaponDescManager : MonoBehaviour
 
 		this.descriptorMap = new Dictionary<WEAPON_TYPE, WeaponDescriptor>();
 		this.FindWeaponDescriptors();
+#if UNITY_EDITOR
+        this.CheckWeaponDescriptors();
+#endif
 	}
 
 	/// <summary>
@@ -71,4 +74,23 @@ public class WeaponDescManager : MonoBehaviour
 		}
 		return desc;
 	} 
+
+
+    private void CheckWeaponDescriptors()
+    {
+		WEAPON_TYPE[] weaponTypes = System.Enum.GetValues( typeof(WEAPON_TYPE) ) as WEAPON_TYPE[];
+
+		foreach ( WEAPON_TYPE weaponType in weaponTypes )
+		{
+			if ( weaponType == WEAPON_TYPE.NONE )
+			{
+				continue;
+			}
+
+			if ( this.descriptorMap.ContainsKey( weaponType ) == false )
+			{
+				throw new System.Exception( "No weapon descriptor found for " + weaponType );
+			}
+		}
+    }
 }
