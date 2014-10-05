@@ -1064,6 +1064,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 450
@@ -1119,6 +1120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
+  collisionType: 0
   prefab: {fileID: 100000, guid: 45a2992e1734b754f80ede03d4861c0e, type: 2}
   count: 50
   moveSpeed: 750
@@ -1139,6 +1141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 14
+  collisionType: 0
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
   count: 0
   moveSpeed: 50
@@ -1176,10 +1179,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 13
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 50
+  collisionType: 2
+  prefab: {fileID: 100002, guid: c551c005f85af8f41bf40b0d4d6243e6, type: 2}
+  count: 500
   moveSpeed: 5000
-  maxDistance: 5000
+  maxDistance: 50000
   damage: 200
   areaOfEffect: 0
   aoeRadius: 0
@@ -1196,6 +1200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 12
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 200
@@ -1216,6 +1221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 11
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 300
   moveSpeed: 150
@@ -1236,6 +1242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 10
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 150
@@ -1256,6 +1263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 4
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -1544,6 +1552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 8
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 350
@@ -1564,6 +1573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 9
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 200
@@ -1584,6 +1594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 7
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -1604,6 +1615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 6
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -1624,6 +1636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 5
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -1644,6 +1657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 50
@@ -1712,6 +1726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 15
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 200
