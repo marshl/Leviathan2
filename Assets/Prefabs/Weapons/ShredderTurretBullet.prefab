@@ -12,6 +12,7 @@ GameObject:
   - 54: {fileID: 5400000}
   - 135: {fileID: 13500000}
   - 120: {fileID: 12000000}
+  - 122: {fileID: 12200000}
   m_Layer: 8
   m_Name: ShredderTurretBullet
   m_TagString: Untagged
@@ -59,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   index: 0
-  weaponType: 0
+  weaponType: 1
   parentBucket: {fileID: 0}
   desc: {fileID: 0}
   source: {fileID: 0}
@@ -78,7 +79,7 @@ LineRenderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 8607735062fede74d8e3b3ba7d37a3a0, type: 2}
+  - {fileID: 2100000, guid: 11df35d6a7fcee643a8470ccfa1a5dc6, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -88,10 +89,10 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: -5}
+  - {x: 0, y: 0, z: -10}
   m_Parameters:
     startWidth: 1
-    endWidth: 1
+    endWidth: .300000012
     m_StartColor:
       serializedVersion: 2
       rgba: 4294967295
@@ -99,6 +100,17 @@ LineRenderer:
       serializedVersion: 2
       rgba: 16777215
   m_UseWorldSpace: 0
+--- !u!122 &12200000
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4290772924
+  m_Size: 1
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -26,6 +26,9 @@ public class BurstFireWeapon : WeaponBase
 	/// The number of shots that have been fired in the current burst
 	/// </summary>
 	public int shotsFiredInBurst;
+
+
+
 	
 	public override bool CanFire ()
 	{
@@ -41,11 +44,23 @@ public class BurstFireWeapon : WeaponBase
 		{
 			if ( this.timeSinceShot >= this.burstFireDesc.fireRate )
 			{
-				this.Fire();
-				++this.shotsFiredInBurst;
-				if ( this.shotsFiredInBurst >= this.burstFireDesc.shotsInBurst )
+
+				if( this.burstFireDesc.isShotgun )
 				{
+					for(int shotCounter = 0; shotCounter < this.burstFireDesc.shotsInBurst; shotCounter++)
+					{
+						this.Fire();
+					}
 					this.isFiring = false;
+				}
+				else
+				{
+					this.Fire();
+					++this.shotsFiredInBurst;
+					if ( this.shotsFiredInBurst >= this.burstFireDesc.shotsInBurst )
+					{
+						this.isFiring = false;
+					}
 				}
 			}
 		}

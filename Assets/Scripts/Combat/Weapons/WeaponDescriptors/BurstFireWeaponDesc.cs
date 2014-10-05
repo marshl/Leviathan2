@@ -16,5 +16,10 @@ public class BurstFireWeaponDesc : WeaponDescriptor
 	/// The number of bullets fired in a single burst
 	/// </summary>
 	public int shotsInBurst;
+
+	/// <summary>
+	/// Whether or not all shots are fired at once.
+	/// </summary>
+	public bool isShotgun;
 }
 
