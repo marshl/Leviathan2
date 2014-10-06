@@ -303,50 +303,6 @@ MonoBehaviour:
   lockOnDuration: 0
   lockOnAngle: 0
   bulletDesc: {fileID: 0}
---- !u!1001 &131679139
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 30.5962181
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 13.4973116
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 39.9980469
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-      propertyPath: m_RootOrder
-      value: 10
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-  m_RootGameObject: {fileID: 970239059}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &144719286
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,6 +682,50 @@ MonoBehaviour:
   timeBetweenBursts: 0
   shotsInBurst: 0
   isShotgun: 0
+--- !u!1001 &399222209
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 30.5962181
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 13.4973116
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 39.9980469
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+  m_RootGameObject: {fileID: 970239059}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &402410796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,7 +1323,7 @@ Transform:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 970239060}
@@ -1342,7 +1342,7 @@ GameObject:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   m_GameObject: {fileID: 970239059}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 30.5962181, y: 13.4973116, z: 39.9980469}
@@ -1356,7 +1356,7 @@ Halo:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 12200000, guid: c94578babffc04f4ca9b1b0ce680d516,
     type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   m_GameObject: {fileID: 970239059}
   m_Enabled: 1
   m_Color:
@@ -1368,7 +1368,7 @@ SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 13500000, guid: c94578babffc04f4ca9b1b0ce680d516,
     type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   m_GameObject: {fileID: 970239059}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -1381,7 +1381,7 @@ Rigidbody:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 5400000, guid: c94578babffc04f4ca9b1b0ce680d516,
     type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   m_GameObject: {fileID: 970239059}
   serializedVersion: 2
   m_Mass: 1
@@ -1397,7 +1397,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400000, guid: c94578babffc04f4ca9b1b0ce680d516,
     type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   m_GameObject: {fileID: 970239059}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1640,7 +1640,7 @@ Transform:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1057645205}
@@ -1658,7 +1658,7 @@ ParticleSystemRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 19900000, guid: c94578babffc04f4ca9b1b0ce680d516,
     type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   m_GameObject: {fileID: 1057645202}
   m_Enabled: 1
   m_CastShadows: 1
@@ -1691,7 +1691,7 @@ ParticleSystem:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 19800000, guid: c94578babffc04f4ca9b1b0ce680d516,
     type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   m_GameObject: {fileID: 1057645202}
   lengthInSec: 5
   startDelay: 0
@@ -1704,7 +1704,7 @@ ParticleSystem:
   InitialModule:
     enabled: 1
     startLifetime:
-      scalar: .5
+      scalar: .300000012
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -2743,7 +2743,7 @@ ParticleSystem:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-  m_PrefabInternal: {fileID: 131679139}
+  m_PrefabInternal: {fileID: 399222209}
   m_GameObject: {fileID: 1057645202}
   m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106829}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -3550,6 +3550,7 @@ GameObject:
   - 114: {fileID: 1775487571}
   - 114: {fileID: 1775487566}
   - 114: {fileID: 1775487572}
+  - 114: {fileID: 1775487573}
   m_Layer: 0
   m_Name: Source
   m_TagString: Untagged
@@ -3758,6 +3759,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 11
+  weaponDesc: {fileID: 0}
+  firePoints:
+  - {fileID: 1486935824}
+  firePointIndex: 0
+  energySystem: {fileID: 1775487564}
+  source: {fileID: 1775487568}
+  timeSinceShot: 0
+  ammunition: 0
+  currentLockOn: 0
+--- !u!114 &1775487573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1775487562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 13
   weaponDesc: {fileID: 0}
   firePoints:
   - {fileID: 1486935824}
