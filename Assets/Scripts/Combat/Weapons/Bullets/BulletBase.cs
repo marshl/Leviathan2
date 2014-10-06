@@ -120,14 +120,15 @@ public class BulletBase : MonoBehaviour
 		//print(sphereRadius);
 		sphereInfo = Physics.SphereCastAll (this.lastPosition, sphereRadius, 
 		                                 this.transform.position - this.lastPosition, distance, layerMask );
-		
-		foreach (RaycastHit hit in sphereInfo)
+
+		foreach ( RaycastHit hit in sphereInfo )
 		{
 			//DebugConsole.Log("Sphere collision with " + hit.collider.name + " at distance " + distance);
-			OnTriggerEnter(hit.collider);
+			this.OnTriggerEnter( hit.collider );
 			//this.specialCollision = true;
 			//BulletManager.instance.DestroyLocalBullet (this);
 		}
+
 		if(sphereInfo.Length > 0)
 		{
 			this.specialCollision = true;
@@ -174,7 +175,6 @@ public class BulletBase : MonoBehaviour
 	          this.desc.aoeRadius,
 	          this.desc.damage,
 	          false, //TODO: Friendly fire bool
-	          this.source.health.Owner.team,
 	          this.source.health.Owner );
 		}
 

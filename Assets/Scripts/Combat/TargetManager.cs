@@ -221,7 +221,7 @@ public class TargetManager : MonoBehaviour
 	}
 
 	public void AreaOfEffectDamage( Vector3 _position, float _radius, float _damage, 
-	                               bool _friendlyFire, TEAM _sourceTeam, GamePlayer _sourcePlayer )
+	                               bool _friendlyFire, GamePlayer _sourcePlayer )
 	{
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
@@ -230,7 +230,7 @@ public class TargetManager : MonoBehaviour
 			{
 				this.AreaOfEffectDamageCheck( pair.Value,
 		             _position, _radius, _damage,
-		             _friendlyFire, _sourceTeam,
+		             _friendlyFire,
 				     _sourcePlayer );
 			}
 		}
@@ -241,17 +241,17 @@ public class TargetManager : MonoBehaviour
 			{
 				this.AreaOfEffectDamageCheck( pair.Value,
                      _position, _radius, _damage,
-                     _friendlyFire, _sourceTeam,
+                     _friendlyFire,
 				     _sourcePlayer );
 			}
 		}
 	}
 
 	private void AreaOfEffectDamageCheck( BaseHealth _health, 
-	      Vector3 _position, float _radius, float _damage, bool _friendlyFire, TEAM _sourceTeam,
+	      Vector3 _position, float _radius, float _damage, bool _friendlyFire,
 	      GamePlayer _sourcePlayer )
 	{
-		if ( _friendlyFire && _sourceTeam == _health.Owner.team )
+		if ( _friendlyFire && _sourcePlayer.team == _health.Owner.team )
 		{
 			return;
 		}

@@ -24,6 +24,9 @@ public class WeaponTest : BaseWeaponManager
 		{
 			dummy.Owner = dummyOwner;
 		}
+
+		this.health.Owner = new GamePlayer();
+		this.health.Owner.team = TEAM.TEAM_1;
 	}
 
 	private void Update()
