@@ -86,7 +86,7 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	protected virtual void DetectRaycastCollision()
 	{
-		//TODO: Convert raycast to spherecast for shot radius to matter, using the collider radius as the size
+
 
 		Ray positionCheckRay = new Ray(this.transform.position, this.lastPosition - this.transform.position);
 		RaycastHit[] rayInfo;
@@ -111,7 +111,6 @@ public class BulletBase : MonoBehaviour
 
 	protected virtual void DetectSphereCollision()
 	{
-		//TODO: Convert raycast to spherecast for shot radius to matter, using the collider radius as the size
 
 		RaycastHit[] sphereInfo;
 		float distance = Vector3.Distance (this.transform.position, this.lastPosition);
@@ -182,7 +181,7 @@ public class BulletBase : MonoBehaviour
 		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
 		if ( health != null )
 		{
-			this.OnTargetCollision( health );
+			this.OnTargetCollision( health, desc.passesThroughTargets );
 		}
 		else
 		{
@@ -202,7 +201,7 @@ public class BulletBase : MonoBehaviour
 	/// Called when this bullet hits an object that has a target attached
 	/// </summary>
 	/// <param name="_target">_target.</param>
-	public virtual void OnTargetCollision( BaseHealth _health )
+	public virtual void OnTargetCollision( BaseHealth _health, bool _passingThrough )
 	{
 		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
 		if ( _health.GetComponent<SeekingBullet>() == null )
@@ -210,7 +209,14 @@ public class BulletBase : MonoBehaviour
 			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.Owner );
 		}
 
-		BulletManager.instance.DestroyLocalBullet( this );
+		if(!_passingThrough)
+		{
+			BulletManager.instance.DestroyLocalBullet( this );
+		}
+		else
+		{
+			DebugConsole.Log ("We passing through, bro");
+		}
 	}
 
 	/// <summary>

@@ -21,6 +21,7 @@ public class BulletDescriptor : MonoBehaviour
 	public float damage;
 	public bool areaOfEffect = false;
 	public float aoeRadius;
+	public bool passesThroughTargets = false;
 
 	public bool smartBullet;
 
