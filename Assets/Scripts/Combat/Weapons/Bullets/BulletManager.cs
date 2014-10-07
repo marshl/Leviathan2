@@ -193,7 +193,7 @@ public class BulletManager : MonoBehaviour
 	/// <param name="_index">_index.</param>
 	/// <param name="_position">_position.</param>
 	/// <param name="_forward">The forward direction of the bullet</param>
-	public void CreateBulletRPC( int _ownerID, float _creationTime, WEAPON_TYPE _weaponType, int _index, Vector3 _position, Quaternion _rot )//Vector3 _forward )
+	public void CreateBulletRPC( int _ownerID, float _creationTime, WEAPON_TYPE _weaponType, int _index, Vector3 _position, Quaternion _rot )
 	{  
 		BulletBase bulletScript = this.bulletDictionary[_weaponType].GetAvailableBullet( _index, _ownerID );
 
@@ -204,8 +204,6 @@ public class BulletManager : MonoBehaviour
 		bulletObj.SetActive( true );
 		bulletObj.transform.position = _position;
 		bulletObj.transform.rotation = _rot;
-		 
-		bulletScript.enabled = false;
 
 		if ( bulletScript.desc.smartBullet == false )
 		{
@@ -220,11 +218,6 @@ public class BulletManager : MonoBehaviour
 
 	public void DestroyLocalBullet( BulletBase _bullet )
 	{
-		if ( _bullet.enabled == false )
-		{
-			return;
-		}
-
 		if ( _bullet.desc.smartBullet == true )
 		{
 			_bullet.enabled = false; // This should hopefully prevent multiple collisions
@@ -274,7 +267,7 @@ public class BulletManager : MonoBehaviour
 			{
 				if ( Network.peerType != NetworkPeerType.Disconnected )
 				{
-					GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.weaponType, _bullet.index );
+					GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.weaponType, _bullet.index, _bullet.transform.position );
 				}
 			}
 		}
@@ -295,11 +288,20 @@ public class BulletManager : MonoBehaviour
 		}
 	} 
 
-	public void DestroyDumbBulletRPC( WEAPON_TYPE _weaponType, int _index )
+	public void DestroyDumbBulletRPC( WEAPON_TYPE _weaponType, int _index, Vector3 _bulletPosition )
 	{
 		BulletBase bulletScript = this.bulletDictionary[_weaponType].GetAvailableBullet( _index, -1 );
-		bulletScript.gameObject.SetActive( false );
-		bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
+
+		if ( bulletScript.desc.fadeOut > 0.0f )
+		{
+            bulletScript.transform.position = _bulletPosition;
+			bulletScript.OnFadeBegin();
+		}
+		else
+		{
+			bulletScript.gameObject.SetActive( false );
+			bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
+		}
 	}
 	
 	private void CreateBulletBucket( BulletDescriptor _desc )

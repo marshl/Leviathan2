@@ -13,7 +13,6 @@ public class DockingBay : MonoBehaviour
 	{
 		public Transform landedPosition;
 		public FighterMaster landedFighter;
-		public bool occupied;
 		public int slotID;
 	}
 
@@ -24,11 +23,13 @@ public class DockingBay : MonoBehaviour
 	//TODO: Something broke here when networked
 	private void Start()
 	{
-		int idCounter = ((int)(this.capitalShip.health.Owner.team) * 1000) + (bayID * 10 + 1);
-		foreach ( DockingSlot newSlot in slots )
+		//int idCounter = ((int)(this.capitalShip.health.Owner.team) * 1000) + (bayID * 10 + 1);
+		//foreach ( DockingSlot newSlot in slots )
+		for ( int i = 0; i < this.slots.Length; ++i )
 		{
-			newSlot.slotID = idCounter;
-			idCounter++;
+			slots[i].slotID = i;
+			//newSlot.slotID = idCounter;
+			//idCounter++;
 		}
 	}
 
@@ -40,16 +41,16 @@ public class DockingBay : MonoBehaviour
 	      && fighterScript.state == FighterMaster.FIGHTERSTATE.FLYING
 	       )
 		{
-			DebugConsole.Log("Fighter received");
+			DebugConsole.Log( "Fighter received" );
 
 			//If we're on the same team
 			if ( fighterScript.health.Owner.team == this.capitalShip.health.Owner.team ) 
 			{
-				FriendlyDockingProcedure( fighterScript ); //You may dock
+				this.FriendlyDockingProcedure( fighterScript ); //You may dock
 			}
 			else
 			{
-				EnemyDockingProcedure( fighterScript ); //Do bad stuff to them.
+				this.EnemyDockingProcedure( fighterScript ); //Do bad stuff to them.
 			}
 		}
 	}
@@ -71,11 +72,10 @@ public class DockingBay : MonoBehaviour
 		DockingBay.DockingSlot slotToDock = this.GetFreeSlot();
 
 		_fighter.Dock( slotToDock );
-		slotToDock.occupied = true;
 		slotToDock.landedFighter = _fighter;
 	}
 
-	public DockingSlot GetSlotByID( int _id )
+	/*public DockingSlot GetSlotByID( int _id )
 	{
 		foreach ( DockingSlot slot in slots )
 		{
@@ -86,13 +86,13 @@ public class DockingBay : MonoBehaviour
 		}
 		DebugConsole.Log("Slot search in bay " + bayID + " for id " + _id + " returned no results");
 		return null;
-	}
+	}*/
 
 	public DockingSlot GetFreeSlot()
 	{
 		foreach ( DockingSlot friendlySlot in slots )
 		{
-			if ( !friendlySlot.occupied )
+			if ( friendlySlot.landedFighter == null)
 			{
 				return friendlySlot;
 			}
@@ -106,5 +106,19 @@ public class DockingBay : MonoBehaviour
 		_fighter.health.DealDamage( _fighter.health.currentHealth + _fighter.health.currentShield,
 		                           true,
 		                           this.capitalShip.health.Owner );
+	}
+
+	public void DockFighter( GameObject _fighterObj )
+	{
+		DockingSlot slot = this.GetFreeSlot();
+
+		_fighterObj.transform.position = slot.landedPosition.transform.position;
+		_fighterObj.transform.parent = slot.landedPosition;
+		_fighterObj.transform.rotation = slot.landedPosition.transform.rotation;
+		_fighterObj.GetComponent<NetworkPositionControl>().SetUpdatePosition( false );
+		
+		slot.landedFighter = _fighterObj.GetComponent<FighterMaster>();
+		
+		DebugConsole.Log( "Received docked RPC", _fighterObj );
 	}
 }

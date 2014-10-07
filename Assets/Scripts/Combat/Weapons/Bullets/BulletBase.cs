@@ -26,7 +26,7 @@ public class BulletBase : MonoBehaviour
 	public float damageScale = 1.0f;
 
 	public Vector3 lastPosition;
-	private bool specialCollision = false; //Have we tripped a special collision detection check?
+	//private bool specialCollision = false; //Have we tripped a special collision detection check?
 
 	public float fadeTime = 0.0f;
 
@@ -42,7 +42,7 @@ public class BulletBase : MonoBehaviour
 	{
 		this.rigidbody.velocity = this.transform.forward * this.desc.moveSpeed;
 		this.lastPosition = this.transform.position;
-		this.specialCollision = false;
+		//this.specialCollision = false;
 	}
 
 	/// <summary>
@@ -102,14 +102,14 @@ public class BulletBase : MonoBehaviour
 		{
 			this.transform.position = hit.point;
 			//	DebugConsole.Log("Collided with " + hit.collider.name + " at distance " + distance);
-			this.OnTriggerEnter( hit.collider );
+			this.CheckCollision( hit.collider );
 				
 		}
 
-		if(rayInfo.Length > 0)
+		/*if(rayInfo.Length > 0)
 		{
 			this.specialCollision = true;
-		}
+		}*/
 
 	}
 
@@ -128,15 +128,15 @@ public class BulletBase : MonoBehaviour
 		{
 			this.transform.position = hit.point;
 			//DebugConsole.Log("Sphere collision with " + hit.collider.name + " at distance " + distance);
-			this.OnTriggerEnter( hit.collider );
+			this.CheckCollision( hit.collider );
 			//this.specialCollision = true;
 			//BulletManager.instance.DestroyLocalBullet (this);
 		}
 
-		if(sphereInfo.Length > 0)
+		/*if(sphereInfo.Length > 0)
 		{
 			this.specialCollision = true;
-		}
+		}*/
 		
 	}
 
@@ -145,8 +145,12 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	protected virtual void OnTriggerEnter( Collider _collider )
 	{
-		if ( this.gameObject.activeSelf == false
-		  || this.enabled == false )
+		if ( this.state != BULLET_STATE.ACTIVE_OWNED )
+		{
+			return;
+		}
+
+		if ( this.desc.collisionType != COLLISION_TYPE.COLLISION_DEFAULT )
 		{
 			return;
 		}
@@ -158,20 +162,18 @@ public class BulletBase : MonoBehaviour
 			return;
 		}
 
+		this.CheckCollision( _collider );
+	}
+
+	public void CheckCollision( Collider _collider )
+	{
 		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
 		if ( this.source != null
-		  && this.source.collider == _collider )
+		    && this.source.collider == _collider )
 		{
 			return;
 		}
-
-		if(this.specialCollision)
-		{
-			Debug.LogError("Caught a double trigger event after a freak cosmic ray or something.");
-			Debug.LogError("Contact me - Rigel");
-			return;
-		}
-
+		
 		if ( this.desc.areaOfEffect )
 		{
 			TargetManager.instance.AreaOfEffectDamage( 
@@ -181,7 +183,7 @@ public class BulletBase : MonoBehaviour
 	          false, //TODO: Friendly fire bool
 	          this.source.health.Owner );
 		}
-
+		
 		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
 		if ( health != null )
 		{
@@ -213,14 +215,11 @@ public class BulletBase : MonoBehaviour
 			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.Owner );
 		}
 
-		if(!_passingThrough)
+		if ( !_passingThrough )
 		{
 			BulletManager.instance.DestroyLocalBullet( this );
 		}
-		else
-		{
-			DebugConsole.Log ("We passing through, bro");
-		}
+
 	}
 
 	/// <summary>
@@ -251,6 +250,7 @@ public class BulletBase : MonoBehaviour
 	{
 		this.source = null;
 
+		//this.specialCollision = false;
 		this.distanceTravelled = 0.0f;
 
 		this.rigidbody.velocity = Vector3.zero;

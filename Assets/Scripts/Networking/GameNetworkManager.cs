@@ -215,9 +215,21 @@ public class GameNetworkManager : BaseNetworkManager
 		BulletManager.instance.DestroySmartBulletRPC( _viewID );
 	}
 
-	public void SendDestroyDumbBulletMessage( WEAPON_TYPE _weaponType, int _index )
+	public void SendDestroyDumbBulletMessage( WEAPON_TYPE _weaponType, int _index, Vector3 _bulletPosition )
 	{
-		this.networkView.RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_weaponType, _index );
+		this.networkView.RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_weaponType, _index, _bulletPosition );
+	}
+
+	[RPC]
+	private void OnDestroyDumbBulletRPC( int _weaponType, int _index, Vector3 _bulletPosition )
+	{
+		//TODO: Enum check
+		if ( System.Enum.IsDefined( typeof(WEAPON_TYPE), _weaponType ) == false )
+		{
+			DebugConsole.Error( "Undefined bullet type " + _weaponType );
+			return;
+		}
+		BulletManager.instance.DestroyDumbBulletRPC( (WEAPON_TYPE)_weaponType, _index, _bulletPosition );
 	}
 
 	public void SendOutOfControlFigherMessage( int _playerID )
@@ -276,17 +288,7 @@ public class GameNetworkManager : BaseNetworkManager
 		fighterHealth.masterScript.OnRespawnFighterNetworkMessage();
 	}
 
-	[RPC]
-	private void OnDestroyDumbBulletRPC( int _weaponType, int _index )
-	{
-		//TODO: Enum check
-		if ( System.Enum.IsDefined( typeof(WEAPON_TYPE), _weaponType ) == false )
-		{
-			DebugConsole.Error( "Undefined bullet type " + _weaponType );
-			return;
-		}
-		BulletManager.instance.DestroyDumbBulletRPC( (WEAPON_TYPE)_weaponType, _index );
-	}
+
 
 	public void SendDealDamageMessage( NetworkViewID _id, float _damage, GamePlayer _sourcePlayer )
 	{
@@ -301,51 +303,42 @@ public class GameNetworkManager : BaseNetworkManager
 		TargetManager.instance.OnNetworkDamageMessage( _id, _damage, sourcePlayer );
 	}
 
-	public void SendDockedMessage( NetworkViewID _id, int landedSlot )
+	public void SendDockedMessage( NetworkViewID _id, TEAM _team, int landedSlot )
 	{
-		this.networkView.RPC( "OnFighterDockedRPC", RPCMode.Others, _id, landedSlot );
+		this.networkView.RPC( "OnFighterDockedRPC", RPCMode.Others, _id, (int)_team, landedSlot );
 	}
 
 	[RPC]
-	private void OnFighterDockedRPC( NetworkViewID _id, int landedSlotID )
+	private void OnFighterDockedRPC( NetworkViewID _id, int _teamID, int landedSlotID )
 	{
+		TEAM team = (TEAM)_teamID;
+		CapitalShipMaster capitalShip = GamePlayerManager.instance.GetCommander( team ).capitalShip;
 		NetworkView dockingFighterView = NetworkView.Find( _id );
 
 		GameObject dockingFighter = dockingFighterView.gameObject;
 
-		if ( !dockingFighterView.isMine )
-		{
-			DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID ( landedSlotID );
-			dockingFighter.transform.position = landedSlot.landedPosition.transform.position;
-			dockingFighter.transform.parent = landedSlot.landedPosition;
-			dockingFighter.transform.rotation = landedSlot.landedPosition.transform.rotation;
-			dockingFighter.GetComponent<NetworkPositionControl>().SetUpdatePosition( false );
-
-			landedSlot.landedFighter = dockingFighter.GetComponent<FighterMaster>();
-
-			DebugConsole.Log( "Received docked RPC", this );
-		}
+		capitalShip.dockingBay.DockFighter( dockingFighter );
 	}
 
-	public void SendUndockedMessage( NetworkViewID _id, int landedSlot )
+	public void SendUndockedMessage( NetworkViewID _id, TEAM _team, int landedSlot )
 	{
-		this.networkView.RPC ( "OnFighterUndockedRPC", RPCMode.Others, _id, landedSlot );
+		this.networkView.RPC ( "OnFighterUndockedRPC", RPCMode.Others, _id, (int)_team, landedSlot );
 	}
 
 	[RPC]
-	private void OnFighterUndockedRPC( NetworkViewID _id, int landedSlotID )
+	private void OnFighterUndockedRPC( NetworkViewID _id, int _teamID, int landedSlotID )
 	{
-		NetworkView dockingFighterView = NetworkView.Find (_id);
+		NetworkView dockingFighterView = NetworkView.Find( _id );
 
 		GameObject dockingFighter = dockingFighterView.gameObject;
 		dockingFighter.GetComponent<NetworkPositionControl>().enabled = true;
-		DockingBay.DockingSlot landedSlot = TargetManager.instance.GetDockingSlotByID( landedSlotID );
-
 		dockingFighter.transform.parent = null;
 		dockingFighter.transform.localScale = Vector3.one;
 
 		dockingFighter.GetComponent<NetworkPositionControl>().SetUpdatePosition( true );
-		landedSlot.landedFighter = null;
+
+		CapitalShipMaster capitalShip = GamePlayerManager.instance.GetCommander( (TEAM)_teamID ).capitalShip;
+		capitalShip.dockingBay.slots[landedSlotID].landedFighter = null;
 	}
 
 #if UNITY_EDITOR

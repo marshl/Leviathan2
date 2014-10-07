@@ -339,7 +339,7 @@ public class TargetManager : MonoBehaviour
 	}
 
 	//TODO: Shift this into its own script on the capital ship LM 07/05/14
-	public DockingBay.DockingSlot GetDockingSlotByID( int _id )
+	/*public DockingBay.DockingSlot GetDockingSlotByID( int _id )
 	{
 
 		//This is a terrible, quick and dirty method. Grabs every docking bay in the scene,
@@ -358,5 +358,5 @@ public class TargetManager : MonoBehaviour
 
 		DebugConsole.Log("No slot of ID " + _id + " found");
 		return null;
-	}
+	}*/
 }

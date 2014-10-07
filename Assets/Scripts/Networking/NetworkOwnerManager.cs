@@ -15,6 +15,10 @@ public class NetworkOwnerManager : MonoBehaviour
 
 	private Dictionary<NetworkViewID, NetworkView> map;
 
+#if UNITY_EDITOR
+	public List<NetworkView> debugList;
+#endif
+
 	// Called by OnNetworkInstantiate
 	public void RegisterUnknownObject( MonoBehaviour _obj )
 	{
@@ -44,6 +48,9 @@ public class NetworkOwnerManager : MonoBehaviour
 		else // If it isn't mine, store this away and wait for the RPC
 		{
 			this.map.Add( id, view );
+#if UNITY_EDITOR
+			this.debugList.Add( view );
+#endif
 		}
 	}
 	
@@ -64,5 +71,9 @@ public class NetworkOwnerManager : MonoBehaviour
 
 		this.map.Remove( _id );
 		ownerControl.ownerID = _ownerID;
+
+#if UNITY_EDITOR
+		this.debugList.Remove( view );
+#endif
 	}
 }

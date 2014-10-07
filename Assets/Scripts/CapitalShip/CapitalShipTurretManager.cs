@@ -21,12 +21,14 @@ public class CapitalShipTurretManager : MonoBehaviour
 	{
 		foreach ( Transform pos in this.turretPositions )
 		{
+#if UNITY_EDITOR
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
 				GameObject turret = GameObject.Instantiate( this.lightLaserPrefab, pos.position, pos.rotation ) as GameObject;
 				turret.GetComponent<NetworkOwnerControl>().ownerID = this.master.health.Owner.id;
 			}
 			else
+#endif
 			{
 				Network.Instantiate( this.lightLaserPrefab, pos.position, pos.rotation, 0 );
 			}
@@ -34,6 +36,7 @@ public class CapitalShipTurretManager : MonoBehaviour
 
 		foreach ( Transform pos in this.missileTurretPositions )
 		{
+#if UNITY_EDITOR
 			GameObject turret;
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
@@ -41,20 +44,23 @@ public class CapitalShipTurretManager : MonoBehaviour
 				turret.GetComponent<NetworkOwnerControl>().ownerID = this.master.health.Owner.id;
 			}
 			else
+#endif
 			{
-				turret = Network.Instantiate( this.missileTurretPrefab, pos.position, pos.rotation, 0 ) as GameObject;
+				Network.Instantiate( this.missileTurretPrefab, pos.position, pos.rotation, 0 );
 			}
 		}
 
 		foreach ( Transform pos in this.gaussCannonPositions )
 		{
 			GameObject gaussCannon;
+#if UNITY_EDITOR
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
 				gaussCannon = GameObject.Instantiate( this.gaussCannonPrefab, pos.position, pos.rotation ) as GameObject;
 				gaussCannon.GetComponent<NetworkOwnerControl>().ownerID = this.master.health.Owner.id;
 			}
 			else
+#endif
 			{
 				gaussCannon = Network.Instantiate( this.gaussCannonPrefab, pos.position, pos.rotation, 0 ) as GameObject;
 			}

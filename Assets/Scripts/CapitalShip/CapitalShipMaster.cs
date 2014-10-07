@@ -8,6 +8,7 @@ public class CapitalShipMaster : MonoBehaviour
 	public CapitalShipTurretManager turrets;
 	public Transform depthControl;
 	public CapitalHealth health;
+	public DockingBay dockingBay;
 
 	public CapitalShipCamera capitalCamera;
 
@@ -43,6 +44,8 @@ public class CapitalShipMaster : MonoBehaviour
 			}
 			this.health.Owner.capitalShip = this;
 			this.turrets.CreateTurrets();
+
+			this.SetTeamColours();
 		}
 	}
 #endif
@@ -127,17 +130,7 @@ public class CapitalShipMaster : MonoBehaviour
 			this.movement.enabled = false;
 		}
 
-		foreach ( Renderer render in GetComponentsInChildren<Renderer>() )
-		{
-			if ( this.health.Owner.team == TEAM.TEAM_1 )
-			{
-				render.material.color = new Color(1.0f,1.0f,0.5f);
-			}
-			else
-			{
-				render.material.color = new Color(1,0f,0.2f,1.0f);
-			}
-		}
+		this.SetTeamColours();
 	}
 
 	public void UpdateFinaleExplosions()
@@ -158,6 +151,21 @@ public class CapitalShipMaster : MonoBehaviour
 				GameObject explosionObj = GameObject.Instantiate( this.explosionPrefab, hitInfo.point, Common.RandomRotation() ) as GameObject; 
 				GameObject.Destroy( explosionObj, 5.0f );
 				explosionObj.transform.parent = this.depthControl;
+			}
+		}
+	}
+
+	private void SetTeamColours()
+	{
+		foreach ( Renderer render in GetComponentsInChildren<Renderer>() )
+		{
+			if ( this.health.Owner.team == TEAM.TEAM_1 )
+			{
+				render.material.color = new Color(1.0f,1.0f,0.5f);
+			}
+			else
+			{
+				render.material.color = new Color(1,0f,0.2f,1.0f);
 			}
 		}
 	}

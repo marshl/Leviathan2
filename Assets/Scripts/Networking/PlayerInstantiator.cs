@@ -60,6 +60,7 @@ public class PlayerInstantiator : MonoBehaviour
 
 		//Vector3 shipPos = _player.team == TEAM.TEAM_1 ? new Vector3( -500.0f, 0.0f, 0.0f ) : new Vector3( 500.0f, 0.0f, 0.0f );
 		GameObject capitalObj;
+#if UNITY_EDITOR
 		// Used for testing scenes
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
@@ -69,6 +70,7 @@ public class PlayerInstantiator : MonoBehaviour
 				shipRot ) as GameObject;
 		}
 		else // Normal operation
+#endif
 		{
 			capitalObj = Network.Instantiate(
 				this.capitalShipPrefab,

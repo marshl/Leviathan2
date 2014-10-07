@@ -60,6 +60,8 @@ public class FighterMaster : MonoBehaviour
 				this.capitalShip = commanderPlayer.capitalShip;
 			}
 			DebugConsole.Log( "Player " + ownerID + " now owns " + this.name, this );
+
+			this.SetTeamColours();
 		}
 		else
 		{
@@ -149,18 +151,8 @@ public class FighterMaster : MonoBehaviour
 
 		this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 		this.capitalShip = GamePlayerManager.instance.GetCapitalShip( this.health.Owner.team );
-		
-		foreach ( Renderer render in GetComponentsInChildren<Renderer>( ))
-		{
-			if ( this.health.Owner.team == TEAM.TEAM_1 )
-			{
-				render.material.color = new Color(1.0f,1.0f,0.2f);
-			}
-			else
-			{
-				render.material.color = new Color(1,0f,0.2f,1.0f);
-			}
-		}
+	
+		this.SetTeamColours();
 	}
 
 	public void Respawn()
@@ -287,7 +279,7 @@ public class FighterMaster : MonoBehaviour
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendDockedMessage( this.networkView.viewID, _slot.slotID );
+			GameNetworkManager.instance.SendDockedMessage( this.networkView.viewID, this.health.Owner.team, _slot.slotID );
 		}
 	}
 
@@ -296,16 +288,13 @@ public class FighterMaster : MonoBehaviour
 		this.rigidbody.constraints = RigidbodyConstraints.None;
 	
 		this.state = FIGHTERSTATE.UNDOCKING;
-		this.currentSlot.occupied = false;
 		this.currentSlot.landedFighter = null;
-
-		//this.movement.desiredSpeed = this.movement.maxSpeed;
-		
+	
 		this.transform.parent = null;
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendUndockedMessage ( this.networkView.viewID, this.currentSlot.slotID );
+			GameNetworkManager.instance.SendUndockedMessage( this.networkView.viewID, this.health.Owner.team, this.currentSlot.slotID );
 		}
 		this.currentSlot = null;
 	}
@@ -341,5 +330,20 @@ public class FighterMaster : MonoBehaviour
 	{
 		this.state = FIGHTERSTATE.FLYING;
 		this.ToggleEnabled( true, false );
+	}
+
+	private void SetTeamColours()
+	{
+		foreach ( Renderer render in GetComponentsInChildren<Renderer>( ))
+		{
+			if ( this.health.Owner.team == TEAM.TEAM_1 )
+			{
+				render.material.color = new Color(1.0f,1.0f,0.2f);
+			}
+			else
+			{
+				render.material.color = new Color(1,0f,0.2f,1.0f);
+			}
+		}
 	}
 }
