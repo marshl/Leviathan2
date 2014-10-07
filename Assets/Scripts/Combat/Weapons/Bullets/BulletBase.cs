@@ -13,12 +13,12 @@ public class BulletBase : MonoBehaviour
 		INACTIVE,
 		ACTIVE_OWNED,
 		ACTIVE_NOT_OWNED,
+		FADING,
 	};
 	
 	public BULLET_STATE state;
 	public int index;
 	public WEAPON_TYPE weaponType;
-	public LocalBulletBucket parentBucket;
 	public BulletDescriptor desc;
 
 	public BaseWeaponManager source;
@@ -28,17 +28,11 @@ public class BulletBase : MonoBehaviour
 	public Vector3 lastPosition;
 	private bool specialCollision = false; //Have we tripped a special collision detection check?
 
+	public float fadeTime = 0.0f;
+
 	protected virtual void Awake()
 	{
 		this.desc = BulletDescriptorManager.instance.GetDescOfType( this.weaponType );
-	}
-
-	protected virtual void Start()
-	{
-		// Nothing should be required here as it is only called once
-		// Reset is called every time a bullet is created, use that instead
-
-		// However decriptors can be set up here
 	}
 
 	/// <summary>
@@ -56,39 +50,48 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	protected virtual void Update()
 	{
-		this.distanceTravelled += this.desc.moveSpeed * Time.deltaTime;
-		if ( this.distanceTravelled >= this.desc.maxDistance )
+		if ( this.state == BULLET_STATE.FADING )
 		{
-			this.OnLifetimeExpiration();
-		} 
-
-		//Advanced collision checking - note that it calls OnTriggerEnter by hand.
-		switch(desc.collisionType)
-		{
-		case COLLISION_TYPE.COLLISION_SPHERE:
-				DetectSphereCollision();
-			break;
-		case COLLISION_TYPE.COLLISION_DEFAULT:
-			break;
-		case COLLISION_TYPE.COLLISION_RAY:
-				DetectRaycastCollision();
-			break;
-		default:
-			break;
-
+			this.fadeTime += Time.deltaTime;
+			if ( this.fadeTime >= this.desc.fadeOut )
+			{
+				this.state = BULLET_STATE.INACTIVE;
+				this.gameObject.SetActive( false );
+			}
 		}
+		else
+		{
+			this.distanceTravelled += this.desc.moveSpeed * Time.deltaTime;
+			if ( this.distanceTravelled >= this.desc.maxDistance )
+			{
+				this.OnLifetimeExpiration();
+			} 
 
+			//Advanced collision checking - note that it calls OnTriggerEnter by hand.
+			switch( desc.collisionType )
+			{
+			case COLLISION_TYPE.COLLISION_SPHERE:
+				this.DetectSphereCollision();
+				break;
+			case COLLISION_TYPE.COLLISION_DEFAULT:
+				break;
+			case COLLISION_TYPE.COLLISION_RAY:
+				this.DetectRaycastCollision();
+				break;
+			default:
+				break;
 
-		lastPosition = this.transform.position;
+			}
+
+			lastPosition = this.transform.position;
+		}
 	}
 	/// <summary>
 	/// Custom collision detection method to handle high-speed physics.
 	/// </summary>
 	protected virtual void DetectRaycastCollision()
 	{
-
-
-		Ray positionCheckRay = new Ray(this.transform.position, this.lastPosition - this.transform.position);
+		Ray positionCheckRay = new Ray( this.lastPosition - this.transform.position, this.transform.position);
 		RaycastHit[] rayInfo;
 		float distance = Vector3.Distance (this.transform.position, this.lastPosition);
 		int layerMask = ~(1 << 10);
@@ -97,8 +100,9 @@ public class BulletBase : MonoBehaviour
 
 		foreach (RaycastHit hit in rayInfo)
 		{
+			this.transform.position = hit.point;
 			//	DebugConsole.Log("Collided with " + hit.collider.name + " at distance " + distance);
-				OnTriggerEnter(hit.collider);
+			this.OnTriggerEnter( hit.collider );
 				
 		}
 
@@ -111,18 +115,18 @@ public class BulletBase : MonoBehaviour
 
 	protected virtual void DetectSphereCollision()
 	{
-
 		RaycastHit[] sphereInfo;
-		float distance = Vector3.Distance (this.transform.position, this.lastPosition);
+		float distance = Vector3.Distance( this.lastPosition, this.transform.position );
 		int layerMask = ~(1 << 10);
 		//print(layerMask);
 		float sphereRadius = this.GetComponent<SphereCollider>().radius;
 		//print(sphereRadius);
-		sphereInfo = Physics.SphereCastAll (this.lastPosition, sphereRadius, 
+		sphereInfo = Physics.SphereCastAll( this.lastPosition, sphereRadius, 
 		                                 this.transform.position - this.lastPosition, distance, layerMask );
 
 		foreach ( RaycastHit hit in sphereInfo )
 		{
+			this.transform.position = hit.point;
 			//DebugConsole.Log("Sphere collision with " + hit.collider.name + " at distance " + distance);
 			this.OnTriggerEnter( hit.collider );
 			//this.specialCollision = true;
@@ -163,8 +167,8 @@ public class BulletBase : MonoBehaviour
 
 		if(this.specialCollision)
 		{
-			Debug.Log("Caught a double trigger event after a freak cosmic ray or something.");
-			Debug.Log("Contact me - Rigel");
+			Debug.LogError("Caught a double trigger event after a freak cosmic ray or something.");
+			Debug.LogError("Contact me - Rigel");
 			return;
 		}
 
@@ -227,6 +231,19 @@ public class BulletBase : MonoBehaviour
 		BulletManager.instance.DestroyLocalBullet( this );
 	}
 
+	public void OnFadeBegin()
+	{
+		this.collider.enabled = false;
+		this.state = BulletBase.BULLET_STATE.FADING;
+		this.rigidbody.velocity = Vector3.zero;
+		foreach ( ParticleEmitter emitter in this.GetComponentsInChildren<ParticleEmitter>() )
+		{
+			emitter.emit = false;
+		}
+
+		//TODO: Line renderers
+	}
+
 	/// <summary>
 	/// Reset this bullet.
 	/// </summary>
@@ -240,7 +257,13 @@ public class BulletBase : MonoBehaviour
 		this.rigidbody.angularVelocity = Vector3.zero;
 		this.damageScale = 1.0f;
 
-		//this.lastPosition = this.transform.position;
+		this.fadeTime = 0.0f;
+		this.collider.enabled = true;
+
+		foreach ( ParticleEmitter emitter in this.GetComponentsInChildren<ParticleEmitter>() )
+		{
+			emitter.emit = true;
+		}
 	}
 }
 

@@ -41,11 +41,6 @@ public class SeekingBullet : BulletBase
 #endif
 	}
 
-	protected override void Start()
-	{
-		base.Start();
-	}
-
 	protected override void Update()
 	{
 		if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance

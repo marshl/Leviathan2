@@ -71,7 +71,16 @@ public class WeaponTest : BaseWeaponManager
 		{
 			this.currentTarget = TargetManager.instance.GetCentreTarget( this );
 		}
-		Debug.DrawRay( this.transform.position, this.transform.forward );
+
+		if ( Input.GetKeyDown( KeyCode.R ) )
+		{
+			foreach ( BaseHealth dummy in this.targetDummies )
+			{
+				dummy.currentHealth = dummy.maxHealth;
+				dummy.gameObject.SetActive( true );
+			}
+		}
+
 
 		foreach ( BaseHealth dummy in this.targetDummies )
 		{

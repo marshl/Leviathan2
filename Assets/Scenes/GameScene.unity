@@ -251,6 +251,7 @@ MonoBehaviour:
   bulletDesc: {fileID: 626032586}
   timeBetweenBursts: 0
   shotsInBurst: 0
+  isShotgun: 0
 --- !u!1 &122270339
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +286,7 @@ MonoBehaviour:
   gameState: 1
   startPauseDuration: .10000000149011612
   disconnectionTimeoutMS: 0
-  defaultPlayerType: 1
+  defaultPlayerType: 3
   createDummies: 1
   dummiesToCreate: 010000000200000003000000040000000400000004000000
   lastCreatedDummy:
@@ -462,7 +463,7 @@ GameObject:
   - 4: {fileID: 353362197}
   - 114: {fileID: 353362198}
   m_Layer: 0
-  m_Name: GaussCannon
+  m_Name: HellfireProjector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -492,19 +493,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 3
-  label: Gauss Cannon
+  weaponType: 16
+  label: Hellfire Projector
   fireRate: 1
   spread: 0
   fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
+  usesEnergy: 1
+  energyCostPerShot: .25
   usesAmmunition: 0
   ammunitionMax: 0
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 1362560565}
 --- !u!1 &356059526
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +634,7 @@ Transform:
   - {fileID: 485729537}
   - {fileID: 686259436}
   - {fileID: 626032585}
+  - {fileID: 1663898781}
   m_Father: {fileID: 375129944}
   m_RootOrder: 0
 --- !u!1001 &406895091
@@ -688,7 +690,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: defaultPlayerType
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
@@ -791,6 +793,62 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 12
+--- !u!1 &469628027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100078, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 469628028}
+  - 114: {fileID: 469628029}
+  m_Layer: 0
+  m_Name: RemoteLaser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &469628028
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400078, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 469628027}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 639345260}
+  m_RootOrder: 3
+--- !u!114 &469628029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400072, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 469628027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 18
+  label: Shredder
+  fireRate: .5
+  spread: 10
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  bulletDesc: {fileID: 485729538}
+  timeBetweenBursts: 1
+  shotsInBurst: 12
+  isShotgun: 1
 --- !u!1 &485729536
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,14 +890,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 500
+  collisionType: 0
+  prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
+  count: 5000
   moveSpeed: 450
   maxDistance: 1500
   damage: 25
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!1 &545763796
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,9 +926,64 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2114391585}
+  - {fileID: 1362560564}
   - {fileID: 1687632509}
   m_Father: {fileID: 375129944}
   m_RootOrder: 1
+--- !u!1 &619773179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100074, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 619773180}
+  - 114: {fileID: 619773181}
+  m_Layer: 0
+  m_Name: FusionBeam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &619773180
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400074, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 619773179}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 817777348}
+  m_RootOrder: 1
+--- !u!114 &619773181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400068, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 619773179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 17
+  label: Fusion Beam
+  fireRate: .0500000007
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  bulletDesc: {fileID: 2114391586}
 --- !u!1 &626032584
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,6 +1025,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 15
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 200
@@ -916,7 +1033,62 @@ MonoBehaviour:
   damage: 200
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
+--- !u!1 &631075031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100072, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 631075032}
+  - 114: {fileID: 631075033}
+  m_Layer: 0
+  m_Name: GaussCannon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &631075032
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400072, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 631075031}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 817777348}
+  m_RootOrder: 2
+--- !u!114 &631075033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400066, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 631075031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 3
+  label: Gauss Cannon
+  fireRate: 1
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  bulletDesc: {fileID: 0}
 --- !u!1 &639345259
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +1117,7 @@ Transform:
   - {fileID: 1817496635}
   - {fileID: 716835381}
   - {fileID: 112039261}
+  - {fileID: 469628028}
   m_Father: {fileID: 1271608244}
   m_RootOrder: 0
 --- !u!1 &686259435
@@ -988,6 +1161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 50
@@ -995,7 +1169,9 @@ MonoBehaviour:
   damage: 10
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!1 &691865449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,6 +1213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 14
+  collisionType: 0
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
   count: 0
   moveSpeed: 50
@@ -1044,7 +1221,9 @@ MonoBehaviour:
   damage: 100
   areaOfEffect: 1
   aoeRadius: 25
+  passesThroughTargets: 0
   smartBullet: 1
+  fadeOut: -1
   turnRate: 25
   canAngleOut: 0
   maxDetectionAngle: .150000006
@@ -1143,6 +1322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 10
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 150
@@ -1150,7 +1330,9 @@ MonoBehaviour:
   damage: 35
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!1001 &781231108
 Prefab:
   m_ObjectHideFlags: 0
@@ -1221,6 +1403,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 353362197}
+  - {fileID: 619773180}
+  - {fileID: 631075032}
   m_Father: {fileID: 1271608244}
   m_RootOrder: 1
 --- !u!1 &826805431
@@ -1394,14 +1578,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 11
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  collisionType: 0
+  prefab: {fileID: 100002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
   count: 300
   moveSpeed: 150
   maxDistance: 500
   damage: 45
   areaOfEffect: 0
   aoeRadius: 5
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!1 &910380973
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,14 +1630,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 8
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  collisionType: 0
+  prefab: {fileID: 100000, guid: fe71fd4cae57a384280b7d9a259861c5, type: 2}
   count: 500
   moveSpeed: 350
   maxDistance: 1000
   damage: 10
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!1 &1019738248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,6 +1850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 9
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 200
@@ -1667,7 +1858,9 @@ MonoBehaviour:
   damage: 14
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!1 &1192832056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,6 +2015,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 12
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 200
@@ -1829,7 +2023,61 @@ MonoBehaviour:
   damage: 60
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
+--- !u!1 &1362560563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100076, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1362560564}
+  - 114: {fileID: 1362560565}
+  m_Layer: 0
+  m_Name: HellfireProjector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1362560564
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400076, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 1362560563}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 545763797}
+  m_RootOrder: 1
+--- !u!114 &1362560565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400070, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 1362560563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 16
+  collisionType: 2
+  prefab: {fileID: 100002, guid: 3d52391b02b7aa34db8dab00a5ec2f82, type: 2}
+  count: 50
+  moveSpeed: 750
+  maxDistance: 5000
+  damage: 500
+  areaOfEffect: 1
+  aoeRadius: 1500
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
 --- !u!1 &1386790545
 GameObject:
   m_ObjectHideFlags: 0
@@ -2011,14 +2259,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 13
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  collisionType: 2
+  prefab: {fileID: 100002, guid: c551c005f85af8f41bf40b0d4d6243e6, type: 2}
   count: 50
   moveSpeed: 5000
-  maxDistance: 5000
+  maxDistance: 50000
   damage: 200
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: .5
 --- !u!1 &1559345304
 GameObject:
   m_ObjectHideFlags: 0
@@ -2388,6 +2639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 4
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -2395,7 +2647,9 @@ MonoBehaviour:
   damage: 10
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 1
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &1661388359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2409,6 +2663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 6
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -2416,7 +2671,9 @@ MonoBehaviour:
   damage: 10
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &1661388360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2430,6 +2687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 5
+  collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
   moveSpeed: 250
@@ -2437,7 +2695,61 @@ MonoBehaviour:
   damage: 10
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
+--- !u!1 &1663898780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100080, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1663898781}
+  - 114: {fileID: 1663898782}
+  m_Layer: 0
+  m_Name: RemoteLaser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1663898781
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400080, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 1663898780}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 404214439}
+  m_RootOrder: 3
+--- !u!114 &1663898782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400074, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 1663898780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 18
+  collisionType: 0
+  prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
+  count: 5000
+  moveSpeed: 450
+  maxDistance: 1500
+  damage: 25
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
 --- !u!1 &1687632508
 GameObject:
   m_ObjectHideFlags: 0
@@ -2461,11 +2773,11 @@ Transform:
   m_PrefabInternal: {fileID: 781231108}
   m_GameObject: {fileID: 1687632508}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 545763797}
-  m_RootOrder: 0
+  m_RootOrder: 2
 --- !u!114 &1687632510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2479,6 +2791,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
+  collisionType: 0
   prefab: {fileID: 100000, guid: 45a2992e1734b754f80ede03d4861c0e, type: 2}
   count: 50
   moveSpeed: 750
@@ -2486,7 +2799,9 @@ MonoBehaviour:
   damage: 500
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!1 &1699880290
 GameObject:
   m_ObjectHideFlags: 0
@@ -2528,14 +2843,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 7
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  collisionType: 0
+  prefab: {fileID: 100000, guid: 0e4a1ed65b5a4274596b2c8c92b39bfb, type: 2}
   count: 500
   moveSpeed: 250
   maxDistance: 500
   damage: 5
   areaOfEffect: 0
   aoeRadius: 0
+  passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!1 &1817496634
 GameObject:
   m_ObjectHideFlags: 0
@@ -2573,13 +2891,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1817496634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
-  label: 
-  fireRate: .200000003
-  spread: .25
+  label: Shredder
+  fireRate: .5
+  spread: 10
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
@@ -2588,7 +2906,10 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
-  bulletDesc: {fileID: 0}
+  bulletDesc: {fileID: 485729538}
+  timeBetweenBursts: 1
+  shotsInBurst: 12
+  isShotgun: 1
 --- !u!1 &1831819241
 GameObject:
   m_ObjectHideFlags: 0
@@ -2996,6 +3317,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+--- !u!1 &2114391584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100082, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2114391585}
+  - 114: {fileID: 2114391586}
+  m_Layer: 0
+  m_Name: FusionBeam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2114391585
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400082, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 2114391584}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 545763797}
+  m_RootOrder: 0
+--- !u!114 &2114391586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400076, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 781231108}
+  m_GameObject: {fileID: 2114391584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 17
+  collisionType: 2
+  prefab: {fileID: 100000, guid: 0448a5f9a67b609438fab7c4bae40da8, type: 2}
+  count: 50
+  moveSpeed: 50000
+  maxDistance: 10000
+  damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 1
+  smartBullet: 0
+  fadeOut: -1
 --- !u!1 &2115683944
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,6 @@ public class BulletDescriptor : MonoBehaviour
 
 	public bool smartBullet;
 
-
+	public float fadeOut = -1.0f;
 }
 

@@ -54,6 +54,7 @@ public class BulletManager : MonoBehaviour
 	public Dictionary<NetworkViewID, SeekingBullet> seekingBulletMap;
 
 #if UNITY_EDITOR
+	// We can't map by NetworkViewID in offline mode, so we'll have to use ints
 	public int debugSeekingID = 0;
 	public Dictionary<int, SeekingBullet> debugSeekingBulletMap;
 #endif
@@ -253,12 +254,21 @@ public class BulletManager : MonoBehaviour
 			if ( _bullet.state == BulletBase.BULLET_STATE.INACTIVE
 			  || _bullet.gameObject.activeSelf == false )
 			{
-				DebugConsole.Log( "No point disabling a currently inactive bullet" );
+				DebugConsole.Warning( "No point disabling a currently inactive bullet (" + _bullet.gameObject.name, _bullet );
 				return;
 			}
 
 			BulletBase bulletScript = this.bulletDictionary[_bullet.weaponType].GetAvailableBullet( _bullet.index, -1 );
-			bulletScript.gameObject.SetActive( false );
+
+			if ( bulletScript.desc.fadeOut > 0.0f )
+			{
+				bulletScript.OnFadeBegin();
+			}
+			else
+			{
+				bulletScript.gameObject.SetActive( false );
+				bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
+			}
 
 			if ( _bullet.state == BulletBase.BULLET_STATE.ACTIVE_OWNED )
 			{
@@ -267,8 +277,6 @@ public class BulletManager : MonoBehaviour
 					GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.weaponType, _bullet.index );
 				}
 			}
-
-			bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
 		}
 	}
 	

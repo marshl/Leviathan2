@@ -34,7 +34,6 @@ public class LocalBulletBucket : BulletBucket
 	
 	private BulletBase CreateNewBullet( int _index )
 	{
-		//GameObject bulletObj = GameObject.Instantiate( this.bulletDesc.prefab ) as GameObject;
 		GameObject bulletObj;
 		if ( this.networked )
 		{
@@ -51,7 +50,6 @@ public class LocalBulletBucket : BulletBucket
 		BulletBase bulletScript = bulletObj.GetComponent<BulletBase>();
 		bulletScript.index = _index;
 		bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
-		bulletScript.parentBucket = this;
 		bulletScript.desc = this.bulletDesc;
 
 		return bulletScript;
@@ -84,7 +82,7 @@ public class LocalBulletBucket : BulletBucket
 			}
 
 			// Aha, a free one, that'll do
-			if ( this.bulletList[currentIndex].gameObject.activeSelf == false )
+			if ( this.bulletList[currentIndex].state == BulletBase.BULLET_STATE.INACTIVE )
 			{
 				return this.bulletList[currentIndex];
 			}

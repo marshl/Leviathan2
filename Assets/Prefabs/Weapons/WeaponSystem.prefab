@@ -1248,6 +1248,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1308,6 +1309,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1330,6 +1332,7 @@ MonoBehaviour:
   aoeRadius: 25
   passesThroughTargets: 0
   smartBullet: 1
+  fadeOut: -1
   turnRate: 25
   canAngleOut: 0
   maxDetectionAngle: .150000006
@@ -1361,7 +1364,7 @@ MonoBehaviour:
   weaponType: 13
   collisionType: 2
   prefab: {fileID: 100002, guid: c551c005f85af8f41bf40b0d4d6243e6, type: 2}
-  count: 500
+  count: 50
   moveSpeed: 5000
   maxDistance: 50000
   damage: 200
@@ -1369,6 +1372,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: .5
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1391,6 +1395,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1413,6 +1418,7 @@ MonoBehaviour:
   aoeRadius: 5
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1435,6 +1441,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1457,6 +1464,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 1
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400024
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1747,6 +1755,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400048
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1769,6 +1778,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1791,6 +1801,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1813,6 +1824,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1835,6 +1847,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1857,6 +1870,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1927,6 +1941,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2024,6 +2039,7 @@ MonoBehaviour:
   aoeRadius: 1500
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2073,6 +2089,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
+  fadeOut: -1
 --- !u!114 &11400076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2095,6 +2112,7 @@ MonoBehaviour:
   aoeRadius: 0
   passesThroughTargets: 1
   smartBullet: 0
+  fadeOut: -1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
