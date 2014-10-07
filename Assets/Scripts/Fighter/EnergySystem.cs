@@ -4,6 +4,7 @@ using System.Collections;
 public class EnergySystem : MonoBehaviour
 {
 	public float currentEnergy = 1.0f;
+	public float energyPenaltyStart = 0.35f;
 
 	public float rechargePerSecond;
 	public float rechargeDelay;
@@ -37,9 +38,13 @@ public class EnergySystem : MonoBehaviour
 		// At "minEnergyDamageMultiplier" energy or below, "energyDamagePenalty" is dealt
 		// At 1.0f energy, 1.0f damage is dealt, with a linear scale anywhere between
 		float energyMultiplier = (this.currentEnergy - WeaponDescManager.instance.minEnergyDamageMultiplier)
-			/ ( 1.0f -  WeaponDescManager.instance.minEnergyDamageMultiplier );
+			/ ( this.energyPenaltyStart -  WeaponDescManager.instance.minEnergyDamageMultiplier );
 
 		energyMultiplier = Mathf.Clamp01( energyMultiplier );
+		if(this.currentEnergy > this.energyPenaltyStart)
+		{
+			return 1.0f;
+		}
 		return Mathf.Lerp( WeaponDescManager.instance.energyDamagePenalty, 1.0f, energyMultiplier );
 	}
 }
