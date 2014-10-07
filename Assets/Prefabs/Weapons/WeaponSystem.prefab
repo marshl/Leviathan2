@@ -1365,7 +1365,7 @@ MonoBehaviour:
   collisionType: 2
   prefab: {fileID: 100002, guid: c551c005f85af8f41bf40b0d4d6243e6, type: 2}
   count: 50
-  moveSpeed: 5000
+  moveSpeed: 2500
   maxDistance: 50000
   damage: 200
   areaOfEffect: 0
@@ -1418,7 +1418,7 @@ MonoBehaviour:
   aoeRadius: 5
   passesThroughTargets: 0
   smartBullet: 0
-  fadeOut: -1
+  fadeOut: 1
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1
