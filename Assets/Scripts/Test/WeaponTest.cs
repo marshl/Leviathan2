@@ -76,8 +76,13 @@ public class WeaponTest : BaseWeaponManager
 		{
 			foreach ( BaseHealth dummy in this.targetDummies )
 			{
-				dummy.currentHealth = dummy.maxHealth;
+				dummy.FullHeal();
 				dummy.gameObject.SetActive( true );
+			}
+
+			foreach ( WeaponBase weapon in this.weapons )
+			{
+				weapon.ammunition = weapon.weaponDesc.ammunitionMax;
 			}
 		}
 
@@ -108,6 +113,8 @@ public class WeaponTest : BaseWeaponManager
 
 	private void OnGUI()
 	{
+		WeaponBase currentWeapon = this.weapons[this.weaponIndex];
+
 		if ( this.currentTarget != null )
 		{
 			Vector2 screenPos = Camera.main.WorldToViewportPoint( this.currentTarget.transform.position );
@@ -123,18 +130,28 @@ public class WeaponTest : BaseWeaponManager
 		EnergySystem energy = this.GetComponent<EnergySystem>();
 		GUI.Label( new Rect( 15, 15, 150, 50 ), "Energy: " + energy.currentEnergy.ToString("0.00") + "/1.0" );
 		GUI.Label( new Rect( 15, 50, 150, 50 ), "Damage Scale: " + energy.GetDamageScale().ToString("0.00") );
-		GUI.Label( new Rect( 15, 85, 150, 50 ), "Current Weapon: " + this.weapons[this.weaponIndex].weaponDesc.label );
+		GUI.Label( new Rect( 15, 85, 150, 50 ), "Current Weapon: " + currentWeapon.weaponDesc.label );
 	
-		SpinUpWeapon spinUpWeapon = this.weapons[this.weaponIndex] as SpinUpWeapon;
+		SpinUpWeapon spinUpWeapon = currentWeapon as SpinUpWeapon;
 		if ( spinUpWeapon != null )
 		{
 			GUI.Label( new Rect( 15, 120, 150, 50 ), "Spin: " + spinUpWeapon.currentSpin + "/" + spinUpWeapon.spinUpDesc.spinUpTime );
 		}
 
-		ChargeUpWeapon chargeUpWeapon = this.weapons[this.weaponIndex] as ChargeUpWeapon;
+		ChargeUpWeapon chargeUpWeapon = currentWeapon as ChargeUpWeapon;
 		if ( chargeUpWeapon != null )
 		{
 			GUI.Label( new Rect( 15, 155, 150, 50 ), "Charge: " + chargeUpWeapon.currentCharge + "/" + chargeUpWeapon.chargeUpDesc.chargeUpTime );
+		}
+
+		if ( currentWeapon.weaponDesc.usesAmmunition )
+		{
+			GUI.Label( new Rect( 15, 180, 150, 50 ), "Ammunition: " + currentWeapon.ammunition + "/" + currentWeapon.weaponDesc.ammunitionMax );
+		}
+
+		if ( currentWeapon.weaponDesc.requiresWeaponLock )
+		{
+			GUI.Label( new Rect( 15, 215, 150, 50 ), "Lock: " + currentWeapon.currentLockOn + "/" + currentWeapon.weaponDesc.lockOnDuration  );
 		}
 	}
 }

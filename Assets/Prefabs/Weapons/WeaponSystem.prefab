@@ -1332,7 +1332,7 @@ MonoBehaviour:
   aoeRadius: 25
   passesThroughTargets: 0
   smartBullet: 1
-  fadeOut: -1
+  fadeOut: 1
   turnRate: 25
   canAngleOut: 0
   maxDetectionAngle: .150000006
@@ -1462,9 +1462,9 @@ MonoBehaviour:
   damage: 10
   areaOfEffect: 0
   aoeRadius: 0
-  passesThroughTargets: 1
+  passesThroughTargets: 0
   smartBullet: 0
-  fadeOut: -1
+  fadeOut: 1
 --- !u!114 &11400024
 MonoBehaviour:
   m_ObjectHideFlags: 1

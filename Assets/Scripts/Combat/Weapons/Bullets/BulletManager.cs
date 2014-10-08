@@ -16,7 +16,7 @@ public enum WEAPON_TYPE : int
 	FIGHTER_LIGHT_LASER_1,
 	FIGHTER_LIGHT_LASER_2,
 	FIGHTER_LIGHT_LASER_3,
-	
+
 	FIGHTER_ENERGY_CHAINGUN_1,
 	FIGHTER_PARTICLE_ACCELERATOR_1,
 	FIGHTER_ION_GUN_1,
@@ -42,7 +42,7 @@ public enum COLLISION_TYPE : int
 /// The singleton class that handles the creation and allocation of bullets in the game scene
 /// Bullet descriptors should be attached to this object
 /// </summary>
-public class BulletManager : MonoBehaviour 
+public class BulletManager : MonoBehaviour
 {
 	public static BulletManager instance;
 
@@ -78,9 +78,9 @@ public class BulletManager : MonoBehaviour
 	private void Start()
 	{
 		this.bulletDictionary = new Dictionary<WEAPON_TYPE, BulletBucket>();
-	
+
 		foreach ( KeyValuePair<WEAPON_TYPE, BulletDescriptor> pair in BulletDescriptorManager.instance.descMap )
-		{ 
+		{
 			if ( pair.Value.smartBullet == false )
 			{
 				this.CreateBulletBucket( pair.Value );
@@ -107,46 +107,45 @@ public class BulletManager : MonoBehaviour
 			bulletObj = bulletScript.gameObject;
 			bulletObj.transform.position = _firePoint.transform.position;
 			bulletObj.transform.rotation = Quaternion.LookRotation( _firePoint.transform.forward );
+		
+			bulletObj.SetActive( true );
+			bulletScript.Reset();
+			bulletScript.enabled = true;
 		}
 		else // Smart bullets
 		{
-			if ( Network.peerType != NetworkPeerType.Disconnected )
+#if UNITY_EDITOR
+			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
-				bulletObj = Network.Instantiate( 
-			        desc.prefab,
-			        _firePoint.transform.position,
-			        Quaternion.LookRotation( _firePoint.transform.forward ),
-			        0) as GameObject;
-
+				bulletObj = GameObject.Instantiate(
+					desc.prefab,
+					_firePoint.transform.position,
+					Quaternion.LookRotation( _firePoint.transform.forward ) ) as GameObject;
 			}
 			else
+#endif
 			{
-				bulletObj = GameObject.Instantiate( 
-		           desc.prefab,
-		           _firePoint.transform.position, 
-		           Quaternion.LookRotation( _firePoint.transform.forward ) ) as GameObject;
-
-				BaseHealth bulletHealth = bulletObj.GetComponent<BaseHealth>();
-				bulletHealth.Owner = _weapon.source.health.Owner;
+				bulletObj = Network.Instantiate(
+					desc.prefab,
+					_firePoint.transform.position,
+					Quaternion.LookRotation( _firePoint.transform.forward ),
+					0) as GameObject;
 			}
 			bulletScript = bulletObj.GetComponent<BulletBase>();
+
+			BaseHealth bulletHealth = bulletObj.GetComponent<BaseHealth>();
+			bulletHealth.Owner = _weapon.source.health.Owner;
 		}
-		            
-		bulletScript.Reset();
+
 		bulletScript.state = BulletBase.BULLET_STATE.ACTIVE_OWNED;
-		bulletScript.enabled = true;
 		bulletScript.damageScale = _damageScale;
-
-		bulletObj.SetActive( true );
-		// If it was fired by another player, its collider would be turned off
-		bulletObj.collider.enabled = true; 
-
-		bulletScript.source = _weapon.source;// TODO: Crap, just realised this ain't gonna fly when networked. Will have to set up target manager
+		bulletScript.source = _weapon.source;
 		if ( _weapon.source.collider != null )
 		{
 			Physics.IgnoreCollision( bulletObj.collider, _weapon.source.collider );
 		}
-		  
+
+		// Bullet spread
 		if ( _weapon.weaponDesc.spread != 0.0f )
 		{
 			Vector3 perp = Common.RandomDirection();
@@ -156,10 +155,11 @@ public class BulletManager : MonoBehaviour
 			bulletObj.transform.Rotate( perp, UnityEngine.Random.Range( -_weapon.weaponDesc.spread, _weapon.weaponDesc.spread ) );
 		}
 
+		// Tell everyone else to fire the bullet
 		if ( desc.smartBullet == false
 		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendShootBulletMessage( 
+			GameNetworkManager.instance.SendShootBulletMessage(
 	           _weapon.weaponType,
 	           bulletScript.index,
 	           _firePoint.transform.position,
@@ -169,15 +169,16 @@ public class BulletManager : MonoBehaviour
 		bulletScript.OnShoot();
 		_weapon.source.OnBulletCreated( _weapon, bulletScript );
 
-		if ( desc.smartBullet == true 
-		    && Network.peerType != NetworkPeerType.Disconnected )
+		// Tell everyone else about the owner of this bullet
+		if ( desc.smartBullet == true
+		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			BaseHealth target = bulletObj.GetComponent<SeekingBullet>().target;
 			NetworkViewID viewID = target != null ? target.networkView.viewID : NetworkViewID.unassigned;
-			
-			GameNetworkManager.instance.SendSetSmartBulletTeamMessage( 
-                  bulletObj.networkView.viewID, 
-			      GamePlayerManager.instance.myPlayer.id, 
+
+			GameNetworkManager.instance.SendSetSmartBulletTeamMessage(
+                  bulletObj.networkView.viewID,
+			      GamePlayerManager.instance.myPlayer.id,
                   viewID );
 		}
 
@@ -194,12 +195,12 @@ public class BulletManager : MonoBehaviour
 	/// <param name="_position">_position.</param>
 	/// <param name="_forward">The forward direction of the bullet</param>
 	public void CreateBulletRPC( int _ownerID, float _creationTime, WEAPON_TYPE _weaponType, int _index, Vector3 _position, Quaternion _rot )
-	{  
+	{
 		BulletBase bulletScript = this.bulletDictionary[_weaponType].GetAvailableBullet( _index, _ownerID );
 
 		bulletScript.Reset();
 		bulletScript.state = BulletBase.BULLET_STATE.ACTIVE_NOT_OWNED;
-		
+
 		GameObject bulletObj = bulletScript.gameObject;
 		bulletObj.SetActive( true );
 		bulletObj.transform.position = _position;
@@ -220,26 +221,44 @@ public class BulletManager : MonoBehaviour
 	{
 		if ( _bullet.desc.smartBullet == true )
 		{
-			_bullet.enabled = false; // This should hopefully prevent multiple collisions
-
-			if ( Network.peerType != NetworkPeerType.Disconnected )
-			{
-				if ( _bullet.networkView.isMine )
-				{
-					this.seekingBulletMap.Remove( _bullet.networkView.viewID );
-
-					TargetManager.instance.RemoveTarget( _bullet.networkView.viewID );
-					Network.Destroy( _bullet.gameObject );
-					GameNetworkManager.instance.SendDestroySmartBulletMessage( _bullet.networkView.viewID );
-				}
-			}
-			else
-			{
-				GameObject.Destroy( _bullet.gameObject );
 #if UNITY_EDITOR
+			if ( Network.peerType == NetworkPeerType.Disconnected )
+			{
+				if ( _bullet.desc.fadeOut > 0.0f )
+				{
+					_bullet.OnFadeBegin();
+				}
+				else
+				{
+					GameObject.Destroy( _bullet.gameObject );
+				}
+
 				TargetManager.instance.RemoveDebugTarget( _bullet.GetComponent<BaseHealth>().debugTargetID );
 				this.debugSeekingBulletMap.Remove( ((SeekingBullet)_bullet).debugID );
+			}
+			else
 #endif
+			{
+				if ( _bullet.networkView.isMine == false )
+				{
+					Debug.LogWarning( "You cannot destroy a seeking bullet you don't own!", _bullet );
+					return;
+				}
+				this.seekingBulletMap.Remove( _bullet.networkView.viewID );
+
+				TargetManager.instance.RemoveTarget( _bullet.networkView.viewID );
+				GameNetworkManager.instance.SendDestroySmartBulletMessage( _bullet.networkView.viewID );
+
+				// If it fades, fade it out and let its own script destroy it
+				if ( _bullet.desc.fadeOut > 0.0f )
+				{
+					_bullet.OnFadeBegin();
+				}
+				else
+				{
+					Network.Destroy( _bullet.gameObject );
+				}
+
 			}
 		}
 		else //Dumb bullet
@@ -251,16 +270,14 @@ public class BulletManager : MonoBehaviour
 				return;
 			}
 
-			BulletBase bulletScript = this.bulletDictionary[_bullet.weaponType].GetAvailableBullet( _bullet.index, -1 );
-
-			if ( bulletScript.desc.fadeOut > 0.0f )
+			if ( _bullet.desc.fadeOut > 0.0f )
 			{
-				bulletScript.OnFadeBegin();
+				_bullet.OnFadeBegin();
 			}
 			else
 			{
-				bulletScript.gameObject.SetActive( false );
-				bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
+				_bullet.gameObject.SetActive( false );
+				_bullet.state = BulletBase.BULLET_STATE.INACTIVE;
 			}
 
 			if ( _bullet.state == BulletBase.BULLET_STATE.ACTIVE_OWNED )
@@ -272,21 +289,27 @@ public class BulletManager : MonoBehaviour
 			}
 		}
 	}
-	
+
 	public void DestroySmartBulletRPC( NetworkViewID _viewID )
 	{
 		TargetManager.instance.RemoveTarget( _viewID );
 
-		SeekingBullet bullet = null; 
+		SeekingBullet bullet = null;
 		if ( this.seekingBulletMap.TryGetValue( _viewID, out bullet ) )
 		{
 			this.seekingBulletMap.Remove( _viewID );
+
+			if ( bullet != null && bullet.desc.fadeOut > 0.0f )
+			{
+				bullet.OnFadeBegin();
+				// Bullet will handle its own destruction
+			}
 		}
 		else
 		{
 			DebugConsole.Error( "Could not find bullet with ID " + _viewID );
 		}
-	} 
+	}
 
 	public void DestroyDumbBulletRPC( WEAPON_TYPE _weaponType, int _index, Vector3 _bulletPosition )
 	{
@@ -303,7 +326,7 @@ public class BulletManager : MonoBehaviour
 			bulletScript.state = BulletBase.BULLET_STATE.INACTIVE;
 		}
 	}
-	
+
 	private void CreateBulletBucket( BulletDescriptor _desc )
 	{
 		if ( this.bulletDictionary.ContainsKey( _desc.weaponType ) )
@@ -319,7 +342,6 @@ public class BulletManager : MonoBehaviour
 		LocalBulletBucket bulletBucket = bucketObj.AddComponent<LocalBulletBucket>();
 		bulletBucket.Initialise( _desc, false );
 		this.bulletDictionary.Add ( _desc.weaponType, bulletBucket );
-
 	}
 
 	public BaseHealth GetNextMissileLock( BaseWeaponManager _weaponManager, int _direction )

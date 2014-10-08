@@ -43,21 +43,32 @@ public class SeekingBullet : BulletBase
 
 	protected override void Update()
 	{
-		if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
-		  && this.target != null )
+		base.Update();
+
+		if ( this.state != BULLET_STATE.FADING )
 		{
-			this.TurnToTarget();
-			Vector3 vectorToTarget = (target.transform.position - this.transform.position).normalized;
-			float angleToTarget = Vector3.Angle( this.transform.forward, vectorToTarget );
-			if ( this.seekingDesc.canAngleOut
-			  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
+			if ( this.health.currentHealth <= 0.0f )
 			{
-				this.target = null;
+				BulletManager.instance.DestroyLocalBullet( this );
+			}
+			else
+			{
+				if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
+				  && this.target != null )
+				{
+					this.TurnToTarget();
+					Vector3 vectorToTarget = (target.transform.position - this.transform.position).normalized;
+					float angleToTarget = Vector3.Angle( this.transform.forward, vectorToTarget );
+					if ( this.seekingDesc.canAngleOut
+					  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
+					{
+						this.target = null;
+					}
+				}
+
+				this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
 			}
 		}
-
-		this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
-		base.Update();
 	}
 
 	/// <summary>

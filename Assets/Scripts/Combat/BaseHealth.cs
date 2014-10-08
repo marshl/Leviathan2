@@ -124,5 +124,6 @@ public class BaseHealth : MonoBehaviour
 	{
 		currentHealth = maxHealth;
 		currentShield = maxShield;
+		this.shieldRegenTimer = 0.0f;
 	}
 }

@@ -53,10 +53,33 @@ public class BulletBase : MonoBehaviour
 		if ( this.state == BULLET_STATE.FADING )
 		{
 			this.fadeTime += Time.deltaTime;
+
+			TrailRenderer trail = this.GetComponent<TrailRenderer>();
+			if ( trail != null )
+			{
+				this.GetComponent<TrailRenderer>().time = (1.0f - this.fadeTime / this.desc.fadeOut )
+					* this.desc.prefab.GetComponent<TrailRenderer>().time;
+			}
+
 			if ( this.fadeTime >= this.desc.fadeOut )
 			{
-				this.state = BULLET_STATE.INACTIVE;
-				this.gameObject.SetActive( false );
+				// If it is a missile, it will have to be destroyed
+				if ( this.desc.smartBullet )
+				{
+					if ( Network.peerType == NetworkPeerType.Disconnected )
+					{
+						GameObject.Destroy( this.gameObject );
+					}
+					else if ( this.networkView.isMine )
+					{
+						Network.Destroy( this.gameObject );
+					}
+				}
+				else // If not, then disable it
+				{
+					this.state = BULLET_STATE.INACTIVE;
+					this.gameObject.SetActive( false );
+				}
 			}
 		}
 		else
@@ -83,9 +106,10 @@ public class BulletBase : MonoBehaviour
 
 			}
 
-			lastPosition = this.transform.position;
+			this.lastPosition = this.transform.position;
 		}
 	}
+
 	/// <summary>
 	/// Custom collision detection method to handle high-speed physics.
 	/// </summary>
@@ -169,7 +193,7 @@ public class BulletBase : MonoBehaviour
 	{
 		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
 		if ( this.source != null
-		    && this.source.collider == _collider )
+		  && this.source.collider == _collider )
 		{
 			return;
 		}
@@ -182,16 +206,20 @@ public class BulletBase : MonoBehaviour
 	          this.desc.damage,
 	          false, //TODO: Friendly fire bool
 	          this.source.health.Owner );
-		}
-		
-		BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
-		if ( health != null )
-		{
-			this.OnTargetCollision( health, desc.passesThroughTargets );
+
+			BulletManager.instance.DestroyLocalBullet( this );
 		}
 		else
 		{
-			this.OnEmptyCollision();
+			BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
+			if ( health != null )
+			{
+				this.OnTargetCollision( health, desc.passesThroughTargets );
+			}
+			else
+			{
+				this.OnEmptyCollision();
+			}
 		}
 	}
 
@@ -209,11 +237,7 @@ public class BulletBase : MonoBehaviour
 	/// <param name="_target">_target.</param>
 	public virtual void OnTargetCollision( BaseHealth _health, bool _passingThrough )
 	{
-		//DebugConsole.Log("Collided with " + _health.name + " in target collision");
-		if ( _health.GetComponent<SeekingBullet>() == null )
-		{
-			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.Owner );
-		}
+		_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.Owner );
 
 		if ( !_passingThrough )
 		{
@@ -240,7 +264,7 @@ public class BulletBase : MonoBehaviour
 			emitter.emit = false;
 		}
 
-		//TODO: Line renderers
+		// The trail renderer is shrunk in Update()
 	}
 
 	/// <summary>
@@ -250,6 +274,7 @@ public class BulletBase : MonoBehaviour
 	{
 		this.source = null;
 
+		this.collider.enabled = true;
 		//this.specialCollision = false;
 		this.distanceTravelled = 0.0f;
 
@@ -263,6 +288,14 @@ public class BulletBase : MonoBehaviour
 		foreach ( ParticleEmitter emitter in this.GetComponentsInChildren<ParticleEmitter>() )
 		{
 			emitter.emit = true;
+		}
+
+		TrailRenderer trail = this.GetComponent<TrailRenderer>();
+		if ( trail != null )
+		{
+			float originalLength = this.desc.prefab.GetComponent<TrailRenderer>().time;
+
+			trail.time = originalLength;
 		}
 	}
 }

@@ -201,7 +201,7 @@ public class TargetManager : MonoBehaviour
 		}
 
 		// Ignore targets not in the team target list
-		if ( ((int)_health.Owner.team & _weaponScript.restrictions.teams ) == 0 ) 
+		if ( _health.Owner == null || ((int)_health.Owner.team & _weaponScript.restrictions.teams ) == 0 ) 
 		{
 			return false;
 		}
