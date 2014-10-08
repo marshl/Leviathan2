@@ -62,8 +62,7 @@ public class CapitalShipMaster : MonoBehaviour
 
 	private void Update()
 	{
-		if ( Network.peerType == NetworkPeerType.Disconnected
-		  && this.ownerInitialised == false 
+		if ( this.ownerInitialised == false 
 		  && this.ownerControl.ownerID != null )
 		{
 			this.OwnerInitialise();
