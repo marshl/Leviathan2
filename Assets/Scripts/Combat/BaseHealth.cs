@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
 public class BaseHealth : MonoBehaviour 
 {
 	public TARGET_TYPE targetType;

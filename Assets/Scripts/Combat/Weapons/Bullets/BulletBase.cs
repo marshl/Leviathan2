@@ -115,12 +115,17 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	protected virtual void DetectRaycastCollision()
 	{
+		if ( this.transform.position == this.lastPosition )
+		{
+			return;
+		}
+
 		Ray positionCheckRay = new Ray( this.lastPosition - this.transform.position, this.transform.position);
 		RaycastHit[] rayInfo;
-		float distance = Vector3.Distance (this.transform.position, this.lastPosition);
+		float distance = Vector3.Distance( this.transform.position, this.lastPosition );
 		int layerMask = ~(1 << 10);
 		//print(layerMask);
-		rayInfo = Physics.RaycastAll (positionCheckRay, distance, layerMask );
+		rayInfo = Physics.RaycastAll( positionCheckRay, distance, layerMask );
 
 		foreach (RaycastHit hit in rayInfo)
 		{
@@ -139,6 +144,11 @@ public class BulletBase : MonoBehaviour
 
 	protected virtual void DetectSphereCollision()
 	{
+		if ( this.transform.position == this.lastPosition )
+		{
+			return;
+		}
+
 		RaycastHit[] sphereInfo;
 		float distance = Vector3.Distance( this.lastPosition, this.transform.position );
 		int layerMask = ~(1 << 10);
@@ -237,7 +247,10 @@ public class BulletBase : MonoBehaviour
 	/// <param name="_target">_target.</param>
 	public virtual void OnTargetCollision( BaseHealth _health, bool _passingThrough )
 	{
-		_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.Owner );
+		if ( _health.Owner == null || _health.Owner.team != this.source.health.Owner.team )
+		{
+			_health.DealDamage( this.desc.damage * this.damageScale, true, this.source.health.Owner );
+		}
 
 		if ( !_passingThrough )
 		{

@@ -38,7 +38,7 @@ public class CapitalShipComponent : MonoBehaviour
 			this.ParentToOwnerShip( this.health.Owner );
 		}
 	
-		if ( !this.networkView.isMine )
+		if ( Network.peerType != NetworkPeerType.Disconnected && !this.networkView.isMine )
 		{
 			this.enabled = false;
 		}

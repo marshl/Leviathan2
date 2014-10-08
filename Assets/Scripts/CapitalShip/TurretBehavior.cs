@@ -43,6 +43,8 @@ public class TurretBehavior : BaseWeaponManager
 		if ( this.ownerInitialised == false 
 		  && this.ownerControl.ownerID != null )
 		{
+			this.restrictions.maxDistance = this.weapon.weaponDesc.bulletDesc.maxDistance;
+
 			int playerID = this.ownerControl.ownerID.Value;
 			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( playerID );
 			if ( player != null && player.capitalShip != null )
@@ -190,7 +192,7 @@ public class TurretBehavior : BaseWeaponManager
 
 	private void OwnerInitialise()
 	{
-		this.ownerInitialised = false;
+		this.ownerInitialised = true;
 
 		int ownerID = this.ownerControl.ownerID.Value;
 		this.health.Owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
@@ -204,7 +206,7 @@ public class TurretBehavior : BaseWeaponManager
 
 		this.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 
-		if ( !this.networkView.isMine )
+		if ( Network.peerType != NetworkPeerType.Disconnected && !this.networkView.isMine )
 		{
 			this.enabled = false;
 		}

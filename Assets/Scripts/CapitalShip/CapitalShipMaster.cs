@@ -46,6 +46,11 @@ public class CapitalShipMaster : MonoBehaviour
 			this.turrets.CreateTurrets();
 
 			this.SetTeamColours();
+
+			foreach ( CapitalShipSubHealth subHealth in this.GetComponentsInChildren<CapitalShipSubHealth>() )
+			{
+				subHealth.Owner = this.health.Owner;
+			}
 		}
 	}
 #endif
@@ -57,7 +62,8 @@ public class CapitalShipMaster : MonoBehaviour
 
 	private void Update()
 	{
-		if ( this.ownerInitialised == false 
+		if ( Network.peerType == NetworkPeerType.Disconnected
+		  && this.ownerInitialised == false 
 		  && this.ownerControl.ownerID != null )
 		{
 			this.OwnerInitialise();
@@ -128,6 +134,11 @@ public class CapitalShipMaster : MonoBehaviour
 		{
 			this.enabled = false;
 			this.movement.enabled = false;
+		}
+
+		foreach ( CapitalShipSubHealth subHealth in this.GetComponentsInChildren<CapitalShipSubHealth>() )
+		{
+			subHealth.Owner = this.health.Owner;
 		}
 
 		this.SetTeamColours();
