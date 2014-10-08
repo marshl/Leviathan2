@@ -1002,7 +1002,7 @@ MonoBehaviour:
   guiExtents: []
   shieldGenerators: 10
   baseShields: 500
-  overrideShieldGenerators: 0
+  overrideShieldGenerators: 1
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
