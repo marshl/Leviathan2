@@ -2307,7 +2307,7 @@ MonoBehaviour:
   fireInSync: 0
   usesEnergy: 0
   energyCostPerShot: 0
-  usesAmmunition: 1
+  usesAmmunition: 0
   ammunitionMax: 10
   requiresWeaponLock: 1
   lockOnDuration: 3
@@ -3172,6 +3172,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400030, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+      propertyPath: usesAmmunition
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
