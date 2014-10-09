@@ -10,7 +10,7 @@ public class ShieldGeneratorHealth : BaseHealth {
 
 	public CapitalShipMaster capitalShip;
 
-	public override void Update()
+	protected override void Update()
 	{
 		if ( this.currentHealth <= 0 && kaboom == false )
 		{
@@ -19,7 +19,7 @@ public class ShieldGeneratorHealth : BaseHealth {
 			kaboom = true;
 			Debug.Log ("Kaboom!");
 		}
-		else
+		else if ( this.networkView.isMine )
 		{
 			this.RegenerateShields();
 		}

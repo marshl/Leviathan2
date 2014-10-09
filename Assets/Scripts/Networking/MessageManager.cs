@@ -24,7 +24,8 @@ public class MessageManager : MonoBehaviour
 
 	public List<Message> messages;
 
-	private string[] playerMessageColours = { "#FFFFFFFF", "#FF00FFFF", "#FFFF00FF", "#00FFFFFF" };
+	public Color[] playerColours;
+	//private string[] playerMessageColours = { "#FFFFFFFF", "#FF00FFFF", "#FFFF00FF", "#00FFFFFF" };
 
 	private void Awake()
 	{
@@ -55,11 +56,9 @@ public class MessageManager : MonoBehaviour
 		}
 
 		Message msg = this.messages[_messageIndex];
-		int colourID = msg.senderID > 0 ? msg.senderID % this.playerMessageColours.Length : 0;
-		string colour = this.playerMessageColours[ colourID ];
 
 		return (msg.showTimestamp ? msg.timeReceived.ToString( "hh:mm tt" ) + " - " : "")
-			+ "<color=" + colour + ">"
+			+ "<color=" + this.GetPlayerColour( msg.senderID ) + ">"
 			+ "Player " + msg.senderID + ": "
 			+ msg.message + "</color>\n";
 	}
@@ -68,5 +67,10 @@ public class MessageManager : MonoBehaviour
 	{
 		this.messages.Clear();
 	}
-	
+
+	public Color GetPlayerColour( int _index )
+	{
+		int colourID = _index > 0 ? _index % this.playerColours.Length : 0;
+		return this.playerColours[ colourID ];
+	}
 }

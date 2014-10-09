@@ -286,7 +286,8 @@ public class FighterMaster : MonoBehaviour
 	public void Undock()
 	{
 		this.rigidbody.constraints = RigidbodyConstraints.None;
-	
+		this.rigidbody.angularVelocity = Vector3.zero;
+
 		this.state = FIGHTERSTATE.UNDOCKING;
 		this.currentSlot.landedFighter = null;
 	

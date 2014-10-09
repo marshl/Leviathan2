@@ -59,39 +59,45 @@ public class BaseHealth : MonoBehaviour
 	public virtual void DealDamage( float _damage, bool _broadcast, GamePlayer _sourcePlayer )
 	{
 		this.lastHitBy = _sourcePlayer;
-		//TODO: Should this be set at all if indestructible?
 
 		if ( this.isIndestructible == true )
 		{
 			return;
 		}
 
-		if( this.currentShield > 0 )
+		// If it's mine, take the damage
+		if ( Network.peerType == NetworkPeerType.Disconnected || this.networkView.isMine )
 		{
-			this.currentShield -= _damage;
-			if( this.currentShield < 0 ) //We inflict damage to the hull based on how much the shield is below 0
+			if( this.currentShield > 0 )
 			{
-				//Shield is a negative number right now, which is the leftover damage from the hit
-				this.currentHealth -= (this.currentShield * -1); //Subtracting the sign-changed number for readability
-				this.currentShield = 0;
+				this.currentShield -= _damage;
+				if( this.currentShield < 0 ) //We inflict damage to the hull based on how much the shield is below 0
+				{
+					//Shield is a negative number right now, which is the leftover damage from the hit
+					this.currentHealth -= (this.currentShield * -1); //Subtracting the sign-changed number for readability
+					this.currentShield = 0;
+				}
+			}
+			else
+			{
+				this.currentHealth -= _damage;
+			}
+
+			this.shieldRegenTimer = this.shieldRegenDelay;
+
+			if ( Network.peerType != NetworkPeerType.Disconnected )
+			{
+				GameNetworkManager.instance.SendSetHealthMessage( this.networkView.viewID, this.currentHealth, this.currentShield );
 			}
 		}
-		else
-		{
-			this.currentHealth -= _damage;
-		}
-
-		this.shieldRegenTimer = this.shieldRegenDelay;
-
-		if ( _broadcast
-		  && this.networkView != null
-		  && Network.peerType != NetworkPeerType.Disconnected )
+		// Otherwise tell the owner about that damage, and let him tell me the health
+		else if ( _broadcast )
 		{
 			GameNetworkManager.instance.SendDealDamageMessage( this.networkView.viewID, _damage, _sourcePlayer );
 		}
 	}
 
-	public virtual void Update()
+	protected virtual void Update()
 	{
 		if ( this.currentHealth > 0.0f )
 		{
@@ -101,21 +107,21 @@ public class BaseHealth : MonoBehaviour
 
 	public virtual void RegenerateShields()
 	{
-		if( this.shieldRegenTimer <= 0 )
+		this.shieldRegenTimer = Mathf.Max( this.shieldRegenTimer - Time.deltaTime, 0.0f );
+
+		if( this.shieldRegenTimer <= 0.0f )
 		{
 			this.shieldRegenTimer = 0;
-			if( this.currentShield < this.maxShield )
+			if ( this.currentShield < this.maxShield )
 			{
-				this.currentShield += (this.maxShield * this.shieldRegen * Time.deltaTime);
-				if( this.currentShield > this.maxShield )
+				this.currentShield = Mathf.Min( this.maxShield, this.currentShield + this.maxShield * this.shieldRegen * Time.deltaTime );
+			
+				//TODO: This might be way too frequent an update
+				if ( Network.peerType != NetworkPeerType.Disconnected )
 				{
-					this.currentShield = this.maxShield;
+					GameNetworkManager.instance.SendSetHealthMessage( this.networkView.viewID, this.currentHealth, this.currentShield );
 				}
 			}
-		}
-		else
-		{
-			this.shieldRegenTimer -= Time.deltaTime;
 		}
 	}
 
@@ -124,5 +130,10 @@ public class BaseHealth : MonoBehaviour
 		currentHealth = maxHealth;
 		currentShield = maxShield;
 		this.shieldRegenTimer = 0.0f;
+
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendSetHealthMessage( this.networkView.viewID, this.currentHealth, this.currentShield );
+		}
 	}
 }

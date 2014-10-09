@@ -46,12 +46,14 @@ public class NetworkPositionControl : MonoBehaviour
 #if UNITY_EDITOR
 	public Vector3 velocity;
 	public Vector3 rotVel;
+
+	public int ownerID = -1;
 #endif
 
 	// Are we going to try to maintain our networked position?
 	private bool readNewPositionData = true;
 
-	public int ownerID = -1;
+
 
 	// Unity Callback: Do not change signature
 	private void Awake()
@@ -73,8 +75,8 @@ public class NetworkPositionControl : MonoBehaviour
 	{
 		if ( _stream.isWriting == true ) 
 		{
-			Vector3 pos = this.transform.localPosition;
-			Quaternion rot = this.transform.localRotation;
+			Vector3 pos = this.transform.position;
+			Quaternion rot = this.transform.rotation;
 			_stream.Serialize( ref pos );
 			_stream.Serialize( ref rot );
 			if ( this.rigidbody != null )
@@ -143,8 +145,9 @@ public class NetworkPositionControl : MonoBehaviour
 		{
 			// This is separate to facilitate local testing
 			this.TransformLerp( Network.time );
-
+#if UNITY_EDITOR
 			this.ownerID = Common.NetworkID( this.networkView.viewID.owner );
+#endif
 		}
 	}
 
@@ -189,7 +192,7 @@ public class NetworkPositionControl : MonoBehaviour
             
             if ( this.lerp == true )
 			{
-				this.transform.localPosition = Vector3.Lerp( this.transform.localPosition, targetPosition, Time.deltaTime * this.lerpRate * this.distTravelled );
+				this.transform.position = Vector3.Lerp( this.transform.position, targetPosition, Time.deltaTime * this.lerpRate * this.distTravelled );
 				this.transform.rotation = Quaternion.Slerp( this.transform.rotation, targetRotation, Time.deltaTime * this.lerpRate );
 			}
 			else

@@ -15,6 +15,9 @@ public class PlayerDisplayRow
 
 	public void Display()
 	{
+		GUI.contentColor = this.player != null
+			? MessageManager.instance.GetPlayerColour( player.id ) : Color.white;
+
 		this.nameGUI.Label();
 		this.ipGUI.Label();
 		this.pingGUI.Label();
@@ -535,6 +538,8 @@ public class MenuGUI : MonoBehaviour
 		{
 			row.Display();
 		}
+
+		GUI.contentColor = Color.white;
 
 		if ( this.forceFighter1Button.Button() )
 		{

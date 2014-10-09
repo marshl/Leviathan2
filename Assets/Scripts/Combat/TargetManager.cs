@@ -73,7 +73,8 @@ public class TargetManager : MonoBehaviour
 				return;
 			}
 
-			DebugConsole.Log( "Adding target " + viewID + " (" + _health.gameObject.name + ") to TargetManager", _health );
+			DebugConsole.Log( "Adding target " + viewID + " (" + _health.gameObject.name
+			                 + ") to TargetManager", _health );
 			this.targetMap.Add( viewID, _health );
 		}
 
@@ -269,11 +270,27 @@ public class TargetManager : MonoBehaviour
 		BaseHealth target;
 		if ( !this.targetMap.TryGetValue( _id, out target ) )
 		{
-			DebugConsole.Error( "Cannot find target with ID " + _id );
+			DebugConsole.Error( "Cannot find target with ID " + _id + " while trying to deal " + _damage
+			                   + " damage from player " + _sourcePlayer.id );
 			return;
 		}
-		target.DealDamage( _damage, false, _sourcePlayer );
 		DebugConsole.Log( target.gameObject.name + " has been dealt " + _damage, target );
+		target.DealDamage( _damage, false, _sourcePlayer );
+	}
+
+	public void OnSetHealthMessage( NetworkViewID _id, float _health, float _shield )
+	{
+		BaseHealth target;
+		if ( !this.targetMap.TryGetValue( _id, out target ) ) 
+		{
+			DebugConsole.Error( "Cannot find target with ID " + _id + " while trying to set health to "
+			                   + _health + " and shield to " + _shield );
+			return;
+		}
+		DebugConsole.Log( target.gameObject.name + " health set to " + _health
+		                 + "/" + target.maxHealth + " " + _shield + "/" + target.maxShield );
+		target.currentHealth = _health;
+		target.currentShield = _shield;
 	}
 
 	public BaseHealth GetCentreTarget( BaseWeaponManager _weaponScript )
@@ -337,26 +354,4 @@ public class TargetManager : MonoBehaviour
 		}
 		_weaponScript.currentTarget = validTargets[index];
 	}
-
-	//TODO: Shift this into its own script on the capital ship LM 07/05/14
-	/*public DockingBay.DockingSlot GetDockingSlotByID( int _id )
-	{
-
-		//This is a terrible, quick and dirty method. Grabs every docking bay in the scene,
-		//asks each bay if they have a slot of the ID. Each bay will return null if they do not
-		//or the bay ID if they do.
-		DockingBay[] allBays = GameObject.FindObjectsOfType<DockingBay>();
-
-		foreach( DockingBay bay in allBays )
-		{
-			DockingBay.DockingSlot slotByID = bay.GetSlotByID ( _id );
-			if(slotByID != null)
-			{
-				return slotByID;
-			}
-		}
-
-		DebugConsole.Log("No slot of ID " + _id + " found");
-		return null;
-	}*/
 }

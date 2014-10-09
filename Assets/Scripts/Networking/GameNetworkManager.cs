@@ -303,6 +303,19 @@ public class GameNetworkManager : BaseNetworkManager
 		TargetManager.instance.OnNetworkDamageMessage( _id, _damage, sourcePlayer );
 	}
 
+
+	public void SendSetHealthMessage( NetworkViewID _id, float _health, float _shield )
+	{
+		this.networkView.RPC( "OnSetHealthRPC", RPCMode.Others, _id, _health, _shield );
+	}
+
+	[RPC]
+	private void OnSetHealthRPC( NetworkViewID _id, float _health, float _shield )
+	{
+		TargetManager.instance.OnSetHealthMessage( _id, _health, _shield );
+	}
+
+
 	public void SendDockedMessage( NetworkViewID _id, TEAM _team, int landedSlot )
 	{
 		this.networkView.RPC( "OnFighterDockedRPC", RPCMode.Others, _id, (int)_team, landedSlot );
