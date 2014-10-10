@@ -72,11 +72,22 @@ public class BurstFireWeapon : WeaponBase
 	
 	public override bool SendFireMessage()
 	{
-		if ( this.isFiring == true
-		  || this.CanFire() == false
-		  || this.timeSinceBurst < this.burstFireDesc.timeBetweenBursts )
+
+		if( !this.burstFireDesc.isShotgun)
 		{
-			return false;
+			if ( this.isFiring == true
+			  || this.CanFire() == false
+			  || this.timeSinceBurst < this.burstFireDesc.timeBetweenBursts )
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if ( this.isFiring == true || this.CanFire() == false)
+			{
+				return false;
+			}
 		}
 
 		this.isFiring = true;

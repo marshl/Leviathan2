@@ -120,10 +120,15 @@ public class BulletBase : MonoBehaviour
 			return;
 		}
 
-		Ray positionCheckRay = new Ray( this.lastPosition - this.transform.position, this.transform.position);
+		Ray positionCheckRay = new Ray( this.lastPosition, this.lastPosition - this.transform.position);
+
+		//Vector3 positionDifference = this.transform.position - this.lastPosition;
+
+		//Debug.DrawRay (this.lastPosition,  Common.InvertVector(positionDifference) );
+
 		RaycastHit[] rayInfo;
 		float distance = Vector3.Distance( this.transform.position, this.lastPosition );
-		int layerMask = ~(1 << 10);
+		int layerMask = ~(1 << 8 | 1 << 10);
 		//print(layerMask);
 		rayInfo = Physics.RaycastAll( positionCheckRay, distance, layerMask );
 
@@ -151,7 +156,7 @@ public class BulletBase : MonoBehaviour
 
 		RaycastHit[] sphereInfo;
 		float distance = Vector3.Distance( this.lastPosition, this.transform.position );
-		int layerMask = ~(1 << 10);
+		int layerMask = ~(1 << 8 | 1 << 10);
 		//print(layerMask);
 		float sphereRadius = this.GetComponent<SphereCollider>().radius;
 		//print(sphereRadius);
@@ -207,6 +212,7 @@ public class BulletBase : MonoBehaviour
 		{
 			return;
 		}
+
 		
 		if ( this.desc.areaOfEffect )
 		{
