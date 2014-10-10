@@ -172,6 +172,40 @@ public class TargetManager : MonoBehaviour
 		return targetList;
 	}
 
+
+	//Note to self - this is probably inefficient
+	public List<BaseHealth> GetFighters( )
+	{
+		List<BaseHealth> targetList = new List<BaseHealth>();
+		#if UNITY_EDITOR
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			foreach ( KeyValuePair<int, BaseHealth> pair in this.debugTargetMap )
+			{
+				if(pair.Value.GetComponent<FighterMovement>() != null)
+				{
+					targetList.Add( pair.Value );
+				}
+			}
+		}
+		else
+			#endif
+		{
+			foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
+			{
+
+					if(pair.Value.GetComponent<FighterMovement>() != null)
+					{
+						targetList.Add( pair.Value );
+					}
+
+			}
+		}
+		
+		
+		return targetList;
+	}
+
 	public bool IsValidTarget( BaseHealth _health, BaseWeaponManager _weaponScript )
 	{
 		// Ignore dead targets

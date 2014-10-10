@@ -22,6 +22,8 @@ public class GameGUI : MonoBehaviour
 	public Texture healthBarTexture;
 	public Texture shieldBarTexture;
 	public Texture reticuleTexture;
+	public Texture friendlyReticuleTexture;
+	public Texture enemyReticuleTexture;
 
 	public float capitalHealthBarThickness;
 	public float capitalHealthBarOffset;
@@ -262,6 +264,8 @@ public class GameGUI : MonoBehaviour
 	
 	private void RenderCapitalShipDisplay()
 	{
+
+		RenderCapitalShipTargets();
 		if ( GamePlayerManager.instance.commander1 != null )
 		{
 			this.RenderCapitalShipHealth( GamePlayerManager.instance.commander1.capitalShip );
@@ -269,6 +273,71 @@ public class GameGUI : MonoBehaviour
 		if ( GamePlayerManager.instance.commander2 != null )
 		{
 			this.RenderCapitalShipHealth( GamePlayerManager.instance.commander2.capitalShip );
+		}
+	}
+
+	private void RenderCapitalShipTargets()
+	{
+		List<BaseHealth> targets = TargetManager.instance.GetFighters();
+		
+		foreach ( BaseHealth t in targets )
+		{
+			Vector3 toTarget = t.transform.position - this.player.capitalShip.capitalCamera.transform.position;
+			if ( Vector3.Dot( this.player.capitalShip.capitalCamera.transform.forward, toTarget.normalized ) > 0.0f )
+			{
+				Vector3 worldPos = t.transform.position;
+				
+				Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
+				screenPos.y = Screen.height - screenPos.y;
+				
+				//Rect r = this.GetHealthGUIRect( t );
+				Rect r = new Rect(0,0,0,0);
+				r.width = 50;
+				r.height = 50;
+				r.center = screenPos;
+
+				switch (this.player.team)
+				{
+				case TEAM.TEAM_1:
+					{
+						if(t.Owner.team == TEAM.TEAM_1)
+						{
+							GUI.DrawTexture( r, this.friendlyReticuleTexture );
+						}
+						if(t.Owner.team == TEAM.TEAM_2)
+						{
+							GUI.DrawTexture( r, this.enemyReticuleTexture );
+						}
+						if(t.Owner.team == TEAM.NEUTRAL)
+						{
+							GUI.DrawTexture( r, this.reticuleTexture );
+						}
+					}
+					break;
+				case TEAM.TEAM_2:
+					{
+						if(t.Owner.team == TEAM.TEAM_1)
+						{
+							GUI.DrawTexture( r, this.enemyReticuleTexture );
+						}
+						if(t.Owner.team == TEAM.TEAM_2)
+						{
+							GUI.DrawTexture( r, this.friendlyReticuleTexture );
+						}
+						if(t.Owner.team == TEAM.NEUTRAL)
+						{
+							GUI.DrawTexture( r, this.reticuleTexture );
+						}
+					}
+					break;
+				default:
+					{
+						GUI.DrawTexture( r, this.reticuleTexture );
+					}
+					break;
+				}
+
+			}
 		}
 	}
 
