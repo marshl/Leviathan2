@@ -920,6 +920,12 @@ MonoBehaviour:
   health: {fileID: 11400010}
   currentTarget: {fileID: 0}
   maxTargetDistance: 0
+  restrictions:
+    transform: {fileID: 0}
+    maxDistance: -1
+    ignoreBelowHorizon: 0
+    types: -1
+    teams: -1
   master: {fileID: 11400016}
   gaussFireRate: 5
   gaussBurstRate: .25
@@ -981,10 +987,10 @@ MonoBehaviour:
   targetType: 4
   ownerID: 0
   debugTargetID: 0
-  currentHealth: 1000
-  maxHealth: 1000
-  currentShield: 5000
-  maxShield: 5000
+  currentHealth: 100000
+  maxHealth: 100000
+  currentShield: 50000
+  maxShield: 50000
   shieldRegen: .00999999978
   shieldRegenDelay: 0
   isIndestructible: 0
@@ -1003,7 +1009,7 @@ MonoBehaviour:
     capitalShip: {fileID: 0}
   guiExtents: []
   shieldGenerators: 10
-  baseShields: 500
+  shieldingPerGenerator: 5000
   overrideShieldGenerators: 1
 --- !u!114 &11400012
 MonoBehaviour:
@@ -1091,8 +1097,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   capitalShip: {fileID: 11400016}
-  maximumShips: 4
-  currentShips: 0
   slots:
   - landedPosition: {fileID: 400016}
     landedFighter: {fileID: 0}
@@ -1106,7 +1110,6 @@ MonoBehaviour:
   - landedPosition: {fileID: 400010}
     landedFighter: {fileID: 0}
     slotID: 0
-  bayID: 0
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1

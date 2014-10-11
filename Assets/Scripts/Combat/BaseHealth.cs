@@ -25,7 +25,7 @@ public class BaseHealth : MonoBehaviour
 	}
 
 	public int debugTargetID;
-
+	
 	public float currentHealth;
 	public float maxHealth;
 	public float currentShield;
@@ -58,6 +58,12 @@ public class BaseHealth : MonoBehaviour
 
 	public virtual void DealDamage( float _damage, bool _broadcast, GamePlayer _sourcePlayer )
 	{
+		if ( _damage <= 0.0f )
+		{
+			throw new System.ArgumentException( "Damage can't be less than zero! Damage:"
+			              + _damage + " broadcast:" + _broadcast + " source:" + _sourcePlayer.id );
+		}
+
 		this.lastHitBy = _sourcePlayer;
 
 		if ( this.isIndestructible == true )
@@ -65,8 +71,14 @@ public class BaseHealth : MonoBehaviour
 			return;
 		}
 
+		// Tell the owner about that damage, and let him tell me the health
+		if ( _broadcast && Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendDealDamageMessage( this.networkView.viewID, _damage, _sourcePlayer );
+		}
+
 		// If it's mine, take the damage
-		if ( Network.peerType == NetworkPeerType.Disconnected || this.networkView.isMine )
+		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			if( this.currentShield > 0 )
 			{
@@ -90,11 +102,7 @@ public class BaseHealth : MonoBehaviour
 				GameNetworkManager.instance.SendSetHealthMessage( this.networkView.viewID, this.currentHealth, this.currentShield );
 			}
 		}
-		// Otherwise tell the owner about that damage, and let him tell me the health
-		else if ( _broadcast )
-		{
-			GameNetworkManager.instance.SendDealDamageMessage( this.networkView.viewID, _damage, _sourcePlayer );
-		}
+
 	}
 
 	protected virtual void Update()

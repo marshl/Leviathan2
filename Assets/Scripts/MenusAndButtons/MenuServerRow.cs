@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Obsolete]
 public class MenuServerRow : MonoBehaviour
 {
 	// Editor Variables

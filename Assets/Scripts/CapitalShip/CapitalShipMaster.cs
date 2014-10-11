@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// The master script for capital ship. As much code as possible should be written in separate scripts, all linking to this
+/// </summary>
 public class CapitalShipMaster : MonoBehaviour
 {
 	public CapitalShipMovement movement;
@@ -28,31 +31,6 @@ public class CapitalShipMaster : MonoBehaviour
 
 #if UNITY_EDITOR
 	public bool dummyShip = false;
-
-	private void Awake()
-	{
-		this.health.Owner = GameNetworkManager.instance.lastCreatedDummy;
-	}
-
-	private void Start()
-	{
-		if ( Network.peerType == NetworkPeerType.Disconnected )
-		{
-			if ( this.dummyShip == false )
-			{
-				this.health.Owner = GamePlayerManager.instance.myPlayer;
-			}
-			this.health.Owner.capitalShip = this;
-			this.turrets.CreateTurrets();
-
-			this.SetTeamColours();
-
-			foreach ( CapitalShipSubHealth subHealth in this.GetComponentsInChildren<CapitalShipSubHealth>() )
-			{
-				subHealth.Owner = this.health.Owner;
-			}
-		}
-	}
 #endif
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )   
@@ -118,14 +96,13 @@ public class CapitalShipMaster : MonoBehaviour
 		if ( this.health.Owner.capitalShip != null ) 
 		{
 			DebugConsole.Warning( "Capital ship already set for " + playerID, this );
+			return;
 		}
-		else
-		{
-			this.health.Owner.capitalShip = this; 
-			DebugConsole.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
-		}
+
+		this.health.Owner.capitalShip = this; 
+		DebugConsole.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
 	
-		if ( this.networkView.isMine )
+		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			this.turrets.CreateTurrets();
 		}  
@@ -151,6 +128,7 @@ public class CapitalShipMaster : MonoBehaviour
 		{
 			this.explosionTimer -= this.finaleExplosionInterval;
 
+			// Raycast from a random point around the ship to the ship and put an explosion at the contact point
 			float dist = 1000.0f;
 			Vector3 endPos = this.transform.position + this.transform.forward * Random.Range( -this.shipLength/2, this.shipLength/2 );
 			Vector3 startPos = this.transform.position + Common.RandomDirection() * dist;
@@ -171,11 +149,11 @@ public class CapitalShipMaster : MonoBehaviour
 		{
 			if ( this.health.Owner.team == TEAM.TEAM_1 )
 			{
-				render.material.color = new Color(1.0f,1.0f,0.5f);
+				render.material.color = new Color( 1.0f,1.0f,0.5f );
 			}
 			else
 			{
-				render.material.color = new Color(1,0f,0.2f,1.0f);
+				render.material.color = new Color( 1,0f,0.2f,1.0f );
 			}
 		}
 	}

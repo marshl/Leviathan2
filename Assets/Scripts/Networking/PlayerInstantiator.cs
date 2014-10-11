@@ -85,6 +85,8 @@ public class PlayerInstantiator : MonoBehaviour
 #if UNITY_EDITOR
 		masterScript.dummyShip = _dummyShip;
 
+		masterScript.ownerControl.ownerID = _player.id;
+
 		if ( masterScript.dummyShip == false )
 #endif
 		{

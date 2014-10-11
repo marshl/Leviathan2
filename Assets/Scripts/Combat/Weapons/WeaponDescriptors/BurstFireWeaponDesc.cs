@@ -11,15 +11,6 @@ public class BurstFireWeaponDesc : WeaponDescriptor
 	///    (fire rate determines the time between each shot in a burst)
 	/// </summary>
 	public float timeBetweenBursts;
-
-	/// <summary>
-	/// The number of bullets fired in a single burst
-	/// </summary>
 	public int shotsInBurst;
-
-	/// <summary>
-	/// Whether or not all shots are fired at once.
-	/// </summary>
-	public bool isShotgun;
 }
 

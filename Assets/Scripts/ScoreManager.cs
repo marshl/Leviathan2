@@ -32,7 +32,7 @@ public class ScoreManager : MonoBehaviour
 
 		this.teamScores = new Dictionary<TEAM, TeamScore>();
 		this.teamScores.Add( TEAM.TEAM_1, new TeamScore() );
-		this.teamScores.Add ( TEAM.TEAM_2, new TeamScore() );
+		this.teamScores.Add( TEAM.TEAM_2, new TeamScore() );
 	}
 
 	public void AddScore( SCORE_TYPE _scoreType, GamePlayer _player, bool _broadcast )

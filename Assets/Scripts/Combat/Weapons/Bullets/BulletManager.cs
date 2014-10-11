@@ -280,12 +280,9 @@ public class BulletManager : MonoBehaviour
 				_bullet.state = BulletBase.BULLET_STATE.INACTIVE;
 			}
 
-			if ( _bullet.state == BulletBase.BULLET_STATE.ACTIVE_OWNED )
+			if ( Network.peerType != NetworkPeerType.Disconnected )
 			{
-				if ( Network.peerType != NetworkPeerType.Disconnected )
-				{
-					GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.weaponType, _bullet.index, _bullet.transform.position );
-				}
+				GameNetworkManager.instance.SendDestroyDumbBulletMessage( _bullet.weaponType, _bullet.index, _bullet.transform.position );
 			}
 		}
 	}
@@ -311,7 +308,7 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 
-	public void DestroyDumbBulletRPC( WEAPON_TYPE _weaponType, int _index, Vector3 _bulletPosition )
+	public void OnDisableDumbBulletMessage( WEAPON_TYPE _weaponType, int _index, Vector3 _bulletPosition )
 	{
 		BulletBase bulletScript = this.bulletDictionary[_weaponType].GetAvailableBullet( _index, -1 );
 

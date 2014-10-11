@@ -6,29 +6,10 @@ using System.Collections;
 /// </summary>
 public class BurstFireWeapon : WeaponBase
 {
-	/// <summary>
-	/// The descriptor for this weapon (Set elsewhere)
-	/// </summary>
-	//[HideInInspector]
 	public BurstFireWeaponDesc burstFireDesc;
-
-	/// <summary>
-	/// Is this weapon currently firing?
-	/// </summary>
 	public bool isFiring = false;
-
-	/// <summary>
-	/// The time since the last burst
-	/// </summary>
 	public float timeSinceBurst;
-
-	/// <summary>
-	/// The number of shots that have been fired in the current burst
-	/// </summary>
 	public int shotsFiredInBurst;
-
-
-
 	
 	public override bool CanFire ()
 	{
@@ -44,16 +25,6 @@ public class BurstFireWeapon : WeaponBase
 		{
 			if ( this.timeSinceShot >= this.burstFireDesc.fireRate )
 			{
-
-				if( this.burstFireDesc.isShotgun )
-				{
-					for(int shotCounter = 0; shotCounter < this.burstFireDesc.shotsInBurst; shotCounter++)
-					{
-						this.Fire();
-					}
-					this.isFiring = false;
-				}
-				else
 				{
 					this.Fire();
 					++this.shotsFiredInBurst;
@@ -72,22 +43,11 @@ public class BurstFireWeapon : WeaponBase
 	
 	public override bool SendFireMessage()
 	{
-
-		if( !this.burstFireDesc.isShotgun)
+		if ( this.isFiring == true
+		  || this.CanFire() == false
+		  || this.timeSinceBurst < this.burstFireDesc.timeBetweenBursts )
 		{
-			if ( this.isFiring == true
-			  || this.CanFire() == false
-			  || this.timeSinceBurst < this.burstFireDesc.timeBetweenBursts )
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if ( this.isFiring == true || this.CanFire() == false)
-			{
-				return false;
-			}
+			return false;
 		}
 
 		this.isFiring = true;

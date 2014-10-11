@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// When a component of the capital ship is Network.Instantiated, this script then attaches it to its
+/// owner using a NetworkOwnerControl
+/// </summary>
 public class CapitalShipComponent : MonoBehaviour
 {
 	public NetworkOwnerControl ownerControl;
@@ -32,20 +36,14 @@ public class CapitalShipComponent : MonoBehaviour
 		if ( this.health.Owner.capitalShip == null )
 		{
 			DebugConsole.Warning( "Owner (" + ownerID + ") does not have capital ship to attach to", this );
+			return;
 		}
-		else
-		{
-			this.ParentToOwnerShip( this.health.Owner );
-		}
+
+		this.transform.parent = this.health.Owner.capitalShip.depthControl;
 	
 		if ( Network.peerType != NetworkPeerType.Disconnected && !this.networkView.isMine )
 		{
 			this.enabled = false;
 		}
-	}
-
-	private void ParentToOwnerShip( GamePlayer _player )
-	{
-		this.transform.parent = _player.capitalShip.depthControl;
 	}
 }

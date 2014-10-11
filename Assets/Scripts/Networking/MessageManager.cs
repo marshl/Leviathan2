@@ -25,7 +25,6 @@ public class MessageManager : MonoBehaviour
 	public List<Message> messages;
 
 	public Color[] playerColours;
-	//private string[] playerMessageColours = { "#FFFFFFFF", "#FF00FFFF", "#FFFF00FF", "#00FFFFFF" };
 
 	private void Awake()
 	{

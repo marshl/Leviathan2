@@ -53,14 +53,11 @@ public class FighterMovement : MonoBehaviour
 			case FighterMaster.FIGHTERSTATE.FLYING:
 			{
 				this.rigidbody.AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
-				#if UNITY_EDITOR
+#if UNITY_EDITOR
 				if ( this.masterScript.dummyShip == false )
-				#endif
-				{
-				if ( !GameMessages.instance.typing )
+#endif
 				{
 					this.CheckFlightControls();
-				}
 				}
 				break;
 			}
@@ -103,6 +100,7 @@ public class FighterMovement : MonoBehaviour
 			
 			this.rigidbody.AddRelativeTorque( torqueValue );
 		}
+
 
 		if ( Input.GetKey( KeyCode.W ) ) // Accelerate
 		{

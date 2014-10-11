@@ -16,6 +16,7 @@ public enum TARGET_TYPE : int
 
 public class TargetManager : MonoBehaviour
 {
+	[System.Serializable]
 	public class TargetRestriction
 	{
 		public Transform transform;
@@ -171,38 +172,33 @@ public class TargetManager : MonoBehaviour
 
 		return targetList;
 	}
-
-
-	//Note to self - this is probably inefficient
-	public List<BaseHealth> GetFighters( )
+	
+	public List<BaseHealth> GetTargetsOfType( TARGET_TYPE _targetType )
 	{
 		List<BaseHealth> targetList = new List<BaseHealth>();
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			foreach ( KeyValuePair<int, BaseHealth> pair in this.debugTargetMap )
 			{
-				if(pair.Value.GetComponent<FighterMovement>() != null)
+				if ( pair.Value.targetType == _targetType )
 				{
 					targetList.Add( pair.Value );
 				}
 			}
 		}
 		else
-			#endif
+#endif
 		{
 			foreach ( KeyValuePair<NetworkViewID, BaseHealth> pair in this.targetMap )
 			{
-
-					if(pair.Value.GetComponent<FighterMovement>() != null)
-					{
-						targetList.Add( pair.Value );
-					}
-
+				if ( pair.Value.targetType == TARGET_TYPE.FIGHTER )
+				{
+					targetList.Add( pair.Value );
+				}
 			}
 		}
-		
-		
+
 		return targetList;
 	}
 
@@ -322,7 +318,7 @@ public class TargetManager : MonoBehaviour
 			return;
 		}
 		DebugConsole.Log( target.gameObject.name + " health set to " + _health
-		                 + "/" + target.maxHealth + " " + _shield + "/" + target.maxShield );
+		                 + "/" + target.maxHealth + " " + _shield + "/" + target.maxShield, target );
 		target.currentHealth = _health;
 		target.currentShield = _shield;
 	}

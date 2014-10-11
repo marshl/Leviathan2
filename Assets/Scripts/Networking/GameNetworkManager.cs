@@ -229,7 +229,7 @@ public class GameNetworkManager : BaseNetworkManager
 			DebugConsole.Error( "Undefined bullet type " + _weaponType );
 			return;
 		}
-		BulletManager.instance.DestroyDumbBulletRPC( (WEAPON_TYPE)_weaponType, _index, _bulletPosition );
+		BulletManager.instance.OnDisableDumbBulletMessage( (WEAPON_TYPE)_weaponType, _index, _bulletPosition );
 	}
 
 	public void SendOutOfControlFigherMessage( int _playerID )
@@ -257,7 +257,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDeadShieldMessage( NetworkViewID _id)
 	{
-		this.networkView.RPC ("OnDeadShieldRPC",RPCMode.All,_id);
+		this.networkView.RPC( "OnDeadShieldRPC", RPCMode.Others, _id );
 	}
 	[RPC]
 	private void OnDeadShieldRPC( NetworkViewID _id )

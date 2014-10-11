@@ -82,7 +82,7 @@ public class BulletBase : MonoBehaviour
 				}
 			}
 		}
-		else
+		else if ( this.state == BULLET_STATE.ACTIVE_OWNED )
 		{
 			this.distanceTravelled += this.desc.moveSpeed * Time.deltaTime;
 			if ( this.distanceTravelled >= this.desc.maxDistance )

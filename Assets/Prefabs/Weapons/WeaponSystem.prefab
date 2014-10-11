@@ -1879,7 +1879,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cef4b7eef65e174fbeab274a128ffc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
@@ -1895,9 +1895,7 @@ MonoBehaviour:
   lockOnDuration: 0
   lockOnAngle: 0
   bulletDesc: {fileID: 11400002}
-  timeBetweenBursts: 0
-  shotsInBurst: 12
-  isShotgun: 1
+  shots: 12
 --- !u!114 &11400060
 MonoBehaviour:
   m_ObjectHideFlags: 1

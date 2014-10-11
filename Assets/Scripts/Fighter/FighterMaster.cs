@@ -102,8 +102,7 @@ public class FighterMaster : MonoBehaviour
 
 				if ( this.state == FIGHTERSTATE.DOCKED )
 				{
-					if ( Input.GetKeyDown( KeyCode.Space ) 
-					    && !GameMessages.instance.typing )
+					if ( Input.GetKeyDown( KeyCode.Space ) )
 					{
 						this.Undock();
 					}

@@ -5,90 +5,44 @@ using System.Collections.Generic;
 public class CapitalShipMovement : MonoBehaviour
 {
 	public CapitalShipMaster master;
-
-	/// <summary>
-	/// The prefab used to mark the turning angle around the ship
-	/// </summary>
+	
 	public GameObject rotationSegmentPrefab;
-
-	/// <summary>
-	/// The line used to show where the ship will travel
-	/// </summary>
+	
 	public LineRenderer tentativePathLine;
-
-	/// <summary>
-	/// The number of triangles displayed around the ship in a full circle
-	/// </summary>
+	
 	public int rotationSegmentCount;
-
-	/// <summary>
-	/// The increase in scale for the tentative rotation segments
-	///    (the segments that many degrees the ship would turn if the user clicked)
-	/// </summary>
+	
+	// The increase in scale for the tentative rotation segments
+	//   (the segments that many degrees the ship would turn if the user clicked)
 	public float tentativeSegmentUpscale;
-
-	/// <summary>
-	/// The radians that ship still has to turn
-	/// </summary>
+	
+	// The radians that ship still has to turn
 	private float currentTurnAmount = 0.0f;
-
-	/// <summary>
-	/// Whether the ship is currently turning
-	/// </summary>
+	
 	private bool isTurning = false;
 
-	/// <summary>
-	/// The direction that the ship is currently turning (-1.0f = left, 1.0f = right)
-	/// </summary>
+	// The direction that the ship is currently turning (-1.0f = left, 1.0f = right)
 	private float currentTurnDirection = 0.0f;
 
-	/// <summary>
-	/// The last position that the player selected
-	/// </summary>
-	private Vector3 lastTargetPosition;
-
-	/// <summary>
-	/// The rotational segments that the show where the ship is turning
-	/// </summary>
+	private Vector3 lastSelectedPosition;
+	
+	// The rotational segments that the show where the ship is turning
 	private GameObject[] rotationSegmentsActual;
-	/// <summary>
-	/// The rotational segments that shows where the ship would turn
-	/// </summary>
+	// The rotational segments that shows where the ship would turn
 	private GameObject[] rotationSegmentsTentative;
 
-	/// <summary>
-	/// The speed at which the ship is currently moving
-	/// </summary>
 	public float currentMovementSpeed;
-
-	/// <summary>
-	/// The vertex count of the path lines
-	/// </summary>
+	
 	public int lineVertexCount;
-
-	/// <summary>
-	/// The maximum length of the display path
-	/// </summary>
+	
 	public float pathLength;
-
-	/// <summary>
-	/// The radians that the ship turns per second
-	/// </summary>
+	
+	// The radians that the ship turns per second
 	public float turnRate;
-
-	/// <summary>
-	/// The maximum speed that the ship can move
-	/// </summary>
+	
 	public float maxMoveSpeed;
-
-	/// <summary>
-	/// The minimum speed that the ship can move
-	/// </summary>
 	public float minMoveSpeed;
 
-	/// <summary>
-	/// The rate of change in speed per second
-	/// </summary>
 	public float moveAcceleration;
 
 	public Transform avoidanceTransform;
@@ -108,7 +62,7 @@ public class CapitalShipMovement : MonoBehaviour
 	public float avoidanceCeiling;
 	public float avoidanceFloor;
 	public float avoidanceCurveDropRate;
-	private bool followingAvoidanceCurve;
+	private bool isFollowingAvoidanceCurve;
 	private float avoidanceCurveStartHeight;
 	private float avoidanceCurveEndHeight;
 	private float avoidCurveLength;
@@ -228,16 +182,14 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void UpdateAccelerationInput()
 	{
-		if ( !GameMessages.instance.typing )
+
+		if ( Input.GetKey( KeyCode.W ) )
 		{
-			if ( Input.GetKey( KeyCode.W ) )
-			{
-				this.currentMovementSpeed += Time.deltaTime * moveAcceleration;
-			}
-			else if ( Input.GetKey( KeyCode.S ) )
-			{
-				this.currentMovementSpeed -= Time.deltaTime * moveAcceleration;
-			}
+			this.currentMovementSpeed += Time.deltaTime * moveAcceleration;
+		}
+		else if ( Input.GetKey( KeyCode.S ) )
+		{
+			this.currentMovementSpeed -= Time.deltaTime * moveAcceleration;
 		}
 
 		this.currentMovementSpeed = Mathf.Clamp( this.currentMovementSpeed, minMoveSpeed, maxMoveSpeed );
@@ -255,10 +207,10 @@ public class CapitalShipMovement : MonoBehaviour
 		// If not, just use the old position
 		if ( posFound == true )
 		{
-			this.lastTargetPosition = targetPos;
+			this.lastSelectedPosition = targetPos;
 		}
 
-		Vector3 vectorToTarget = this.lastTargetPosition - this.transform.position;
+		Vector3 vectorToTarget = this.lastSelectedPosition - this.transform.position;
 		if ( vectorToTarget.sqrMagnitude == 0.0f )
 		{
 			DebugConsole.Log( Time.frameCount + " Preventing div/0" );
@@ -295,7 +247,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void UpdateAvoidanceControl()
 	{
-		if ( this.followingAvoidanceCurve == true )
+		if ( this.isFollowingAvoidanceCurve )
 		{
 			float oldPos = this.currentAvoidCurvePoint;
 			this.currentAvoidCurvePoint += this.currentMovementSpeed * Time.deltaTime;
@@ -520,22 +472,6 @@ public class CapitalShipMovement : MonoBehaviour
 		float _moveSpeed,
 		float _turnAmount, float _turnDirection )
 	{
-		if ( _moveSpeed == 0.0f )
-		{
-			DebugConsole.Log( "Cannot crete travel path with zero movement speed." );;
-			return;
-		}
-
-		// If the ship isn't turning, then draw a straight line out in front
-		if ( _turnAmount == 0.0f )
-		{
-			for ( int i = 0; i < this.lineVertexCount; ++i )
-			{
-				_pointList[i] = _position + _forward * (float)i * this.pathLength / (float)lineVertexCount;
-			}
-			return;
-		}
-
 		// Find the radius of the arc used as part of the turn
 		float arcRadius = GetTurnRadiusAtSpeed( _moveSpeed );
 
@@ -639,7 +575,7 @@ public class CapitalShipMovement : MonoBehaviour
 	private void StartAvoidanceCurve( float _targetHeight )
 	{
 		this.currentAvoidCurvePoint = 0.0f;
-		this.followingAvoidanceCurve = true;
+		this.isFollowingAvoidanceCurve = true;
 		this.avoidanceCurveStartHeight = this.currentAvoidHeight;
 		this.avoidanceCurveEndHeight = _targetHeight;
 		this.avoidCurveLength = Mathf.Abs( this.avoidanceCurveStartHeight - this.avoidanceCurveEndHeight ) / this.avoidanceCurveDropRate;
@@ -647,7 +583,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void EndAvoidanceCurve()
 	{
-		this.followingAvoidanceCurve = false;
+		this.isFollowingAvoidanceCurve = false;
 		this.currentAvoidHeight = this.avoidanceCurveEndHeight;
 		this.currentAvoidAngle = 0.0f;
 	}

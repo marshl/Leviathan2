@@ -5,9 +5,6 @@ public class DockingBay : MonoBehaviour
 {
 	public CapitalShipMaster capitalShip;
 
-	public int maximumShips;
-	public int currentShips = 0;
-
 	[System.Serializable]
 	public class DockingSlot
 	{
@@ -18,18 +15,11 @@ public class DockingBay : MonoBehaviour
 
 	public DockingSlot[] slots = new DockingSlot[4];
 	
-	public int bayID;
-
-	//TODO: Something broke here when networked
 	private void Start()
 	{
-		//int idCounter = ((int)(this.capitalShip.health.Owner.team) * 1000) + (bayID * 10 + 1);
-		//foreach ( DockingSlot newSlot in slots )
 		for ( int i = 0; i < this.slots.Length; ++i )
 		{
 			slots[i].slotID = i;
-			//newSlot.slotID = idCounter;
-			//idCounter++;
 		}
 	}
 
@@ -41,7 +31,7 @@ public class DockingBay : MonoBehaviour
 	      && fighterScript.state == FighterMaster.FIGHTERSTATE.FLYING
 	       )
 		{
-			DebugConsole.Log( "Fighter received" );
+			DebugConsole.Log( "Fighter received", _other );
 
 			//If we're on the same team
 			if ( fighterScript.health.Owner.team == this.capitalShip.health.Owner.team ) 
@@ -74,19 +64,6 @@ public class DockingBay : MonoBehaviour
 		_fighter.Dock( slotToDock );
 		slotToDock.landedFighter = _fighter;
 	}
-
-	/*public DockingSlot GetSlotByID( int _id )
-	{
-		foreach ( DockingSlot slot in slots )
-		{
-			if( slot.slotID == _id)
-			{
-				return slot;
-			}
-		}
-		DebugConsole.Log("Slot search in bay " + bayID + " for id " + _id + " returned no results");
-		return null;
-	}*/
 
 	public DockingSlot GetFreeSlot()
 	{

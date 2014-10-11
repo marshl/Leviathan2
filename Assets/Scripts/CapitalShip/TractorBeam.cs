@@ -50,27 +50,32 @@ public class TractorBeam : MonoBehaviour
 		if ( this.master.dummyShip == false )
 #endif
 		{
-			if (this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
-			     
+			if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected ) 
 			{
-				if(tractorUITargetting && Input.GetMouseButtonDown (1))
+				if ( this.tractorUITargetting && Input.GetMouseButtonDown(1) ) //Right click
 				{
 					RaycastHit hit;
-					Ray toCast = Camera.main.ScreenPointToRay(Input.mousePosition);
+					Ray toCast = Camera.main.ScreenPointToRay( Input.mousePosition );
 
-
-					if( Physics.Raycast (toCast, out hit))
+					if( Physics.Raycast( toCast, out hit ) )
 					{
-						if(tractorActive)
+						if ( this.tractorActive )
 						{
-
-							StopTractor();
+							this.StopTractor();
 						}
 
 						if ( hit.collider.GetComponent<FighterMaster>() != null )
 						{
-							FireAtTarget(hit.collider.gameObject, tractorUITargetType);
-							GameNetworkManager.instance.SendTractorStartMessage (this.networkView.viewID, tractorUITargetType, hit.collider.networkView.viewID);
+							Debug.Log( "Hit " + hit.collider.gameObject.name + " with tractor beam" );
+							FireAtTarget( hit.collider.gameObject, tractorUITargetType );
+							if ( Network.peerType != NetworkPeerType.Disconnected )
+							{
+							GameNetworkManager.instance.SendTractorStartMessage( this.networkView.viewID, tractorUITargetType, hit.collider.networkView.viewID );
+							}
+						}
+						else
+						{
+							Debug.Log( "Target is not a fighter", hit.collider );
 						}
 					}
 				}
@@ -82,12 +87,9 @@ public class TractorBeam : MonoBehaviour
 	{
 		if(tractorActive)
 		{
-			Vector3 forceVector = new Vector3(currentTarget.transform.position.x - this.transform.position.x,
-			                                  currentTarget.transform.position.y - this.transform.position.y,
-			                                  currentTarget.transform.position.z - this.transform.position.z);
+			Vector3 forceVector = (currentTarget.transform.position - this.transform.position).normalized;
 			//Vector3 forceVector = new Vector3(1000000000,0,0);
 
-			forceVector.Normalize ();
 			forceVector *= tractorDirection * strengthMultiplier * dragOverride;
 
 			DebugConsole.Log ("Force vector is " + forceVector.ToString());
@@ -157,10 +159,10 @@ public class TractorBeam : MonoBehaviour
 
 	public void FireAtTarget(GameObject target, TractorFunction type)
 	{
-		switch(type)
+		switch( type )
 		{
 		case TractorFunction.HOLD:
-			{
+		{
 				targetOriginalDrag = target.rigidbody.drag;
 				targetOriginalAngularDrag = target.rigidbody.angularDrag;
 				target.rigidbody.drag = dragOverride;
@@ -171,9 +173,8 @@ public class TractorBeam : MonoBehaviour
 				tractorActive = true;
 
 			DebugConsole.Log ("Tractor beam activated in Hold mode");
-				
-			}
 			break;
+		}
 		case TractorFunction.PULL:
 		{
 			targetOriginalDrag = target.rigidbody.drag;
@@ -186,9 +187,8 @@ public class TractorBeam : MonoBehaviour
 			tractorActive = true;
 
 			DebugConsole.Log ("Tractor beam activated in Pull mode");
-
-		}
 			break;
+		}
 		case TractorFunction.PUSH:
 		{
 			targetOriginalDrag = target.rigidbody.drag;
@@ -201,16 +201,19 @@ public class TractorBeam : MonoBehaviour
 			tractorActive = true;
 
 			DebugConsole.Log ("Tractor beam activated in Push mode");
-
-		}
 			break;
+		}
 		}
 	}
 
 	private void StopTractor()
 	{
+		Debug.Log( "Stopping tractor beam" );
 		RefreshTarget();
-		GameNetworkManager.instance.SendTractorStopMessage (this.networkView.viewID);
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendTractorStopMessage( this.networkView.viewID );
+		}
 	}
 
 	public void RefreshTarget()

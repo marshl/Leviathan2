@@ -11,7 +11,7 @@ public class WeaponBase : MonoBehaviour
 {
 	public WEAPON_TYPE weaponType;
 
-	[HideInInspector]
+	[Tooltip( "Descriptors are set automatically and do not have to be preset" )]
 	public WeaponDescriptor weaponDesc;
 
 	public WeaponFirePoint[] firePoints;

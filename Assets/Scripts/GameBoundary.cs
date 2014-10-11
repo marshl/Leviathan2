@@ -13,6 +13,19 @@ public class GameBoundary : MonoBehaviour
 	{
 		GameBoundary.instance = this;
 
+		this.RecalculateLine();
+	} 
+
+	// Update the display ring of the boundary in real time if in the editor, to give an idea on the scale
+#if UNITY_EDITOR
+	private void Update()
+	{
+		this.RecalculateLine();
+	}
+#endif
+
+	private void RecalculateLine()
+	{
 		LineRenderer line = this.GetComponent<LineRenderer>();
 		line.SetVertexCount( this.lineVertices );
 		for ( int i = 0; i < this.lineVertices; ++i )
@@ -21,19 +34,5 @@ public class GameBoundary : MonoBehaviour
 			Vector3 offset = new Vector3( Mathf.Sin( angle ),  0.0f, Mathf.Cos( angle ) );
 			line.SetPosition( i, offset * this.radius + this.origin );
 		}
-	} 
-
-	// Update the display ring of the boundary in real time if in the editor, to give an idea on the scale
-#if UNITY_EDITOR
-	private void Update()
-	{
-		LineRenderer line = this.GetComponent<LineRenderer>();
-		for ( int i = 0; i < this.lineVertices; ++i )
-		{
-			float angle = (float)i * Mathf.PI * 2.0f / (float)(this.lineVertices - 1);
-			Vector3 offset = new Vector3( Mathf.Sin( angle ),  0.0f, Mathf.Cos( angle ) );
-			line.SetPosition( i, offset * this.radius + this.origin );
-		}
 	}
-#endif
 }

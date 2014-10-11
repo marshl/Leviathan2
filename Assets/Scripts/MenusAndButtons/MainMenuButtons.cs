@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Obsolete]
 public class MainMenuButtons : MonoBehaviour
 {
 	public static MainMenuButtons instance;

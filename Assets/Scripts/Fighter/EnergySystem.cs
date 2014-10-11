@@ -9,8 +9,7 @@ public class EnergySystem : MonoBehaviour
 	public float rechargePerSecond;
 	public float rechargeDelay;
 	public float delayTimer;
-
-
+	
 	private void Update()
 	{
 		this.delayTimer += Time.deltaTime;
@@ -35,16 +34,18 @@ public class EnergySystem : MonoBehaviour
 
 	public float GetDamageScale()
 	{
+		if ( this.currentEnergy > this.energyPenaltyStart )
+		{
+			return 1.0f;
+		}
+
 		// At "minEnergyDamageMultiplier" energy or below, "energyDamagePenalty" is dealt
 		// At 1.0f energy, 1.0f damage is dealt, with a linear scale anywhere between
 		float energyMultiplier = (this.currentEnergy - WeaponDescManager.instance.minEnergyDamageMultiplier)
 			/ ( this.energyPenaltyStart -  WeaponDescManager.instance.minEnergyDamageMultiplier );
 
 		energyMultiplier = Mathf.Clamp01( energyMultiplier );
-		if(this.currentEnergy > this.energyPenaltyStart)
-		{
-			return 1.0f;
-		}
+
 		return Mathf.Lerp( WeaponDescManager.instance.energyDamagePenalty, 1.0f, energyMultiplier );
 	}
 }

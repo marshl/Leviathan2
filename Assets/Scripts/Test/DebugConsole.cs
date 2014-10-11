@@ -113,6 +113,11 @@ public static class DebugConsole
 			OnKill( chunks );
 			break;
 		}
+		case "tractortest":
+		{
+			OnTractorTest( chunks );
+			break;
+		}
 		default:
 		{
 			AddLine( "Unknown command \"" + input + "\". Type \"help\" for a list of commands." );
@@ -304,6 +309,16 @@ public static class DebugConsole
 		}
 		
 		health.currentHealth = 0;
+	}
+
+	private static void OnTractorTest( string[] chunks )
+	{
+		CapitalShipMaster capitalShip = GamePlayerManager.instance.myPlayer.capitalShip;
+
+		capitalShip.transform.position = new Vector3( 1000.0f, 0.0f, 0.0f );
+
+		capitalShip.movement.currentMovementSpeed = 0.0f;
+		capitalShip.movement.minMoveSpeed = 0.0f;
 	}
 
 }

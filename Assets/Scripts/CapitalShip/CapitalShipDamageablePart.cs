@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Obsolete]
 public class CapitalShipDamageablePart : BaseHealth
 {
 	public CapitalHealth capitalHealth;

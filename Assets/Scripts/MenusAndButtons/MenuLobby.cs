@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+[System.Obsolete]
 public class MenuLobby : MonoBehaviour
 {
 	// Instance

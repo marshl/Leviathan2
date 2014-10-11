@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Game player manager.
+/// The game player manager stores every GamePlayer in the game or lobby
 /// 
 /// "Who are they?" - Helix
 /// </summary>
@@ -85,6 +85,7 @@ public class GamePlayerManager : MonoBehaviour
 			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( _playerID );
 			if ( player.fighter != null )
 			{
+				TargetManager.instance.RemoveTarget( player.fighter.networkView.viewID );
 				DebugConsole.Log( "Destroyed fighter object" );
 				Network.Destroy( player.fighter.networkView.viewID );
 			}

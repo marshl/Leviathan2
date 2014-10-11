@@ -136,7 +136,7 @@ public class GameGUI : MonoBehaviour
 		{
 			this.RenderFighterHealth();
 			this.RenderFighterTargets();
-			this.RenderCapitalShipDisplay();
+			this.RenderCapitalShipStates();
 			this.RenderFighterSpeed();
 			this.RenderFighterWeapons();
 			break;
@@ -156,7 +156,8 @@ public class GameGUI : MonoBehaviour
 		}
 		case GUI_MODE.CAPITAL:
 		{
-			this.RenderCapitalShipDisplay();
+			this.RenderCapitalShipTargets();
+			this.RenderCapitalShipStates();
 			break;
 		}
 		case GUI_MODE.FIGHTER_PICKER:
@@ -262,10 +263,8 @@ public class GameGUI : MonoBehaviour
 		}
 	}
 	
-	private void RenderCapitalShipDisplay()
+	private void RenderCapitalShipStates()
 	{
-
-		RenderCapitalShipTargets();
 		if ( GamePlayerManager.instance.commander1 != null )
 		{
 			this.RenderCapitalShipHealth( GamePlayerManager.instance.commander1.capitalShip );
@@ -278,65 +277,43 @@ public class GameGUI : MonoBehaviour
 
 	private void RenderCapitalShipTargets()
 	{
-		List<BaseHealth> targets = TargetManager.instance.GetFighters();
+		List<BaseHealth> targets = TargetManager.instance.GetTargetsOfType( TARGET_TYPE.FIGHTER );
 		
 		foreach ( BaseHealth t in targets )
 		{
-			Vector3 toTarget = t.transform.position - this.player.capitalShip.capitalCamera.transform.position;
-			if ( Vector3.Dot( this.player.capitalShip.capitalCamera.transform.forward, toTarget.normalized ) > 0.0f )
+			if ( t.Owner == null )
 			{
-				Vector3 worldPos = t.transform.position;
-				
-				Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
-				screenPos.y = Screen.height - screenPos.y;
-				
-				//Rect r = this.GetHealthGUIRect( t );
-				Rect r = new Rect(0,0,0,0);
-				r.width = 50;
-				r.height = 50;
-				r.center = screenPos;
+				continue;
+			}
 
-				switch (this.player.team)
-				{
-				case TEAM.TEAM_1:
-					{
-						if(t.Owner.team == TEAM.TEAM_1)
-						{
-							GUI.DrawTexture( r, this.friendlyReticuleTexture );
-						}
-						if(t.Owner.team == TEAM.TEAM_2)
-						{
-							GUI.DrawTexture( r, this.enemyReticuleTexture );
-						}
-						if(t.Owner.team == TEAM.NEUTRAL)
-						{
-							GUI.DrawTexture( r, this.reticuleTexture );
-						}
-					}
-					break;
-				case TEAM.TEAM_2:
-					{
-						if(t.Owner.team == TEAM.TEAM_1)
-						{
-							GUI.DrawTexture( r, this.enemyReticuleTexture );
-						}
-						if(t.Owner.team == TEAM.TEAM_2)
-						{
-							GUI.DrawTexture( r, this.friendlyReticuleTexture );
-						}
-						if(t.Owner.team == TEAM.NEUTRAL)
-						{
-							GUI.DrawTexture( r, this.reticuleTexture );
-						}
-					}
-					break;
-				default:
-					{
-						GUI.DrawTexture( r, this.reticuleTexture );
-					}
-					break;
-				}
+			Vector3 toTarget = t.transform.position - this.player.capitalShip.capitalCamera.transform.position;
+			if ( Vector3.Dot( this.player.capitalShip.capitalCamera.transform.forward, toTarget.normalized ) < 0.0f )
+			{
+				continue;
+			}
 
+			Vector3 worldPos = t.transform.position;
+			
+			Vector3 screenPos = Camera.main.WorldToScreenPoint( worldPos );
+			screenPos.y = Screen.height - screenPos.y;
+			
+			//Rect r = this.GetHealthGUIRect( t );
+			Rect r = new Rect(0,0,0,0);
+			r.width = 50;
+			r.height = 50;
+			r.center = screenPos;
+
+			if ( t.Owner.team == TEAM.NEUTRAL )
+			{
+				GUI.DrawTexture( r, this.reticuleTexture );
+			}
+			else if ( t.Owner.team == this.player.team )
+			{
+				GUI.DrawTexture( r, this.friendlyReticuleTexture );
+			}
+			else
+			{
+				GUI.DrawTexture( r, this.enemyReticuleTexture );
 			}
 		}
 	}
