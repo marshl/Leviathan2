@@ -1272,10 +1272,10 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400002}
   timeBetweenBursts: 12
   shotsInBurst: 3
-  isShotgun: 1
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1488,6 +1488,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400048}
 --- !u!114 &11400026
 MonoBehaviour:
@@ -1512,6 +1513,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400022}
 --- !u!114 &11400028
 MonoBehaviour:
@@ -1536,6 +1538,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400022}
 --- !u!114 &11400030
 MonoBehaviour:
@@ -1560,6 +1563,7 @@ MonoBehaviour:
   requiresWeaponLock: 1
   lockOnDuration: 3
   lockOnAngle: 15
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400010}
 --- !u!114 &11400032
 MonoBehaviour:
@@ -1584,6 +1588,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400014}
 --- !u!114 &11400034
 MonoBehaviour:
@@ -1608,6 +1613,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400016}
 --- !u!114 &11400036
 MonoBehaviour:
@@ -1632,6 +1638,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400018}
 --- !u!114 &11400038
 MonoBehaviour:
@@ -1656,6 +1663,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400020}
 --- !u!114 &11400040
 MonoBehaviour:
@@ -1680,6 +1688,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400046}
 --- !u!114 &11400042
 MonoBehaviour:
@@ -1704,6 +1713,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400050}
   spinUpTime: 1
   spinDownTime: 1
@@ -1732,6 +1742,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 100000, guid: 64903ff5fe095184b832d2d5fd2e1910, type: 2}
   bulletDesc: {fileID: 11400022}
 --- !u!114 &11400046
 MonoBehaviour:
@@ -1894,6 +1905,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400002}
   shots: 12
 --- !u!114 &11400060
@@ -1919,6 +1931,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400070}
 --- !u!114 &11400062
 MonoBehaviour:
@@ -1966,10 +1979,10 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400062}
   timeBetweenBursts: 0
   shotsInBurst: 0
-  isShotgun: 0
 --- !u!114 &11400066
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1993,6 +2006,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 0}
 --- !u!114 &11400068
 MonoBehaviour:
@@ -2017,6 +2031,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400076}
 --- !u!114 &11400070
 MonoBehaviour:
@@ -2064,10 +2079,10 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 11400002}
   timeBetweenBursts: 1
   shotsInBurst: 12
-  isShotgun: 1
 --- !u!114 &11400074
 MonoBehaviour:
   m_ObjectHideFlags: 1

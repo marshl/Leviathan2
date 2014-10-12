@@ -15,6 +15,7 @@ public class WeaponBase : MonoBehaviour
 	public WeaponDescriptor weaponDesc;
 
 	public WeaponFirePoint[] firePoints;
+
 	public int firePointIndex;
 	public EnergySystem energySystem;
 	public BaseWeaponManager source;
@@ -28,6 +29,19 @@ public class WeaponBase : MonoBehaviour
 	{
 		this.InitialiseDescriptors();
 		this.ammunition = this.weaponDesc.ammunitionMax;
+
+		if ( this.weaponDesc.muzzleFlashPrefab != null )
+		{
+			foreach ( WeaponFirePoint firePoint in this.firePoints )
+			{
+				GameObject obj = GameObject.Instantiate( this.weaponDesc.muzzleFlashPrefab, firePoint.transform.position,
+				                                        firePoint.transform.rotation ) as GameObject;
+				firePoint.muzzleFlash = obj.GetComponent<MuzzleFlash>();
+				obj.transform.parent = firePoint.transform;
+				obj.transform.localPosition = Vector3.zero;
+				obj.transform.localRotation = Quaternion.identity;
+			}
+		}
 	}
 
 	protected virtual void Update()
@@ -127,6 +141,10 @@ public class WeaponBase : MonoBehaviour
 
 		--this.ammunition;
 
+		if ( _firePoint.muzzleFlash != null )
+		{
+			_firePoint.muzzleFlash.OnFire();
+		}
 		return bullet;
 	}
 

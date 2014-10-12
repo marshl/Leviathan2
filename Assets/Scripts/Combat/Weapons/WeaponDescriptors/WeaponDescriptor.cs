@@ -24,5 +24,7 @@ public class WeaponDescriptor : MonoBehaviour
 	public float lockOnDuration;
 	public float lockOnAngle;
 
+	public GameObject muzzleFlashPrefab;
+
 	public BulletDescriptor bulletDesc;
 }

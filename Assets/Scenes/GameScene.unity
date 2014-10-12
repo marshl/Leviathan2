@@ -195,6 +195,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 896753972}
 --- !u!1 &112039260
 GameObject:
@@ -248,10 +249,10 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 626032586}
   timeBetweenBursts: 0
   shotsInBurst: 0
-  isShotgun: 0
 --- !u!1 &122270339
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +287,7 @@ MonoBehaviour:
   gameState: 1
   startPauseDuration: .10000000149011612
   disconnectionTimeoutMS: 0
-  defaultPlayerType: 1
+  defaultPlayerType: 3
   createDummies: 1
   dummiesToCreate: 010000000200000003000000030000000400000004000000
   lastCreatedDummy:
@@ -550,6 +551,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 1362560565}
 --- !u!1 &356059526
 GameObject:
@@ -603,6 +605,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 1699880292}
   spinUpTime: 1
   spinDownTime: 1
@@ -735,7 +738,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: defaultPlayerType
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: dummiesToCreate.Array.data[3]
@@ -798,6 +801,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 1335153584}
 --- !u!1 &454165631
 GameObject:
@@ -894,10 +898,10 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 485729538}
   timeBetweenBursts: 1
   shotsInBurst: 12
-  isShotgun: 1
 --- !u!1 &485729536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,6 +1036,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 2114391586}
 --- !u!1 &626032584
 GameObject:
@@ -1137,6 +1142,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 0}
 --- !u!1 &639345259
 GameObject:
@@ -1329,6 +1335,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 485729538}
   shots: 12
 --- !u!1 &759172559
@@ -2583,6 +2590,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 1525993421}
 --- !u!1 &1628480956
 GameObject:
@@ -2636,6 +2644,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 1166958340}
 --- !u!1 &1661388356
 GameObject:
@@ -2992,10 +3001,10 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 485729538}
   timeBetweenBursts: 12
   shotsInBurst: 3
-  isShotgun: 1
 --- !u!1 &1831819241
 GameObject:
   m_ObjectHideFlags: 0
@@ -3048,6 +3057,7 @@ MonoBehaviour:
   requiresWeaponLock: 1
   lockOnDuration: 3
   lockOnAngle: 15
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 691865451}
 --- !u!1 &1928740081
 GameObject:
@@ -3116,6 +3126,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 759172561}
 --- !u!4 &1954209445
 Transform:
@@ -3308,6 +3319,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 100000, guid: 64903ff5fe095184b832d2d5fd2e1910, type: 2}
   bulletDesc: {fileID: 1661388358}
 --- !u!114 &2061263137
 MonoBehaviour:
@@ -3333,6 +3345,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 1661388358}
 --- !u!114 &2061263138
 MonoBehaviour:
@@ -3358,6 +3371,7 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 1661388358}
 --- !u!1 &2085318311
 GameObject:
@@ -3552,4 +3566,5 @@ MonoBehaviour:
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
   bulletDesc: {fileID: 910380975}
