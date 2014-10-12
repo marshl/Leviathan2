@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ChargeUpWeapon : WeaponBase
@@ -22,7 +22,7 @@ public class ChargeUpWeapon : WeaponBase
 
 			if ( this.currentCharge >= this.chargeUpDesc.chargeUpTime )
 			{
-				this.Fire();
+				this.Fire( true, 0.0f, Quaternion.identity );
 
 				this.currentCharge = 0.0f;
 			}

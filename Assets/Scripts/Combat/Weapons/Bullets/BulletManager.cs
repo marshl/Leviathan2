@@ -88,13 +88,19 @@ public class BulletManager : MonoBehaviour
 		}
 	}
 
-	public BulletBase CreateBullet( WeaponBase _weapon, WeaponFirePoint _firePoint, float _damageScale )
+	public BulletBase CreateBullet( WeaponBase _weapon, WeaponFirePoint _firePoint, float _damageScale,
+	                               bool _local, float _sentTime )
 	{
-		BulletDescriptor desc = BulletDescriptorManager.instance.GetDescOfType( _weapon.weaponType );
+		BulletDescriptor descriptor = BulletDescriptorManager.instance.GetDescOfType( _weapon.weaponType );
+
+		if ( descriptor.smartBullet && !_local )
+		{
+			return null;
+		}
 
 		BulletBase bulletScript = null;
 		GameObject bulletObj = null;
-		if ( desc.smartBullet == false )
+		if ( descriptor.smartBullet == false )
 		{
 			bulletScript = this.bulletDictionary[ _weapon.weaponType ].GetAvailableBullet( -1, -1 );
 
@@ -118,7 +124,7 @@ public class BulletManager : MonoBehaviour
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
 				bulletObj = GameObject.Instantiate(
-					desc.prefab,
+					descriptor.prefab,
 					_firePoint.transform.position,
 					Quaternion.LookRotation( _firePoint.transform.forward ) ) as GameObject;
 			}
@@ -126,7 +132,7 @@ public class BulletManager : MonoBehaviour
 #endif
 			{
 				bulletObj = Network.Instantiate(
-					desc.prefab,
+					descriptor.prefab,
 					_firePoint.transform.position,
 					Quaternion.LookRotation( _firePoint.transform.forward ),
 					0) as GameObject;
@@ -148,15 +154,17 @@ public class BulletManager : MonoBehaviour
 		// Bullet spread
 		if ( _weapon.weaponDesc.spread != 0.0f )
 		{
-			Vector3 perp = Common.RandomDirection();
-			perp.z = 0.0f;
+			System.Random newRand = new System.Random( (int)( _sentTime * 1000.0f ) );
+			Vector3 perp = new Vector3( (float)(newRand.NextDouble() * 2.0f - 1.0f),
+			                            (float)(newRand.NextDouble() * 2.0f - 1.0f), 0.0f );
 			perp.Normalize();
 			perp = bulletObj.transform.TransformDirection( perp );
 			bulletObj.transform.Rotate( perp, UnityEngine.Random.Range( -_weapon.weaponDesc.spread, _weapon.weaponDesc.spread ) );
 		}
 
+		/*
 		// Tell everyone else to fire the bullet
-		if ( desc.smartBullet == false
+		if ( descriptor.smartBullet == false
 		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			GameNetworkManager.instance.SendShootBulletMessage(
@@ -165,12 +173,26 @@ public class BulletManager : MonoBehaviour
 	           _firePoint.transform.position,
 	           bulletObj.transform.rotation );
 		}
+        
+*/
+		if ( !_local && !descriptor.smartBullet )
+		{
+			bulletScript.Reset();
+			bulletScript.state = BulletBase.BULLET_STATE.ACTIVE_NOT_OWNED;
+
+			bulletObj.collider.enabled = false;
+				
+			float delta = (float)Network.time - _sentTime;
+			Vector3 offset = bulletObj.transform.forward * descriptor.moveSpeed * delta;
+			bulletObj.transform.Translate( offset );
+		}
 
 		bulletScript.OnShoot();
 		_weapon.source.OnBulletCreated( _weapon, bulletScript );
 
+
 		// Tell everyone else about the owner of this bullet
-		if ( desc.smartBullet == true
+		if ( descriptor.smartBullet == true
 		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			BaseHealth target = bulletObj.GetComponent<SeekingBullet>().target;

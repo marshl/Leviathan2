@@ -11,7 +11,7 @@ public class BurstFireWeapon : WeaponBase
 	public float timeSinceBurst;
 	public int shotsFiredInBurst;
 	
-	public override bool CanFire ()
+	public override bool CanFire()
 	{
 		return this.isFiring == false
 			&& base.CanFire();
@@ -26,7 +26,7 @@ public class BurstFireWeapon : WeaponBase
 			if ( this.timeSinceShot >= this.burstFireDesc.fireRate )
 			{
 				{
-					this.Fire();
+					this.Fire( true, 0.0f, Quaternion.identity );
 					++this.shotsFiredInBurst;
 					if ( this.shotsFiredInBurst >= this.burstFireDesc.shotsInBurst )
 					{

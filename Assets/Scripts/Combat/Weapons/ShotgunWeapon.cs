@@ -11,7 +11,7 @@ public class ShotgunWeapon : WeaponBase
 		{
 			for ( int shotCounter = 0; shotCounter < this.shotgunDesc.shots; ++shotCounter )
 			{
-				this.Fire();
+				this.Fire( true, 0.0f, Quaternion.identity );
 			}
 			return true;
 		}

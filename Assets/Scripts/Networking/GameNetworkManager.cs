@@ -186,7 +186,7 @@ public class GameNetworkManager : BaseNetworkManager
 		this.gameState = GAME_STATE.PLAYING;
 	}
 
-	public void SendShootBulletMessage( WEAPON_TYPE _weaponType, int _index, Vector3 _pos, Quaternion _rot )
+	/*public void SendShootBulletMessage( WEAPON_TYPE _weaponType, int _index, Vector3 _pos, Quaternion _rot )
 	{
 		this.networkView.RPC( "OnShootBulletRPC", RPCMode.Others, Common.MyNetworkID(), (float)Network.time, (int)_weaponType, _index, _pos, _rot );// _forward );
 	}
@@ -202,6 +202,19 @@ public class GameNetworkManager : BaseNetworkManager
 		}
 
 		BulletManager.instance.CreateBulletRPC( _ownerID, _creationTime, (WEAPON_TYPE)_weaponType, _index, _pos, _rot );
+	}*/
+
+	public void SendWeaponFireMessage( NetworkViewID _weaponManagerViewID, int _weaponIndex, WeaponFirePoint _firePoint )
+	{
+		this.networkView.RPC( "OnWeaponFireRPC", RPCMode.Others, _weaponManagerViewID, _weaponIndex, (float)Network.time, _firePoint.transform.rotation );
+	}
+
+	[RPC]
+	private void OnWeaponFireRPC( NetworkViewID _weaponManagerViewID, int _weaponIndex, float _timeSent, Quaternion _firePointRotation )
+	{
+		NetworkView view = NetworkView.Find( _weaponManagerViewID );
+		BaseWeaponManager weaponManager = view.GetComponent<BaseWeaponManager>();
+		weaponManager.weapons[_weaponIndex].Fire( false, _timeSent, _firePointRotation );
 	}
 
 	public void SendDestroySmartBulletMessage( NetworkViewID _viewID )

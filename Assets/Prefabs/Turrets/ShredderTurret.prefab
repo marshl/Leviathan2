@@ -658,6 +658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee19a08d94ab4cc449f4321804b0406f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muzzleFlash: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -669,6 +670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee19a08d94ab4cc449f4321804b0406f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muzzleFlash: {fileID: 0}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -738,6 +740,7 @@ MonoBehaviour:
   firePointIndex: 0
   energySystem: {fileID: 0}
   source: {fileID: 11400010}
+  weaponIndex: 0
   timeSinceShot: 0
   ammunition: 0
   currentLockOn: 0
@@ -754,6 +757,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 11400006}
+  weapons:
+  - {fileID: 11400008}
   currentTarget: {fileID: 0}
   maxTargetDistance: 500
   restrictions:

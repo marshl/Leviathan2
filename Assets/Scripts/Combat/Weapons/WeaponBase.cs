@@ -20,6 +20,9 @@ public class WeaponBase : MonoBehaviour
 	public EnergySystem energySystem;
 	public BaseWeaponManager source;
 
+	[HideInInspector]
+	public int weaponIndex;
+
 	public float timeSinceShot;
 	public int ammunition;
 
@@ -88,14 +91,14 @@ public class WeaponBase : MonoBehaviour
 			return false;
 		}
 
-		this.Fire();
+		this.Fire( true, 0.0f, Quaternion.identity );
 		return true;
 	}
 
 	/// <summary>
 	/// Fires a bullet, or a series of bullets if FireInSync = true, and returns a list of them
 	/// </summary>
-	public virtual List<BulletBase> Fire()
+	public virtual List<BulletBase> Fire( bool _local, float _timeSent, Quaternion _firePointRotation )
 	{
 		if ( this.firePoints.Length == 0 )
 		{
@@ -119,25 +122,40 @@ public class WeaponBase : MonoBehaviour
 			for ( int i = 0; i < this.firePoints.Length; ++i )
 			{
 				WeaponFirePoint currentFirePoint = this.firePoints[i];
-				bulletsFired.Add( this.FireBulletFromFirePoint( currentFirePoint, damageScale ) );     
+				bulletsFired.Add( this.FireBulletFromFirePoint( currentFirePoint, damageScale, _local, _timeSent, _firePointRotation ) );     
 			}
 		}
 		else
 		{
 			WeaponFirePoint currentFirePoint = this.firePoints[this.firePointIndex];
-			bulletsFired.Add( this.FireBulletFromFirePoint( currentFirePoint, damageScale ) );
+			bulletsFired.Add( this.FireBulletFromFirePoint( currentFirePoint, damageScale, _local, _timeSent, _firePointRotation ) );
 			this.IncrementFireIndex();
 		}
 		return bulletsFired;
 	}
 
-	private BulletBase FireBulletFromFirePoint( WeaponFirePoint _firePoint, float _damageScale )
+	private BulletBase FireBulletFromFirePoint( WeaponFirePoint _firePoint, float _damageScale, bool _local, float _timeSent, Quaternion _firePointRotation )
 	{
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			if (_local )
+			{
+				GameNetworkManager.instance.SendWeaponFireMessage( this.source.networkView.viewID, this.weaponIndex, _firePoint );
+			}
+			else
+			{
+				_firePoint.transform.rotation = _firePointRotation;
+			}
+		}
+
+
+
 		BulletBase bullet = BulletManager.instance.CreateBullet
 		(
 			this,
 			_firePoint, 
-			_damageScale );
+			_damageScale,
+			_local, _timeSent );
 
 		--this.ammunition;
 

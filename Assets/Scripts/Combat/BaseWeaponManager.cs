@@ -5,11 +5,11 @@ using System.Collections.Generic;
 public class BaseWeaponManager : MonoBehaviour
 {
 	public BaseHealth health;
+	public WeaponBase[] weapons;
 
 	public BaseHealth currentTarget;
-
+	
 	public int? targetIndex = null;
-
 	public float maxTargetDistance;
 
 	public TargetManager.TargetRestriction restrictions;
@@ -19,6 +19,11 @@ public class BaseWeaponManager : MonoBehaviour
 		this.restrictions = new TargetManager.TargetRestriction();
 		this.restrictions.transform = this.transform;
 		this.restrictions.ignoreBelowHorizon = false;
+
+		for ( int i = 0; i < this.weapons.Length; ++i )
+		{
+			this.weapons[i].weaponIndex = i;
+		}
 	}
 
 	public virtual void OnBulletCreated( WeaponBase _weapon, BulletBase _bullet )

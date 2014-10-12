@@ -46,14 +46,14 @@ public class SpinUpWeapon : WeaponBase
 		return Mathf.Lerp( this.spinUpDesc.fireRate, this.spinUpDesc.maxFireRate, this.currentSpin );
 	}
 
-	public override List<BulletBase> Fire()
+	public override List<BulletBase> Fire( bool _local, float _timeSent, Quaternion _firePointRotation )
 	{
 		this.currentSpin = Mathf.Clamp
 		(
 			this.currentSpin + this.GetCurrentFireRate() / this.spinUpDesc.spinUpTime,
 			0.0f, 1.0f
 		);
-		return base.Fire();
+		return base.Fire( _local, _timeSent, _firePointRotation );
 	} 
 }
 

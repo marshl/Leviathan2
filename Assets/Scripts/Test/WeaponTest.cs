@@ -10,11 +10,10 @@ public class WeaponTest : BaseWeaponManager
 	public bool firing;
 
 	public int weaponIndex = 0;
-	private WeaponBase[] weapons;
+
 
 	private void Start()
 	{
-		this.weapons = this.GetComponents<WeaponBase>();
 		this.restrictions.teams = (int)TEAM.TEAM_2;
 
 		GamePlayer dummyOwner = new GamePlayer();
