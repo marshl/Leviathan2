@@ -122,6 +122,7 @@ public class MenuNetworking : BaseNetworkManager
 	private void OnSendConnectedInfoRPC( int _playerID, string _playerName )
 	{
 		GamePlayerManager.instance.GetPlayerWithID( _playerID ).name = _playerName;
+		MessageManager.instance.AddMessage( _playerID, _playerName + " has connected", true );
 	}
 
 	// Unity Callback: Do not change signature
@@ -162,7 +163,7 @@ public class MenuNetworking : BaseNetworkManager
 		MenuGUI.instance.OnFailedToConnect( _info );
 	}
 
-	// Unity Callback: Do not change signature
+	// Unity Callback: Do not change signature (only called on the server)
 	private void OnPlayerConnected( NetworkPlayer _player )
 	{
 		DebugConsole.Log( "Player connected IP:" + _player.ipAddress + " Port;" + _player.port
@@ -170,27 +171,24 @@ public class MenuNetworking : BaseNetworkManager
 
 		int playerID = Common.NetworkID( _player );
 
-		if ( Network.isServer == true )
+		PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();//MenuLobby.instance.GetNextFreePlayerType();//( playerID );
+
+		// If this is the server, tell the new guy who is in each of the teams
+		foreach ( KeyValuePair<int, GamePlayer> pair in GamePlayerManager.instance.playerMap )
 		{
-			PLAYER_TYPE playerType = GamePlayerManager.instance.GetNextFreePlayerType();//MenuLobby.instance.GetNextFreePlayerType();//( playerID );
-
-			// If this is the server, tell the new guy who is in each of the teams
-			foreach ( KeyValuePair<int, GamePlayer> pair in GamePlayerManager.instance.playerMap )
+			if ( pair.Key != playerID ) // Info about the player is sent further down
 			{
-				if ( pair.Key != playerID ) // Info about the player is sent further down
-				{
-					DebugConsole.Log( "Telling " + playerID + " about " + pair.Key + ":" + pair.Value.playerType );
-					this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value.playerType );
-				}
+				DebugConsole.Log( "Telling " + playerID + " about " + pair.Key + ":" + pair.Value.playerType );
+				this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value.playerType );
 			}
-
-			DebugConsole.Log( "Telling everyone else about " + playerID + ":" + playerType );
-			// Then tell everyone about the new guy
-			this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
 		}
 
+		DebugConsole.Log( "Telling everyone else about " + playerID + ":" + playerType );
+		// Then tell everyone about the new guy
+		this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
+
 		this.networkView.RPC( "OnSendConnectedInfoRPC", _player, Common.MyNetworkID(), GamePlayerManager.instance.myPlayer.name );
-		MessageManager.instance.AddMessage( playerID, "Player " + playerID + " has connected", false );
+
 	}
 
 	// Unity Callback: Do not change signature

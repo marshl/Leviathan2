@@ -266,4 +266,16 @@ public abstract class Common
 		// Return angle multiplied with 1 or -1
 		return angle * ( Vector3.Dot( _axis, Vector3.Cross(_from, _to) ) < 0 ? -1.0f : 1.0f );
 	}
+
+	static public string ColorToHex( Color _color )
+	{
+		string str = "#";
+
+		for ( int i = 0; i < 4; ++i )
+		{
+			str += ((int)(_color[i] * 255 )).ToString("X2");
+		}
+
+		return str;
+	}
 }

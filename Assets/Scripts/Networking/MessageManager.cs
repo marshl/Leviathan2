@@ -57,7 +57,7 @@ public class MessageManager : MonoBehaviour
 		Message msg = this.messages[_messageIndex];
 
 		return (msg.showTimestamp ? msg.timeReceived.ToString( "hh:mm tt" ) + " - " : "")
-			+ "<color=" + this.GetPlayerColour( msg.senderID ) + ">"
+			+ "<color=" + Common.ColorToHex( this.GetPlayerColour( msg.senderID ) ) + ">"
 			+ "Player " + msg.senderID + ": "
 			+ msg.message + "</color>\n";
 	}

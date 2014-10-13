@@ -10,6 +10,14 @@ using System.Xml.Serialization;
 public class Options
 {
 	public string playerName = "DefaultName";
+
+	public Options()
+	{
+		string[] names = { "Huey", "Duey", "Louie", };
+		System.Random newRand = new System.Random();
+
+		this.playerName = names[ newRand.Next() % names.Length ];
+	}
 };
 
 public class PlayerOptions : MonoBehaviour
