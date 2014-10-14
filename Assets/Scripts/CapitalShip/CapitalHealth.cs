@@ -31,4 +31,11 @@ public class CapitalHealth : BaseHealth
 			this.currentShield = maxShield;
 		}
 	}
+
+
+	public override void DealDamage (float _damage, bool _broadcast, GamePlayer _sourcePlayer)
+	{
+		base.DealDamage (_damage, _broadcast, _sourcePlayer);
+		GameGUI.instance.OnCapitalShipDamage( this, _damage );
+	}
 }

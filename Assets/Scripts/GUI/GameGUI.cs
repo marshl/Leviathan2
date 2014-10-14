@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GameGUI : MonoBehaviour 
 {
+	public static GameGUI instance;
+
 	private GamePlayer player;
 
 	public enum GUI_MODE
@@ -25,13 +27,19 @@ public class GameGUI : MonoBehaviour
 	public Texture friendlyReticuleTexture;
 	public Texture enemyReticuleTexture;
 
-	public float capitalHealthBarThickness;
-	public float capitalHealthBarOffset;
+	public Texture barBracketTexture;
 
-	private Rect capitalShipHealthRect1;
-	private Rect capitalShipHealthRect2;
-	private Rect capitalShipShieldRect1;
-	private Rect capitalShipShieldRect2;
+	public float CSHealthBarThickness;
+	public float CSHealthBarOffset;
+	public float CSHealthBarRelativeLength;
+	public float csHealthBarWidth;
+	public float healthBarTileCount;
+	public float healthShieldBarGap;
+
+	private float team1CSDamageTimer;
+	private float team2CSDamageTimer;
+
+	public float csHealthDamageHighlightDuration;
 
 	public float targetReticuleScale;
 
@@ -40,9 +48,19 @@ public class GameGUI : MonoBehaviour
 	public Camera targetCamera;
 	public Camera idleCamera;
 
-	private void Update () 
+	public Rect tiling;
+
+	private void Awake()
+	{
+		instance = this;
+	}
+
+	private void Update() 
 	{
 		this.DetermineGUIMode();
+
+		this.team1CSDamageTimer += Time.deltaTime;
+		this.team2CSDamageTimer += Time.deltaTime;
 
 		switch ( this.guiMode )
 		{
@@ -68,7 +86,6 @@ public class GameGUI : MonoBehaviour
 		{
 			this.idleCamera.enabled = false;
 			this.camera.enabled = true;
-			this.UpdateCapitalShipDisplay();
 
 			BaseHealth target = this.player.fighter.weapons.currentTarget;
 			if ( target != null )
@@ -95,7 +112,6 @@ public class GameGUI : MonoBehaviour
 		{
 			this.idleCamera.enabled = false;
 			this.targetCamera.enabled = false;
-			this.UpdateCapitalShipDisplay();
 			break;
 		}
 		case GUI_MODE.FIGHTER_PICKER:
@@ -136,7 +152,7 @@ public class GameGUI : MonoBehaviour
 		{
 			this.RenderFighterHealth();
 			this.RenderFighterTargets();
-			this.RenderCapitalShipStates();
+			this.RenderCapitalHealthStates();
 			this.RenderFighterSpeed();
 			this.RenderFighterWeapons();
 			break;
@@ -157,7 +173,7 @@ public class GameGUI : MonoBehaviour
 		case GUI_MODE.CAPITAL:
 		{
 			this.RenderCapitalShipTargets();
-			this.RenderCapitalShipStates();
+			this.RenderCapitalHealthStates();
 			break;
 		}
 		case GUI_MODE.FIGHTER_PICKER:
@@ -230,51 +246,6 @@ public class GameGUI : MonoBehaviour
 		}
 	}
 
-	private void UpdateCapitalShipDisplay()
-	{
-		float halfWidth = (float)Screen.width * 0.5f;;
-
-		GamePlayer p1 = GamePlayerManager.instance.commander1;
-		if ( p1 != null && p1.capitalShip != null )
-		{
-			CapitalHealth health = p1.capitalShip.health;
-			float healthRatio = health.currentHealth / health.maxHealth;
-			float shieldRatio = health.currentShield / health.maxShield;
-
-			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
-			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
-
-			this.capitalShipHealthRect1.Set( this.capitalHealthBarOffset, 0, healthRatio * halfWidth, this.capitalHealthBarThickness );
-			this.capitalShipShieldRect1.Set( this.capitalHealthBarOffset, 0, shieldRatio * halfWidth, this.capitalHealthBarThickness );
-		}
-
-		GamePlayer p2  = GamePlayerManager.instance.commander2;
-		if ( p2 != null && p2.capitalShip != null )
-		{
-			CapitalHealth health = p2.capitalShip.health;
-			float healthRatio = health.currentHealth / health.maxHealth;
-			float shieldRatio = health.currentShield / health.maxShield;
-
-			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
-			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
-
-			this.capitalShipHealthRect2.Set( halfWidth, 0, healthRatio * halfWidth, this.capitalHealthBarThickness );
-			this.capitalShipShieldRect2.Set( halfWidth, 0, shieldRatio * halfWidth, this.capitalHealthBarThickness );
-		}
-	}
-	
-	private void RenderCapitalShipStates()
-	{
-		if ( GamePlayerManager.instance.commander1 != null )
-		{
-			this.RenderCapitalShipHealth( GamePlayerManager.instance.commander1.capitalShip );
-		}
-		if ( GamePlayerManager.instance.commander2 != null )
-		{
-			this.RenderCapitalShipHealth( GamePlayerManager.instance.commander2.capitalShip );
-		}
-	}
-
 	private void RenderCapitalShipTargets()
 	{
 		List<BaseHealth> targets = TargetManager.instance.GetTargetsOfType( TARGET_TYPE.FIGHTER );
@@ -318,13 +289,54 @@ public class GameGUI : MonoBehaviour
 		}
 	}
 
-	private void RenderCapitalShipHealth( CapitalShipMaster _ship )
+	private void RenderCapitalHealthStates()
 	{
-		GUI.DrawTexture( this.capitalShipHealthRect1, this.healthBarTexture ); 
-		GUI.DrawTexture( this.capitalShipHealthRect2, this.healthBarTexture ); 
+		float barHeight = (float)Screen.height * this.CSHealthBarRelativeLength;
+		float barBase = (float)Screen.height/2 - barHeight/2;
 
-		GUI.DrawTexture( this.capitalShipShieldRect1, this.shieldBarTexture ); 
-		GUI.DrawTexture( this.capitalShipShieldRect2, this.shieldBarTexture ); 
+		GamePlayer p1 = GamePlayerManager.instance.commander1;
+		if ( p1 != null && p1.capitalShip != null )
+		{
+			CapitalHealth health = p1.capitalShip.health;
+			float healthRatio = health.currentHealth / health.maxHealth;
+			float shieldRatio = health.currentShield / health.maxShield;
+			
+			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
+			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
+
+			float alpha = this.team1CSDamageTimer > this.csHealthDamageHighlightDuration ? 0.5f : 1.0f;
+
+			GUI.color = new Color( 1.0f, 1.0f, 1.0f, alpha );
+
+			Rect rect = new Rect( this.CSHealthBarOffset, barBase, this.csHealthBarWidth, barHeight );
+			this.RenderBracketedBar( this.healthBarTexture, rect, healthRatio );
+
+			rect.x += this.csHealthBarWidth + this.healthShieldBarGap;
+			this.RenderBracketedBar( this.shieldBarTexture, rect, shieldRatio );
+		}
+		
+		GamePlayer p2  = GamePlayerManager.instance.commander2;
+		if ( p2 != null && p2.capitalShip != null )
+		{
+			CapitalHealth health = p2.capitalShip.health;
+			float healthRatio = health.currentHealth / health.maxHealth;
+			float shieldRatio = health.currentShield / health.maxShield;
+			
+			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
+			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
+
+			float alpha = this.team2CSDamageTimer > this.csHealthDamageHighlightDuration ? 0.5f : 1.0f;
+			
+			GUI.color = new Color( 1.0f, 1.0f, 1.0f, alpha );
+
+			Rect rect = new Rect( Screen.width - this.CSHealthBarOffset - csHealthBarWidth, barBase, this.csHealthBarWidth, barHeight );
+			this.RenderBracketedBar( this.healthBarTexture, rect, healthRatio);
+			
+			rect.x -= (this.csHealthBarWidth + this.healthShieldBarGap);
+			this.RenderBracketedBar( this.shieldBarTexture, rect, shieldRatio );
+		}
+
+		GUI.color = Color.white;
 	}
 
 	private void RenderFighterHealth()
@@ -332,11 +344,6 @@ public class GameGUI : MonoBehaviour
 		FighterHealth health = this.player.fighter.health;
 		GUI.Label( new Rect(0, 50, 150, 50), "Shields: " + health.currentShield + " / " + health.maxShield );
 		GUI.Label( new Rect(0, 0, 150, 50), "Hull: " + health.currentHealth + " / " + health.maxHealth );
-	}
-
-	private void UpdateFighterSpeed()
-	{
-
 	}
 
 	private void RenderFighterSpeed()
@@ -418,5 +425,36 @@ public class GameGUI : MonoBehaviour
 			}
 		}
 		return r;
+	}
+
+	private void RenderBracketedBar( Texture _tiledTexture, Rect _rect, float _ratio )
+	{
+		//GUI.color = new Color( 1.0f, 1.0f, 1.0f, 0.5f );
+		Rect innerRect = new Rect( _rect );
+		innerRect.height *= _ratio;
+		//Debug.Log( innerRect.y );
+		innerRect.y = _rect.y + (_rect.height - innerRect.height);
+		GUI.DrawTexture( innerRect, _tiledTexture );
+		//Debug.Log( innerRect.y );
+
+		GUI.DrawTextureWithTexCoords( _rect, this.barBracketTexture, new Rect( 1.0f, 0.0f, 1.0f,  this.healthBarTileCount ) );
+	}
+
+	public void OnCapitalShipDamage( CapitalHealth _health, float _damage )
+	{
+		TEAM team = _health.Owner.team;
+
+		if ( team == TEAM.TEAM_1 )
+		{
+			this.team1CSDamageTimer = 0.0f;
+		}
+		else if ( team == TEAM.TEAM_2 )
+		{
+			this.team2CSDamageTimer = 0.0f;
+		}
+		else
+		{
+			Debug.LogError( "Unknown team " + team );
+		}
 	}
 }

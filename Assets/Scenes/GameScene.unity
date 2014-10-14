@@ -834,6 +834,10 @@ MonoBehaviour:
   turretKillPoints: 50
   missileKillPoints: 10
   targetDamagePoints: 1
+  team1Score:
+    score: 0
+  team2Score:
+    score: 0
 --- !u!4 &454165633
 Transform:
   m_ObjectHideFlags: 0
@@ -2379,19 +2383,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guiMode: 0
-  healthBarTexture: {fileID: 2800000, guid: 4bae1025bffe43b4e8cd6896821ae67a, type: 3}
-  shieldBarTexture: {fileID: 2800000, guid: 2b5435fe9b5f6534d8c214fc38e72ca4, type: 3}
+  healthBarTexture: {fileID: 2800000, guid: 6de4070fb4a852845bd2ee2db55d5c84, type: 3}
+  shieldBarTexture: {fileID: 2800000, guid: 14e524d14f0718e42b429cc50d3150ab, type: 3}
   reticuleTexture: {fileID: 2800000, guid: 2675ba511d797094f852e7a62064f0b4, type: 3}
   friendlyReticuleTexture: {fileID: 2800000, guid: b07e9c988d6fe324e8076a0ee24b0437,
     type: 3}
   enemyReticuleTexture: {fileID: 2800000, guid: 4815089d71d70434d8dde73d3aa25c2e,
     type: 3}
-  capitalHealthBarThickness: 3
-  capitalHealthBarOffset: 5
+  barBracketTexture: {fileID: 2800000, guid: e52453fc9c639174f8157cca7543fa45, type: 3}
+  CSHealthBarThickness: 16
+  CSHealthBarOffset: 5
+  CSHealthBarRelativeLength: .5
+  csHealthBarWidth: 16
+  healthBarTileCount: 10
+  healthShieldBarGap: 5
+  csHealthDamageHighlightDuration: 5
   targetReticuleScale: 20
   targetCameraDistance: 10
   targetCamera: {fileID: 1561973372}
   idleCamera: {fileID: 1192832057}
+  tiling:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!4 &1561973371
 Transform:
   m_ObjectHideFlags: 0

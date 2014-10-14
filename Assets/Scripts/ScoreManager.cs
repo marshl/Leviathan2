@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class TeamScore
 {
 	public int score;
@@ -24,15 +25,15 @@ public class ScoreManager : MonoBehaviour
 	public int missileKillPoints;
 	public int targetDamagePoints;
 	
-	public Dictionary<TEAM, TeamScore> teamScores;
+	public TeamScore team1Score;
+	public TeamScore team2Score;
 
 	public void Awake()
 	{
 		instance = this;
 
-		this.teamScores = new Dictionary<TEAM, TeamScore>();
-		this.teamScores.Add( TEAM.TEAM_1, new TeamScore() );
-		this.teamScores.Add( TEAM.TEAM_2, new TeamScore() );
+		team1Score = new TeamScore();
+		team2Score = new TeamScore();
 	}
 
 	public void AddScore( SCORE_TYPE _scoreType, GamePlayer _player, bool _broadcast )
@@ -40,10 +41,8 @@ public class ScoreManager : MonoBehaviour
 		TEAM team = _player.team;
 		int points = this.GetScoreTypeAmount( _scoreType );
 
-		if ( this.teamScores.ContainsKey( team ) )
-		{
-			this.teamScores[team].score += points;
-		}
+
+		this.GetTeamScore( team ).score += points;
 
 		_player.personalScore += points;
 
@@ -55,9 +54,18 @@ public class ScoreManager : MonoBehaviour
 		}
 	}
 
-	public int GetTeamScore( TEAM _team )
+	public TeamScore GetTeamScore( TEAM _team )
 	{
-		return this.teamScores[_team].score;
+		switch ( _team )
+		{
+		case TEAM.TEAM_1:
+			return this.team1Score;
+		case TEAM.TEAM_2:
+			return this.team2Score;
+		default:
+			DebugConsole.Error( "Unknown team " + _team );
+			return this.team1Score;
+		}
 	}
 
 	private int GetScoreTypeAmount( SCORE_TYPE _scoreType )
@@ -73,7 +81,8 @@ public class ScoreManager : MonoBehaviour
 		case SCORE_TYPE.DAMAGE:
 			return this.targetDamagePoints;
 		default:
-			throw new System.ArgumentException( "Unknown score type \"" + _scoreType + "\"" );
+			DebugConsole.Error( "Unknown score type \"" + _scoreType + "\"" );
+			return 0;
 		}
 	}
 }
