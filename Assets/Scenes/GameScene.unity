@@ -744,6 +744,14 @@ Prefab:
       propertyPath: dummiesToCreate.Array.data[3]
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: dummiesToCreate.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: dummiesToCreate.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
   m_RootGameObject: {fileID: 122270339}
@@ -985,6 +993,7 @@ Transform:
   m_Children:
   - {fileID: 2114391585}
   - {fileID: 1362560564}
+  - {fileID: 691865450}
   - {fileID: 1687632509}
   m_Father: {fileID: 375129944}
   m_RootOrder: 1
@@ -1121,7 +1130,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 817777348}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!114 &631075033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1241,7 +1250,7 @@ GameObject:
   - 4: {fileID: 691865450}
   - 114: {fileID: 691865451}
   m_Layer: 0
-  m_Name: GuidedMissile
+  m_Name: BarrageMissile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1257,8 +1266,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1559345305}
-  m_RootOrder: 8
+  m_Father: {fileID: 545763797}
+  m_RootOrder: 2
 --- !u!114 &691865451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1271,12 +1280,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 14
+  weaponType: 19
   collisionType: 0
-  prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
+  prefab: {fileID: 100012, guid: 27e92fa041a4c0044954bad596d4c7fe, type: 2}
   count: 0
-  moveSpeed: 50
-  maxDistance: 500
+  moveSpeed: 250
+  maxDistance: 5000
   damage: 100
   areaOfEffect: 1
   aoeRadius: 25
@@ -1421,6 +1430,7 @@ Transform:
   m_Children:
   - {fileID: 353362197}
   - {fileID: 619773180}
+  - {fileID: 1831819242}
   - {fileID: 631075032}
   m_Father: {fileID: 1271608244}
   m_RootOrder: 1
@@ -1857,6 +1867,62 @@ Transform:
   - {fileID: 1271608244}
   m_Father: {fileID: 0}
   m_RootOrder: 3
+--- !u!1 &1165319369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100086, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 2091816518}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1165319370}
+  - 114: {fileID: 1165319371}
+  m_Layer: 0
+  m_Name: GuidedMissile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1165319370
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400086, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 2091816518}
+  m_GameObject: {fileID: 1165319369}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1559345305}
+  m_RootOrder: 8
+--- !u!114 &1165319371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400080, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 2091816518}
+  m_GameObject: {fileID: 1165319369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 14
+  collisionType: 0
+  prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
+  count: 0
+  moveSpeed: 50
+  maxDistance: 500
+  damage: 100
+  areaOfEffect: 1
+  aoeRadius: 25
+  passesThroughTargets: 0
+  smartBullet: 1
+  fadeOut: 1
+  turnRate: 25
+  canAngleOut: 0
+  maxDetectionAngle: .150000006
+  seekingDelayDistance: 15
 --- !u!1 &1166958338
 GameObject:
   m_ObjectHideFlags: 0
@@ -2200,7 +2266,7 @@ Transform:
   - {fileID: 99801743}
   - {fileID: 443561190}
   - {fileID: 1627642453}
-  - {fileID: 1831819242}
+  - {fileID: 1764673769}
   m_Father: {fileID: 1271608244}
   m_RootOrder: 2
 --- !u!1 &1508104436
@@ -2351,7 +2417,7 @@ Transform:
   - {fileID: 896753971}
   - {fileID: 1335153583}
   - {fileID: 1525993420}
-  - {fileID: 691865450}
+  - {fileID: 1165319370}
   m_Father: {fileID: 375129944}
   m_RootOrder: 2
 --- !u!1 &1561973369
@@ -2391,6 +2457,14 @@ MonoBehaviour:
   enemyReticuleTexture: {fileID: 2800000, guid: 4815089d71d70434d8dde73d3aa25c2e,
     type: 3}
   barBracketTexture: {fileID: 2800000, guid: e52453fc9c639174f8157cca7543fa45, type: 3}
+  centreReticuleTexture: {fileID: 2800000, guid: 39e095c343482114da593e408dfad087,
+    type: 3}
+  floatingReticuleTexture: {fileID: 2800000, guid: 2748184a2193c034f8fc807276d4fea6,
+    type: 3}
+  topLeftBracket: {fileID: 2800000, guid: a2faac5a0fe5fde4ca137c69bca2bab6, type: 3}
+  topRightBracket: {fileID: 2800000, guid: 2d67ba77f8c32f14e8684ebe2ae3e037, type: 3}
+  bottomRightBracket: {fileID: 2800000, guid: a24424ba35e6c544696487dc7c74e9fb, type: 3}
+  bottomLeftBracket: {fileID: 2800000, guid: edb73b125583ecf49919852be2c7e7a5, type: 3}
   CSHealthBarThickness: 16
   CSHealthBarOffset: 5
   CSHealthBarRelativeLength: .5
@@ -2400,14 +2474,12 @@ MonoBehaviour:
   csHealthDamageHighlightDuration: 5
   targetReticuleScale: 20
   targetCameraDistance: 10
+  centreReticuleScaleRelative: .100000001
+  floatingReticuleScaleRelative: .0500000007
+  targetBracketScale: 8
+  minimumBracketScale: 20
   targetCamera: {fileID: 1561973372}
   idleCamera: {fileID: 1192832057}
-  tiling:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
 --- !u!4 &1561973371
 Transform:
   m_ObjectHideFlags: 0
@@ -2843,7 +2915,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 545763797}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!114 &1687632510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2965,6 +3037,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 14
+--- !u!1 &1764673768
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100084, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 2091816518}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1764673769}
+  - 114: {fileID: 1764673770}
+  m_Layer: 0
+  m_Name: GuidedMissile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1764673769
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400084, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 2091816518}
+  m_GameObject: {fileID: 1764673768}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1482333499}
+  m_RootOrder: 8
+--- !u!114 &1764673770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400078, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 2091816518}
+  m_GameObject: {fileID: 1764673768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 14
+  label: Guided Missile
+  fireRate: 1
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 10
+  requiresWeaponLock: 1
+  lockOnDuration: 3
+  lockOnAngle: 15
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 1165319371}
 --- !u!1 &1817496634
 GameObject:
   m_ObjectHideFlags: 0
@@ -3031,7 +3157,7 @@ GameObject:
   - 4: {fileID: 1831819242}
   - 114: {fileID: 1831819243}
   m_Layer: 0
-  m_Name: GuidedMissile
+  m_Name: BarrageMissile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3047,8 +3173,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1482333499}
-  m_RootOrder: 8
+  m_Father: {fileID: 817777348}
+  m_RootOrder: 2
 --- !u!114 &1831819243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3061,11 +3187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 14
+  weaponType: 19
   label: Guided Missile
-  fireRate: 1
+  fireRate: 0
   spread: 0
-  fireInSync: 0
+  fireInSync: 1
   usesEnergy: 0
   energyCostPerShot: 0
   usesAmmunition: 0
@@ -3074,7 +3200,7 @@ MonoBehaviour:
   lockOnDuration: 3
   lockOnAngle: 15
   muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 691865451}
+  bulletDesc: {fileID: 1165319371}
 --- !u!1 &1928740081
 GameObject:
   m_ObjectHideFlags: 0

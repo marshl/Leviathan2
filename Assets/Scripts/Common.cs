@@ -278,4 +278,33 @@ public abstract class Common
 
 		return str;
 	}
+
+	static public Vector2 ClampOffscreenTarget( Vector3 _screenPos )
+	{
+		Vector2 n = _screenPos;
+		
+		if ( _screenPos.z < 0 )
+		{
+			n = -n;
+		}
+		
+		n.x = Mathf.Clamp( n.x, 0.0f, Screen.width );
+		n.y = Mathf.Clamp( n.y, 0.0f, Screen.height );
+		
+		// If in the middle of the screen, push it to an edge
+		if ( n.x > 0.0f && n.x < Screen.width
+		  && n.y > 0.0f && n.y < Screen.height )
+		{
+			if ( Mathf.Abs( n.x ) > Mathf.Abs( n.y ) )
+			{
+				n.x = n.x > Screen.width/2 ? Screen.width : 0.0f;
+			}
+			else
+			{
+				n.y = n.y > Screen.height/2 ? Screen.height : 0.0f;
+			}
+		}
+
+		return n;
+	}
 }

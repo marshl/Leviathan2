@@ -21,13 +21,20 @@ public class GameGUI : MonoBehaviour
 
 	public GUI_MODE guiMode = GUI_MODE.NONE;
 
-	public Texture healthBarTexture;
-	public Texture shieldBarTexture;
-	public Texture reticuleTexture;
-	public Texture friendlyReticuleTexture;
-	public Texture enemyReticuleTexture;
+	public Texture2D healthBarTexture;
+	public Texture2D shieldBarTexture;
+	public Texture2D reticuleTexture;
+	public Texture2D friendlyReticuleTexture;
+	public Texture2D enemyReticuleTexture;
+	public Texture2D barBracketTexture;
 
-	public Texture barBracketTexture;
+	public Texture2D centreReticuleTexture;
+	public Texture2D floatingReticuleTexture;
+
+	public Texture2D topLeftBracket;
+	public Texture2D topRightBracket;
+	public Texture2D bottomRightBracket;
+	public Texture2D bottomLeftBracket;
 
 	public float CSHealthBarThickness;
 	public float CSHealthBarOffset;
@@ -36,31 +43,30 @@ public class GameGUI : MonoBehaviour
 	public float healthBarTileCount;
 	public float healthShieldBarGap;
 
-	private float team1CSDamageTimer;
-	private float team2CSDamageTimer;
-
 	public float csHealthDamageHighlightDuration;
 
 	public float targetReticuleScale;
 
 	public float targetCameraDistance;
 
+	public float centreReticuleScaleRelative;
+	public float floatingReticuleScaleRelative;
+
+	public float targetBracketScale;
+	public float minimumBracketScale;
+
 	public Camera targetCamera;
 	public Camera idleCamera;
-
-	public Rect tiling;
 
 	private void Awake()
 	{
 		instance = this;
+		//Cursor.SetCursor( this.floatingReticuleTexture, Vector2.zero, CursorMode.Auto );
 	}
 
 	private void Update() 
 	{
 		this.DetermineGUIMode();
-
-		this.team1CSDamageTimer += Time.deltaTime;
-		this.team2CSDamageTimer += Time.deltaTime;
 
 		switch ( this.guiMode )
 		{
@@ -155,6 +161,12 @@ public class GameGUI : MonoBehaviour
 			this.RenderCapitalHealthStates();
 			this.RenderFighterSpeed();
 			this.RenderFighterWeapons();
+
+			float size = Screen.height * this.centreReticuleScaleRelative;
+			GUI.DrawTexture( new Rect( Screen.width/2 - size/2, Screen.height/2 - size/2, size, size ), this.centreReticuleTexture );
+
+			size = Screen.height * this.floatingReticuleScaleRelative;
+			GUI.DrawTexture( new Rect( Input.mousePosition.x - size/2, Screen.height - Input.mousePosition.y - size/2, size, size ), this.floatingReticuleTexture );
 			break;
 		}
 		case GUI_MODE.FIGHTER_RESPAWNING:
@@ -291,52 +303,42 @@ public class GameGUI : MonoBehaviour
 
 	private void RenderCapitalHealthStates()
 	{
-		float barHeight = (float)Screen.height * this.CSHealthBarRelativeLength;
-		float barBase = (float)Screen.height/2 - barHeight/2;
+		TEAM playerTeam = GamePlayerManager.instance.myPlayer.team;
+		TEAM enemyTeam = Common.OpposingTeam( playerTeam );
 
-		GamePlayer p1 = GamePlayerManager.instance.commander1;
-		if ( p1 != null && p1.capitalShip != null )
-		{
-			CapitalHealth health = p1.capitalShip.health;
-			float healthRatio = health.currentHealth / health.maxHealth;
-			float shieldRatio = health.currentShield / health.maxShield;
-			
-			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
-			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
-
-			float alpha = this.team1CSDamageTimer > this.csHealthDamageHighlightDuration ? 0.5f : 1.0f;
-
-			GUI.color = new Color( 1.0f, 1.0f, 1.0f, alpha );
-
-			Rect rect = new Rect( this.CSHealthBarOffset, barBase, this.csHealthBarWidth, barHeight );
-			this.RenderBracketedBar( this.healthBarTexture, rect, healthRatio );
-
-			rect.x += this.csHealthBarWidth + this.healthShieldBarGap;
-			this.RenderBracketedBar( this.shieldBarTexture, rect, shieldRatio );
-		}
-		
-		GamePlayer p2  = GamePlayerManager.instance.commander2;
-		if ( p2 != null && p2.capitalShip != null )
-		{
-			CapitalHealth health = p2.capitalShip.health;
-			float healthRatio = health.currentHealth / health.maxHealth;
-			float shieldRatio = health.currentShield / health.maxShield;
-			
-			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
-			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
-
-			float alpha = this.team2CSDamageTimer > this.csHealthDamageHighlightDuration ? 0.5f : 1.0f;
-			
-			GUI.color = new Color( 1.0f, 1.0f, 1.0f, alpha );
-
-			Rect rect = new Rect( Screen.width - this.CSHealthBarOffset - csHealthBarWidth, barBase, this.csHealthBarWidth, barHeight );
-			this.RenderBracketedBar( this.healthBarTexture, rect, healthRatio);
-			
-			rect.x -= (this.csHealthBarWidth + this.healthShieldBarGap);
-			this.RenderBracketedBar( this.shieldBarTexture, rect, shieldRatio );
-		}
+		this.RenderCapitalShipHealth( playerTeam, false );
+		this.RenderCapitalShipHealth( enemyTeam, true );
 
 		GUI.color = Color.white;
+	}
+
+	private void RenderCapitalShipHealth( TEAM _team, bool _left )
+	{
+		GamePlayer capitalPlayer = GamePlayerManager.instance.GetCommander( _team );
+		if ( capitalPlayer != null && capitalPlayer.capitalShip != null )
+		{
+			float barHeight = Screen.height * this.CSHealthBarRelativeLength;
+			float barBase = Screen.height/2 - barHeight/2;
+
+			CapitalHealth health = capitalPlayer.capitalShip.health;
+			float healthRatio = health.currentHealth / health.maxHealth;
+			float shieldRatio = health.currentShield / health.maxShield;
+			
+			healthRatio = healthRatio > 0.0f ? healthRatio : 0.0f;
+			shieldRatio = shieldRatio > 0.0f ? shieldRatio : 0.0f;
+			
+			float alpha = health.timeSinceDealtDamage > this.csHealthDamageHighlightDuration ? 0.5f : 1.0f;
+			
+			GUI.color = new Color( 1.0f, 1.0f, 1.0f, alpha );
+			
+			Rect rect = new Rect( _left ? this.CSHealthBarOffset : Screen.width - this.CSHealthBarOffset - csHealthBarWidth,
+			                     barBase, this.csHealthBarWidth, barHeight );
+
+			this.RenderBracketedBar( this.healthBarTexture, rect, healthRatio );
+			
+			rect.x += (_left ? 1.0f : -1.0f) * (this.csHealthBarWidth + this.healthShieldBarGap);
+			this.RenderBracketedBar( this.shieldBarTexture, rect, shieldRatio );
+		}
 	}
 
 	private void RenderFighterHealth()
@@ -357,18 +359,26 @@ public class GameGUI : MonoBehaviour
 		BaseHealth target = this.player.fighter.weapons.currentTarget;
 		if ( target != null )
 		{
-			Vector3 toTarget = target.transform.position - this.player.fighter.transform.position;
-			if ( Vector3.Dot( this.player.fighter.transform.forward, toTarget.normalized ) > 0.0f )
+			Vector3 screenPos = Camera.main.WorldToScreenPoint( target.transform.position );
+
+			bool offScreen = screenPos.x < 0.0f || screenPos.y < 0.0f
+				          || screenPos.x > Screen.width || screenPos.y > Screen.height
+				          || screenPos.z < 0.0f;
+
+
+			if ( offScreen )
+			{
+				Vector2 n = Common.ClampOffscreenTarget( screenPos );
+
+				GUI.DrawTexture( new Rect( n.x-16, Screen.height - n.y-16, 32, 32 ), this.floatingReticuleTexture );
+			}
+			else
 			{
 				Rect r = this.GetHealthGUIRect( target );
 
-				GUI.DrawTexture( r, this.reticuleTexture );
-			
-				WeaponBase missileWeapon = this.player.fighter.weapons.missileWeapon;
-				float lockScale = 2.0f - Mathf.Clamp01( missileWeapon.currentLockOn / missileWeapon.weaponDesc.lockOnDuration );
-				r.size = Vector2.one * this.targetReticuleScale * lockScale;
-
-				GUI.DrawTexture( r, this.reticuleTexture );
+				GUI.color = Color.red;
+				this.DrawTargetBracket( r );
+				GUI.color = Color.white;
 			}
 		}
 
@@ -376,6 +386,11 @@ public class GameGUI : MonoBehaviour
 
 		foreach ( BaseHealth t in targets )
 		{
+			if ( t == target )
+			{
+				continue;
+			}
+
 			Vector3 toTarget = t.transform.position - this.player.fighter.transform.position;
 			if ( Vector3.Dot( this.player.fighter.transform.forward, toTarget.normalized ) > 0.0f )
 			{
@@ -385,7 +400,7 @@ public class GameGUI : MonoBehaviour
 				screenPos.y = Screen.height - screenPos.y;
 
 				Rect r = this.GetHealthGUIRect( t );
-				GUI.DrawTexture( r, this.reticuleTexture );
+				this.DrawTargetBracket( r );
 			}
 		}
 	}
@@ -405,7 +420,7 @@ public class GameGUI : MonoBehaviour
 			Vector3 pos = Camera.main.WorldToScreenPoint( _health.transform.position );
 			pos.y = Screen.height - pos.y;
 			r.x = pos.x; r.y = pos.y;
-			r.height = r.width = this.targetReticuleScale;
+			r.height = r.width = this.minimumBracketScale;
 		}
 		else
 		{
@@ -423,38 +438,55 @@ public class GameGUI : MonoBehaviour
 				r.yMin = Mathf.Min( r.yMin, pos.y );
 				r.yMax = Mathf.Max( r.yMax, pos.y );
 			}
+
+			if ( r.width < this.minimumBracketScale )
+			{
+				float centre = r.x + r.width/2;
+				r.x = centre - this.minimumBracketScale/2;
+				r.width = this.minimumBracketScale;
+			}
+
+			if ( r.height < this.minimumBracketScale )
+			{
+				float centre = r.y + r.height/2;
+				r.y = centre - this.minimumBracketScale/2;
+				r.height = this.minimumBracketScale;
+			}
 		}
 		return r;
 	}
 
-	private void RenderBracketedBar( Texture _tiledTexture, Rect _rect, float _ratio )
+	public void DrawTargetBracket( Rect _r )
 	{
-		//GUI.color = new Color( 1.0f, 1.0f, 1.0f, 0.5f );
-		Rect innerRect = new Rect( _rect );
-		innerRect.height *= _ratio;
-		//Debug.Log( innerRect.y );
-		innerRect.y = _rect.y + (_rect.height - innerRect.height);
-		GUI.DrawTexture( innerRect, _tiledTexture );
-		//Debug.Log( innerRect.y );
+		// Top left
+		{
+			GUI.DrawTexture( new Rect( _r.x, _r.y, this.targetBracketScale, this.targetBracketScale ), this.topLeftBracket );
+		}
 
-		GUI.DrawTextureWithTexCoords( _rect, this.barBracketTexture, new Rect( 1.0f, 0.0f, 1.0f,  this.healthBarTileCount ) );
+		// Top Right
+		{
+			GUI.DrawTexture( new Rect( _r.x + _r.width - this.targetBracketScale, _r.y, this.targetBracketScale, this.targetBracketScale ), this.topRightBracket );
+		}
+
+		// Bottom Right
+		{
+			GUI.DrawTexture( new Rect( _r.x + _r.width - this.targetBracketScale, _r.y + _r.height - this.targetBracketScale, this.targetBracketScale, this.targetBracketScale ), this.bottomRightBracket );
+		}
+
+		// Bottom Right
+		{
+			GUI.DrawTexture( new Rect( _r.x, _r.y + _r.height - this.targetBracketScale, this.targetBracketScale, this.targetBracketScale ), this.bottomLeftBracket );
+		}
 	}
 
-	public void OnCapitalShipDamage( CapitalHealth _health, float _damage )
+	private void RenderBracketedBar( Texture2D _tiledTexture, Rect _rect, float _ratio )
 	{
-		TEAM team = _health.Owner.team;
+		Rect innerRect = new Rect( _rect );
 
-		if ( team == TEAM.TEAM_1 )
-		{
-			this.team1CSDamageTimer = 0.0f;
-		}
-		else if ( team == TEAM.TEAM_2 )
-		{
-			this.team2CSDamageTimer = 0.0f;
-		}
-		else
-		{
-			Debug.LogError( "Unknown team " + team );
-		}
+		innerRect.height *= _ratio;
+		innerRect.y = _rect.y + (_rect.height - innerRect.height);
+		GUI.DrawTexture( innerRect, _tiledTexture );
+
+		GUI.DrawTextureWithTexCoords( _rect, this.barBracketTexture, new Rect( 1.0f, 0.0f, 1.0f,  this.healthBarTileCount ) );
 	}
 }

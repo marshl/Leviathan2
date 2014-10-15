@@ -918,6 +918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 11400010}
+  weapons: []
   currentTarget: {fileID: 0}
   maxTargetDistance: 0
   restrictions:
@@ -1011,6 +1012,7 @@ MonoBehaviour:
   shieldGenerators: 10
   shieldingPerGenerator: 5000
   overrideShieldGenerators: 1
+  timeSinceDealtDamage: 0
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1121,7 +1123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetType: 0
+  targetType: 8
   ownerID: -2147483648
   debugTargetID: 0
   currentHealth: 0
@@ -1158,7 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdda6325a1eab040b08c4606de68a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetType: 0
+  targetType: 8
   ownerID: -2147483648
   debugTargetID: 0
   currentHealth: 0

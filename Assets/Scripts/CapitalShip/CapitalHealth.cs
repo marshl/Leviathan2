@@ -6,6 +6,7 @@ public class CapitalHealth : BaseHealth
 	public int shieldGenerators;
 	public float shieldingPerGenerator; //Our base shields, the capital ship gets this * shieldGenerators final max shield
 	public bool overrideShieldGenerators = false;
+	public float timeSinceDealtDamage;
 
 	public void Awake()
 	{
@@ -36,6 +37,12 @@ public class CapitalHealth : BaseHealth
 	public override void DealDamage (float _damage, bool _broadcast, GamePlayer _sourcePlayer)
 	{
 		base.DealDamage (_damage, _broadcast, _sourcePlayer);
-		GameGUI.instance.OnCapitalShipDamage( this, _damage );
+		this.timeSinceDealtDamage = 0.0f;
+	}
+
+	protected override void Update ()
+	{
+		base.Update ();
+		this.timeSinceDealtDamage += Time.deltaTime;
 	}
 }
