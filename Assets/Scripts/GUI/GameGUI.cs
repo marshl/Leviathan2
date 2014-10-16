@@ -26,7 +26,8 @@ public class GameGUI : MonoBehaviour
 	public Texture2D reticuleTexture;
 	public Texture2D friendlyReticuleTexture;
 	public Texture2D enemyReticuleTexture;
-	public Texture2D barBracketTexture;
+	public Texture2D verticalBarOverlayTexture;
+	public Texture2D horizontalBarOverlayTexture;
 
 	public Texture2D centreReticuleTexture;
 	public Texture2D floatingReticuleTexture;
@@ -38,6 +39,9 @@ public class GameGUI : MonoBehaviour
 
 	public Texture2D lowEnergyWarningTexture;
 	public Texture2D missileLockWarningTexture;
+
+	public Texture2D team1ScoreTexture;
+	public Texture2D team2ScoreTexture;
 
 	public float CSHealthBarThickness;
 	public float CSHealthBarOffset;
@@ -65,6 +69,10 @@ public class GameGUI : MonoBehaviour
 
 	public float targetBracketScale;
 	public float minimumBracketScale;
+
+	public float scoreBarHeight;
+	public float scoreBarWidth;
+
 
 	public Camera targetCamera;
 	public Camera idleCamera;
@@ -159,6 +167,7 @@ public class GameGUI : MonoBehaviour
 		}
 		case GUI_MODE.POST_GAME:
 		{
+			this.RenderScoreBar();
 			if ( GUI.Button( new Rect( Screen.width/3, Screen.height/3, Screen.width/3, Screen.height/3 ), "QUIT" ) )
 			{
 				GameNetworkManager.instance.QuitGame();
@@ -168,12 +177,14 @@ public class GameGUI : MonoBehaviour
 		case GUI_MODE.FIGHTER:
 		{
 			this.RenderFighterHealth();
-			this.RenderFighterTargets();
 			this.RenderCapitalHealthStates();
 			this.RenderFighterSpeed();
 			this.RenderFighterWeapons();
 			this.RenderFighterEnergy();
 			this.RenderFighterMissileLock();
+			this.RenderScoreBar();
+			this.RenderFighterTargets();
+
 			float size = Screen.height * this.centreReticuleScaleRelative;
 			GUI.DrawTexture( new Rect( Screen.width/2 - size/2, Screen.height/2 - size/2, size, size ), this.centreReticuleTexture );
 
@@ -183,6 +194,7 @@ public class GameGUI : MonoBehaviour
 		}
 		case GUI_MODE.FIGHTER_RESPAWNING:
 		{
+			this.RenderScoreBar();
 			float respawnTimer = this.player.fighter.respawnTimer;
 			if ( respawnTimer > 0 )
 			{
@@ -196,6 +208,7 @@ public class GameGUI : MonoBehaviour
 		}
 		case GUI_MODE.CAPITAL:
 		{
+			this.RenderScoreBar();
 			this.RenderCapitalShipTargets();
 			this.RenderCapitalHealthStates();
 			break;
@@ -346,10 +359,10 @@ public class GameGUI : MonoBehaviour
 			Rect rect = new Rect( _left ? this.CSHealthBarOffset : Screen.width - this.CSHealthBarOffset - csHealthBarWidth,
 			                     barBase, this.csHealthBarWidth, barHeight );
 
-			this.RenderBracketedBar( this.healthBarTexture, rect, healthRatio );
+			this.RenderVerticalBarOverlaid( this.healthBarTexture, rect, healthRatio );
 			
 			rect.x += (_left ? 1.0f : -1.0f) * (this.csHealthBarWidth + this.healthShieldBarGap);
-			this.RenderBracketedBar( this.shieldBarTexture, rect, shieldRatio );
+			this.RenderVerticalBarOverlaid( this.shieldBarTexture, rect, shieldRatio );
 		}
 	}
 
@@ -366,11 +379,11 @@ public class GameGUI : MonoBehaviour
 		healthRect.x = Screen.width/2 - this.fighterHealthBarOffset * Screen.width - healthRect.width;
 		healthRect.y = Screen.height/2 - healthRect.height/2;
 		
-		this.RenderBracketedBar( this.healthBarTexture, healthRect, healthRatio );
+		this.RenderVerticalBarOverlaid( this.healthBarTexture, healthRect, healthRatio );
 
 		healthRect.x = Screen.width/2 + this.fighterHealthBarOffset * Screen.width;
 
-		this.RenderBracketedBar( this.shieldBarTexture, healthRect, shieldRatio );
+		this.RenderVerticalBarOverlaid( this.shieldBarTexture, healthRect, shieldRatio );
 	}
 
 	private void RenderFighterSpeed()
@@ -538,7 +551,7 @@ public class GameGUI : MonoBehaviour
 		}
 	}
 
-	private void RenderBracketedBar( Texture2D _tiledTexture, Rect _rect, float _ratio )
+	private void RenderVerticalBarOverlaid( Texture2D _tiledTexture, Rect _rect, float _ratio )
 	{
 		Rect innerRect = new Rect( _rect );
 
@@ -546,6 +559,30 @@ public class GameGUI : MonoBehaviour
 		innerRect.y = _rect.y + (_rect.height - innerRect.height);
 		GUI.DrawTexture( innerRect, _tiledTexture );
 
-		GUI.DrawTextureWithTexCoords( _rect, this.barBracketTexture, new Rect( 1.0f, 0.0f, 1.0f,  this.healthBarTileCount ) );
+		GUI.DrawTextureWithTexCoords( _rect, this.verticalBarOverlayTexture, new Rect( 1.0f, 0.0f, 1.0f,  this.healthBarTileCount ) );
+	}
+
+	private void RenderScoreBar()
+	{
+		Rect overlayRect = new Rect();
+		overlayRect.width = this.scoreBarWidth * Screen.width;
+		overlayRect.height = this.scoreBarHeight;
+		overlayRect.x = Screen.width/2 - overlayRect.width/2;
+
+		float s1 = ScoreManager.instance.team1Score.score;
+		float s2 = ScoreManager.instance.team2Score.score;
+		float ratio = (s1 + s2 != 0.0f) ? (s1 / (s1 + s2)) : 0.5f;
+
+		Rect team1Rect = new Rect( overlayRect );
+		Rect team2Rect = new Rect( overlayRect );
+		team1Rect.width = team1Rect.width * ratio;
+		team2Rect.width = team2Rect.width * ( 1.0f - ratio );
+		team2Rect.x += team1Rect.width;
+
+		GUI.DrawTexture( team1Rect, this.team1ScoreTexture );
+		GUI.DrawTexture( team2Rect, this.team2ScoreTexture );
+
+		Rect texCoords = new Rect( 0.0f, 0.0f, this.healthBarTileCount, 1.0f );
+		GUI.DrawTextureWithTexCoords( overlayRect, this.horizontalBarOverlayTexture, texCoords );
 	}
 }

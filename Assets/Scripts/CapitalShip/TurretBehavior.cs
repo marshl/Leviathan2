@@ -87,6 +87,8 @@ public class TurretBehavior : BaseWeaponManager
 				ScoreManager.instance.AddScore( SCORE_TYPE.TURRET_KILL, this.health.lastHitBy, true );
 			}
 
+			TargetManager.instance.RemoveTarget( this.health );
+
 			if ( Network.peerType == NetworkPeerType.Disconnected )
 			{
 				GameObject.Destroy( this.gameObject );

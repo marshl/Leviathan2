@@ -39,9 +39,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aee74e3c85223d6498d39c58b85d09e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineOfSightBlockers:
+  lineOfSightBlockingLayers:
     serializedVersion: 2
-    m_Bits: 6145
+    m_Bits: 10241
   debugTargets: []
   currentDebugID: 0
 --- !u!1001 &100100000

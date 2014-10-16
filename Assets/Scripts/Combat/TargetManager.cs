@@ -119,6 +119,21 @@ public class TargetManager : MonoBehaviour
 	}
 #endif
 
+	public void RemoveTarget( BaseHealth _target )
+	{
+#if UNITY_EDITOR
+		this.debugTargets.Remove( _target );
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			this.debugTargetMap.Remove( _target.debugTargetID );
+		}
+		else
+#endif
+		{
+			this.targetMap.Remove( _target.networkView.viewID );
+		}
+	}
+
 	public BaseHealth GetTargetWithID( NetworkViewID _viewID )
 	{
 		BaseHealth target = null;
