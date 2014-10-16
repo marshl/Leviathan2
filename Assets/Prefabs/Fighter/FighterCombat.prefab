@@ -51,6 +51,7 @@ GameObject:
   - 114: {fileID: 11400014}
   - 114: {fileID: 11400018}
   - 114: {fileID: 11400004}
+  - 114: {fileID: 11400022}
   m_Layer: 12
   m_Name: FighterCombat
   m_TagString: Untagged
@@ -762,6 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee19a08d94ab4cc449f4321804b0406f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muzzleFlash: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -773,6 +775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee19a08d94ab4cc449f4321804b0406f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muzzleFlash: {fileID: 0}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -800,6 +803,7 @@ MonoBehaviour:
   health: {fileID: 11400018}
   weapons: {fileID: 11400016}
   ownerControl: {fileID: 11400004}
+  energySystem: {fileID: 11400022}
   capitalShip: {fileID: 0}
   respawnDelay: 5
   respawnTimer: 0
@@ -807,9 +811,9 @@ MonoBehaviour:
   currentSlot:
     landedPosition: {fileID: 0}
     landedFighter: {fileID: 0}
-    occupied: 0
     slotID: 0
   model: {fileID: 2300000}
+  fighterCamera: {fileID: 0}
   dummyShip: 1
   ownerID: -5
 --- !u!114 &11400008
@@ -870,8 +874,9 @@ MonoBehaviour:
   - {fileID: 11400000}
   - {fileID: 11400020}
   firePointIndex: 0
-  energySystem: {fileID: 0}
+  energySystem: {fileID: 11400022}
   source: {fileID: 11400016}
+  weaponIndex: 0
   timeSinceShot: 0
   ammunition: 0
   currentLockOn: 0
@@ -893,6 +898,7 @@ MonoBehaviour:
   firePointIndex: 0
   energySystem: {fileID: 0}
   source: {fileID: 11400016}
+  weaponIndex: 0
   timeSinceShot: 0
   ammunition: 0
   currentLockOn: 0
@@ -908,8 +914,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 11400018}
+  weapons: []
   currentTarget: {fileID: 0}
   maxTargetDistance: 500
+  restrictions:
+    transform: {fileID: 0}
+    maxDistance: -1
+    ignoreBelowHorizon: 0
+    types: -1
+    teams: -1
   master: {fileID: 11400006}
   laserWeapon: {fileID: 11400012}
   missileWeapon: {fileID: 11400014}
@@ -926,19 +939,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetType: 1
   ownerID: -2147483648
-  owner:
-    id: 0
-    name: DEFAULT
-    playerType: 0
-    fighterType: 0
-    isConnected: 0
-    kills: 0
-    assists: 0
-    deaths: 0
-    team: 0
-    personalScore: 0
-    fighter: {fileID: 0}
-    capitalShip: {fileID: 0}
   debugTargetID: 0
   currentHealth: 1500
   maxHealth: 1500
@@ -982,6 +982,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee19a08d94ab4cc449f4321804b0406f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  muzzleFlash: {fileID: 0}
+--- !u!114 &11400022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c881169c089b1469c7798cd9e51ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentEnergy: 1
+  energyPenaltyStart: .349999994
+  rechargePerSecond: .200000003
+  rechargeDelay: .5
+  delayTimer: 0
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1

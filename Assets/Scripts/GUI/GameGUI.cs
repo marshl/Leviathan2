@@ -36,6 +36,9 @@ public class GameGUI : MonoBehaviour
 	public Texture2D bottomRightBracket;
 	public Texture2D bottomLeftBracket;
 
+	public Texture2D lowEnergyWarningTexture;
+	public Texture2D missileLockWarningTexture;
+
 	public float CSHealthBarThickness;
 	public float CSHealthBarOffset;
 	public float CSHealthBarRelativeLength;
@@ -44,6 +47,14 @@ public class GameGUI : MonoBehaviour
 	public float healthShieldBarGap;
 
 	public float csHealthDamageHighlightDuration;
+
+	public float fighterHealthBarWidth;
+	public float fighterHealthBarOffset;
+	public float fighterHealthBarLength;
+
+	public float energyLowThreshold;
+	public float lowEnergyWarningSize;
+	public float missileLockWarningSize;
 
 	public float targetReticuleScale;
 
@@ -161,7 +172,8 @@ public class GameGUI : MonoBehaviour
 			this.RenderCapitalHealthStates();
 			this.RenderFighterSpeed();
 			this.RenderFighterWeapons();
-
+			this.RenderFighterEnergy();
+			this.RenderFighterMissileLock();
 			float size = Screen.height * this.centreReticuleScaleRelative;
 			GUI.DrawTexture( new Rect( Screen.width/2 - size/2, Screen.height/2 - size/2, size, size ), this.centreReticuleTexture );
 
@@ -344,8 +356,21 @@ public class GameGUI : MonoBehaviour
 	private void RenderFighterHealth()
 	{
 		FighterHealth health = this.player.fighter.health;
-		GUI.Label( new Rect(0, 50, 150, 50), "Shields: " + health.currentShield + " / " + health.maxShield );
-		GUI.Label( new Rect(0, 0, 150, 50), "Hull: " + health.currentHealth + " / " + health.maxHealth );
+
+		float healthRatio = health.currentHealth / health.maxHealth;
+		float shieldRatio = health.currentShield / health.maxShield;
+
+		Rect healthRect = new Rect();
+		healthRect.width = this.fighterHealthBarWidth;
+		healthRect.height = this.fighterHealthBarLength * Screen.height;
+		healthRect.x = Screen.width/2 - this.fighterHealthBarOffset * Screen.width - healthRect.width;
+		healthRect.y = Screen.height/2 - healthRect.height/2;
+		
+		this.RenderBracketedBar( this.healthBarTexture, healthRect, healthRatio );
+
+		healthRect.x = Screen.width/2 + this.fighterHealthBarOffset * Screen.width;
+
+		this.RenderBracketedBar( this.shieldBarTexture, healthRect, shieldRatio );
 	}
 
 	private void RenderFighterSpeed()
@@ -380,6 +405,16 @@ public class GameGUI : MonoBehaviour
 				this.DrawTargetBracket( r );
 				GUI.color = Color.white;
 			}
+
+			float distanceToTarget = (int)( this.player.fighter.transform.position - target.transform.position ).magnitude;
+			string label = Common.DistanceToString( distanceToTarget );
+
+			Rect distanceRect = new Rect();
+			distanceRect.x = Screen.width/2 + this.fighterHealthBarOffset * Screen.width + this.fighterHealthBarWidth;
+			distanceRect.y = Screen.height/2;
+			distanceRect.width = 150.0f;
+			distanceRect.height = 50.0f;
+			GUI.Label( distanceRect, label );
 		}
 
 		List<BaseHealth> targets = TargetManager.instance.GetTargets( this.player.fighter.weapons );
@@ -409,6 +444,30 @@ public class GameGUI : MonoBehaviour
 	{
 		FighterWeapons weaponScript = this.player.fighter.weapons;
 		GUI.Label( new Rect( 0, 200, 150, 50 ), "Weapon: " + weaponScript.laserWeapon.weaponDesc.label );
+	}
+
+	private void RenderFighterEnergy()
+	{
+		if ( this.player.fighter.energySystem.currentEnergy < energyLowThreshold )
+		{
+			Rect r = new Rect();
+			r.height = r.width = this.lowEnergyWarningSize;
+			r.x = Screen.width/2 - this.fighterHealthBarOffset * Screen.width - this.fighterHealthBarWidth * 2 - r.width;
+			r.y = Screen.height/2 - r.height/2;
+			GUI.DrawTexture( r, this.lowEnergyWarningTexture );
+		}
+	}
+
+	private void RenderFighterMissileLock()
+	{
+		if ( BulletManager.instance.IsMissileTargetting( this.player.fighter.health ) )
+		{
+			Rect r = new Rect();
+			r.height = r.width = this.missileLockWarningSize;
+			r.x = Screen.width/2 + this.fighterHealthBarOffset * Screen.width + this.fighterHealthBarWidth * 2;
+			r.y = Screen.height/2 - r.height/2;
+			GUI.DrawTexture( r, this.missileLockWarningTexture );
+		}
 	}
 
 	public Rect GetHealthGUIRect( BaseHealth _health )

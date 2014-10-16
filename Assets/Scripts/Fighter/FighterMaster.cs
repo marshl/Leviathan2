@@ -25,6 +25,7 @@ public class FighterMaster : MonoBehaviour
 	public FighterHealth health;
 	public FighterWeapons weapons; 
 	public NetworkOwnerControl ownerControl;
+	public EnergySystem energySystem;
 
 	public CapitalShipMaster capitalShip;
 
@@ -86,10 +87,10 @@ public class FighterMaster : MonoBehaviour
 
 		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
 		{
-			#if UNITY_EDITOR
+#if UNITY_EDITOR
 			if ( this.dummyShip == false )
-				#endif
-				{
+#endif
+			{
 				if ( Input.GetKeyDown( KeyCode.G ) )
 				{
 					this.Respawn();

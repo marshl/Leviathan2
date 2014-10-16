@@ -427,13 +427,13 @@ public class GameNetworkManager : BaseNetworkManager
 		NetworkOwnerManager.instance.ReceiveSetViewID( _ownerID, _id );
 	}
 
-	public void SendSetSmartBulletTeamMessage( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
+	public void SendSmartBulletInfoRPC( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
 	{
-		this.networkView.RPC( "OnSetSmartBulletTeamRPC", RPCMode.Others, _viewID, (int)_playerID, _targetID );
+		this.networkView.RPC( "OnSmartBulletInfoRPC", RPCMode.Others, _viewID, (int)_playerID, _targetID );
 	}
 
 	[RPC]
-	private void OnSetSmartBulletTeamRPC( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
+	private void OnSmartBulletInfoRPC( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
 	{
 		if ( BulletManager.instance.seekingBulletMap.ContainsKey( _viewID ) )
 		{
@@ -444,6 +444,7 @@ public class GameNetworkManager : BaseNetworkManager
 			if ( _targetID != NetworkViewID.unassigned )
 			{
 				bullet.target = TargetManager.instance.GetTargetWithID( _targetID );
+				DebugConsole.Log( "Setting smart bullet target to " + bullet.target.gameObject.name, bullet.target );
 			}
 		}
 		else

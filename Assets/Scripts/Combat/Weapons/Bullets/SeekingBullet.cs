@@ -35,9 +35,12 @@ public class SeekingBullet : BulletBase
 		this.seekingDesc = this.desc as SeekingBulletDesc;
 
 #if UNITY_EDITOR
-		this.debugID = BulletManager.instance.debugSeekingID;
-		BulletManager.instance.debugSeekingBulletMap.Add( this.debugID, this );
-		++BulletManager.instance.debugSeekingID;
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			this.debugID = BulletManager.instance.debugSeekingID;
+			BulletManager.instance.debugSeekingBulletMap.Add( this.debugID, this );
+			++BulletManager.instance.debugSeekingID;
+		}
 #endif
 	}
 

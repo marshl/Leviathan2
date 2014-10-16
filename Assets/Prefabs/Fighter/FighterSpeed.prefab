@@ -845,6 +845,7 @@ MonoBehaviour:
   health: {fileID: 11400014}
   weapons: {fileID: 11400016}
   ownerControl: {fileID: 11400020}
+  energySystem: {fileID: 11400022}
   capitalShip: {fileID: 0}
   respawnDelay: 5
   respawnTimer: 0
@@ -881,8 +882,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentEnergy: 1
   energyPenaltyStart: .349999994
-  rechargePerSecond: 0
-  rechargeDelay: 0
+  rechargePerSecond: .200000003
+  rechargeDelay: .5
   delayTimer: 0
 --- !u!148 &14800000
 NetworkView:

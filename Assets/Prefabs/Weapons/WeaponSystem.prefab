@@ -708,7 +708,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.9559727, y: .59168148, z: 9.63763618}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -1298,7 +1298,7 @@ MonoBehaviour:
   weaponType: 1
   collisionType: 2
   prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
-  count: 2500
+  count: 1000
   moveSpeed: 450
   maxDistance: 1500
   damage: 25
@@ -1514,7 +1514,7 @@ MonoBehaviour:
   weaponType: 4
   collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 500
+  count: 200
   moveSpeed: 250
   maxDistance: 500
   damage: 10
@@ -1885,7 +1885,7 @@ MonoBehaviour:
   weaponType: 6
   collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 500
+  count: 200
   moveSpeed: 250
   maxDistance: 500
   damage: 10
@@ -1908,7 +1908,7 @@ MonoBehaviour:
   weaponType: 5
   collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 500
+  count: 200
   moveSpeed: 250
   maxDistance: 500
   damage: 10
@@ -2155,7 +2155,7 @@ MonoBehaviour:
   weaponType: 18
   collisionType: 0
   prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
-  count: 5000
+  count: 250
   moveSpeed: 450
   maxDistance: 1500
   damage: 25
@@ -2227,7 +2227,7 @@ MonoBehaviour:
   collisionType: 0
   prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
   count: 0
-  moveSpeed: 50
+  moveSpeed: 150
   maxDistance: 500
   damage: 100
   areaOfEffect: 1
@@ -2235,7 +2235,7 @@ MonoBehaviour:
   passesThroughTargets: 0
   smartBullet: 1
   fadeOut: 1
-  turnRate: 25
+  turnRate: 50
   canAngleOut: 0
   maxDetectionAngle: .150000006
   seekingDelayDistance: 15

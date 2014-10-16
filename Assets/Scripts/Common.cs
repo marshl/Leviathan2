@@ -307,4 +307,16 @@ public abstract class Common
 
 		return n;
 	}
+
+	static public string DistanceToString( float _dist )
+	{
+		if ( _dist >= 1000.0f )
+		{
+			return (_dist / 1000.0f).ToString( "F" ) + "km";
+		}
+		else
+		{
+			return ((int)_dist).ToString() + "m";
+		}
+	}
 }

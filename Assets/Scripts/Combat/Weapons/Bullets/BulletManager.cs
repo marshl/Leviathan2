@@ -72,7 +72,10 @@ public class BulletManager : MonoBehaviour
 		this.seekingBulletMap = new Dictionary<NetworkViewID, SeekingBullet>();
 
 #if UNITY_EDITOR
-		this.debugSeekingBulletMap = new Dictionary<int, SeekingBullet>();
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			this.debugSeekingBulletMap = new Dictionary<int, SeekingBullet>();
+		}
 #endif
 	}
 
@@ -199,7 +202,7 @@ public class BulletManager : MonoBehaviour
 			BaseHealth target = bulletObj.GetComponent<SeekingBullet>().target;
 			NetworkViewID viewID = target != null ? target.networkView.viewID : NetworkViewID.unassigned;
 
-			GameNetworkManager.instance.SendSetSmartBulletTeamMessage(
+			GameNetworkManager.instance.SendSmartBulletInfoRPC(
                   bulletObj.networkView.viewID,
 			      GamePlayerManager.instance.myPlayer.id,
                   viewID );
@@ -377,11 +380,14 @@ public class BulletManager : MonoBehaviour
 		}
 
 #if UNITY_EDITOR
-		foreach ( KeyValuePair<int, SeekingBullet> pair in this.debugSeekingBulletMap )
+		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			if ( pair.Value.target == _weaponManager.health )
+			foreach ( KeyValuePair<int, SeekingBullet> pair in this.debugSeekingBulletMap )
 			{
-				missiles.Add( pair.Value.health );
+				if ( pair.Value.target == _weaponManager.health )
+				{
+					missiles.Add( pair.Value.health );
+				}
 			}
 		}
 #endif
@@ -410,5 +416,30 @@ public class BulletManager : MonoBehaviour
 		}
 
 		return missiles[index];
+	}
+
+	public bool IsMissileTargetting( BaseHealth _health )
+	{
+		foreach ( KeyValuePair<NetworkViewID, SeekingBullet> pair in this.seekingBulletMap )
+		{
+			if ( pair.Value.target == _health )
+			{
+				return true;
+			}
+		}
+		
+#if UNITY_EDITOR
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			foreach ( KeyValuePair<int, SeekingBullet> pair in this.debugSeekingBulletMap )
+			{
+				if ( pair.Value.target == _health )
+				{
+					return true;
+				}
+			}
+		}
+#endif
+		return false;
 	}
 }
