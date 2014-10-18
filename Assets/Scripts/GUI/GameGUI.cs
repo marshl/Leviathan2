@@ -21,6 +21,9 @@ public class GameGUI : MonoBehaviour
 
 	public GUI_MODE guiMode = GUI_MODE.NONE;
 
+	public Camera targetCamera;
+	public Camera idleCamera;
+
 	public Texture2D healthBarTexture;
 	public Texture2D shieldBarTexture;
 	public Texture2D reticuleTexture;
@@ -42,6 +45,8 @@ public class GameGUI : MonoBehaviour
 
 	public Texture2D team1ScoreTexture;
 	public Texture2D team2ScoreTexture;
+
+	public Texture2D lockOnBarTexture;
 
 	public float CSHealthBarThickness;
 	public float CSHealthBarOffset;
@@ -73,9 +78,12 @@ public class GameGUI : MonoBehaviour
 	public float scoreBarHeight;
 	public float scoreBarWidth;
 
+	public float targetScreenHeightRelative;
+	public float targetScreenTopGap;
+	public float targetScreenSideGap;
+	public float targetScreenAspectRatio;
+	public float targetHealthBarWidth;
 
-	public Camera targetCamera;
-	public Camera idleCamera;
 
 	private void Awake()
 	{
@@ -86,7 +94,7 @@ public class GameGUI : MonoBehaviour
 	private void Update() 
 	{
 		this.DetermineGUIMode();
-
+	
 		switch ( this.guiMode )
 		{
 		case GUI_MODE.NONE:
@@ -150,6 +158,19 @@ public class GameGUI : MonoBehaviour
 			DebugConsole.Error( "Uncaught GUIMODE state " + this.guiMode );
 			break;
 		}
+		}
+
+		if ( this.targetCamera.enabled )
+		{
+			Rect targetRect = new Rect();
+
+			targetRect.height = Screen.height * this.targetScreenHeightRelative;
+			targetRect.width = targetRect.height * this.targetScreenAspectRatio;
+
+			targetRect.x = this.targetScreenSideGap;
+			targetRect.y = Screen.height - ( this.targetScreenTopGap + targetRect.height );
+
+			this.targetCamera.pixelRect = targetRect;
 		}
 	}
 
@@ -428,6 +449,35 @@ public class GameGUI : MonoBehaviour
 			distanceRect.width = 150.0f;
 			distanceRect.height = 50.0f;
 			GUI.Label( distanceRect, label );
+
+
+			float targetScreenHeight = this.targetScreenHeightRelative * Screen.height;
+			float targetScreenWidth = targetScreenHeight * this.targetScreenAspectRatio;
+
+			Rect targetHealthRect = new Rect();
+			targetHealthRect.width = this.targetHealthBarWidth;
+			targetHealthRect.height = targetScreenHeight;
+			targetHealthRect.x = this.targetScreenSideGap + targetScreenWidth;
+			targetHealthRect.y = this.targetScreenTopGap;
+
+			this.RenderVerticalBarOverlaid( this.healthBarTexture, targetHealthRect, target.currentHealth / target.maxHealth );
+
+			targetHealthRect.x += this.targetHealthBarWidth;
+			
+			this.RenderVerticalBarOverlaid( this.shieldBarTexture, targetHealthRect, target.currentShield / target.maxShield );
+		
+			Rect lockOnRect = new Rect();
+			lockOnRect.width = targetScreenWidth;
+			lockOnRect.height = this.targetHealthBarWidth;
+			lockOnRect.x = this.targetScreenSideGap;
+			lockOnRect.y = targetScreenHeight;
+
+			WeaponBase seekingWeapon = this.player.fighter.weapons.tertiaryWeapon;
+			float lockRatio = seekingWeapon.currentLockOn / seekingWeapon.weaponDesc.lockOnDuration;
+			lockRatio = Mathf.Min( lockRatio, 1.0f );
+
+			this.RenderHorizontalBarOverlaid( this.lockOnBarTexture, lockOnRect, lockRatio );
+
 		}
 
 		List<BaseHealth> targets = TargetManager.instance.GetTargets( this.player.fighter.weapons );
@@ -456,7 +506,7 @@ public class GameGUI : MonoBehaviour
 	private void RenderFighterWeapons()
 	{
 		FighterWeapons weaponScript = this.player.fighter.weapons;
-		GUI.Label( new Rect( 0, 200, 150, 50 ), "Weapon: " + weaponScript.laserWeapon.weaponDesc.label );
+		GUI.Label( new Rect( 0, 200, 150, 50 ), "Weapon: " + weaponScript.primaryWeapon.weaponDesc.label );
 	}
 
 	private void RenderFighterEnergy()
@@ -560,6 +610,16 @@ public class GameGUI : MonoBehaviour
 		GUI.DrawTexture( innerRect, _tiledTexture );
 
 		GUI.DrawTextureWithTexCoords( _rect, this.verticalBarOverlayTexture, new Rect( 1.0f, 0.0f, 1.0f,  this.healthBarTileCount ) );
+	}
+
+	private void RenderHorizontalBarOverlaid( Texture2D _tiledTexture, Rect _rect, float _ratio )
+	{
+		Rect innerRect = new Rect( _rect );
+		
+		innerRect.width *= _ratio;
+		GUI.DrawTexture( innerRect, _tiledTexture );
+		
+		GUI.DrawTextureWithTexCoords( _rect, this.verticalBarOverlayTexture, new Rect( 0.0f, 0.0f, this.healthBarTileCount, 1.0f ) );
 	}
 
 	private void RenderScoreBar()

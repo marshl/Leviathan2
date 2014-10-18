@@ -185,7 +185,7 @@ public class WeaponBase : MonoBehaviour
 
 	public void LockOnUpdate()
 	{
-		if ( this.IsTrackingTarget() )
+		if ( this.CanTrackTarget() )
 		{
 			this.currentLockOn += Time.deltaTime;
 		}
@@ -200,7 +200,7 @@ public class WeaponBase : MonoBehaviour
 		this.currentLockOn = 0.0f;
 	}
 
-	public bool IsTrackingTarget()
+	public bool CanTrackTarget()
 	{
 		if ( this.source.currentTarget == null )
 		{

@@ -6,8 +6,12 @@ public class FighterWeapons : BaseWeaponManager
 {
 	public FighterMaster master;
 
-	public WeaponBase laserWeapon;
-	public WeaponBase missileWeapon;
+	public WeaponBase primaryWeapon;
+	public WeaponBase secondaryWeapon;
+
+	public bool usingPrimary = true;
+
+	public WeaponBase tertiaryWeapon;
 
 	protected override void Awake()
 	{
@@ -32,15 +36,39 @@ public class FighterWeapons : BaseWeaponManager
 				this.currentTarget = null;
 			}
 
+			if ( Input.GetKeyDown( KeyCode.LeftShift ) )
+			{
+				//TODO: Play switch sound etc
+				this.usingPrimary = !usingPrimary;
+			}
+
 			if ( Input.GetMouseButton( 1 ) ) // Right click - Fire main weapons
 			{
-				this.laserWeapon.FocusFirePoints( Common.MousePointHitDirection( this.gameObject ) );
-				this.laserWeapon.SendFireMessage();
+				WeaponBase currentWeapon = this.usingPrimary ? this.primaryWeapon : this.secondaryWeapon;
+
+				currentWeapon.FocusFirePoints( Common.MousePointHitDirection( this.gameObject ) );
+				currentWeapon.SendFireMessage();
 			}
-			
-			if ( Input.GetKey( KeyCode.Space ) ) // Space bar - Fire missile
+
+			if ( Input.GetKey( KeyCode.Space ) )
 			{
-				this.missileWeapon.SendFireMessage();
+				if ( this.tertiaryWeapon.CanTrackTarget() )
+				{
+					this.tertiaryWeapon.currentLockOn += Time.deltaTime;
+				}
+				else
+				{
+					if ( this.tertiaryWeapon.currentLockOn != 0.0f )
+					{
+						//TODO: Play lock fail sound
+					}
+					this.tertiaryWeapon.currentLockOn = 0.0f;
+				}
+			}
+			else if ( Input.GetKeyUp( KeyCode.Space ) )
+			{
+				this.tertiaryWeapon.SendFireMessage();
+				this.tertiaryWeapon.currentLockOn = 0.0f;
 			}
 
 			if ( Input.GetKey( KeyCode.T ) )
@@ -73,18 +101,16 @@ public class FighterWeapons : BaseWeaponManager
 
 			if ( Input.GetKeyDown( KeyCode.Alpha1 ) )
 			{
-				this.laserWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_1 );
+				this.primaryWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_1 );
 			}
 			else if ( Input.GetKeyDown( KeyCode.Alpha2 ) )
 			{
-				this.laserWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_2 );
+				this.primaryWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_2 );
 			}
 			else if ( Input.GetKeyDown( KeyCode.Alpha3 ) )
 			{
-				this.laserWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_3 );
+				this.primaryWeapon.SetWeaponType( WEAPON_TYPE.FIGHTER_LIGHT_LASER_3 );
 			}
-
-			this.missileWeapon.LockOnUpdate();
 		}
 	}
 

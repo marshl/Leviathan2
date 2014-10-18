@@ -827,8 +827,10 @@ MonoBehaviour:
     types: -1
     teams: -1
   master: {fileID: 11400018}
-  laserWeapon: {fileID: 11400004}
-  missileWeapon: {fileID: 11400008}
+  primaryWeapon: {fileID: 11400004}
+  secondaryWeapon: {fileID: 0}
+  usingPrimary: 1
+  tertiaryWeapon: {fileID: 11400008}
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -856,8 +858,8 @@ MonoBehaviour:
     slotID: 0
   model: {fileID: 2300000}
   fighterCamera: {fileID: 0}
-  dummyShip: 0
-  ownerID: -1
+  dummyShip: 1
+  ownerID: -7
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -2489,6 +2489,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guiMode: 0
+  targetCamera: {fileID: 1561973372}
+  idleCamera: {fileID: 1192832057}
   healthBarTexture: {fileID: 2800000, guid: 6de4070fb4a852845bd2ee2db55d5c84, type: 3}
   shieldBarTexture: {fileID: 2800000, guid: 14e524d14f0718e42b429cc50d3150ab, type: 3}
   reticuleTexture: {fileID: 2800000, guid: 2675ba511d797094f852e7a62064f0b4, type: 3}
@@ -2514,6 +2516,7 @@ MonoBehaviour:
     type: 3}
   team1ScoreTexture: {fileID: 2800000, guid: 26ea462c07b837e45a171e846eeaa8a0, type: 3}
   team2ScoreTexture: {fileID: 2800000, guid: 79b2f7f220a9c5142b3d59113e882eb3, type: 3}
+  lockOnBarTexture: {fileID: 2800000, guid: 56be898a495a32f44acc395a9d7f04b8, type: 3}
   CSHealthBarThickness: 16
   CSHealthBarOffset: 5
   CSHealthBarRelativeLength: .5
@@ -2535,8 +2538,11 @@ MonoBehaviour:
   minimumBracketScale: 20
   scoreBarHeight: 16
   scoreBarWidth: .400000006
-  targetCamera: {fileID: 1561973372}
-  idleCamera: {fileID: 1192832057}
+  targetScreenHeightRelative: .200000003
+  targetScreenTopGap: 5
+  targetScreenSideGap: 5
+  targetScreenAspectRatio: 1.77777779
+  targetHealthBarWidth: 15
 --- !u!4 &1561973371
 Transform:
   m_ObjectHideFlags: 0
@@ -2559,7 +2565,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: .41911763, g: .759634733, b: 1, a: .0196078438}
+  m_BackGroundColor: {r: 0, g: .0313725509, b: .290196091, a: .0196078438}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
