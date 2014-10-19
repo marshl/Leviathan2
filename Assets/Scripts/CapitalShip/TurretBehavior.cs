@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 public class TurretBehavior : BaseWeaponManager
 {
+	public bool isFloatingTurret;
+
 	public Transform swivel;
 	public Transform pivot;
 	public float rotationSpeed;
 
 	public float minPitchAngle;
 	public float maxPitchAngle;
-	public float pitchSpeed;
+	public float maxPitchRate;
 
 	public WeaponBase weapon;
 
@@ -95,6 +97,7 @@ public class TurretBehavior : BaseWeaponManager
 			}
 			else
 			{
+				GameNetworkManager.instance.SendRemoveTargetMessage( this.networkView.viewID );
 				Network.Destroy( this.gameObject );
 			}
 		}
@@ -112,45 +115,54 @@ public class TurretBehavior : BaseWeaponManager
 	
 		Vector3 direction = ( leadPosition - this.orientationPoint.position ).normalized;
 	
-		// Yaw
-		float yawAngle = Common.AngleAroundAxis( this.transform.forward, direction, this.transform.up );
-		float maxYaw = this.rotationSpeed * Time.deltaTime;
-		float currentYaw = Common.AngleAroundAxis( this.transform.forward, this.swivel.transform.forward, this.transform.up );
+		{// Yaw
+			float yawAngle = Common.AngleAroundAxis( this.transform.forward, direction, this.transform.up );
+			float maxYawRate = this.rotationSpeed * Time.deltaTime;
+			float currentYaw = Common.AngleAroundAxis( this.transform.forward, this.swivel.transform.forward, this.transform.up );
 
-		if ( yawAngle < 0 && currentYaw > 0 )
-		{
-			yawAngle += 360.0f;
+			if ( yawAngle < 0 && currentYaw > 0 )
+			{
+				yawAngle += 360.0f;
+			}
+			else if ( yawAngle > 0 && currentYaw < 0 )
+			{
+				yawAngle -= 360.0f;
+			}
+
+			float yawDiff = yawAngle - currentYaw;
+			float yawChange = Mathf.Sign( yawDiff ) * Mathf.Min( maxYawRate, Mathf.Abs( yawDiff ) );
+
+			if ( Mathf.Abs( yawDiff ) >= 180.0f )
+			{
+				yawChange *= -1.0f;
+			}
+			Quaternion targetYaw = Quaternion.AngleAxis( yawChange + currentYaw, Vector3.up );
+			this.swivel.localRotation = targetYaw;
+
 		}
-		else if ( yawAngle > 0 && currentYaw < 0 )
-		{
-			yawAngle -= 360.0f;
+
+		{// Pitch
+			float pitchAngle = Common.AngleAroundAxis( this.transform.up, direction, this.swivel.right);
+			pitchAngle = Mathf.Clamp( pitchAngle, this.minPitchAngle, this.maxPitchAngle ) - 90.0f;
+
+			float currentPitch  = Common.AngleAroundAxis( this.swivel.forward, this.pivot.forward, this.swivel.right );
+			float pitchDiff = pitchAngle - currentPitch;
+
+			float pitchChange = Mathf.Sign( pitchDiff ) * Mathf.Min( this.maxPitchRate, Mathf.Abs( pitchDiff ) );
+
+			Debug.Log( "PitchDiff: " + pitchDiff );
+			// Take off 90 degrees because the angle is measured from the up vector, but the pivot has angle 0 when pointed out the front
+			Quaternion targetPitch = Quaternion.AngleAxis( pitchChange + currentPitch, Vector3.right );
+			this.pivot.localRotation = targetPitch;
 		}
 
-		float yawDiff = yawAngle - currentYaw;
-		float yawChange = Mathf.Sign( yawDiff ) * Mathf.Min( maxYaw, Mathf.Abs( yawDiff ) );
-		//Debug.Log( "YawAngle:" + yawAngle + " MaxYaw:" + maxYaw + " CurrentYaw:" + currentYaw + " YawDiff:" + yawDiff + " NewYaw:" + yawChange );
-
-		if ( Mathf.Abs( yawDiff ) >= 180.0f )
-		{
-			yawChange *= -1.0f;
-		}
-		Quaternion targetYaw = Quaternion.AngleAxis( yawChange + currentYaw, Vector3.up );
-		this.swivel.localRotation = targetYaw;
-
-		// Pitch
-		float pitchAngle = Common.AngleAroundAxis( this.transform.up, direction, this.swivel.right);
-		// Take off 90 degrees because the angle is measured from the up vector, but the pivot has angle 0 when pointed out the front
-		pitchAngle = Mathf.Clamp( pitchAngle, this.minPitchAngle, this.maxPitchAngle ) - 90.0f;
-		Quaternion targetPitch = Quaternion.AngleAxis( pitchAngle, Vector3.right );
-		this.pivot.localRotation = Quaternion.Slerp( this.pivot.localRotation, targetPitch, Time.deltaTime * this.pitchSpeed );
-
-		// Gun tilt
+		// Gun inwards tilt
 		foreach ( Transform gunArm in this.gunArms )
 		{
 			float tiltAngle = Common.AngleAroundAxis( this.pivot.forward, (leadPosition - gunArm.position).normalized, this.pivot.up );
 
 			tiltAngle = Mathf.Clamp ( tiltAngle, -this.gunArmTiltLimit, this.gunArmTiltLimit );
-			Quaternion targetTilt = Quaternion.AngleAxis( tiltAngle, gunArm.up );
+			Quaternion targetTilt = Quaternion.AngleAxis( tiltAngle, this.pivot.up );
 			gunArm.localRotation = targetTilt;
 		}
 
@@ -162,24 +174,36 @@ public class TurretBehavior : BaseWeaponManager
 	{
 		if ( _stream.isWriting )
 		{
-			Quaternion jointRot = this.swivel.rotation;
-			Quaternion armRot = this.pivot.rotation;
+			Quaternion swivelRot = this.swivel.rotation;
+			Quaternion pivotRot = this.pivot.rotation;
 			NetworkViewID viewID = this.currentTarget == null ? NetworkViewID.unassigned : this.currentTarget.networkView.viewID;
-			_stream.Serialize( ref jointRot );
-			_stream.Serialize( ref armRot );
+			_stream.Serialize( ref swivelRot );
+			_stream.Serialize( ref pivotRot );
 			_stream.Serialize( ref viewID );
+			foreach ( Transform arm in this.gunArms )
+			{
+				Quaternion armRot = arm.rotation;
+				_stream.Serialize( ref armRot );
+			}
 		}
 		else if ( _stream.isReading )
 		{
-			Quaternion jointRot = Quaternion.identity;
-			Quaternion armRot = Quaternion.identity;
+			Quaternion swivelRot = Quaternion.identity;
+			Quaternion pivotRot = Quaternion.identity;
 			NetworkViewID viewID = NetworkViewID.unassigned;
-			_stream.Serialize( ref jointRot );
-			_stream.Serialize( ref armRot );
+			_stream.Serialize( ref swivelRot );
+			_stream.Serialize( ref pivotRot );
 			_stream.Serialize( ref viewID );
 
-			this.swivel.rotation = jointRot;
-			this.pivot.rotation = armRot;
+			Quaternion armRot = Quaternion.identity;
+			foreach ( Transform arm in this.gunArms )
+			{
+				_stream.Serialize( ref armRot );
+				arm.rotation = armRot;
+			}
+
+			this.swivel.rotation = swivelRot;
+			this.pivot.rotation = pivotRot;
 			if ( viewID != NetworkViewID.unassigned )
 			{
 				this.currentTarget = TargetManager.instance.GetTargetWithID( viewID );
@@ -203,14 +227,18 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			DebugConsole.Warning( "Turret instantiated by non-commander player", this );
 		}
-		
-		this.ParentToOwnerShip( this.health.Owner );
 
+		if ( !this.isFloatingTurret )
+		{
+			this.ParentToOwnerShip( this.health.Owner );
+		}
 		this.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 
 		if ( Network.peerType != NetworkPeerType.Disconnected && !this.networkView.isMine )
 		{
 			this.enabled = false;
 		}
+
+		this.restrictions.maxDistance = this.weapon.weaponDesc.bulletDesc.maxDistance;
 	}
 }

@@ -29,6 +29,15 @@ public class CapitalShipMaster : MonoBehaviour
 	public GameObject explosionPrefab;
 	public LayerMask explosionCollisionLayers;
 
+	public bool placingAutoTurret = false;
+	public bool heightCheck = false;
+
+	public GameObject autoTurretPrefab;
+	public GameObject placementMarkerPrefab;
+	public GameObject placementSpherePrefab;
+	private GameObject placementSphereObj;
+	private GameObject placementMarkerObj;
+
 #if UNITY_EDITOR
 	public bool dummyShip = false;
 #endif
@@ -46,7 +55,7 @@ public class CapitalShipMaster : MonoBehaviour
 			this.OwnerInitialise();
 		}
 
-		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
+		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			if ( this.health.currentHealth <= 0.0f )
 			{
@@ -83,6 +92,83 @@ public class CapitalShipMaster : MonoBehaviour
 					}
 				}
 			}
+			else // Alive
+			{
+#if UNITY_EDITOR
+				if ( !this.dummyShip )
+#endif
+				{
+					if ( Input.GetKeyDown( KeyCode.A ) )
+					{
+						this.placingAutoTurret = true;
+						this.placementSphereObj.SetActive( true );
+
+						this.movement.ToggleTurningControls( false );
+					}
+
+					if ( this.placingAutoTurret )
+					{
+						if ( !heightCheck )
+						{
+							Vector3 pos;
+							Common.MousePositionToPlanePoint( out pos, Vector3.zero, Vector3.up );
+							this.placementSphereObj.transform.position = pos;
+							this.placementSphereObj.transform.Rotate( Vector3.up, Time.deltaTime * 180.0f  );
+							if ( Input.GetMouseButtonDown( 0 ) )
+							{
+								this.heightCheck = true;
+								this.placementMarkerObj.SetActive( true );
+								this.placementMarkerObj.transform.position = pos;
+							}
+						}
+						else
+						{
+							Vector3 targetPos = this.placementSphereObj.transform.position;
+							// Make a vertical plane that is placed at the target point and faces the camera
+							Vector3 normal = -Camera.main.transform.forward;
+							normal.y = 0.0f;
+							normal.Normalize();
+							Vector3 planePos;
+							// Use the Y point of where the mouse is on that plane to determine height
+							Common.MousePositionToPlanePoint( out planePos, targetPos, normal );
+							placementSphereObj.transform.position = new Vector3( targetPos.x, planePos.y, targetPos.z );
+							
+							if ( Input.GetMouseButtonDown( 0 ) )
+							{
+								GameObject autoTurret;
+#if UNITY_EDITOR
+								if ( Network.peerType == NetworkPeerType.Disconnected )
+								{
+									autoTurret = GameObject.Instantiate( this.autoTurretPrefab, planePos, Quaternion.identity ) as GameObject;
+								}
+								else
+#endif
+								{
+									autoTurret = Network.Instantiate( this.autoTurretPrefab, planePos, Quaternion.identity, 0 ) as GameObject;
+								}
+
+								autoTurret.GetComponent<NetworkOwnerControl>().ownerID = this.health.Owner.id;
+
+
+								autoTurret.rigidbody.AddTorque( Common.RandomDirection() * 100.0f );
+								this.placingAutoTurret = false;
+								this.heightCheck = false;
+								this.placementMarkerObj.SetActive( false );
+								this.placementSphereObj.SetActive( false );
+							}
+						}
+
+						if ( Input.GetKeyDown( KeyCode.Escape ) )
+						{
+							this.placingAutoTurret = false;
+							this.heightCheck = false;
+							this.placementSphereObj.SetActive( false );
+							this.placementMarkerObj.SetActive( false );
+							this.movement.ToggleTurningControls( true );
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -105,6 +191,19 @@ public class CapitalShipMaster : MonoBehaviour
 		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			this.turrets.CreateTurrets();
+#if UNITY_EDITOR
+			if ( !this.dummyShip )
+#endif
+			{
+				this.placementSphereObj = GameObject.Instantiate( this.placementSpherePrefab ) as GameObject;
+				this.placementSphereObj.SetActive( false );
+				this.placementMarkerObj = GameObject.Instantiate( this.placementMarkerPrefab ) as GameObject;
+				this.placementMarkerObj.SetActive( false );
+				
+				WEAPON_TYPE autoTurretWeapon = this.autoTurretPrefab.GetComponent<TurretBehavior>().weapon.weaponType;
+				BulletDescriptor bulletDesc = BulletDescriptorManager.instance.GetDescOfType( autoTurretWeapon );
+				this.placementMarkerObj.transform.localScale = this.placementSphereObj.transform.localScale = Vector3.one * bulletDesc.maxDistance;
+			}
 		}  
 		else
 		{
@@ -118,6 +217,8 @@ public class CapitalShipMaster : MonoBehaviour
 		}
 
 		this.SetTeamColours();
+
+
 	}
 
 	public void UpdateFinaleExplosions()

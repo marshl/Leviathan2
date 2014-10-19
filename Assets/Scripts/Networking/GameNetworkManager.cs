@@ -485,11 +485,11 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendAddScoreMessage( SCORE_TYPE _scoreType, GamePlayer _player )
 	{
-		this.networkView.RPC( "OnAddScoreMessage", RPCMode.Others, (int)_scoreType, _player.id );
+		this.networkView.RPC( "OnAddScoreRPC", RPCMode.Others, (int)_scoreType, _player.id );
 	}
 
 	[RPC]
-	private void OnAddScoreMessage( int _scoreType, int _playerID )
+	private void OnAddScoreRPC( int _scoreType, int _playerID )
 	{
 		//TODO: Score type enum check
 		GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( _playerID );
@@ -502,5 +502,16 @@ public class GameNetworkManager : BaseNetworkManager
 
 		// Go back to the menu
 		Application.LoadLevel( 0 );
+	}
+
+	public void SendRemoveTargetMessage( NetworkViewID _targetID )
+	{
+		this.networkView.RPC( "OnRemoveTargetRPC", RPCMode.Others, _targetID );
+	}
+
+	[RPC]
+	private void OnRemoveTargetRPC( NetworkViewID _targetID )
+	{
+		TargetManager.instance.RemoveTargetByID( _targetID );
 	}
 }

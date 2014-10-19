@@ -85,7 +85,7 @@ public class GamePlayerManager : MonoBehaviour
 			GamePlayer player = GamePlayerManager.instance.GetPlayerWithID( _playerID );
 			if ( player.fighter != null )
 			{
-				TargetManager.instance.RemoveTarget( player.fighter.networkView.viewID );
+				TargetManager.instance.RemoveTarget( player.fighter.health );
 				DebugConsole.Log( "Destroyed fighter object" );
 				Network.Destroy( player.fighter.networkView.viewID );
 			}

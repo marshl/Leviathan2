@@ -760,7 +760,6 @@ MonoBehaviour:
   weapons:
   - {fileID: 11400008}
   currentTarget: {fileID: 0}
-  maxTargetDistance: 500
   restrictions:
     transform: {fileID: 0}
     maxDistance: -1
@@ -772,7 +771,7 @@ MonoBehaviour:
   rotationSpeed: 90
   minPitchAngle: 15
   maxPitchAngle: 100
-  pitchSpeed: 1
+  maxPitchRate: 1
   weapon: {fileID: 11400008}
   fireLockAngle: .100000001
   ownerControl: {fileID: 11400004}

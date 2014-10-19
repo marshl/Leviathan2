@@ -52,12 +52,12 @@ public class ShieldGeneratorHealth : BaseHealth {
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			TargetManager.instance.RemoveDebugTarget( this.debugTargetID );
+			TargetManager.instance.RemoveTarget( this );
 		}
 		else
 #endif
 		{
-			TargetManager.instance.RemoveTarget( this.networkView.viewID );
+			TargetManager.instance.RemoveTarget( this );
 		}
 		Destroy( this.gameObject );
 	}

@@ -259,7 +259,7 @@ public class BulletManager : MonoBehaviour
 					GameObject.Destroy( _bullet.gameObject );
 				}
 
-				TargetManager.instance.RemoveDebugTarget( _bullet.GetComponent<BaseHealth>().debugTargetID );
+				TargetManager.instance.RemoveTarget( _bullet.GetComponent<BaseHealth>() );
 				this.debugSeekingBulletMap.Remove( ((SeekingBullet)_bullet).debugID );
 			}
 			else
@@ -272,7 +272,7 @@ public class BulletManager : MonoBehaviour
 				}
 				this.seekingBulletMap.Remove( _bullet.networkView.viewID );
 
-				TargetManager.instance.RemoveTarget( _bullet.networkView.viewID );
+				TargetManager.instance.RemoveTarget( _bullet.GetComponent<BaseHealth>() );
 				GameNetworkManager.instance.SendDestroySmartBulletMessage( _bullet.networkView.viewID );
 
 				// If it fades, fade it out and let its own script destroy it
@@ -315,7 +315,7 @@ public class BulletManager : MonoBehaviour
 
 	public void DestroySmartBulletRPC( NetworkViewID _viewID )
 	{
-		TargetManager.instance.RemoveTarget( _viewID );
+		TargetManager.instance.RemoveTargetByID( _viewID );
 
 		SeekingBullet bullet = null;
 		if ( this.seekingBulletMap.TryGetValue( _viewID, out bullet ) )

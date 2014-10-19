@@ -9,7 +9,9 @@ public class CapitalShipMovement : MonoBehaviour
 	public GameObject rotationSegmentPrefab;
 	
 	public LineRenderer tentativePathLine;
-	
+
+	public bool turningEnabled = true;
+
 	public int rotationSegmentCount;
 	
 	// The increase in scale for the tentative rotation segments
@@ -138,7 +140,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 				if ( this.currentTurnAmount <= 0.0f )
 				{
-					this.DisableRotationSegments();
+					this.ToggleRotationSegments( false );
 					this.isTurning = false;
 				}
 			}
@@ -160,9 +162,10 @@ public class CapitalShipMovement : MonoBehaviour
 		{
 			for ( int i = 0; i < rotationSegmentCount; ++i )
 			{
+				float angle = (float)i / (float)rotationSegmentCount * 360.0f;
 				GameObject segmentObj = GameObject.Instantiate( this.rotationSegmentPrefab ) as GameObject;
-				segmentObj.transform.Rotate( Vector3.up, (float)i / (float)rotationSegmentCount * 360.0f );
 				segmentObj.transform.parent = this.transform;
+				segmentObj.transform.localRotation = Quaternion.AngleAxis( angle, this.transform.up );
 				segmentObj.transform.localPosition = Vector3.zero;
 				segmentObj.SetActive( false );
 
@@ -205,7 +208,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 		// If the mouse cursor is over a valid point, then move the target there
 		// If not, just use the old position
-		if ( posFound == true )
+		if ( this.turningEnabled && posFound )
 		{
 			this.lastSelectedPosition = targetPos;
 		}
@@ -239,7 +242,7 @@ public class CapitalShipMovement : MonoBehaviour
 		}
 
 		// If the mouse button is pressed down, set the actual path to the tentative one
-		if ( Input.GetMouseButtonDown( 0 ) == true )
+		if ( this.turningEnabled && Input.GetMouseButtonDown( 0 ) )
 		{
 			BeginTurn(amountToTurn,directionToTurn);
 		}
@@ -260,10 +263,7 @@ public class CapitalShipMovement : MonoBehaviour
 			{
 				float t1 = this.currentAvoidCurvePoint / this.avoidCurveLength;
 				float t2 = oldPos / this.avoidCurveLength;
-
-				//float d1 = Common.SmoothLerp( t1, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
-				//float d2 = Common.SmoothLerp( t2, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight );
-
+			
 				float d1 = Common.SmoothPingPong( t1, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight, 1 );
 				float d2 = Common.SmoothPingPong( t2, this.avoidanceCurveStartHeight, this.avoidanceCurveEndHeight, 1 );
 
@@ -451,11 +451,16 @@ public class CapitalShipMovement : MonoBehaviour
 		}
 	}
 
-	public void DisableRotationSegments()
+	public void ToggleRotationSegments( bool _enabled )
 	{
-		for ( int i = 0; i < rotationSegmentCount; ++i )
+#if UNITY_EDITOR
+		if ( !this.master.dummyShip )
+#endif
 		{
-			this.rotationSegmentsActual[i].SetActive( false );
+			for ( int i = 0; i < rotationSegmentCount; ++i )
+			{
+				this.rotationSegmentsActual[i].SetActive( _enabled );
+			}
 		}
 	}
 
@@ -605,5 +610,12 @@ public class CapitalShipMovement : MonoBehaviour
 				GameObject.Destroy( obj );
 			}
 		}
+	}
+
+	public void ToggleTurningControls( bool _enabled )
+	{
+		this.turningEnabled = _enabled;
+
+		this.ToggleRotationSegments( false );
 	}
 }

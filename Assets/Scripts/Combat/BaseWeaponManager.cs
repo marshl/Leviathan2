@@ -10,7 +10,6 @@ public class BaseWeaponManager : MonoBehaviour
 	public BaseHealth currentTarget;
 	
 	public int? targetIndex = null;
-	public float maxTargetDistance;
 
 	public TargetManager.TargetRestriction restrictions;
 

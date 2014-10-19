@@ -920,7 +920,6 @@ MonoBehaviour:
   health: {fileID: 11400010}
   weapons: []
   currentTarget: {fileID: 0}
-  maxTargetDistance: 0
   restrictions:
     transform: {fileID: 0}
     maxDistance: -1
@@ -1044,6 +1043,7 @@ MonoBehaviour:
   rotationSegmentPrefab: {fileID: 100000, guid: d9588999404854d4eaf7d116dc88cf98,
     type: 2}
   tentativePathLine: {fileID: 0}
+  turningEnabled: 1
   rotationSegmentCount: 16
   tentativeSegmentUpscale: 1.5
   currentMovementSpeed: 0
@@ -1086,6 +1086,13 @@ MonoBehaviour:
   explosionCollisionLayers:
     serializedVersion: 2
     m_Bits: 8192
+  placingAutoTurret: 0
+  heightCheck: 0
+  autoTurretPrefab: {fileID: 100028, guid: a43d133f8ac0da048a1b29c849e3df7b, type: 2}
+  placementMarkerPrefab: {fileID: 100000, guid: 89e9e5df4e3606d40814ee8a27219199,
+    type: 2}
+  placementSpherePrefab: {fileID: 100000, guid: 76e6b1de61ab33c4e8d4e345ce89bec5,
+    type: 2}
   dummyShip: 0
 --- !u!114 &11400018
 MonoBehaviour:

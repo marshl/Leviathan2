@@ -44,6 +44,7 @@ public class NetworkPositionControl : MonoBehaviour
 	public float lerpRate;
 
 #if UNITY_EDITOR
+	public float speed;
 	public Vector3 velocity;
 	public Vector3 rotVel;
 
@@ -52,20 +53,10 @@ public class NetworkPositionControl : MonoBehaviour
 
 	// Are we going to try to maintain our networked position?
 	private bool readNewPositionData = true;
-
-
-
+	
 	// Unity Callback: Do not change signature
 	private void Awake()
 	{
-		// Various reasons why this script is not needed
-		if ( this.networkView == null
-		  || networkView.isMine == true 
-		  || Network.peerType == NetworkPeerType.Disconnected )
-		{
-			this.enabled = false;
-			return;
-		}
 		this.newerData = new DataPoint();
 		this.olderData = new DataPoint();
 	}
@@ -141,7 +132,9 @@ public class NetworkPositionControl : MonoBehaviour
 
 	private void Update()
 	{
-		if ( Network.peerType != NetworkPeerType.Disconnected )
+		if ( Network.peerType != NetworkPeerType.Disconnected 
+		  && this.networkView != null
+		  && !networkView.isMine )
 		{
 			// This is separate to facilitate local testing
 			this.TransformLerp( Network.time );
@@ -149,6 +142,15 @@ public class NetworkPositionControl : MonoBehaviour
 			this.ownerID = Common.NetworkID( this.networkView.viewID.owner );
 #endif
 		}
+
+#if UNITY_EDITOR
+		if ( this.rigidbody != null )
+		{
+			this.speed = this.rigidbody.velocity.magnitude;
+			this.velocity = this.rigidbody.velocity;
+			this.rotVel = this.rigidbody.angularVelocity;
+		}
+#endif
 	}
 
 	/// <summary>
@@ -180,11 +182,6 @@ public class NetworkPositionControl : MonoBehaviour
 
 			this.rigidbody.velocity = velocityGuess;
 			this.transform.rotation = targetRotation;
-#if UNITY_EDITOR
-			Debug.DrawRay( this.transform.position, this.velocity );
-			this.velocity = this.rigidbody.velocity;
-			this.rotVel = this.rigidbody.angularVelocity;
-#endif
 		}
 		else
 		{

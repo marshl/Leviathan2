@@ -32,6 +32,7 @@ public class TargetManager : MonoBehaviour
 	public LayerMask lineOfSightBlockingLayers;
 
 #if UNITY_EDITOR
+	// A handy list of all targets when in editor mode
 	public List<BaseHealth> debugTargets;
 
 	public Dictionary<int, BaseHealth> debugTargetMap;
@@ -84,13 +85,18 @@ public class TargetManager : MonoBehaviour
 #endif
 	}
 
-	public void RemoveTarget( NetworkViewID _viewID )
+	public void RemoveTargetByID( NetworkViewID _viewID )
 	{
+#if UNITY_EDITOR
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			Debug.LogError( "Cannot remove target by NetworkViewID when in offline mode" );
+			return;
+		}
+#endif
+
 		if ( this.targetMap.ContainsKey( _viewID ) )
 		{
-#if UNITY_EDITOR
-			this.debugTargets.Remove( this.targetMap[_viewID] );
-#endif
 			DebugConsole.Log( "Removing target" + _viewID );
 			this.targetMap.Remove( _viewID );
 
@@ -100,24 +106,6 @@ public class TargetManager : MonoBehaviour
 			DebugConsole.Warning( "No target with id " + _viewID + " found in healthmap" );
 		}
 	}
-
-#if UNITY_EDITOR
-	public void RemoveDebugTarget( int _id )
-	{
-		if ( this.debugTargetMap.ContainsKey( _id ) )
-		{
-			BaseHealth target = this.debugTargetMap[_id];
-			this.debugTargetMap.Remove( _id );
-			DebugConsole.Log( "Removed target " + _id, target );
-
-			this.debugTargets.Remove( target );
-		}
-		else
-		{
-			DebugConsole.Warning( "Failed to remove target with ID " + _id );
-		}
-	}
-#endif
 
 	public void RemoveTarget( BaseHealth _target )
 	{
