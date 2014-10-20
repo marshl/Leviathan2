@@ -217,11 +217,11 @@ public class FighterMaster : MonoBehaviour
 
 		this.state = FIGHTERSTATE.OUT_OF_CONTROL;
 
-		if ( this.health.lastHitBy != null )
+		if ( this.health.LastHitBy != null )
 		{
-			string msg = "Player " + Common.MyNetworkID() + " was killed by " + this.health.lastHitBy.id;
+			string msg = "Player " + Common.MyNetworkID() + " was killed by " + this.health.LastHitBy.id;
 			MessageManager.instance.AddMessage( Common.MyNetworkID(), msg, true );
-			ScoreManager.instance.AddScore( SCORE_TYPE.FIGHTER_KILL, this.health.lastHitBy, true );
+			ScoreManager.instance.AddScore( SCORE_TYPE.FIGHTER_KILL, this.health.LastHitBy, true );
 		}
 	
 		this.rigidbody.AddTorque( Common.RandomDirection() );
@@ -248,7 +248,7 @@ public class FighterMaster : MonoBehaviour
 			this.health.FullHeal();
 			this.movement.OnRespawn();
 			this.weapons.OnRespawn();
-			this.health.lastHitBy = null;
+			this.health.LastHitBy = null;
 		}
 		else
 		{

@@ -84,9 +84,9 @@ public class TurretBehavior : BaseWeaponManager
 
 		if ( this.health.currentHealth <= 0.0f )
 		{
-			if ( this.health.lastHitBy != null )
+			if ( this.health.LastHitBy != null )
 			{
-				ScoreManager.instance.AddScore( SCORE_TYPE.TURRET_KILL, this.health.lastHitBy, true );
+				ScoreManager.instance.AddScore( SCORE_TYPE.TURRET_KILL, this.health.LastHitBy, true );
 			}
 
 			TargetManager.instance.RemoveTarget( this.health );

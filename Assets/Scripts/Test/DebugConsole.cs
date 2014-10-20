@@ -76,53 +76,35 @@ public static class DebugConsole
 		{
 			return;
 		}
-		switch ( chunks[0] )
+
+		string commandName = chunks[0];
+
+		bool foundMethod = false;
+		System.Type type = typeof( DebugConsole );
+		foreach ( System.Reflection.MethodInfo methodInfo in type.GetMethods() )
 		{
-		case "help":
-		{
-			OnHelp( chunks );
-			break;
+			System.Object[] attrs = methodInfo.GetCustomAttributes( typeof(CommandAttribute), false );
+
+			if ( attrs.Length == 0 )
+			{ // Not a command method, move on
+				continue;
+			}
+
+			CommandAttribute commandAttr = attrs[0] as CommandAttribute;
+
+			if ( commandName == commandAttr.command )
+			{
+				typeof( DebugConsole ).InvokeMember( methodInfo.Name,
+				                                    System.Reflection.BindingFlags.InvokeMethod,
+				                                    System.Type.DefaultBinder,
+				                                    null, new object[]{chunks,} );
+				foundMethod = true;
+			}
 		}
-		case "playerlist":
+
+		if ( !foundMethod )
 		{
-			OnPlayerList( chunks );
-			break;
-		}
-		case "tgm":
-		{
-			OnTGM( chunks );
-			break;
-		}
-		case "sethealth":
-		{
-			OnSetHealth( chunks );
-			break;
-		}
-		case "die":
-		{
-			OnDie( chunks );
-			break;
-		}
-		case "gethealth":
-		{
-			OnGetHealth( chunks );
-			break;
-		}
-		case "kill":
-		{
-			OnKill( chunks );
-			break;
-		}
-		case "tractortest":
-		{
-			OnTractorTest( chunks );
-			break;
-		}
-		default:
-		{
-			AddLine( "Unknown command \"" + input + "\". Type \"help\" for a list of commands." );
-			break;
-		}
+			AddLine( "Command \"" + commandName + "\" not found. Use \"help\" for a list of commands" );
 		}
 
 		inputLines.Add( input );
@@ -130,16 +112,55 @@ public static class DebugConsole
 		input = "";
 	}
 
-	private static void OnHelp( string[] _chunks )
+	public class CommandAttribute : System.Attribute
 	{
-		AddLine( "Available commands:" );
-		AddLine( "playerlist - Displays a list of all players" );
-		AddLine( "tgm - Toggle God Mode" );
-		AddLine( "sethealth - Set the health of a player" );
-		AddLine( "die - Sets your health to 0" );
+		public string command;
+		public string helpText;
+
+		public CommandAttribute( string _command, string _helpText )
+		{
+			this.command = _command;
+			this.helpText = _helpText;
+		}
 	}
 
-	private static void OnPlayerList( string[] _chunks )
+	public static int CommandAttributeCompare( CommandAttribute _cmd1, CommandAttribute _cmd2 )
+	{
+		return _cmd1.command.CompareTo( _cmd2.command );
+	}
+
+	[Command("help", "Displays a list of commands")]
+	public static void OnHelp( string[] _chunks )
+	{
+		AddLine( "Available commands:" );
+
+		List<CommandAttribute> commandList = new List<CommandAttribute>();
+
+		System.Type type = typeof( DebugConsole );
+		foreach ( System.Reflection.MethodInfo methodInfo in type.GetMethods() )
+		{
+			System.Object[] attrs = methodInfo.GetCustomAttributes( typeof(CommandAttribute), false );
+			
+			if ( attrs.Length == 0 )
+			{ // Not a command method, move on
+				continue;
+			}
+			
+			CommandAttribute commandAttr = attrs[0] as CommandAttribute;
+
+			commandList.Add( commandAttr );
+		}
+
+		commandList.Sort( CommandAttributeCompare );
+
+		foreach ( CommandAttribute command in commandList )
+		{
+			AddLine( command.command + " - " + command.helpText );
+		}
+	}
+
+	[Command("playerlist", "Displays a list of the players")]
+	public static void OnPlayerList( string[] _chunks )
 	{
 		if ( GamePlayerManager.instance == null )
 		{
@@ -161,7 +182,8 @@ public static class DebugConsole
 		}
 	}
 
-	private static void OnTGM( string[] chunks )
+	[Command("tgm", "Toggles god mode")]
+	public static void OnTGM( string[] chunks )
 	{
 		if ( chunks.Length != 2
 		  || chunks[1] != "1" && chunks[1] != "0" )
@@ -198,12 +220,13 @@ public static class DebugConsole
 		AddLine( "God mode " + (tgm ? "enabled" : "disabled" ) );
 	}
 
-	private static void OnSetHealth( string[] _chunks )
+	[Command("sethealth", "Sets the health of a given player ID")]
+	public static void OnSetHealth( string[] _chunks )
 	{
 		int playerID = -1;
 		int health;
 		if ( (_chunks.Length == 2 && int.TryParse( _chunks[1], out health )
-		  || _chunks.Length == 3 && int.TryParse( _chunks[1], out health ) && int.TryParse( _chunks[2], out playerID ) )
+		   || _chunks.Length == 3 && int.TryParse( _chunks[1], out health ) && int.TryParse( _chunks[2], out playerID ) )
 			== false )
 		{
 			AddLine( "Set Health syntax:" );
@@ -240,7 +263,8 @@ public static class DebugConsole
 		AddLine( "Player " + playerID + " health set to " + health );
 	}
 
-	private static void OnDie( string[] _chunks )
+	[Command("die", "Kills the current player")]
+	public static void OnDie( string[] _chunks )
 	{
 		if ( _chunks.Length != 1 )
 		{
@@ -263,7 +287,8 @@ public static class DebugConsole
 		}
 	}
 
-	private static void OnGetHealth( string[] _chunks )
+	[Command("gethealth", "Returns the health of the currently selected object")]
+	public static void OnGetHealth( string[] _chunks )
 	{
 		if ( _chunks.Length != 1 )
 		{
@@ -287,7 +312,8 @@ public static class DebugConsole
 		AddLine( pickedObject.name + " HP:" + health.currentHealth + "/" + health.maxHealth + " SP:" + health.currentShield + "/" + health.maxShield );
 	}
 
-	private static void OnKill( string[] _chunks )
+	[Command("kill", "Kills the currently selected object")]
+	public static void OnKill( string[] _chunks )
 	{
 		if ( _chunks.Length != 1 )
 		{
@@ -311,12 +337,18 @@ public static class DebugConsole
 		health.currentHealth = 0;
 	}
 
-	private static void OnTractorTest( string[] chunks )
+	[Command("tractortest", "Moves the capital ship to a good position to test out the tractor beam")]
+	public static void OnTractorTest( string[] chunks )
 	{
 		CapitalShipMaster capitalShip = GamePlayerManager.instance.myPlayer.capitalShip;
 
-		capitalShip.transform.position = new Vector3( 1000.0f, 0.0f, 0.0f );
+		if ( capitalShip == null )
+		{
+			DebugConsole.Error( "Could not find capital ship on player" );
+			return;
+		}
 
+		capitalShip.transform.position = new Vector3( 1000.0f, 0.0f, 0.0f );
 		capitalShip.movement.currentMovementSpeed = 0.0f;
 		capitalShip.movement.minMoveSpeed = 0.0f;
 	}

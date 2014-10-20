@@ -36,8 +36,8 @@ public class BaseHealth : MonoBehaviour
 
 	public bool isIndestructible;
 
-	[HideInInspector]
-	public GamePlayer lastHitBy = null;
+	private GamePlayer lastHitBy;
+	public GamePlayer LastHitBy { get { return lastHitBy; } set { lastHitBy = value; } }
 
 	public Transform[] guiExtents;
 
@@ -64,7 +64,7 @@ public class BaseHealth : MonoBehaviour
 			              + _damage + " broadcast:" + _broadcast + " source:" + _sourcePlayer.id );
 		}
 
-		this.lastHitBy = _sourcePlayer;
+		this.LastHitBy = _sourcePlayer;
 
 		if ( this.isIndestructible == true )
 		{
