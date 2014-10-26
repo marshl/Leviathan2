@@ -303,6 +303,9 @@ MonoBehaviour:
     personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
+    speedMultiplier: 1
+    defenseMultiplier: 1
+    energyMultiplier: 1
   turretPrefab: {fileID: 0}
   turretPositions: []
 --- !u!4 &122270341
@@ -796,8 +799,10 @@ MonoBehaviour:
   targetDamagePoints: 1
   team1Score:
     score: 0
+    allocated: 0
   team2Score:
     score: 0
+    allocated: 0
 --- !u!4 &454165633
 Transform:
   m_ObjectHideFlags: 0
@@ -1413,7 +1418,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
 --- !u!114 &826805434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3099,7 +3104,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
 --- !u!1 &1764673768
 GameObject:
   m_ObjectHideFlags: 0
@@ -3386,6 +3391,9 @@ MonoBehaviour:
     personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
+    speedMultiplier: 1
+    defenseMultiplier: 1
+    energyMultiplier: 1
   commander2:
     id: 0
     name: DEFAULT
@@ -3399,6 +3407,9 @@ MonoBehaviour:
     personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
+    speedMultiplier: 1
+    defenseMultiplier: 1
+    energyMultiplier: 1
   fighters1: []
   fighters2: []
   myPlayer:
@@ -3414,6 +3425,9 @@ MonoBehaviour:
     personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
+    speedMultiplier: 1
+    defenseMultiplier: 1
+    energyMultiplier: 1
 --- !u!4 &2040233788
 Transform:
   m_ObjectHideFlags: 0

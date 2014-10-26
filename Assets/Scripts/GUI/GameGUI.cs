@@ -14,6 +14,7 @@ public class GameGUI : MonoBehaviour
 		PRE_GAME,
 		FIGHTER,
 		FIGHTER_RESPAWNING,
+		FIGHTER_DOCKED,
 		CAPITAL,
 		FIGHTER_PICKER,
 		POST_GAME,
@@ -147,6 +148,12 @@ public class GameGUI : MonoBehaviour
 			this.targetCamera.enabled = false;
 			break;
 		}
+		case GUI_MODE.FIGHTER_DOCKED:
+		{
+			this.idleCamera.enabled = false;
+			this.targetCamera.enabled = false;
+			break;
+		}
 		case GUI_MODE.FIGHTER_PICKER:
 		{
 			this.targetCamera.enabled = false;
@@ -227,6 +234,11 @@ public class GameGUI : MonoBehaviour
 			}
 			break;
 		}
+		case GUI_MODE.FIGHTER_DOCKED:
+		{
+			this.RenderUpgradeMenu ();
+			break;
+		}
 		case GUI_MODE.CAPITAL:
 		{
 			this.RenderScoreBar();
@@ -283,12 +295,28 @@ public class GameGUI : MonoBehaviour
 			return;
 		}
 
-		if ( this.player.fighter != null )
+		if ( this.player.fighter != null)
 		{
-			this.guiMode = ( this.player.fighter.state == FighterMaster.FIGHTERSTATE.DEAD
-				|| this.player.fighter.state == FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL )
-				? GUI_MODE.FIGHTER_RESPAWNING : GUI_MODE.FIGHTER;
+			switch(this.player.fighter.state)
+			{
+			case FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL:
+				this.guiMode = GUI_MODE.FIGHTER_RESPAWNING;
+				break;
+			case FighterMaster.FIGHTERSTATE.DEAD:
+				this.guiMode = GUI_MODE.FIGHTER_RESPAWNING;
+					break;
+			case FighterMaster.FIGHTERSTATE.FLYING:
+				this.guiMode = GUI_MODE.FIGHTER;
+				break;
+			case FighterMaster.FIGHTERSTATE.DOCKED:
+				this.guiMode = GUI_MODE.FIGHTER_DOCKED;
+				break;
+			default:
+				this.guiMode = GUI_MODE.FIGHTER;
+				break;
+			}
 		}
+
 		else if ( this.player.capitalShip != null )
 		{
 			this.guiMode = GUI_MODE.CAPITAL;
@@ -644,5 +672,21 @@ public class GameGUI : MonoBehaviour
 
 		Rect texCoords = new Rect( 0.0f, 0.0f, this.healthBarTileCount, 1.0f );
 		GUI.DrawTextureWithTexCoords( overlayRect, this.horizontalBarOverlayTexture, texCoords );
+	}
+
+	private void RenderUpgradeMenu()
+	{
+		//First off, the multiplier upgrades
+
+		string[] upgradeLabels = { "Defense ", "Speed ", "Energy "}; //This does not include weapon labels
+
+		for(int typesOfUpgrades = 0; typesOfUpgrades < 3; typesOfUpgrades++) //Defense, Speed, Energy
+		{
+			for(int levelsOfUpgrades = 0; levelsOfUpgrades < 3; levelsOfUpgrades++) //level 1, level 2, level 3
+			{
+				Rect buttonRect = new Rect(30 + (80 * levelsOfUpgrades), 30 + (80 * typesOfUpgrades), 60, 60);
+				GUI.Button (buttonRect, upgradeLabels[typesOfUpgrades] + "level " + levelsOfUpgrades);
+			}
+		}
 	}
 }

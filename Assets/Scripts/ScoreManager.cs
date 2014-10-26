@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class TeamScore
 {
 	public int score;
+	public int allocated;
 }
 
 public enum SCORE_TYPE
@@ -51,6 +52,36 @@ public class ScoreManager : MonoBehaviour
 		if ( _broadcast && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			GameNetworkManager.instance.SendAddScoreMessage( _scoreType, _player );
+		}
+	}
+
+	public bool CanAllocatePoints(int _amount, GamePlayer _player)
+	{
+		TeamScore score = this.GetTeamScore (_player.team);
+
+		if(score.allocated + _amount > score.score)
+		{
+			return false;
+		}
+		else
+		{
+			//score.allocated += _amount;
+			return true;
+		}
+	}
+
+	public bool CanDeallocatePoints(int _amount, GamePlayer _player)
+	{
+		TeamScore score = this.GetTeamScore (_player.team);
+		
+		if(score.allocated - _amount < 0)
+		{
+			return false;
+		}
+		else
+		{
+			//score.allocated -= _amount;
+			return true;
 		}
 	}
 

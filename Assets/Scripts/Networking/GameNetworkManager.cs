@@ -367,6 +367,20 @@ public class GameNetworkManager : BaseNetworkManager
 		capitalShip.dockingBay.slots[landedSlotID].landedFighter = null;
 	}
 
+	public void SendUpgradedMessage( int _id, float _newSpeed, float _newDefense, float _newEnergy)
+	{
+		this.networkView.RPC ( "OnSendUpgradedRPC", RPCMode.Others, _id, _newSpeed, _newDefense, _newEnergy);
+	}
+
+	[RPC]
+	private void OnSendUpgradedRPC( int _id, float _newSpeed, float _newDefense, float _newEnergy)
+	{
+		GamePlayer toUpgrade = GamePlayerManager.instance.GetPlayerWithID(_id);
+		toUpgrade.defenseMultiplier = _newDefense;
+		toUpgrade.energyMultiplier = _newEnergy;
+		toUpgrade.speedMultiplier = _newSpeed;
+	}
+
 #if UNITY_EDITOR
 	private void LocalGameStart()
 	{

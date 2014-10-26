@@ -40,6 +40,11 @@ public class GamePlayer
 
 	public NetworkPlayer networkPlayer;
 
+	// Fighter upgrade variables
+	public float speedMultiplier = 1.0f; // Speed upgrades fiddle with this
+	public float defenseMultiplier = 1.0f; // Ditto shields
+	public float energyMultiplier = 1.0f; // Energy
+
 	public float GetKillDeathRatio()
 	{
 		return deaths == 0 ? kills : kills / deaths;
