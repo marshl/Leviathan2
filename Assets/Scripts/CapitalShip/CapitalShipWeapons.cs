@@ -15,7 +15,7 @@ public class CapitalShipWeapons : BaseWeaponManager
 	private void Update()
 	{
 #if UNITY_EDITOR
-		if ( this.master.dummyShip == true )
+		if ( this.master.isDummyShip == true )
 			return;
 #endif
 

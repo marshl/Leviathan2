@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class TurretBehavior : BaseWeaponManager
 {
+	public ComponentTower componentTower;
+
 	public bool isFloatingTurret;
 
 	public Transform swivel;
@@ -84,22 +86,7 @@ public class TurretBehavior : BaseWeaponManager
 
 		if ( this.health.currentHealth <= 0.0f )
 		{
-			if ( this.health.LastHitBy != null )
-			{
-				ScoreManager.instance.AddScore( SCORE_TYPE.TURRET_KILL, this.health.LastHitBy, true );
-			}
-
-			TargetManager.instance.RemoveTarget( this.health );
-
-			if ( Network.peerType == NetworkPeerType.Disconnected )
-			{
-				GameObject.Destroy( this.gameObject );
-			}
-			else
-			{
-				GameNetworkManager.instance.SendRemoveTargetMessage( this.networkView.viewID );
-				Network.Destroy( this.gameObject );
-			}
+			this.OnDeath();
 		}
 	}
 
@@ -240,5 +227,30 @@ public class TurretBehavior : BaseWeaponManager
 		}
 
 		this.restrictions.maxDistance = this.weapon.weaponDesc.bulletDesc.maxDistance;
+	}
+
+	public void OnDeath()
+	{
+		if ( this.health.LastHitBy != null )
+		{
+			ScoreManager.instance.AddScore( SCORE_TYPE.TURRET_KILL, this.health.LastHitBy, true );
+		}
+
+		if ( this.componentTower != null )
+		{
+			this.componentTower.Unoccupy();
+		}
+
+		TargetManager.instance.RemoveTarget( this.health );
+		
+		if ( Network.peerType == NetworkPeerType.Disconnected )
+		{
+			GameObject.Destroy( this.gameObject );
+		}
+		else
+		{
+			GameNetworkManager.instance.SendRemoveTargetMessage( this.networkView.viewID );
+			Network.Destroy( this.gameObject );
+		}
 	}
 }

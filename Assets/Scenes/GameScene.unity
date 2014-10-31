@@ -287,7 +287,7 @@ MonoBehaviour:
   gameState: 1
   startPauseDuration: .10000000149011612
   disconnectionTimeoutMS: 0
-  defaultPlayerType: 3
+  defaultPlayerType: 1
   createDummies: 1
   dummiesToCreate: 010000000200000003000000030000000400000004000000
   lastCreatedDummy:
@@ -693,7 +693,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: defaultPlayerType
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: dummiesToCreate.Array.data[3]
