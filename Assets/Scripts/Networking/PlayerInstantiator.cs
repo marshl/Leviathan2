@@ -83,11 +83,11 @@ public class PlayerInstantiator : MonoBehaviour
 		CapitalShipMovement movementScript = masterScript.movement;
 
 #if UNITY_EDITOR
-		masterScript.dummyShip = _dummyShip;
+		masterScript.isDummyShip = _dummyShip;
 
 		masterScript.ownerControl.ownerID = _player.id;
 
-		if ( masterScript.dummyShip == false )
+		if ( masterScript.isDummyShip == false )
 #endif
 		{
 			GameObject lineObj = GameObject.Instantiate( this.capitalPathLinePrefab, Vector3.zero, Quaternion.identity ) as GameObject;

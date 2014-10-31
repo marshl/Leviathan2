@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class CapitalShipMovement : MonoBehaviour
 {
 	public CapitalShipMaster master;
+
+	public bool showingTurnDisplay = true;
 	
 	public GameObject rotationSegmentPrefab;
 	
@@ -87,7 +89,7 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		this.currentMovementSpeed = (this.maxMoveSpeed + this.minMoveSpeed) / 2;
 #if UNITY_EDITOR
-		if ( this.master.dummyShip == false )
+		if ( this.master.isDummyShip == false )
 #endif
 		{
 			this.tentativePathLine.SetVertexCount( lineVertexCount );
@@ -109,7 +111,7 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		if ( this.master.isDying == false 
 #if UNITY_EDITOR
-		  && this.master.dummyShip == false
+		  && this.master.isDummyShip == false
 #endif 
 		)
 		{
@@ -133,14 +135,17 @@ public class CapitalShipMovement : MonoBehaviour
 			this.transform.Rotate( Vector3.up, turnRate * Time.deltaTime * this.currentTurnDirection * Mathf.Rad2Deg);
 
 #if UNITY_EDITOR
-			if ( this.master.dummyShip == false )
+			if ( this.master.isDummyShip == false )
 				#endif
 			{
-				UpdateRotationSegments( this.rotationSegmentsActual, this.currentTurnAmount, this.currentTurnDirection );
+				if ( this.showingTurnDisplay )
+				{
+					this.UpdateRotationSegments( this.rotationSegmentsActual, this.currentTurnAmount, this.currentTurnDirection );
+				}
 
 				if ( this.currentTurnAmount <= 0.0f )
 				{
-					this.ToggleRotationSegments( false );
+					this.DisableRotationSegments();
 					this.isTurning = false;
 				}
 			}
@@ -227,20 +232,24 @@ public class CapitalShipMovement : MonoBehaviour
 		// Left = -1.0f Right = 1.0f
 		float directionToTurn = Vector3.Dot( this.transform.right, rayToTarget ) > 0 ? 1.0f : -1.0f;
 
-		UpdateRotationSegments( this.rotationSegmentsTentative, amountToTurn, directionToTurn );
-
-		// Set the positions of the line renderer for the tentative path
-		Vector3[] pointArray = new Vector3[lineVertexCount];
-		GetTravelPathPositions( ref pointArray,
-		                       this.transform.position, this.transform.forward,
-		                       this.currentMovementSpeed, amountToTurn, directionToTurn );
-
-		this.tentativePathLine.enabled = true;
-		for ( int i = 0; i < lineVertexCount; ++i )
+		if ( this.showingTurnDisplay )
 		{
-			this.tentativePathLine.SetPosition( i, pointArray[i] );
+			this.UpdateRotationSegments( this.rotationSegmentsTentative, amountToTurn, directionToTurn );
 		}
 
+		if ( this.tentativePathLine.enabled )
+		{
+			// Set the positions of the line renderer for the tentative path
+			Vector3[] pointArray = new Vector3[lineVertexCount];
+			GetTravelPathPositions( ref pointArray,
+			                       this.transform.position, this.transform.forward,
+			                       this.currentMovementSpeed, amountToTurn, directionToTurn );
+
+			for ( int i = 0; i < lineVertexCount; ++i )
+			{
+				this.tentativePathLine.SetPosition( i, pointArray[i] );
+			}
+		}
 		// If the mouse button is pressed down, set the actual path to the tentative one
 		if ( this.turningEnabled && Input.GetMouseButtonDown( 0 ) )
 		{
@@ -451,15 +460,16 @@ public class CapitalShipMovement : MonoBehaviour
 		}
 	}
 
-	public void ToggleRotationSegments( bool _enabled )
+	public void DisableRotationSegments()
 	{
 #if UNITY_EDITOR
-		if ( !this.master.dummyShip )
+		if ( !this.master.isDummyShip )
 #endif
 		{
 			for ( int i = 0; i < rotationSegmentCount; ++i )
 			{
-				this.rotationSegmentsActual[i].SetActive( _enabled );
+				this.rotationSegmentsActual[i].SetActive( false );
+				this.rotationSegmentsTentative[i].SetActive( false );
 			}
 		}
 	}
@@ -596,7 +606,7 @@ public class CapitalShipMovement : MonoBehaviour
 	public void OnFinaleSequenceStart()
 	{
 #if UNITY_EDITOR
-		if ( this.master.dummyShip == false )
+		if ( this.master.isDummyShip == false )
 #endif
 		{
 			GameObject.Destroy( this.tentativePathLine );
@@ -616,6 +626,16 @@ public class CapitalShipMovement : MonoBehaviour
 	{
 		this.turningEnabled = _enabled;
 
-		this.ToggleRotationSegments( false );
+		this.ToggleTurningDisplay( false );
+	}
+
+	public void ToggleTurningDisplay( bool _enabled )
+	{
+		this.showingTurnDisplay = _enabled;
+		if ( !_enabled )
+		{
+			this.DisableRotationSegments();
+		}
+		this.tentativePathLine.enabled = _enabled;
 	}
 }

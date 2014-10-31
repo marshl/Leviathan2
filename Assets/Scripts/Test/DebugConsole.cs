@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public static class DebugConsole
 {
-	public static bool changed = false;
-
 	public static List<string> outputLines = new List<string>();
 	public static List<string> inputLines = new List<string>();
 	public static int currentInputLine = -1;
@@ -94,10 +92,11 @@ public static class DebugConsole
 
 			if ( commandName == commandAttr.command )
 			{
-				typeof( DebugConsole ).InvokeMember( methodInfo.Name,
-				                                    System.Reflection.BindingFlags.InvokeMethod,
-				                                    System.Type.DefaultBinder,
-				                                    null, new object[]{chunks,} );
+				type.InvokeMember( methodInfo.Name,
+                                   System.Reflection.BindingFlags.InvokeMethod,
+                                   System.Type.DefaultBinder,
+                                   null,
+				                   new object[]{chunks,} );
 				foundMethod = true;
 			}
 		}

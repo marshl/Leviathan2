@@ -39,7 +39,7 @@ public class CapitalShipMaster : MonoBehaviour
 	private GameObject placementMarkerObj;
 
 #if UNITY_EDITOR
-	public bool dummyShip = false;
+	public bool isDummyShip = false;
 #endif
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )   
@@ -75,7 +75,7 @@ public class CapitalShipMaster : MonoBehaviour
 					GameNetworkManager.instance.SendCapitalShipExplodedMessage( this );
 
 #if UNITY_EDITOR
-					if ( this.dummyShip == false )
+					if ( this.isDummyShip == false )
 #endif
 					{
 						GameObject.Destroy( this.capitalCamera.gameObject );
@@ -95,7 +95,7 @@ public class CapitalShipMaster : MonoBehaviour
 			else // Alive
 			{
 #if UNITY_EDITOR
-				if ( !this.dummyShip )
+				if ( !this.isDummyShip )
 #endif
 				{
 					if ( Input.GetKeyDown( KeyCode.A ) )
@@ -192,7 +192,7 @@ public class CapitalShipMaster : MonoBehaviour
 		{
 			this.turrets.CreateTurrets();
 #if UNITY_EDITOR
-			if ( !this.dummyShip )
+			if ( !this.isDummyShip )
 #endif
 			{
 				this.placementSphereObj = GameObject.Instantiate( this.placementSpherePrefab ) as GameObject;

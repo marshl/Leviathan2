@@ -47,7 +47,7 @@ public class TractorBeam : MonoBehaviour
 	private void Update()
 	{
 #if UNITY_EDITOR
-		if ( this.master.dummyShip == false )
+		if ( this.master.isDummyShip == false )
 #endif
 		{
 			if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected ) 
@@ -124,7 +124,7 @@ public class TractorBeam : MonoBehaviour
 	private void OnGUI()
 	{
 #if UNITY_EDITOR 
-		if ( !this.master.dummyShip )
+		if ( !this.master.isDummyShip )
 #endif
 		{
 			if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
