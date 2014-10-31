@@ -10,8 +10,7 @@ public class PlayerUpgrader : MonoBehaviour {
 	public int[] defenseCosts = {0, 150, 500, 1750};
 	public int[] energyCosts = {0, 150, 500, 1750};
 
-	// The amount of tech points that have been allocated to each category
-	// This is important for when we downgrade
+	// The allocated levels. This is LOCAL - real data is in the player class.
 	public int speedLevel = 0;
 	public int defenseLevel = 0;
 	public int energyLevel = 0;
@@ -20,7 +19,7 @@ public class PlayerUpgrader : MonoBehaviour {
 	public GameObject defenseHull;
 	public GameObject weaponHull;
 
-	public PlayerUpgrader instance;
+	public static PlayerUpgrader instance;
 
 	void Awake()
 	{
@@ -75,8 +74,23 @@ public class PlayerUpgrader : MonoBehaviour {
 		_player.defenseMultiplier = defenseMultipliers[defenseLevel];
 		_player.speedMultiplier = speedMultipliers[speedLevel];
 
+		if(_player.fighter != null)
+		{
+			//speed - currently increases acceleration and maximum speed
+			_player.fighter.movement.acceleration = _player.fighter.movement.baseAcceleration * speedMultipliers[speedLevel];
+			_player.fighter.movement.maxSpeed = _player.fighter.movement.baseMaxSpeed * speedMultipliers[speedLevel];
+			//energy - currently this increases regen rate and maximum energy
+			_player.fighter.energySystem.maximumEnergy = _player.fighter.energySystem.baseMaxEnergy * energyMultipliers[energyLevel];
+			_player.fighter.energySystem.rechargePerSecond = _player.fighter.energySystem.baseRechargePerSec * energyMultipliers[energyLevel];
+			//defense - currently increases hull and shields
+			_player.fighter.health.maxShield = _player.fighter.health.baseShield * defenseMultipliers[defenseLevel];
+			_player.fighter.health.maxHealth = _player.fighter.health.baseHealth * defenseMultipliers[defenseLevel];
+		}
+
 		GameNetworkManager.instance.SendUpgradedMessage (_player.id, _player.speedMultiplier, _player.defenseMultiplier, _player.energyMultiplier);
 	}
+
+	
 
 	public void UpdateCosts(GamePlayer _player)
 	{

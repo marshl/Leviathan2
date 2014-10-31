@@ -669,6 +669,8 @@ public class GameGUI : MonoBehaviour
 
 		GUI.DrawTexture( team1Rect, this.team1ScoreTexture );
 		GUI.DrawTexture( team2Rect, this.team2ScoreTexture );
+		GUI.Label (new Rect(team1Rect.x - 30, team1Rect.y, 30, 30), s1.ToString());
+		GUI.Label (new Rect(team2Rect.x + team2Rect.width + 30, team2Rect.y, 30, 30), s2.ToString());
 
 		Rect texCoords = new Rect( 0.0f, 0.0f, this.healthBarTileCount, 1.0f );
 		GUI.DrawTextureWithTexCoords( overlayRect, this.horizontalBarOverlayTexture, texCoords );
@@ -682,11 +684,35 @@ public class GameGUI : MonoBehaviour
 
 		for(int typesOfUpgrades = 0; typesOfUpgrades < 3; typesOfUpgrades++) //Defense, Speed, Energy
 		{
-			for(int levelsOfUpgrades = 0; levelsOfUpgrades < 3; levelsOfUpgrades++) //level 1, level 2, level 3
+			for(int levelsOfUpgrades = 0; levelsOfUpgrades < 4; levelsOfUpgrades++) //level 0, level 1, level 2, level 3
 			{
-				Rect buttonRect = new Rect(30 + (80 * levelsOfUpgrades), 30 + (80 * typesOfUpgrades), 60, 60);
-				GUI.Button (buttonRect, upgradeLabels[typesOfUpgrades] + "level " + levelsOfUpgrades);
+				Rect buttonRect = new Rect(30 + (160 * levelsOfUpgrades), 30 + (80 * typesOfUpgrades), 120, 60);
+				if(GUI.Button (buttonRect, upgradeLabels[typesOfUpgrades] + "level " + levelsOfUpgrades))
+				{
+					switch(typesOfUpgrades)
+					{
+					case 0://defence
+						PlayerUpgrader.instance.SetDefenseUpgrade (player, levelsOfUpgrades);
+						break;
+					case 1://speed
+						PlayerUpgrader.instance.SetSpeedUpgrade (player, levelsOfUpgrades);
+						break;
+					case 2://energy
+						PlayerUpgrader.instance.SetEnergyUpgrade (player, levelsOfUpgrades);
+						break;
+
+
+					}
+				}
 			}
 		}
+
+		GUI.Label (new Rect(Screen.width / 2, 200, 200, 40), "Tech points free: " + (ScoreManager.instance.GetTeamScore(this.player.team).score - PlayerUpgrader.instance.GetTotalCost()).ToString () + " / " + ScoreManager.instance.GetTeamScore (this.player.team).score.ToString ());
+
+		if(GUI.Button (new Rect(Screen.width / 2, 300, 200, 40), "Undock"))
+		{
+			this.player.fighter.Undock ();
+		}
+
 	}
 }

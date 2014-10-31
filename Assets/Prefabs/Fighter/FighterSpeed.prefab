@@ -651,11 +651,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   masterScript: {fileID: 11400018}
   turnSpeed: 1000
-  rollSpeed: 25
-  acceleration: 4500
-  maxSpeed: 18000
+  rollSpeed: 12.5
+  acceleration: 6500
+  baseAcceleration: 6500
+  boostMultiplier: 3
+  boostIgnoresMax: 0
+  maxSpeed: 25000
+  baseMaxSpeed: 25000
   desiredSpeed: 0
-  minSpeed: -400
+  minSpeed: -7500
   rollDamping: .300000012
   undockingSpeed: 25000
   contactPushForce: 4
@@ -711,6 +715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerp: 0
   lerpRate: .25
+  speed: 0
   velocity: {x: 0, y: 0, z: 0}
   rotVel: {x: 0, y: 0, z: 0}
   ownerID: -1
@@ -778,22 +783,9 @@ MonoBehaviour:
   maxHealth: 500
   currentShield: 750
   maxShield: 750
-  shieldRegen: .25
-  shieldRegenDelay: 1
+  shieldRegen: .159999996
+  shieldRegenDelay: 3
   isIndestructible: 0
-  lastHitBy:
-    id: 0
-    name: DEFAULT
-    playerType: 0
-    fighterType: 0
-    isConnected: 0
-    kills: 0
-    assists: 0
-    deaths: 0
-    team: 0
-    personalScore: 0
-    fighter: {fileID: 0}
-    capitalShip: {fileID: 0}
   guiExtents:
   - {fileID: 400024}
   - {fileID: 400022}
@@ -803,6 +795,8 @@ MonoBehaviour:
   - {fileID: 400012}
   - {fileID: 400004}
   masterScript: {fileID: 11400018}
+  baseHealth: 300
+  baseShield: 300
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -881,8 +875,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c881169c089b1469c7798cd9e51ca5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseMaxEnergy: 1
+  maximumEnergy: 1
   currentEnergy: 1
   energyPenaltyStart: .349999994
+  baseRechargePerSec: .200000003
   rechargePerSecond: .200000003
   rechargeDelay: .5
   delayTimer: 0

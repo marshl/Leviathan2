@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: GamePlayerManager
   m_TagString: Untagged
@@ -52,6 +53,9 @@ MonoBehaviour:
     personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
+    speedMultiplier: 1
+    defenseMultiplier: 1
+    energyMultiplier: 1
   commander2:
     id: 0
     name: DEFAULT
@@ -65,6 +69,9 @@ MonoBehaviour:
     personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
+    speedMultiplier: 1
+    defenseMultiplier: 1
+    energyMultiplier: 1
   fighters1: []
   fighters2: []
   myPlayer:
@@ -80,6 +87,44 @@ MonoBehaviour:
     personalScore: 0
     fighter: {fileID: 0}
     capitalShip: {fileID: 0}
+    speedMultiplier: 1
+    defenseMultiplier: 1
+    energyMultiplier: 1
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208259a4b3ea54542b45415a6e537fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMultipliers:
+  - 1
+  - 1.25
+  - 1.5
+  - 1.75
+  defenseMultipliers:
+  - 1
+  - 1.25
+  - 1.5
+  - 1.75
+  energyMultipliers:
+  - 1
+  - 1.25
+  - 1.5
+  - 1.75
+  speedCosts: 0000000096000000f4010000d6060000
+  defenseCosts: 0000000096000000f4010000d6060000
+  energyCosts: 0000000096000000f4010000d6060000
+  speedLevel: 0
+  defenseLevel: 0
+  energyLevel: 0
+  speedHull: {fileID: 100006, guid: e152e05dbd9d77f42958a061d50fa1ff, type: 2}
+  defenseHull: {fileID: 100004, guid: 1f6839198cb8a0248b39810a19109c1d, type: 2}
+  weaponHull: {fileID: 100004, guid: 5b8be30df40ac8f4e8313eef8dce5ad3, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

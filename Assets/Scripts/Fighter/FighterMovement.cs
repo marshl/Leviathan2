@@ -8,7 +8,11 @@ public class FighterMovement : MonoBehaviour
 	public float turnSpeed;
 	public float rollSpeed;
 	public float acceleration;
+	public float baseAcceleration;
+	public float boostMultiplier = 3.0f;
+	public bool boostIgnoresMax = false;
 	public float maxSpeed;
+	public float baseMaxSpeed;
 	public float desiredSpeed;
 	public float minSpeed;
 	public float rollDamping;
@@ -38,7 +42,10 @@ public class FighterMovement : MonoBehaviour
 		turnSpeed *= this.transform.localScale.x;
 		rollSpeed *= this.transform.localScale.x;
 		acceleration *= this.transform.localScale.x; 
+		baseAcceleration *= this.transform.localScale.x; 
 		maxSpeed *= this.transform.localScale.x;
+		baseMaxSpeed *= this.transform.localScale.x;
+		minSpeed *= this.transform.localScale.x;
 		//undockingSpeed *= this.transform.localScale.x;
 		deadFlyingSpeed *= this.transform.localScale.x;
 		deadSpinSpeed *= this.transform.localScale.x;
@@ -58,6 +65,10 @@ public class FighterMovement : MonoBehaviour
 #endif
 				{
 					this.CheckFlightControls();
+					if( this.desiredSpeed > this.maxSpeed && !boostIgnoresMax) //Additional check here to cover undocking
+					{
+						this.desiredSpeed = this.maxSpeed;
+					}
 				}
 				break;
 			}
@@ -102,7 +113,7 @@ public class FighterMovement : MonoBehaviour
 		}
 
 
-		if ( Input.GetKey( KeyCode.W ) ) // Accelerate
+		if ( Input.GetKey( KeyCode.W ) && this.desiredSpeed < this.maxSpeed ) // Accelerate
 		{
 			this.desiredSpeed += this.acceleration * Time.deltaTime;
 			if( this.desiredSpeed > this.maxSpeed)
@@ -110,7 +121,7 @@ public class FighterMovement : MonoBehaviour
 				this.desiredSpeed = this.maxSpeed;
 			}
 		}
-		if ( Input.GetKey( KeyCode.S ) ) // Deccelerate
+		if ( Input.GetKey( KeyCode.S ) && this.desiredSpeed > this.minSpeed ) // Deccelerate
 		{
 			this.desiredSpeed -= this.acceleration * Time.deltaTime;
 			if ( this.desiredSpeed < this.minSpeed )
@@ -132,9 +143,13 @@ public class FighterMovement : MonoBehaviour
 		{
 			this.desiredSpeed = 0.0f;
 		}
-		if ( Input.GetKey( KeyCode.Tab ) ) // Thrusters (not a special)
+		if ( Input.GetKey( KeyCode.Tab ) && (this.desiredSpeed < this.maxSpeed || boostIgnoresMax) ) // Thrusters (not a special)
 		{
-			this.desiredSpeed += ( this.acceleration * 2 * Time.deltaTime );
+			this.desiredSpeed += ( this.acceleration * boostMultiplier * Time.deltaTime );
+			if( this.desiredSpeed > this.maxSpeed && !boostIgnoresMax)
+			{
+				this.desiredSpeed = this.maxSpeed;
+			}
 		}
 	}
 	

@@ -379,6 +379,19 @@ public class GameNetworkManager : BaseNetworkManager
 		toUpgrade.defenseMultiplier = _newDefense;
 		toUpgrade.energyMultiplier = _newEnergy;
 		toUpgrade.speedMultiplier = _newSpeed;
+
+		if(toUpgrade.fighter != null)
+		{
+			//speed - currently increases acceleration and maximum speed
+			toUpgrade.fighter.movement.acceleration = toUpgrade.fighter.movement.baseAcceleration * toUpgrade.speedMultiplier;
+			toUpgrade.fighter.movement.maxSpeed = toUpgrade.fighter.movement.baseMaxSpeed * toUpgrade.speedMultiplier;
+			//energy - currently this increases regen rate and maximum energy
+			toUpgrade.fighter.energySystem.maximumEnergy = toUpgrade.fighter.energySystem.baseMaxEnergy * toUpgrade.energyMultiplier;
+			toUpgrade.fighter.energySystem.rechargePerSecond = toUpgrade.fighter.energySystem.baseRechargePerSec * toUpgrade.energyMultiplier;
+			//defense - currently increases hull and shields
+			toUpgrade.fighter.health.maxShield = toUpgrade.fighter.health.baseShield * toUpgrade.defenseMultiplier;
+			toUpgrade.fighter.health.maxHealth = toUpgrade.fighter.health.baseHealth * toUpgrade.defenseMultiplier;
+		}
 	}
 
 #if UNITY_EDITOR

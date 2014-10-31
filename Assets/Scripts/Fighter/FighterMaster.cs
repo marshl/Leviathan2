@@ -293,6 +293,8 @@ public class FighterMaster : MonoBehaviour
 	
 		this.transform.parent = null;
 
+		PlayerUpgrader.instance.UpdateLevels (GamePlayerManager.instance.GetPlayerWithID (this.ownerID));
+
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
 			GameNetworkManager.instance.SendUndockedMessage( this.networkView.viewID, this.health.Owner.team, this.currentSlot.slotID );

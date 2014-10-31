@@ -3,9 +3,12 @@ using System.Collections;
 
 public class EnergySystem : MonoBehaviour
 {
+	public float baseMaxEnergy = 1.0f;
+	public float maximumEnergy = 1.0f;
 	public float currentEnergy = 1.0f;
-	public float energyPenaltyStart = 0.35f;
+	public float energyPenaltyStart = 0.35f; //Note - this is a percentage, not a threshold
 
+	public float baseRechargePerSec = 0.2f;
 	public float rechargePerSecond;
 	public float rechargeDelay;
 	public float delayTimer;
@@ -17,7 +20,7 @@ public class EnergySystem : MonoBehaviour
 		if ( this.delayTimer >= this.rechargeDelay )
 		{
 			this.currentEnergy = Mathf.Min( 
-			   this.currentEnergy + this.rechargePerSecond * Time.deltaTime, 1.0f );
+			   this.currentEnergy + this.rechargePerSecond * Time.deltaTime, maximumEnergy );
 		}
 	}
 

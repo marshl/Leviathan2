@@ -4,6 +4,8 @@ using System.Collections;
 public class FighterHealth : BaseHealth
 {
 	public FighterMaster masterScript;
+	public int baseHealth = 300;
+	public int baseShield = 300;
 
 	protected override void Update()
 	{

@@ -6,7 +6,8 @@ public class FighterCamera : MonoBehaviour
 	public FighterMaster fighter;
 
 	public float cameraDrift;
-	public float pullBackFactor;
+	public float pullBackFactor; //Fov pulled back by at maximum thrust
+	//public float velocityDivisor = 250;
 
 	private Transform eyePoint;
 	private Vector3 angularVeloc;
@@ -37,12 +38,17 @@ public class FighterCamera : MonoBehaviour
 			Vector3 tempVector = new Vector3();
 
 			tempVector.x = angularVeloc.y + angularVeloc.z;
-			tempVector.y = angularVeloc.x * -1;
-			tempVector.z = angularVeloc.z * 0 ;
+			tempVector.y = angularVeloc.x * 1;
+			//tempVector.z = angularVeloc.z * 0 ;
+			tempVector.z =  0.0f ;
 
 			angularVeloc = tempVector;
 
 			this.transform.position = eyePoint.transform.position + ( this.transform.rotation * tempVector );
+			if(this.fighter.state != FighterMaster.FIGHTERSTATE.UNDOCKING && !this.fighter.movement.boostIgnoresMax)
+			{
+				this.camera.fieldOfView = 60 + ((this.fighter.movement.desiredSpeed / this.fighter.movement.maxSpeed) * pullBackFactor);
+			}
 		}
 	}
 }
