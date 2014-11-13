@@ -1099,8 +1099,8 @@ MonoBehaviour:
     slotID: 0
   model: {fileID: 2300000}
   fighterCamera: {fileID: 0}
-  dummyShip: 1
-  ownerID: -6
+  dummyShip: 0
+  ownerID: -1
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1158,13 +1158,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 1
+  weaponType: 10
   weaponDesc: {fileID: 0}
   firePoints:
   - {fileID: 11400000}
   - {fileID: 11400020}
   firePointIndex: 0
-  energySystem: {fileID: 0}
+  energySystem: {fileID: 11400022}
   source: {fileID: 11400016}
   weaponIndex: 0
   timeSinceShot: 0
@@ -1178,20 +1178,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 100004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93959c59b19871240b124539c57c3730, type: 3}
+  m_Script: {fileID: 11500000, guid: ce45eca3c510d7b4daabc8ca5b280440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 2
+  weaponType: 15
   weaponDesc: {fileID: 0}
   firePoints:
-  - {fileID: 11400002}
+  - {fileID: 11400000}
   firePointIndex: 0
-  energySystem: {fileID: 0}
+  energySystem: {fileID: 11400022}
   source: {fileID: 11400016}
   weaponIndex: 0
   timeSinceShot: 0
-  ammunition: 0
+  ammunition: 10
   currentLockOn: 0
+  chargeUpDesc: {fileID: 0}
+  currentCharge: 0
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1204,7 +1206,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 11400018}
-  weapons: []
+  weapons:
+  - {fileID: 11400012}
+  - {fileID: 11400014}
   currentTarget: {fileID: 0}
   restrictions:
     transform: {fileID: 0}
@@ -1213,10 +1217,10 @@ MonoBehaviour:
     types: -1
     teams: -1
   master: {fileID: 11400006}
-  primaryWeapon: {fileID: 0}
-  secondaryWeapon: {fileID: 0}
+  primaryWeapon: {fileID: 11400012}
+  secondaryWeapon: {fileID: 11400014}
   usingPrimary: 1
-  tertiaryWeapon: {fileID: 0}
+  tertiaryWeapon: {fileID: 11400014}
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1

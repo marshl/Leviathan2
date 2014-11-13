@@ -42,35 +42,9 @@ public class FighterMaster : MonoBehaviour
 	public FighterCamera fighterCamera;
 
 #if UNITY_EDITOR
-	public bool dummyShip = false;
-	public int ownerID;
-
-	protected void Start()
-	{
-		if ( Network.peerType == NetworkPeerType.Disconnected )
-		{
-			this.health.Owner = GamePlayerManager.instance.GetPlayerWithID( ownerID );
-			this.health.Owner.fighter = this;
-			this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
-
-			GamePlayer commanderPlayer = this.health.Owner.team == TEAM.TEAM_1 ? GamePlayerManager.instance.commander1
-				: GamePlayerManager.instance.commander2;
-
-			if ( commanderPlayer != null )
-			{
-				this.capitalShip = commanderPlayer.capitalShip;
-			}
-			DebugConsole.Log( "Player " + ownerID + " now owns " + this.name, this );
-
-			this.SetTeamColours();
-		}
-		else
-		{
-			this.dummyShip = false;
-		}
-	}
+	public bool isDummyShip = false;
 #endif
-
+	
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
 		NetworkOwnerManager.instance.RegisterUnknownObject( this );
@@ -79,7 +53,7 @@ public class FighterMaster : MonoBehaviour
 	private void Update()
 	{
 		if ( this.ownerInitialised == false 
-		    && this.ownerControl.ownerID != null )
+		  && this.ownerControl.ownerID != null )
 		{
 			this.OwnerInitialise();
 		}
@@ -88,7 +62,7 @@ public class FighterMaster : MonoBehaviour
 		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
 		{
 #if UNITY_EDITOR
-			if ( this.dummyShip == false )
+			if ( this.isDummyShip == false )
 #endif
 			{
 				if ( Input.GetKeyDown( KeyCode.G ) )
@@ -139,10 +113,10 @@ public class FighterMaster : MonoBehaviour
 
 		int id = this.ownerControl.ownerID.Value;
 		this.health.Owner = GamePlayerManager.instance.GetPlayerWithID( id );
-
 		this.health.Owner.fighter = this;
 		DebugConsole.Log( "Set player " + id + " to own fighter", this.gameObject );
-		if ( this.networkView.isMine == false )
+
+		if ( this.networkView.isMine == false && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			this.enabled = false;
 			this.movement.enabled = false;
@@ -293,7 +267,7 @@ public class FighterMaster : MonoBehaviour
 	
 		this.transform.parent = null;
 
-		PlayerUpgrader.instance.UpdateLevels (GamePlayerManager.instance.GetPlayerWithID (this.ownerID));
+		PlayerUpgrader.instance.UpdateLevels (GamePlayerManager.instance.GetPlayerWithID( this.health.Owner.id ) );
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{

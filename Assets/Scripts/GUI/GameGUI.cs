@@ -501,11 +501,13 @@ public class GameGUI : MonoBehaviour
 			lockOnRect.y = targetScreenHeight;
 
 			WeaponBase seekingWeapon = this.player.fighter.weapons.tertiaryWeapon;
-			float lockRatio = seekingWeapon.currentLockOn / seekingWeapon.weaponDesc.lockOnDuration;
-			lockRatio = Mathf.Min( lockRatio, 1.0f );
+			if ( seekingWeapon.weaponDesc.requiresWeaponLock )
+			{
+				float lockRatio = seekingWeapon.currentLockOn / seekingWeapon.weaponDesc.lockOnDuration;
+				lockRatio = Mathf.Min( lockRatio, 1.0f );
 
-			this.RenderHorizontalBarOverlaid( this.lockOnBarTexture, lockOnRect, lockRatio );
-
+				this.RenderHorizontalBarOverlaid( this.lockOnBarTexture, lockOnRect, lockRatio );
+			}
 		}
 
 		List<BaseHealth> targets = TargetManager.instance.GetTargets( this.player.fighter.weapons );

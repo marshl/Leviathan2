@@ -61,7 +61,7 @@ public class FighterMovement : MonoBehaviour
 			{
 				this.rigidbody.AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
 #if UNITY_EDITOR
-				if ( this.masterScript.dummyShip == false )
+				if ( this.masterScript.isDummyShip == false )
 #endif
 				{
 					this.CheckFlightControls();

@@ -462,16 +462,21 @@ public class GameNetworkManager : BaseNetworkManager
 	[RPC]
 	private void OnSmartBulletInfoRPC( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
 	{
-		if ( BulletManager.instance.seekingBulletMap.ContainsKey( _viewID ) )
+		if ( BulletManager.instance.smartBulletMap.ContainsKey( _viewID ) )
 		{
-			SeekingBullet bullet = BulletManager.instance.seekingBulletMap[_viewID];
+			SmartBullet bullet = BulletManager.instance.smartBulletMap[_viewID];
+
+
 			DebugConsole.Log( "Changing smart bullet " + _viewID + " owner to " + _playerID, bullet  );
 			bullet.health.Owner = GamePlayerManager.instance.GetPlayerWithID( _playerID );
 
-			if ( _targetID != NetworkViewID.unassigned )
+
+			SeekingBullet seekingBullet = bullet as SeekingBullet;
+			if ( seekingBullet != null
+			  && _targetID != NetworkViewID.unassigned )
 			{
-				bullet.target = TargetManager.instance.GetTargetWithID( _targetID );
-				DebugConsole.Log( "Setting smart bullet target to " + bullet.target.gameObject.name, bullet.target );
+				seekingBullet.target = TargetManager.instance.GetTargetWithID( _targetID );
+				DebugConsole.Log( "Setting smart bullet target to " + seekingBullet.target.gameObject.name, seekingBullet.target );
 			}
 		}
 		else

@@ -172,6 +172,10 @@ public class CapitalShipMaster : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Called when the owner ID is found on the NetworkOwnerControl
+	/// Sets up owner specific information
+	/// </summary>
 	private void OwnerInitialise()
 	{
 		this.ownerInitialised = true;

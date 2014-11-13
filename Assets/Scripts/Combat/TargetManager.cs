@@ -12,6 +12,7 @@ public enum TARGET_TYPE : int
 	CAPITAL_SHIP_PRIMARY = 4,
 	CAPITAL_SHIP_SUB = 8,
 	MISSILE = 16,
+	//TODO: Differentiate between missiles and bombs?
 };
 
 public class TargetManager : MonoBehaviour
@@ -320,8 +321,7 @@ public class TargetManager : MonoBehaviour
 			                   + _health + " and shield to " + _shield );
 			return;
 		}
-		DebugConsole.Log( target.gameObject.name + " health set to " + _health
-		                 + "/" + target.maxHealth + " " + _shield + "/" + target.maxShield, target );
+
 		target.currentHealth = _health;
 		target.currentShield = _shield;
 	}

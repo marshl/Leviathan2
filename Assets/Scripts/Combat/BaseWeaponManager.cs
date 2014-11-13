@@ -27,12 +27,17 @@ public class BaseWeaponManager : MonoBehaviour
 
 	public virtual void OnBulletCreated( WeaponBase _weapon, BulletBase _bullet )
 	{
+		SmartBullet smartBullet = _bullet as SmartBullet;
+		if ( smartBullet != null )
+		{
+			smartBullet.health.Owner = this.health.Owner;
+		}
+
 		SeekingBullet seekingScript = _bullet as SeekingBullet;
 		if ( seekingScript != null
-		&& ( _weapon.weaponDesc.requiresWeaponLock == false || _weapon.IsLockedOntoTarget() ) )
+		&& ( !_weapon.weaponDesc.requiresWeaponLock || _weapon.IsLockedOntoTarget() ) )
 		{
 			seekingScript.target = this.currentTarget;
-			seekingScript.health.Owner = this.health.Owner;
 		}
 	}
 

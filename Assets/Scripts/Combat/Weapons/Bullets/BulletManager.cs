@@ -25,6 +25,7 @@ public enum WEAPON_TYPE : int
 	FIGHTER_MESON_BLASTER_1,
 	FIGHTER_TACHYON_CANNON_1,
 	FIGHTER_GUIDED_MISSILE_1,
+	FIGHTER_MULE_1,
 	TURRET_IONBURST,
 	CAPITAL_HELLFIRE,
 	CAPITAL_FUSION_BEAM,
@@ -52,12 +53,12 @@ public class BulletManager : MonoBehaviour
 	/// </summary>
 	private Dictionary<WEAPON_TYPE, BulletBucket> bulletDictionary;
 
-	public Dictionary<NetworkViewID, SeekingBullet> seekingBulletMap;
+	public Dictionary<NetworkViewID, SmartBullet> smartBulletMap;
 
 #if UNITY_EDITOR
 	// We can't map by NetworkViewID in offline mode, so we'll have to use ints
 	public int debugSeekingID = 0;
-	public Dictionary<int, SeekingBullet> debugSeekingBulletMap;
+	public Dictionary<int, SmartBullet> debugSmartBulletMap;
 #endif
 
 	private void Awake()
@@ -69,12 +70,12 @@ public class BulletManager : MonoBehaviour
 		}
 		instance = this;
 
-		this.seekingBulletMap = new Dictionary<NetworkViewID, SeekingBullet>();
+		this.smartBulletMap = new Dictionary<NetworkViewID, SmartBullet>();
 
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			this.debugSeekingBulletMap = new Dictionary<int, SeekingBullet>();
+			this.debugSmartBulletMap = new Dictionary<int, SmartBullet>();
 		}
 #endif
 	}
@@ -85,7 +86,7 @@ public class BulletManager : MonoBehaviour
 
 		foreach ( KeyValuePair<WEAPON_TYPE, BulletDescriptor> pair in BulletDescriptorManager.instance.descMap )
 		{
-			if ( pair.Value.smartBullet == false )
+			if ( !pair.Value.smartBullet )
 			{
 				this.CreateBulletBucket( pair.Value );
 			}
@@ -199,7 +200,8 @@ public class BulletManager : MonoBehaviour
 		if ( descriptor.smartBullet == true
 		  && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			BaseHealth target = bulletObj.GetComponent<SeekingBullet>().target;
+			SeekingBullet seekingScript = descriptor.prefab.GetComponent<SeekingBullet>();
+			BaseHealth target = seekingScript != null ? bulletObj.GetComponent<SeekingBullet>().target : null;
 			NetworkViewID viewID = target != null ? target.networkView.viewID : NetworkViewID.unassigned;
 
 			GameNetworkManager.instance.SendSmartBulletInfoRPC(
@@ -260,7 +262,7 @@ public class BulletManager : MonoBehaviour
 				}
 
 				TargetManager.instance.RemoveTarget( _bullet.GetComponent<BaseHealth>() );
-				this.debugSeekingBulletMap.Remove( ((SeekingBullet)_bullet).debugID );
+				this.debugSmartBulletMap.Remove( ((SmartBullet)_bullet).debugID );
 			}
 			else
 #endif
@@ -270,7 +272,7 @@ public class BulletManager : MonoBehaviour
 					Debug.LogWarning( "You cannot destroy a seeking bullet you don't own!", _bullet );
 					return;
 				}
-				this.seekingBulletMap.Remove( _bullet.networkView.viewID );
+				this.smartBulletMap.Remove( _bullet.networkView.viewID );
 
 				TargetManager.instance.RemoveTarget( _bullet.GetComponent<BaseHealth>() );
 				GameNetworkManager.instance.SendDestroySmartBulletMessage( _bullet.networkView.viewID );
@@ -317,10 +319,10 @@ public class BulletManager : MonoBehaviour
 	{
 		TargetManager.instance.RemoveTargetByID( _viewID );
 
-		SeekingBullet bullet = null;
-		if ( this.seekingBulletMap.TryGetValue( _viewID, out bullet ) )
+		SmartBullet bullet = null;
+		if ( this.smartBulletMap.TryGetValue( _viewID, out bullet ) )
 		{
-			this.seekingBulletMap.Remove( _viewID );
+			this.smartBulletMap.Remove( _viewID );
 
 			if ( bullet != null && bullet.desc.fadeOut > 0.0f )
 			{
@@ -371,22 +373,34 @@ public class BulletManager : MonoBehaviour
 	{
 		List<BaseHealth> missiles  = new List<BaseHealth>();
 
-		foreach ( KeyValuePair<NetworkViewID, SeekingBullet> pair in this.seekingBulletMap )
+		foreach ( KeyValuePair<NetworkViewID, SmartBullet> pair in this.smartBulletMap )
 		{
-			if ( pair.Value.target == _weaponManager.health )
+			SeekingBullet seekingBullet = pair.Value as SeekingBullet;
+			if ( seekingBullet == null )
 			{
-				missiles.Add( pair.Value.health );
+				continue;
+
+			}
+			if ( seekingBullet.target == _weaponManager.health )
+			{
+				missiles.Add( seekingBullet.health );
 			}
 		}
 
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			foreach ( KeyValuePair<int, SeekingBullet> pair in this.debugSeekingBulletMap )
+			foreach ( KeyValuePair<int, SmartBullet> pair in this.debugSmartBulletMap )
 			{
-				if ( pair.Value.target == _weaponManager.health )
+				SeekingBullet seekingBullet = pair.Value as SeekingBullet;
+				if ( seekingBullet == null )
 				{
-					missiles.Add( pair.Value.health );
+					continue;
+				}
+
+				if ( seekingBullet.target == _weaponManager.health )
+				{
+					missiles.Add( seekingBullet.health );
 				}
 			}
 		}
@@ -420,9 +434,16 @@ public class BulletManager : MonoBehaviour
 
 	public bool IsMissileTargetting( BaseHealth _health )
 	{
-		foreach ( KeyValuePair<NetworkViewID, SeekingBullet> pair in this.seekingBulletMap )
+		foreach ( KeyValuePair<NetworkViewID, SmartBullet> pair in this.smartBulletMap )
 		{
-			if ( pair.Value.target == _health )
+			SeekingBullet seekingBullet = pair.Value as SeekingBullet;
+
+			if ( seekingBullet == null )
+			{
+				continue;
+			}
+
+			if ( seekingBullet.target == _health )
 			{
 				return true;
 			}
@@ -431,9 +452,15 @@ public class BulletManager : MonoBehaviour
 #if UNITY_EDITOR
 		if ( Network.peerType == NetworkPeerType.Disconnected )
 		{
-			foreach ( KeyValuePair<int, SeekingBullet> pair in this.debugSeekingBulletMap )
+			foreach ( KeyValuePair<int, SmartBullet> pair in this.debugSmartBulletMap )
 			{
-				if ( pair.Value.target == _health )
+				SeekingBullet seekingBullet = pair.Value as SeekingBullet;
+				if ( seekingBullet == null )
+				{
+					continue;
+				}
+
+				if ( seekingBullet.target == _health )
 				{
 					return true;
 				}

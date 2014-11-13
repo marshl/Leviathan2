@@ -16,17 +16,17 @@ public class FighterWeapons : BaseWeaponManager
 	protected override void Awake()
 	{
 		base.Awake();
-		this.restrictions.types = (int)(TARGET_TYPE.FIGHTER
+		this.restrictions.types = (int)( TARGET_TYPE.FIGHTER
 		                               | TARGET_TYPE.MISSILE
 		                               | TARGET_TYPE.CAPITAL_SHIP_PRIMARY
-		                               | TARGET_TYPE.TURRET);
+		                               | TARGET_TYPE.TURRET );
 		this.restrictions.maxDistance = -1.0f;
 	}
 
 	private void Update()
 	{
 #if UNITY_EDITOR
-		if ( this.master.dummyShip == false )
+		if ( this.master.isDummyShip == false )
 #endif
 		if ( ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 		 && this.master.state == FighterMaster.FIGHTERSTATE.FLYING )
@@ -50,25 +50,38 @@ public class FighterWeapons : BaseWeaponManager
 				currentWeapon.SendFireMessage();
 			}
 
-			if ( Input.GetKey( KeyCode.Space ) )
+			if ( this.tertiaryWeapon.weaponDesc != null )
 			{
-				if ( this.tertiaryWeapon.CanTrackTarget() )
+				if ( this.tertiaryWeapon.weaponDesc.requiresWeaponLock )
 				{
-					this.tertiaryWeapon.currentLockOn += Time.deltaTime;
+					if ( Input.GetKey( KeyCode.Space ) )
+					{
+						if ( this.tertiaryWeapon.CanTrackTarget() )
+						{
+							this.tertiaryWeapon.currentLockOn += Time.deltaTime;
+						}
+						else
+						{
+							if ( this.tertiaryWeapon.currentLockOn != 0.0f )
+							{
+								//TODO: Play lock fail sound
+							}
+							this.tertiaryWeapon.currentLockOn = 0.0f;
+						}
+					}
+					else if ( Input.GetKeyUp( KeyCode.Space ) )
+					{
+						this.tertiaryWeapon.SendFireMessage();
+						this.tertiaryWeapon.currentLockOn = 0.0f;
+					}
 				}
 				else
 				{
-					if ( this.tertiaryWeapon.currentLockOn != 0.0f )
+					if ( Input.GetKey ( KeyCode.Space ) )
 					{
-						//TODO: Play lock fail sound
+						this.tertiaryWeapon.SendFireMessage();
 					}
-					this.tertiaryWeapon.currentLockOn = 0.0f;
 				}
-			}
-			else if ( Input.GetKeyUp( KeyCode.Space ) )
-			{
-				this.tertiaryWeapon.SendFireMessage();
-				this.tertiaryWeapon.currentLockOn = 0.0f;
 			}
 
 			if ( Input.GetKey( KeyCode.T ) )

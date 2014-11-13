@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 15
+  weaponType: 16
   label: 
   fireRate: 0
   spread: 0
@@ -287,7 +287,7 @@ MonoBehaviour:
   gameState: 1
   startPauseDuration: .10000000149011612
   disconnectionTimeoutMS: 0
-  defaultPlayerType: 1
+  defaultPlayerType: 3
   createDummies: 1
   dummiesToCreate: 010000000200000003000000030000000400000004000000
   lastCreatedDummy:
@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 16
+  weaponType: 17
   label: Hellfire Projector
   fireRate: 1
   spread: 0
@@ -693,7 +693,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: defaultPlayerType
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: dummiesToCreate.Array.data[3]
@@ -706,6 +706,10 @@ Prefab:
     - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
       propertyPath: dummiesToCreate.Array.data[1]
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
+      propertyPath: createDummies
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eadb4ab82e3d944cb3e789edd6382c3, type: 2}
@@ -855,7 +859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 18
+  weaponType: 19
   label: Shredder
   fireRate: .5
   spread: 10
@@ -994,7 +998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 17
+  weaponType: 18
   label: Fusion Beam
   fireRate: .0500000007
   spread: 0
@@ -1048,7 +1052,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 15
+  weaponType: 16
   collisionType: 0
   prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
   count: 500
@@ -1237,7 +1241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 19
+  weaponType: 20
   collisionType: 0
   prefab: {fileID: 100012, guid: 27e92fa041a4c0044954bad596d4c7fe, type: 2}
   count: 0
@@ -1878,7 +1882,7 @@ GameObject:
   - 4: {fileID: 1165319370}
   - 114: {fileID: 1165319371}
   m_Layer: 0
-  m_Name: GuidedMissile
+  m_Name: MULE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1891,11 +1895,11 @@ Transform:
   m_PrefabInternal: {fileID: 988093665}
   m_GameObject: {fileID: 1165319369}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1559345305}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!114 &1165319371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1908,22 +1912,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 14
+  weaponType: 15
   collisionType: 0
-  prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
+  prefab: {fileID: 100000, guid: cfd72b19f2a486849901cf08e8f0b912, type: 2}
   count: 0
-  moveSpeed: 150
-  maxDistance: 500
-  damage: 100
+  moveSpeed: 50
+  maxDistance: 1500
+  damage: 10000
   areaOfEffect: 1
-  aoeRadius: 25
+  aoeRadius: 150
   passesThroughTargets: 0
   smartBullet: 1
-  fadeOut: 1
-  turnRate: 50
+  fadeOut: 0
+  turnRate: 0
   canAngleOut: 0
-  maxDetectionAngle: .150000006
-  seekingDelayDistance: 15
+  maxDetectionAngle: 0
+  seekingDelayDistance: 0
 --- !u!1 &1166958338
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,6 +1980,62 @@ MonoBehaviour:
   passesThroughTargets: 0
   smartBullet: 0
   fadeOut: -1
+--- !u!1 &1191349008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100090, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 988093665}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1191349009}
+  - 114: {fileID: 1191349010}
+  m_Layer: 0
+  m_Name: GuidedMissile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1191349009
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400090, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 988093665}
+  m_GameObject: {fileID: 1191349008}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1559345305}
+  m_RootOrder: 8
+--- !u!114 &1191349010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400084, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 988093665}
+  m_GameObject: {fileID: 1191349008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 14
+  collisionType: 0
+  prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
+  count: 0
+  moveSpeed: 150
+  maxDistance: 500
+  damage: 100
+  areaOfEffect: 1
+  aoeRadius: 25
+  passesThroughTargets: 0
+  smartBullet: 1
+  fadeOut: 1
+  turnRate: 50
+  canAngleOut: 0
+  maxDetectionAngle: .150000006
+  seekingDelayDistance: 15
 --- !u!1 &1192832056
 GameObject:
   m_ObjectHideFlags: 0
@@ -2044,6 +2104,34 @@ Behaviour:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1192832056}
   m_Enabled: 1
+--- !u!1 &1255192151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100088, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 988093665}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1255192152}
+  - 114: {fileID: 1764673770}
+  m_Layer: 0
+  m_Name: GuidedMissile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1255192152
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400088, guid: daf4026cf301fb342ac4da636e008349, type: 2}
+  m_PrefabInternal: {fileID: 988093665}
+  m_GameObject: {fileID: 1255192151}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1482333499}
+  m_RootOrder: 8
 --- !u!1001 &1256063106
 Prefab:
   m_ObjectHideFlags: 0
@@ -2225,7 +2313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 16
+  weaponType: 17
   collisionType: 2
   prefab: {fileID: 100002, guid: 3d52391b02b7aa34db8dab00a5ec2f82, type: 2}
   count: 50
@@ -2311,6 +2399,7 @@ Transform:
   - {fileID: 99801743}
   - {fileID: 443561190}
   - {fileID: 1627642453}
+  - {fileID: 1255192152}
   - {fileID: 1764673769}
   m_Father: {fileID: 1271608244}
   m_RootOrder: 2
@@ -2462,6 +2551,7 @@ Transform:
   - {fileID: 896753971}
   - {fileID: 1335153583}
   - {fileID: 1525993420}
+  - {fileID: 1191349009}
   - {fileID: 1165319370}
   m_Father: {fileID: 375129944}
   m_RootOrder: 2
@@ -2944,7 +3034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 18
+  weaponType: 19
   collisionType: 0
   prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
   count: 250
@@ -3113,9 +3203,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1764673769}
-  - 114: {fileID: 1764673770}
+  - 114: {fileID: 1764673771}
   m_Layer: 0
-  m_Name: GuidedMissile
+  m_Name: MULE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3128,18 +3218,18 @@ Transform:
   m_PrefabInternal: {fileID: 988093665}
   m_GameObject: {fileID: 1764673768}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1482333499}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!114 &1764673770
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400078, guid: daf4026cf301fb342ac4da636e008349,
     type: 2}
   m_PrefabInternal: {fileID: 988093665}
-  m_GameObject: {fileID: 1764673768}
+  m_GameObject: {fileID: 1255192151}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
@@ -3158,7 +3248,35 @@ MonoBehaviour:
   lockOnDuration: 3
   lockOnAngle: 15
   muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 1165319371}
+  bulletDesc: {fileID: 1191349010}
+--- !u!114 &1764673771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400082, guid: daf4026cf301fb342ac4da636e008349,
+    type: 2}
+  m_PrefabInternal: {fileID: 988093665}
+  m_GameObject: {fileID: 1764673768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88974183b4398c245862faca40cdcdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 15
+  label: MULE
+  fireRate: 5
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 1
+  ammunitionMax: 3
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 0}
+  chargeUpTime: 5
+  depleteOnPrerelease: 1
 --- !u!1 &1817496634
 GameObject:
   m_ObjectHideFlags: 0
@@ -3255,7 +3373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 19
+  weaponType: 20
   label: Guided Missile
   fireRate: 0
   spread: 0
@@ -3268,7 +3386,7 @@ MonoBehaviour:
   lockOnDuration: 3
   lockOnAngle: 15
   muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 1165319371}
+  bulletDesc: {fileID: 1191349010}
 --- !u!1 &1928740081
 GameObject:
   m_ObjectHideFlags: 0
@@ -3670,7 +3788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 17
+  weaponType: 18
   collisionType: 2
   prefab: {fileID: 100000, guid: 0448a5f9a67b609438fab7c4bae40da8, type: 2}
   count: 50

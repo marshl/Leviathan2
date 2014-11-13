@@ -88,23 +88,26 @@ public class CapitalShipTurretManager : MonoBehaviour
 		if ( !this.master.isDummyShip )
 #endif
 		{
-			if ( Input.GetKeyDown( KeyCode.Q ) )
+			if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
 			{
-				if ( this.currentState == STATE.NONE )
+				if ( Input.GetKeyDown( KeyCode.Q ) )
 				{
-					this.currentState = STATE.PLACING_TURRET;
-					this.master.movement.ToggleTurningDisplay( false );
+					if ( this.currentState == STATE.NONE )
+					{
+						this.currentState = STATE.PLACING_TURRET;
+						this.master.movement.ToggleTurningDisplay( false );
+					}
+					else
+					{
+						this.currentState = STATE.NONE;
+						this.master.movement.ToggleTurningDisplay( true );
+					}
 				}
-				else
-				{
-					this.currentState = STATE.NONE;
-					this.master.movement.ToggleTurningDisplay( true );
-				}
-			}
 
-			if ( this.currentState == STATE.PLACING_TURRET )
-			{
-				this.TurretPlacementUpdate();
+				if ( this.currentState == STATE.PLACING_TURRET )
+				{
+					this.TurretPlacementUpdate();
+				}
 			}
 		}
 	}

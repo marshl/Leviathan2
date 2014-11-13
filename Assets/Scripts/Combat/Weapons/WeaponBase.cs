@@ -148,8 +148,6 @@ public class WeaponBase : MonoBehaviour
 			}
 		}
 
-
-
 		BulletBase bullet = BulletManager.instance.CreateBullet
 		(
 			this,

@@ -87,7 +87,11 @@ public class PlayerUpgrader : MonoBehaviour {
 			_player.fighter.health.maxHealth = _player.fighter.health.baseHealth * defenseMultipliers[defenseLevel];
 		}
 
-		GameNetworkManager.instance.SendUpgradedMessage (_player.id, _player.speedMultiplier, _player.defenseMultiplier, _player.energyMultiplier);
+		if ( Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendUpgradedMessage (_player.id, _player.speedMultiplier, _player.defenseMultiplier, _player.energyMultiplier);
+		}
+
 	}
 
 	

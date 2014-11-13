@@ -137,7 +137,6 @@ public class TurretBehavior : BaseWeaponManager
 
 			float pitchChange = Mathf.Sign( pitchDiff ) * Mathf.Min( this.maxPitchRate, Mathf.Abs( pitchDiff ) );
 
-			Debug.Log( "PitchDiff: " + pitchDiff );
 			// Take off 90 degrees because the angle is measured from the up vector, but the pivot has angle 0 when pointed out the front
 			Quaternion targetPitch = Quaternion.AngleAxis( pitchChange + currentPitch, Vector3.right );
 			this.pivot.localRotation = targetPitch;

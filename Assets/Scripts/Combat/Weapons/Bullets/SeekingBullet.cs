@@ -4,74 +4,38 @@ using System.Collections;
 /// <summary>
 /// An subclass of the base bullet class that is used to control bullets that can move around
 /// </summary>
-public class SeekingBullet : BulletBase
+public class SeekingBullet : SmartBullet
 {
-	public BaseHealth health;
-
 	public BaseHealth target;
 
-#if UNITY_EDITOR
-	public int debugID;
-#endif
-	
-	/// <summary>
-	/// The descriptor of this bullet, converted into the right subclass (do not set)
-	/// </summary>
-	[HideInInspector]
+	[Tooltip( "The descriptor of this bullet, converted into the right subclass DO NOT SET" ) ]
 	public SeekingBulletDesc seekingDesc;
-	
-	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
-	{
-		BulletManager.instance.seekingBulletMap.Add( this.networkView.viewID, this );
-		if ( this.networkView.isMine == false )
-		{
-			this.enabled = false;
-		}
-	}
 
 	protected override void Awake()
 	{
 		base.Awake();
 		this.seekingDesc = this.desc as SeekingBulletDesc;
-
-#if UNITY_EDITOR
-		if ( Network.peerType == NetworkPeerType.Disconnected )
-		{
-			this.debugID = BulletManager.instance.debugSeekingID;
-			BulletManager.instance.debugSeekingBulletMap.Add( this.debugID, this );
-			++BulletManager.instance.debugSeekingID;
-		}
-#endif
 	}
 
 	protected override void Update()
 	{
 		base.Update();
 
-		if ( this.state != BULLET_STATE.FADING )
+		if ( this.state != BULLET_STATE.FADING
+		  && this.health.currentHealth > 0.0f
+		  && this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
+		  && this.target != null )
 		{
-			if ( this.health.currentHealth <= 0.0f )
+			this.TurnToTarget();
+			Vector3 vectorToTarget = (target.transform.position - this.transform.position).normalized;
+			float angleToTarget = Vector3.Angle( this.transform.forward, vectorToTarget );
+			if ( this.seekingDesc.canAngleOut
+			  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
 			{
-				BulletManager.instance.DestroyLocalBullet( this );
-			}
-			else
-			{
-				if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
-				  && this.target != null )
-				{
-					this.TurnToTarget();
-					Vector3 vectorToTarget = (target.transform.position - this.transform.position).normalized;
-					float angleToTarget = Vector3.Angle( this.transform.forward, vectorToTarget );
-					if ( this.seekingDesc.canAngleOut
-					  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
-					{
-						this.target = null;
-					}
-				}
-
-				this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
+				this.target = null;
 			}
 		}
+		this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
 	}
 
 	/// <summary>
