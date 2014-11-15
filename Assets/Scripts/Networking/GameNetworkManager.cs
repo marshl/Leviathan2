@@ -34,6 +34,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	protected void Awake()
 	{
+		BaseNetworkManager.baseInstance = this;
 		GameNetworkManager.instance = this;
 	}
 
@@ -545,5 +546,27 @@ public class GameNetworkManager : BaseNetworkManager
 	private void OnRemoveTargetRPC( NetworkViewID _targetID )
 	{
 		TargetManager.instance.RemoveTargetByID( _targetID );
+	}
+
+	public void SendAddKillMessage( int _playerID )
+	{
+		this.networkView.RPC( "OnAddKillRPC", RPCMode.Others, _playerID );
+	}
+
+	[RPC]
+	private void OnAddKillRPC( int _playerID )
+	{
+		GamePlayerManager.instance.AddKill( _playerID, false );
+	}
+
+	public void SendAddDeathMessage( int _playerID )
+	{
+		this.networkView.RPC( "OnAddDeathRPC", RPCMode.Others, _playerID );
+	}
+
+	[RPC]
+	private void OnAddDeathRPC( int _playerID )
+	{
+		GamePlayerManager.instance.AddDeath( _playerID, false );
 	}
 }

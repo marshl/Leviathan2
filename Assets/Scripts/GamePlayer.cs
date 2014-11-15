@@ -45,6 +45,13 @@ public class GamePlayer
 	public float defenseMultiplier = 1.0f; // Ditto shields
 	public float energyMultiplier = 1.0f; // Energy
 
+	// Communications: Note that these are what how MY player intereacts with this player
+	public bool receiveMessagesFrom = true;
+	public bool sendMessagesTo = true;
+
+	public int pingMS;
+	public Ping ping;
+
 	public float GetKillDeathRatio()
 	{
 		return deaths == 0 ? kills : kills / deaths;

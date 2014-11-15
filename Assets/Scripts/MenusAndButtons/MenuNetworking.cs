@@ -22,6 +22,7 @@ public class MenuNetworking : BaseNetworkManager
 
 	protected void Awake()
 	{
+		BaseNetworkManager.baseInstance = this;
 		MenuNetworking.instance = this;
 		MasterServer.RequestHostList( this.gameTypeName );
 	}
@@ -122,7 +123,7 @@ public class MenuNetworking : BaseNetworkManager
 	private void OnSendConnectedInfoRPC( int _playerID, string _playerName )
 	{
 		GamePlayerManager.instance.GetPlayerWithID( _playerID ).name = _playerName;
-		MessageManager.instance.AddMessage( _playerID, _playerName + " has connected", true );
+		MessageManager.instance.CreateMessageLocal( _playerName + " has connected", MESSAGE_TYPE.LOCAL );
 	}
 
 	// Unity Callback: Do not change signature
@@ -201,7 +202,7 @@ public class MenuNetworking : BaseNetworkManager
 
 		this.networkView.RPC( "OnRemovePlayerRPC", RPCMode.Others, playerID );
 
-		MessageManager.instance.AddMessage( playerID, "Player " + playerID + " has disconnected", false );
+		MessageManager.instance.CreateMessageLocal( "Player " + playerID + " has disconnected", MESSAGE_TYPE.LOCAL );
 	}
 
 	// Unity Callback: Do not change signature

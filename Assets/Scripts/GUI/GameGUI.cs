@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Game GUI
+/// 
+/// "Behold, the bringer of light" - Nuke Cannon
+/// </summary>
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -86,6 +92,23 @@ public class GameGUI : MonoBehaviour
 	public float targetHealthBarWidth;
 
 
+	public bool isDisplayingPlayerList;
+
+	public Vector2 playerListSize;
+	public float playerListOuterGap;
+	public float playerListRowXGap;
+	public float playerListRowYGap;
+	public float playerListRowHeight;
+
+	public float playerListNameWidth;
+	public float playerListKillsWidth;
+	public float playerListDeathWidth;
+	public float playerListPingWidth;
+	public float playerListSendButtonWidth;
+	public float playerListReceiveButtonWidth;
+	public float playerListPrivateButtonWidth;
+
+
 	private void Awake()
 	{
 		instance = this;
@@ -95,7 +118,7 @@ public class GameGUI : MonoBehaviour
 	private void Update() 
 	{
 		this.DetermineGUIMode();
-	
+
 		switch ( this.guiMode )
 		{
 		case GUI_MODE.NONE:
@@ -178,6 +201,11 @@ public class GameGUI : MonoBehaviour
 			targetRect.y = Screen.height - ( this.targetScreenTopGap + targetRect.height );
 
 			this.targetCamera.pixelRect = targetRect;
+		}
+
+		if ( Input.GetKeyDown( KeyCode.F1 ) )
+		{
+			this.isDisplayingPlayerList = !this.isDisplayingPlayerList;
 		}
 	}
 
@@ -268,6 +296,11 @@ public class GameGUI : MonoBehaviour
 			DebugConsole.Error( "Uncaught GUIMODE state " + this.guiMode );
 			break;
 		}
+		}
+
+		if ( this.isDisplayingPlayerList )
+		{
+			this.RenderPlayerList();
 		}
 	}
 
@@ -716,5 +749,98 @@ public class GameGUI : MonoBehaviour
 			this.player.fighter.Undock ();
 		}
 
+	}
+
+	private void RenderPlayerList()
+	{
+		Rect windowRect = new Rect();
+		windowRect.position = (new Vector2( Screen.width, Screen.height ) - this.playerListSize) / 2;
+		windowRect.size = this.playerListSize;
+
+		GUI.BeginGroup( windowRect );
+
+		Rect playerRowRect = new Rect( this.playerListOuterGap, this.playerListOuterGap, 
+		                   this.playerListSize.x - this.playerListOuterGap * 2, this.playerListRowHeight );
+
+		this.RenderPlayerRow( null, ref playerRowRect );
+
+		foreach ( KeyValuePair<int, GamePlayer> pair in GamePlayerManager.instance.playerMap )
+		{
+			this.RenderPlayerRow( pair.Value, ref playerRowRect );
+		}
+
+		GUI.EndGroup();
+	}
+
+	private void RenderPlayerRow( GamePlayer _player, ref Rect _playerRowRect )
+	{
+		GUI.BeginGroup( _playerRowRect );
+		
+		float xOffset = 0.0f;
+		string name = _player != null ? _player.name : "Name";
+		GUI.Label( new Rect( 0.0f, 0.0f, this.playerListNameWidth, this.playerListRowHeight ), name );
+		xOffset += this.playerListNameWidth + this.playerListRowXGap;
+
+		string kills = _player != null ? _player.kills.ToString() : "K";
+		GUI.Label( new Rect( xOffset, 0.0f, this.playerListKillsWidth, this.playerListRowHeight ), kills );
+		xOffset += this.playerListDeathWidth + this.playerListRowXGap;
+
+		string deaths = _player != null ? _player.deaths.ToString () : "D";
+		GUI.Label( new Rect( xOffset, 0.0f, this.playerListDeathWidth, this.playerListRowHeight ), deaths );
+		xOffset += this.playerListDeathWidth + this.playerListRowXGap;
+		
+		string ping = _player != null ? _player.pingMS.ToString() : "Ping";
+		GUI.Label( new Rect( xOffset, 0.0f, this.playerListPingWidth, this.playerListRowHeight ), ping );
+		xOffset += this.playerListPingWidth + this.playerListRowXGap;
+
+		Rect receiveRect = new Rect( xOffset, 0.0f, this.playerListReceiveButtonWidth, this.playerListRowHeight );
+		xOffset += this.playerListReceiveButtonWidth + this.playerListRowXGap;
+		bool squelch = false;
+		if ( _player != null )
+		{
+			squelch = GUI.Button( receiveRect, _player.receiveMessagesFrom ? "A" : "B" );
+		}
+		else
+		{
+			GUI.Label( receiveRect, "Receive" );
+		}
+
+		Rect sendRect = new Rect( xOffset, 0.0f, this.playerListSendButtonWidth, this.playerListRowHeight );
+		xOffset += this.playerListSendButtonWidth + this.playerListRowXGap;
+		bool deafen = false;
+		if ( _player != null )
+		{
+			deafen = GUI.Button( sendRect, _player.sendMessagesTo ? "A" : "B" );
+		}
+		else
+		{
+			GUI.Label( sendRect, "Send" );
+		}
+
+		bool privateMsg = false;
+		if ( _player != null )
+		{
+			privateMsg = GUI.Button ( new Rect( xOffset, 0.0f, this.playerListPrivateButtonWidth, this.playerListRowHeight ), "Message" );
+		}
+
+		GUI.EndGroup();
+		
+		_playerRowRect.y += this.playerListRowHeight + this.playerListRowYGap;
+		
+		if ( squelch ) 
+		{
+			_player.receiveMessagesFrom = !player.receiveMessagesFrom;
+		}
+		
+		if ( deafen )
+		{
+			_player.sendMessagesTo = !player.sendMessagesTo;
+		}
+
+		if ( privateMsg )
+		{
+			this.isDisplayingPlayerList = false;
+			GameMessages.instance.StartPrivateMessage( player );
+		}
 	}
 }

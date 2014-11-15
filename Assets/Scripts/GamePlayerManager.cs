@@ -70,8 +70,28 @@ public class GamePlayerManager : MonoBehaviour
 
 			if ( GameNetworkManager.instance != null )
 			{
-				GameNetworkManager.instance.SendLobbyMessage( str, true );
+				MessageManager.instance.CreateMessageLocal( str, MESSAGE_TYPE.TO_ALL );
 			} 
+		}
+
+		foreach ( KeyValuePair<int, GamePlayer> pair in this.playerMap )
+		{
+			GamePlayer player = pair.Value;
+
+			if ( player == this.myPlayer )
+			{
+				continue;
+			}
+
+			if ( player.ping == null )
+			{
+				player.ping = new Ping( player.networkPlayer.ipAddress );
+			}
+			else if ( player.ping.isDone )
+			{
+				player.pingMS = player.ping.time;
+				player.ping = null;
+			}
 		}
 	}
 
@@ -379,6 +399,29 @@ public class GamePlayerManager : MonoBehaviour
 		{
 			return true;
 		}
+		}
+	}
+
+	public void AddKill( int _playerID, bool _broadcast )
+	{
+		GamePlayer player = this.GetPlayerWithID( _playerID );
+		++player.kills;
+
+
+		if ( _broadcast && Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendAddKillMessage( _playerID );
+		}
+	}
+
+	public void AddDeath( int _playerID, bool _broadcast )
+	{
+		GamePlayer player = this.GetPlayerWithID( _playerID );
+		++player.deaths;
+
+		if ( _broadcast && Network.peerType != NetworkPeerType.Disconnected )
+		{
+			GameNetworkManager.instance.SendAddDeathMessage( _playerID );
 		}
 	}
 

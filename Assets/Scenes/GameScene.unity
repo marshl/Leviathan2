@@ -306,6 +306,9 @@ MonoBehaviour:
     speedMultiplier: 1
     defenseMultiplier: 1
     energyMultiplier: 1
+    receiveMessagesFrom: 1
+    sendMessagesTo: 1
+    pingMS: 0
   turretPrefab: {fileID: 0}
   turretPositions: []
 --- !u!4 &122270341
@@ -1434,8 +1437,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0d1ca56fc3436a46b7a6f19af877510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showingMessage: 0
+  displayingOutput: 0
+  messageReceivedOnTexture: {fileID: 2800000, guid: 4ff14eec386bede4ea1eb160486e234a,
+    type: 3}
+  messageReceivedOffTexture: {fileID: 2800000, guid: f62ccd34e1636bb4693125d0eb1757e7,
+    type: 3}
+  sendToAll: 0
   message: 
+  fieldWidth: 250
+  outputFieldHeight: 150
+  inputHeight: 25
+  leftGap: 5
+  bottomGap: 5
+  buttonHeight: 25
+  indicatorSize: 25
+  sendToggleButtonSize: {x: 50, y: 15}
+  outputInTransition: 0
+  outputTransitionDuration: .400000006
 --- !u!1 &828339173
 GameObject:
   m_ObjectHideFlags: 0
@@ -1909,25 +1927,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1165319369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
+  m_Script: {fileID: 11500000, guid: 1edb5fbb7400bf84287fb62c6ca68634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 15
   collisionType: 0
   prefab: {fileID: 100000, guid: cfd72b19f2a486849901cf08e8f0b912, type: 2}
   count: 0
-  moveSpeed: 50
+  moveSpeed: 35
   maxDistance: 1500
   damage: 10000
   areaOfEffect: 1
   aoeRadius: 150
   passesThroughTargets: 0
   smartBullet: 1
-  fadeOut: 0
-  turnRate: 0
-  canAngleOut: 0
-  maxDetectionAngle: 0
-  seekingDelayDistance: 0
+  fadeOut: -1
 --- !u!1 &1166958338
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,6 +2652,19 @@ MonoBehaviour:
   targetScreenSideGap: 5
   targetScreenAspectRatio: 1.77777779
   targetHealthBarWidth: 15
+  isDisplayingPlayerList: 0
+  playerListSize: {x: 300, y: 200}
+  playerListOuterGap: 5
+  playerListRowXGap: 5
+  playerListRowYGap: 5
+  playerListRowHeight: 20
+  playerListNameWidth: 100
+  playerListKillsWidth: 25
+  playerListDeathWidth: 25
+  playerListPingWidth: 50
+  playerListSendButtonWidth: 0
+  playerListReceiveButtonWidth: 0
+  playerListPrivateButtonWidth: 0
 --- !u!4 &1561973371
 Transform:
   m_ObjectHideFlags: 0
@@ -3183,6 +3210,7 @@ MonoBehaviour:
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 0, g: 0, b: 1, a: 1}
   - {r: 1, g: 1, b: 0, a: 1}
+  newMessages: 0
 --- !u!4 &1743254370
 Transform:
   m_ObjectHideFlags: 0
@@ -3513,6 +3541,9 @@ MonoBehaviour:
     speedMultiplier: 1
     defenseMultiplier: 1
     energyMultiplier: 1
+    receiveMessagesFrom: 1
+    sendMessagesTo: 1
+    pingMS: 0
   commander2:
     id: 0
     name: DEFAULT
@@ -3529,6 +3560,9 @@ MonoBehaviour:
     speedMultiplier: 1
     defenseMultiplier: 1
     energyMultiplier: 1
+    receiveMessagesFrom: 1
+    sendMessagesTo: 1
+    pingMS: 0
   fighters1: []
   fighters2: []
   myPlayer:
@@ -3547,6 +3581,9 @@ MonoBehaviour:
     speedMultiplier: 1
     defenseMultiplier: 1
     energyMultiplier: 1
+    receiveMessagesFrom: 1
+    sendMessagesTo: 1
+    pingMS: 0
 --- !u!4 &2040233788
 Transform:
   m_ObjectHideFlags: 0

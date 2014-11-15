@@ -194,10 +194,14 @@ public class FighterMaster : MonoBehaviour
 		if ( this.health.LastHitBy != null )
 		{
 			string msg = "Player " + Common.MyNetworkID() + " was killed by " + this.health.LastHitBy.id;
-			MessageManager.instance.AddMessage( Common.MyNetworkID(), msg, true );
+			MessageManager.instance.CreateMessageLocal( msg, MESSAGE_TYPE.TO_ALL );
 			ScoreManager.instance.AddScore( SCORE_TYPE.FIGHTER_KILL, this.health.LastHitBy, true );
+
+			GamePlayerManager.instance.AddKill( this.health.LastHitBy.id, true );
 		}
 	
+		GamePlayerManager.instance.AddDeath( this.health.Owner.id, true );
+
 		this.rigidbody.AddTorque( Common.RandomDirection() );
 	}
 

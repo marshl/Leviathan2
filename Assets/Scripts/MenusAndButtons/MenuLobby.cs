@@ -134,7 +134,7 @@ public class MenuLobby : MonoBehaviour
 			return;
 		}   
 
-		MenuNetworking.instance.SendLobbyMessage( text, true );
+		MessageManager.instance.CreateMessageLocal( text, MESSAGE_TYPE.TO_ALL );
 
 		this.messageTextField.GetComponent<GUITextField>().text = "";
 	}

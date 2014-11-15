@@ -594,7 +594,8 @@ public class MenuGUI : MonoBehaviour
 		{
 			if ( this.chatEnterField.text.Trim().Length > 0 )
 			{
-				MenuNetworking.instance.SendLobbyMessage( this.chatEnterField.text, true );
+				//TODO: Handle different message types
+				MessageManager.instance.CreateMessageLocal( this.chatEnterField.text, MESSAGE_TYPE.TO_ALL );
 				this.chatEnterField.text = "";
 			}
 		}
