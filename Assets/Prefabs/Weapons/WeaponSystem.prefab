@@ -1442,7 +1442,7 @@ MonoBehaviour:
   prefab: {fileID: 100012, guid: 27e92fa041a4c0044954bad596d4c7fe, type: 2}
   count: 0
   moveSpeed: 250
-  maxDistance: 5000
+  maxDistance: 500
   damage: 100
   areaOfEffect: 1
   aoeRadius: 25
@@ -1453,6 +1453,8 @@ MonoBehaviour:
   canAngleOut: 0
   maxDetectionAngle: .150000006
   seekingDelayDistance: 15
+  explodes: 1
+  explosionObject: {fileID: 100000, guid: 67a65e32d55b0ac47991b482706d8b23, type: 2}
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1667,8 +1669,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< local
+  weaponType: 19
+  label: BarrageMissile
+=======
   weaponType: 20
   label: Guided Missile
+>>>>>>> other
   fireRate: 0
   spread: 0
   fireInSync: 1
@@ -1680,7 +1687,11 @@ MonoBehaviour:
   lockOnDuration: 3
   lockOnAngle: 15
   muzzleFlashPrefab: {fileID: 0}
+<<<<<<< local
+  bulletDesc: {fileID: 11400010}
+=======
   bulletDesc: {fileID: 11400084}
+>>>>>>> other
 --- !u!114 &11400032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2347,6 +2358,8 @@ MonoBehaviour:
   canAngleOut: 0
   maxDetectionAngle: .150000006
   seekingDelayDistance: 15
+  explodes: 0
+  explosionObject: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

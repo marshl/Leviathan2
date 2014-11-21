@@ -204,7 +204,7 @@ public class BulletBase : MonoBehaviour
 		this.CheckCollision( _collider );
 	}
 
-	public void CheckCollision( Collider _collider )
+	public virtual void CheckCollision( Collider _collider )
 	{
 		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
 		if ( this.source != null

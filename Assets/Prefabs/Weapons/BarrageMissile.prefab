@@ -331,19 +331,6 @@ MonoBehaviour:
   shieldRegen: 0
   shieldRegenDelay: 0
   isIndestructible: 0
-  lastHitBy:
-    id: 0
-    name: DEFAULT
-    playerType: 0
-    fighterType: 0
-    isConnected: 0
-    kills: 0
-    assists: 0
-    deaths: 0
-    team: 0
-    personalScore: 0
-    fighter: {fileID: 0}
-    capitalShip: {fileID: 0}
   guiExtents: []
 --- !u!114 &11400002
 MonoBehaviour:
@@ -358,6 +345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerp: 0
   lerpRate: 0
+  speed: 0
   velocity: {x: 0, y: 0, z: 0}
   rotVel: {x: 0, y: 0, z: 0}
   ownerID: -1
@@ -374,7 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   index: 0
-  weaponType: 14
+  weaponType: 19
   desc: {fileID: 0}
   source: {fileID: 0}
   distanceTravelled: 0

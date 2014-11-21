@@ -32,7 +32,29 @@ public class SeekingBullet : SmartBullet
 			if ( this.seekingDesc.canAngleOut
 			  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
 			{
+<<<<<<< local
+				CreateExplosion();
+				BulletManager.instance.DestroyLocalBullet( this );
+			}
+			else
+			{
+				if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
+				  && this.target != null )
+				{
+					this.TurnToTarget();
+					Vector3 vectorToTarget = (target.transform.position - this.transform.position).normalized;
+					float angleToTarget = Vector3.Angle( this.transform.forward, vectorToTarget );
+					if ( this.seekingDesc.canAngleOut
+					  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
+					{
+						this.target = null;
+					}
+				}
+
+				this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
+=======
 				this.target = null;
+>>>>>>> other
 			}
 		}
 		this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
@@ -80,6 +102,75 @@ public class SeekingBullet : SmartBullet
 		}
 		this.transform.Rotate( perp.normalized, amountToTurn, Space.World );
 		return facingTarget;
+	}
+
+
+	//Brought over from the base and tweaked a bit to do with explosions.
+	public override void CheckCollision( Collider _collider )
+	{
+		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
+		if ( this.source != null
+		    && this.source.collider == _collider )
+		{
+			return;
+		}
+		
+		
+		if ( this.desc.areaOfEffect ) //We do not deal damage ourself if it has an explosion
+		{
+			if(!this.seekingDesc.explodes)
+			{
+				TargetManager.instance.AreaOfEffectDamage( 
+				                                          this.transform.position,
+				                                          this.desc.aoeRadius,
+				                                          this.desc.damage,
+				                                          false, //TODO: Friendly fire bool
+				                                          this.source.health.Owner );
+			}
+			if(this.seekingDesc.explodes)
+			{
+				CreateExplosion();
+			}
+			
+			BulletManager.instance.DestroyLocalBullet( this );
+		}
+		else
+		{
+			BaseHealth health = _collider.gameObject.GetComponent<BaseHealth>();
+			if ( health != null )
+			{
+				this.OnTargetCollision( health, desc.passesThroughTargets );
+			}
+			else
+			{
+				this.OnEmptyCollision();
+			}
+		}
+	}
+
+	public override void OnLifetimeExpiration()
+	{
+		if(this.seekingDesc.explodes)
+		{
+			CreateExplosion();
+		}
+
+		BulletManager.instance.DestroyLocalBullet( this );
+	}
+
+	public void CreateExplosion()
+	{
+		if(Network.peerType != NetworkPeerType.Disconnected)
+		{
+			GameObject explosion = Network.Instantiate (this.seekingDesc.explosionObject, this.transform.position, this.transform.rotation,1) as GameObject;
+			explosion.GetComponent<SlowExplosion>().source = this.source;
+		}
+		else
+		{
+			GameObject explosion = GameObject.Instantiate (this.seekingDesc.explosionObject, this.transform.position, this.transform.rotation) as GameObject;
+			explosion.GetComponent<SlowExplosion>().source = this.source;
+		}
+
 	}
 }
 

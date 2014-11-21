@@ -10,5 +10,7 @@ public class SeekingBulletDesc : SmartBulletDesc
 	public bool canAngleOut;
 	public float maxDetectionAngle; 
 	public float seekingDelayDistance; 
+	public bool explodes;
+	public GameObject explosionObject;
 }
 
