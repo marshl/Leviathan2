@@ -70,27 +70,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1e08fd01661e74cacbd773d034dcf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startRadius: 30
-  endRadius: 50
+  startRadius: 90
+  endRadius: 150
   duration: 6
   damageInterval: .200000003
   damagePerSecond: 100
-  source:
-    id: 0
-    name: DEFAULT
-    playerType: 0
-    fighterType: 0
-    isConnected: 0
-    kills: 0
-    assists: 0
-    deaths: 0
-    team: 0
-    personalScore: 0
-    fighter: {fileID: 0}
-    capitalShip: {fileID: 0}
-    speedMultiplier: 1
-    defenseMultiplier: 1
-    energyMultiplier: 1
+  source: {fileID: 0}
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

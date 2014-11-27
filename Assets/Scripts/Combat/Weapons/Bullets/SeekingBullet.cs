@@ -32,29 +32,7 @@ public class SeekingBullet : SmartBullet
 			if ( this.seekingDesc.canAngleOut
 			  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
 			{
-<<<<<<< local
-				CreateExplosion();
-				BulletManager.instance.DestroyLocalBullet( this );
-			}
-			else
-			{
-				if ( this.distanceTravelled >= this.seekingDesc.seekingDelayDistance
-				  && this.target != null )
-				{
-					this.TurnToTarget();
-					Vector3 vectorToTarget = (target.transform.position - this.transform.position).normalized;
-					float angleToTarget = Vector3.Angle( this.transform.forward, vectorToTarget );
-					if ( this.seekingDesc.canAngleOut
-					  && angleToTarget >= this.seekingDesc.maxDetectionAngle )
-					{
-						this.target = null;
-					}
-				}
-
-				this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
-=======
 				this.target = null;
->>>>>>> other
 			}
 		}
 		this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;

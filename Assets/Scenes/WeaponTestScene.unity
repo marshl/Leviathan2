@@ -74,393 +74,15 @@ NavMeshSettings:
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
   m_NavMesh: {fileID: 0}
---- !u!1 &5742844
+--- !u!1 &34620246
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100042, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100064, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 5742845}
-  - 114: {fileID: 5742846}
-  m_Layer: 0
-  m_Name: EnergyChainGun
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5742845
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400042, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 5742844}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 565498314}
-  m_RootOrder: 1
---- !u!114 &5742846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400050, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 5742844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 7
-  collisionType: 0
-  prefab: {fileID: 100000, guid: 0e4a1ed65b5a4274596b2c8c92b39bfb, type: 2}
-  count: 500
-  moveSpeed: 250
-  maxDistance: 500
-  damage: 5
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
---- !u!1001 &16861264
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 10.9559727
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: .59168148
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 9.63763618
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_RootGameObject: {fileID: 1444977860}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
---- !u!1 &59704655
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100044, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 59704656}
-  - 114: {fileID: 59704659}
-  - 114: {fileID: 59704658}
-  - 114: {fileID: 59704657}
-  m_Layer: 0
-  m_Name: LightLaser
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &59704656
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400044, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 59704655}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 565498314}
-  m_RootOrder: 0
---- !u!114 &59704657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400052, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 59704655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 6
-  collisionType: 0
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 200
-  moveSpeed: 250
-  maxDistance: 500
-  damage: 10
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
---- !u!114 &59704658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400054, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 59704655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 5
-  collisionType: 0
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 200
-  moveSpeed: 250
-  maxDistance: 500
-  damage: 10
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
---- !u!114 &59704659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400022, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 59704655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 4
-  collisionType: 0
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 200
-  moveSpeed: 250
-  maxDistance: 500
-  damage: 10
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: 1
---- !u!1 &98134921
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100058, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 98134922}
-  m_Layer: 0
-  m_Name: Turrets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &98134922
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400058, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 98134921}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 171183601}
-  - {fileID: 1796665905}
-  - {fileID: 1292068845}
-  - {fileID: 1924550141}
-  m_Father: {fileID: 2041078028}
-  m_RootOrder: 0
---- !u!1 &107964566
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100062, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 107964567}
-  - 114: {fileID: 107964568}
-  m_Layer: 0
-  m_Name: HellfireProjector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &107964567
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400062, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 107964566}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1331636594}
-  m_RootOrder: 0
---- !u!114 &107964568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400060, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 107964566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 17
-  label: Hellfire Projector
-  fireRate: 1
-  spread: 0
-  fireInSync: 0
-  usesEnergy: 1
-  energyCostPerShot: .25
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 1491207324}
---- !u!1 &145192123
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100028, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 145192124}
-  m_Layer: 0
-  m_Name: Turrets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &145192124
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400028, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 145192123}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 560279132}
-  - {fileID: 386041589}
-  - {fileID: 1634915247}
-  - {fileID: 1328307701}
-  m_Father: {fileID: 997882017}
-  m_RootOrder: 0
---- !u!1 &171183600
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100052, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 171183601}
-  - 114: {fileID: 171183602}
+  - 4: {fileID: 34620247}
+  - 114: {fileID: 34620248}
   m_Layer: 0
   m_Name: Shredder
   m_TagString: Untagged
@@ -468,118 +90,258 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &171183601
+--- !u!4 &34620247
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400052, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 171183600}
+  m_PrefabParentObject: {fileID: 400064, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 34620246}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 98134922}
+  m_Father: {fileID: 408249137}
   m_RootOrder: 0
---- !u!114 &171183602
+--- !u!114 &34620248
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400002, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400058, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 171183600}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 34620246}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cef4b7eef65e174fbeab274a128ffc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
-  collisionType: 2
-  prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
-  count: 1000
-  moveSpeed: 450
-  maxDistance: 1500
-  damage: 25
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
---- !u!1 &173667260
+  label: Shredder
+  fireRate: .5
+  spread: 3
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 1886671942}
+  shots: 12
+--- !u!1 &77495686
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100084, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 16861264}
+  m_PrefabParentObject: {fileID: 100068, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 173667261}
-  - 114: {fileID: 173667262}
+  - 4: {fileID: 77495687}
+  - 114: {fileID: 77495688}
   m_Layer: 0
-  m_Name: MULE
+  m_Name: IonCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &173667261
+--- !u!4 &77495687
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400084, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 16861264}
-  m_GameObject: {fileID: 173667260}
+  m_PrefabParentObject: {fileID: 400068, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 77495686}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 9
---- !u!114 &173667262
+  m_Father: {fileID: 1689262517}
+  m_RootOrder: 3
+--- !u!114 &77495688
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400082, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400024, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-  m_PrefabInternal: {fileID: 16861264}
-  m_GameObject: {fileID: 173667260}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 77495686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88974183b4398c245862faca40cdcdc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 15
-  label: MULE
-  fireRate: 5
+  weaponType: 9
+  label: Ion Gun
+  fireRate: .300000012
   spread: 0
   fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 1
-  ammunitionMax: 3
+  usesEnergy: 1
+  energyCostPerShot: .0700000003
+  usesAmmunition: 0
+  ammunitionMax: 0
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
   muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 0}
-  chargeUpTime: 5
-  depleteOnPrerelease: 1
---- !u!1 &175859913
+  bulletDesc: {fileID: 1657422257}
+--- !u!1 &104562889
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100056, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100082, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 175859914}
+  - 4: {fileID: 104562890}
+  - 114: {fileID: 104562891}
+  m_Layer: 0
+  m_Name: FusionBeam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &104562890
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400082, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 104562889}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 168556421}
+  m_RootOrder: 0
+--- !u!114 &104562891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400076, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 104562889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 17
+  collisionType: 2
+  prefab: {fileID: 100000, guid: 0448a5f9a67b609438fab7c4bae40da8, type: 2}
+  count: 50
+  moveSpeed: 50000
+  maxDistance: 10000
+  damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 1
+  smartBullet: 0
+  fadeOut: -1
+--- !u!1 &117896029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100006, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 117896030}
+  - 114: {fileID: 117896031}
+  m_Layer: 0
+  m_Name: WeaponDescriptors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &117896030
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400006, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 117896029}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 408249137}
+  - {fileID: 1675290315}
+  - {fileID: 1689262517}
+  m_Father: {fileID: 467561927}
+  m_RootOrder: 2
+--- !u!114 &117896031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400012, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 117896029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f985b5eb6f7cdc4ea93ffd05947642f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyDamagePenalty: .25
+  minEnergyDamageMultiplier: .100000001
+--- !u!1 &130228799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100010, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 130228800}
+  - 114: {fileID: 130228801}
+  m_Layer: 0
+  m_Name: TachyonCannon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &130228800
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400010, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 130228799}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1689262517}
+  m_RootOrder: 7
+--- !u!114 &130228801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400032, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 130228799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 13
+  label: Tachyon Cannon
+  fireRate: 1.70000005
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 1
+  energyCostPerShot: .200000003
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 1968678931}
+--- !u!1 &168556420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100056, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 168556421}
   m_Layer: 0
   m_Name: CapitalShip
   m_TagString: Untagged
@@ -587,26 +349,78 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &175859914
+--- !u!4 &168556421
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400056, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 175859913}
+  m_PrefabParentObject: {fileID: 400056, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 168556420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1972321028}
-  - {fileID: 1491207323}
-  - {fileID: 572442036}
-  - {fileID: 291250705}
-  m_Father: {fileID: 2041078028}
+  - {fileID: 104562890}
+  - {fileID: 1649421701}
+  - {fileID: 918707485}
+  - {fileID: 435382919}
+  m_Father: {fileID: 766195024}
   m_RootOrder: 1
+--- !u!1 &211685614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100060, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 211685615}
+  - 114: {fileID: 211685616}
+  m_Layer: 0
+  m_Name: IonBurst
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &211685615
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400060, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 211685614}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 408249137}
+  m_RootOrder: 1
+--- !u!114 &211685616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400064, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 211685614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 15
+  label: 
+  fireRate: 0
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 876387181}
+  timeBetweenBursts: 0
+  shotsInBurst: 0
 --- !u!1 &221174807
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,7 +525,7 @@ Transform:
   m_LocalScale: {x: 3.80160952, y: 6.09508848, z: 2.28845549}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
 --- !u!1001 &244031956
 Prefab:
   m_ObjectHideFlags: 0
@@ -749,26 +563,167 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 98e3b8aa9375ffe4d8f01837cac751a4, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 98e3b8aa9375ffe4d8f01837cac751a4, type: 2}
   m_RootGameObject: {fileID: 925238456}
   m_IsPrefabParent: 0
   m_IsExploded: 1
---- !u!1 &291250704
+--- !u!1 &264375138
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100046, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100066, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 291250705}
-  - 114: {fileID: 291250706}
+  - 4: {fileID: 264375139}
+  - 114: {fileID: 264375140}
+  m_Layer: 0
+  m_Name: RipperLaser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &264375139
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400066, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 264375138}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 408249137}
+  m_RootOrder: 3
+--- !u!114 &264375140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400004, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 264375138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 2
+  label: Ripper
+  fireRate: .150000006
+  spread: 1.20000005
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 1886671942}
+  timeBetweenBursts: 12
+  shotsInBurst: 3
+--- !u!1 &301155612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100020, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 301155613}
+  - 114: {fileID: 301155614}
+  m_Layer: 0
+  m_Name: EnergyChainGun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &301155613
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400020, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 301155612}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1689262517}
+  m_RootOrder: 1
+--- !u!114 &301155614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400042, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 301155612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76124284df936942af5592f7c3a93d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 7
+  label: Energy Chaingun
+  fireRate: .25
+  spread: 2.5
+  fireInSync: 0
+  usesEnergy: 1
+  energyCostPerShot: .0250000004
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 2117254765}
+  spinUpTime: 1
+  spinDownTime: 1
+  spinDownDelay: .25
+  maxFireRate: .100000001
+--- !u!1 &408249136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100028, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 408249137}
+  m_Layer: 0
+  m_Name: Turrets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &408249137
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400028, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 408249136}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 34620247}
+  - {fileID: 211685615}
+  - {fileID: 823352230}
+  - {fileID: 264375139}
+  m_Father: {fileID: 117896030}
+  m_RootOrder: 0
+--- !u!1 &435382918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100046, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 435382919}
+  - 114: {fileID: 435382920}
   m_Layer: 0
   m_Name: GaussCannon
   m_TagString: Untagged
@@ -776,33 +731,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &291250705
+--- !u!4 &435382919
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400046, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 291250704}
+  m_PrefabParentObject: {fileID: 400046, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 435382918}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 175859914}
+  m_Father: {fileID: 168556421}
   m_RootOrder: 3
---- !u!114 &291250706
+--- !u!114 &435382920
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400008, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400008, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 291250704}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 435382918}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
@@ -815,138 +762,6 @@ MonoBehaviour:
   moveSpeed: 750
   maxDistance: 5000
   damage: 500
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
---- !u!1 &386041588
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100060, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 386041589}
-  - 114: {fileID: 386041590}
-  m_Layer: 0
-  m_Name: IonBurst
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &386041589
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400060, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 386041588}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 145192124}
-  m_RootOrder: 1
---- !u!114 &386041590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400064, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 386041588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 16
-  label: 
-  fireRate: 0
-  spread: 0
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 1292068846}
-  timeBetweenBursts: 0
-  shotsInBurst: 0
---- !u!1 &402410796
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100070, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 402410797}
-  - 114: {fileID: 402410798}
-  m_Layer: 0
-  m_Name: IonCannon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &402410797
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400070, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 402410796}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 565498314}
-  m_RootOrder: 3
---- !u!114 &402410798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400048, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 402410796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 9
-  collisionType: 0
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 500
-  moveSpeed: 200
-  maxDistance: 650
-  damage: 14
   areaOfEffect: 0
   aoeRadius: 0
   passesThroughTargets: 0
@@ -1039,71 +854,37 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
---- !u!1 &456018846
+  m_RootOrder: 8
+--- !u!1 &467561926
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100036, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 456018847}
-  - 114: {fileID: 456018848}
+  - 4: {fileID: 467561927}
   m_Layer: 0
-  m_Name: PlasmaCannon
+  m_Name: WeaponSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &456018847
+--- !u!4 &467561927
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400036, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 456018846}
+  m_PrefabParentObject: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 467561926}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 10.9559727, y: .59168148, z: 9.63763618}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 565498314}
-  m_RootOrder: 5
---- !u!114 &456018848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400018, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 456018846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 11
-  collisionType: 0
-  prefab: {fileID: 100002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
-  count: 300
-  moveSpeed: 150
-  maxDistance: 500
-  damage: 45
-  areaOfEffect: 0
-  aoeRadius: 5
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: 1
+  m_Children:
+  - {fileID: 1682371070}
+  - {fileID: 766195024}
+  - {fileID: 117896030}
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
 --- !u!1 &483638985
 GameObject:
   m_ObjectHideFlags: 0
@@ -1184,85 +965,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlash: {fileID: 0}
---- !u!1 &560279131
+--- !u!1 &559874881
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100064, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100054, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 560279132}
-  - 114: {fileID: 560279133}
-  m_Layer: 0
-  m_Name: Shredder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &560279132
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400064, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 560279131}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 145192124}
-  m_RootOrder: 0
---- !u!114 &560279133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400058, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 560279131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cef4b7eef65e174fbeab274a128ffc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 1
-  label: Shredder
-  fireRate: .5
-  spread: 3
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 171183602}
-  shots: 12
---- !u!1 &565498313
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100054, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 565498314}
+  - 4: {fileID: 559874882}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Untagged
@@ -1270,230 +980,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &565498314
+--- !u!4 &559874882
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400054, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 565498313}
+  m_PrefabParentObject: {fileID: 400054, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 559874881}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 59704656}
-  - {fileID: 5742845}
-  - {fileID: 1441080345}
-  - {fileID: 402410797}
-  - {fileID: 1034684026}
-  - {fileID: 456018847}
-  - {fileID: 2059711169}
-  - {fileID: 1907854993}
-  - {fileID: 2144643596}
-  - {fileID: 1582512344}
-  m_Father: {fileID: 2041078028}
+  - {fileID: 1527900921}
+  - {fileID: 2117254764}
+  - {fileID: 862403527}
+  - {fileID: 1657422256}
+  - {fileID: 1894465434}
+  - {fileID: 1254646018}
+  - {fileID: 1670597790}
+  - {fileID: 1968678930}
+  - {fileID: 2061827871}
+  m_Father: {fileID: 766195024}
   m_RootOrder: 2
---- !u!1 &572442035
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100030, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 572442036}
-  - 114: {fileID: 572442037}
-  m_Layer: 0
-  m_Name: BarrageMissile
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &572442036
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400030, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 572442035}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 175859914}
-  m_RootOrder: 2
---- !u!114 &572442037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400010, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 572442035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 20
-  collisionType: 0
-  prefab: {fileID: 100012, guid: 27e92fa041a4c0044954bad596d4c7fe, type: 2}
-  count: 0
-  moveSpeed: 250
-  maxDistance: 500
-  damage: 100
-  areaOfEffect: 1
-  aoeRadius: 25
-  passesThroughTargets: 0
-  smartBullet: 1
-  fadeOut: 1
-  turnRate: 25
-  canAngleOut: 0
-  maxDetectionAngle: .150000006
-  seekingDelayDistance: 15
-  explodes: 1
-  explosionObject: {fileID: 100000, guid: 67a65e32d55b0ac47991b482706d8b23, type: 2}
---- !u!1 &575450213
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100022, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 575450214}
-  - 114: {fileID: 575450217}
-  - 114: {fileID: 575450216}
-  - 114: {fileID: 575450215}
-  m_Layer: 0
-  m_Name: LightLaser
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &575450214
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400022, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 575450213}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 0
---- !u!114 &575450215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400026, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 575450213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 6
-  label: Light Laser 3
-  fireRate: .100000001
-  spread: .100000001
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 59704659}
---- !u!114 &575450216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400028, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 575450213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 5
-  label: Light Laser 2
-  fireRate: .150000006
-  spread: .100000001
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 59704659}
---- !u!114 &575450217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400044, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 575450213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 4
-  label: Light Laser 1
-  fireRate: .200000003
-  spread: .100000001
-  fireInSync: 0
-  usesEnergy: 1
-  energyCostPerShot: .0500000007
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 100000, guid: 64903ff5fe095184b832d2d5fd2e1910, type: 2}
-  bulletDesc: {fileID: 59704659}
 --- !u!1 &591008491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,143 +1041,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlash: {fileID: 0}
---- !u!1 &651195904
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100008, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 651195905}
-  - 114: {fileID: 651195906}
-  m_Layer: 0
-  m_Name: BarrageMissile
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &651195905
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400008, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 651195904}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1331636594}
-  m_RootOrder: 2
---- !u!114 &651195906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400030, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 651195904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-<<<<<<< local
-  weaponType: 19
-  label: BarrageMissile
-=======
-  weaponType: 20
-  label: Guided Missile
->>>>>>> other
-  fireRate: 0
-  spread: 0
-  fireInSync: 1
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 10
-  requiresWeaponLock: 1
-  lockOnDuration: 3
-  lockOnAngle: 15
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 572442037}
---- !u!1 &677310772
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100072, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 677310773}
-  - 114: {fileID: 677310774}
-  m_Layer: 0
-  m_Name: GaussCannon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &677310773
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400072, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 677310772}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1331636594}
-  m_RootOrder: 3
---- !u!114 &677310774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400066, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 677310772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 3
-  label: Gauss Cannon
-  fireRate: 1
-  spread: 0
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 0}
 --- !u!1 &690552090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1775,7 +1145,7 @@ Transform:
   m_LocalScale: {x: 3.80160952, y: 6.09508848, z: 2.28845549}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
 --- !u!1 &764015277
 GameObject:
   m_ObjectHideFlags: 0
@@ -1845,6 +1215,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 945533196}
   m_RootOrder: 0
+--- !u!1 &766195023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100004, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 766195024}
+  - 114: {fileID: 766195025}
+  m_Layer: 0
+  m_Name: BulletDescriptors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &766195024
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400004, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 766195023}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1674580757}
+  - {fileID: 168556421}
+  - {fileID: 559874882}
+  m_Father: {fileID: 467561927}
+  m_RootOrder: 1
+--- !u!114 &766195025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 766195023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c372ea3693d25694096b134ca98d7c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &786192665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,117 +1298,224 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlash: {fileID: 0}
---- !u!1 &862326497
+--- !u!1 &823352228
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100016, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100078, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 862326498}
-  - 114: {fileID: 862326499}
+  - 4: {fileID: 823352230}
+  - 114: {fileID: 823352229}
   m_Layer: 0
-  m_Name: HeavyLaser
+  m_Name: RemoteLaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &862326498
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400016, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 862326497}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 4
---- !u!114 &862326499
+--- !u!114 &823352229
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400038, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400072, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 862326497}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 823352228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 10
-  label: Heavy Laser
-  fireRate: .300000012
-  spread: 0
-  fireInSync: 1
-  usesEnergy: 1
-  energyCostPerShot: .170000002
+  weaponType: 18
+  label: Shredder
+  fireRate: .5
+  spread: 10
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
   muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 1034684027}
---- !u!1 &872540328
+  bulletDesc: {fileID: 1886671942}
+  timeBetweenBursts: 1
+  shotsInBurst: 12
+--- !u!4 &823352230
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400078, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 823352228}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 408249137}
+  m_RootOrder: 2
+--- !u!1 &862403526
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100024, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100040, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 872540329}
+  - 4: {fileID: 862403527}
+  - 114: {fileID: 862403528}
   m_Layer: 0
-  m_Name: Fighter
+  m_Name: ParticleAccelerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &872540329
+--- !u!4 &862403527
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400024, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 872540328}
+  m_PrefabParentObject: {fileID: 400040, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 862403526}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 575450214}
-  - {fileID: 1462406701}
-  - {fileID: 1884866583}
-  - {fileID: 1189841417}
-  - {fileID: 862326498}
-  - {fileID: 1657941586}
-  - {fileID: 1290455860}
-  - {fileID: 1970716759}
-  - {fileID: 1594301900}
-  - {fileID: 173667261}
-  m_Father: {fileID: 997882017}
+  m_Children: []
+  m_Father: {fileID: 559874882}
   m_RootOrder: 2
+--- !u!114 &862403528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400046, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 862403526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 8
+  collisionType: 0
+  prefab: {fileID: 100000, guid: fe71fd4cae57a384280b7d9a259861c5, type: 2}
+  count: 500
+  moveSpeed: 350
+  maxDistance: 1000
+  damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
+--- !u!1 &876387179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100048, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 876387180}
+  - 114: {fileID: 876387181}
+  m_Layer: 0
+  m_Name: IonBurst
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &876387180
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400048, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 876387179}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1674580757}
+  m_RootOrder: 2
+--- !u!114 &876387181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400062, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 876387179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 15
+  collisionType: 0
+  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  count: 500
+  moveSpeed: 200
+  maxDistance: 200
+  damage: 200
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
+--- !u!1 &918707484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100030, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 918707485}
+  - 114: {fileID: 918707486}
+  m_Layer: 0
+  m_Name: BarrageMissile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &918707485
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400030, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 918707484}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 168556421}
+  m_RootOrder: 2
+--- !u!114 &918707486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400010, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 918707484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 19
+  collisionType: 0
+  prefab: {fileID: 100012, guid: 27e92fa041a4c0044954bad596d4c7fe, type: 2}
+  count: 0
+  moveSpeed: 250
+  maxDistance: 500
+  damage: 100
+  areaOfEffect: 1
+  aoeRadius: 75
+  passesThroughTargets: 0
+  smartBullet: 1
+  fadeOut: 1
+  turnRate: 25
+  canAngleOut: 0
+  maxDetectionAngle: .150000006
+  seekingDelayDistance: 15
+  explodes: 1
+  explosionObject: {fileID: 100000, guid: 67a65e32d55b0ac47991b482706d8b23, type: 2}
 --- !u!1 &925238456
 GameObject:
   m_ObjectHideFlags: 0
@@ -2040,7 +1560,61 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
+--- !u!1 &925785151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100018, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 925785152}
+  - 114: {fileID: 925785153}
+  m_Layer: 0
+  m_Name: ParticleAccelerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &925785152
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400018, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 925785151}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1689262517}
+  m_RootOrder: 2
+--- !u!114 &925785153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400040, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 925785151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 8
+  label: Particle Accelerator
+  fireRate: .150000006
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 1
+  energyCostPerShot: .0700000003
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 862403528}
 --- !u!1 &945533195
 GameObject:
   m_ObjectHideFlags: 0
@@ -2082,7 +1656,7 @@ Transform:
   - {fileID: 1018286468}
   - {fileID: 483638986}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
 --- !u!114 &945533197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2177,63 +1751,114 @@ NetworkView:
   m_ViewID:
     m_ID: 8
     m_Type: 1
---- !u!1 &997882015
+--- !u!1 &953004651
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100006, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100072, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 997882017}
-  - 114: {fileID: 997882016}
+  - 4: {fileID: 953004652}
+  - 114: {fileID: 953004653}
   m_Layer: 0
-  m_Name: WeaponDescriptors
+  m_Name: GaussCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &997882016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400012, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 997882015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f985b5eb6f7cdc4ea93ffd05947642f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  energyDamagePenalty: .25
-  minEnergyDamageMultiplier: .100000001
---- !u!4 &997882017
+--- !u!4 &953004652
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400006, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 997882015}
+  m_PrefabParentObject: {fileID: 400072, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 953004651}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1675290315}
+  m_RootOrder: 3
+--- !u!114 &953004653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400066, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 953004651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 3
+  label: Gauss Cannon
+  fireRate: 1
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 0}
+--- !u!1 &1016172838
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100062, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1016172839}
+  - 114: {fileID: 1016172840}
+  m_Layer: 0
+  m_Name: HellfireProjector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1016172839
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400062, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1016172838}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 145192124}
-  - {fileID: 1331636594}
-  - {fileID: 872540329}
-  m_Father: {fileID: 1444977861}
-  m_RootOrder: 2
+  m_Children: []
+  m_Father: {fileID: 1675290315}
+  m_RootOrder: 0
+--- !u!114 &1016172840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400060, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1016172838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 16
+  label: Hellfire Projector
+  fireRate: 1
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 1
+  energyCostPerShot: .25
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 1649421702}
 --- !u!1 &1018286467
 GameObject:
   m_ObjectHideFlags: 0
@@ -2274,70 +1899,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlash: {fileID: 0}
---- !u!1 &1034684025
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100038, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1034684026}
-  - 114: {fileID: 1034684027}
-  m_Layer: 0
-  m_Name: HeavyLaser
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1034684026
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400038, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1034684025}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 565498314}
-  m_RootOrder: 4
---- !u!114 &1034684027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400020, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1034684025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 10
-  collisionType: 0
-  prefab: {fileID: 100002, guid: a7c0458cc863f4845aeb4c7953d68493, type: 2}
-  count: 500
-  moveSpeed: 150
-  maxDistance: 500
-  damage: 35
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
 --- !u!1 &1058755636
 GameObject:
   m_ObjectHideFlags: 0
@@ -2443,6 +2004,112 @@ MonoBehaviour:
   currentDistance: 10
   x: 0
   y: 20
+--- !u!1 &1060499986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100012, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1060499987}
+  - 114: {fileID: 1060499988}
+  m_Layer: 0
+  m_Name: MesonBlaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1060499987
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400012, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1060499986}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1689262517}
+  m_RootOrder: 6
+--- !u!114 &1060499988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400034, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1060499986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 12
+  label: Meson Blaster
+  fireRate: .300000012
+  spread: 0
+  fireInSync: 1
+  usesEnergy: 1
+  energyCostPerShot: .159999996
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 1670597791}
+--- !u!1 &1112852735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100080, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1112852736}
+  - 114: {fileID: 1112852737}
+  m_Layer: 0
+  m_Name: RemoteLaser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1112852736
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400080, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1112852735}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1674580757}
+  m_RootOrder: 3
+--- !u!114 &1112852737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400074, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1112852735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 18
+  collisionType: 0
+  prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
+  count: 250
+  moveSpeed: 450
+  maxDistance: 1500
+  damage: 25
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
 --- !u!1 &1183588568
 GameObject:
   m_ObjectHideFlags: 0
@@ -2483,72 +2150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlash: {fileID: 0}
---- !u!1 &1189841416
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100068, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1189841417}
-  - 114: {fileID: 1189841418}
-  m_Layer: 0
-  m_Name: IonCannon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1189841417
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400068, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1189841416}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 3
---- !u!114 &1189841418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400024, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1189841416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 9
-  label: Ion Gun
-  fireRate: .300000012
-  spread: 0
-  fireInSync: 0
-  usesEnergy: 1
-  energyCostPerShot: .0700000003
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 402410798}
 --- !u!1 &1242236888
 GameObject:
   m_ObjectHideFlags: 0
@@ -2653,297 +2254,113 @@ Transform:
   m_LocalScale: {x: 3.80160952, y: 6.09508848, z: 2.28845549}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
---- !u!1 &1264017673
+  m_RootOrder: 5
+--- !u!1 &1254646017
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100002, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100036, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1264017674}
-  - 114: {fileID: 1264017675}
+  - 4: {fileID: 1254646018}
+  - 114: {fileID: 1254646019}
   m_Layer: 0
-  m_Name: BulletManager
+  m_Name: PlasmaCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1264017674
+--- !u!4 &1254646018
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400002, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1264017673}
+  m_PrefabParentObject: {fileID: 400036, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1254646017}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1444977861}
-  m_RootOrder: 0
---- !u!114 &1264017675
+  m_Father: {fileID: 559874882}
+  m_RootOrder: 5
+--- !u!114 &1254646019
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400000, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400018, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1264017673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd65ba79403e43c4cbf3fddcf7027610, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugSeekingID: 0
---- !u!1 &1290455859
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100012, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1290455860}
-  - 114: {fileID: 1290455861}
-  m_Layer: 0
-  m_Name: MesonBlaster
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1290455860
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400012, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1290455859}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 6
---- !u!114 &1290455861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400034, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1290455859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 12
-  label: Meson Blaster
-  fireRate: .300000012
-  spread: 0
-  fireInSync: 1
-  usesEnergy: 1
-  energyCostPerShot: .159999996
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 2059711170}
---- !u!1 &1292068844
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100048, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1292068845}
-  - 114: {fileID: 1292068846}
-  m_Layer: 0
-  m_Name: IonBurst
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1292068845
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400048, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1292068844}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 98134922}
-  m_RootOrder: 2
---- !u!114 &1292068846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400062, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1292068844}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1254646017}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 16
+  weaponType: 11
   collisionType: 0
-  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
-  count: 500
-  moveSpeed: 200
-  maxDistance: 200
-  damage: 200
+  prefab: {fileID: 100002, guid: c94578babffc04f4ca9b1b0ce680d516, type: 2}
+  count: 300
+  moveSpeed: 150
+  maxDistance: 500
+  damage: 45
   areaOfEffect: 0
-  aoeRadius: 0
+  aoeRadius: 5
   passesThroughTargets: 0
   smartBullet: 0
-  fadeOut: -1
---- !u!1 &1328307700
+  fadeOut: 1
+--- !u!1 &1271904941
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100066, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100014, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1328307701}
-  - 114: {fileID: 1328307702}
+  - 4: {fileID: 1271904942}
+  - 114: {fileID: 1271904943}
   m_Layer: 0
-  m_Name: RipperLaser
+  m_Name: PlasmaCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1328307701
+--- !u!4 &1271904942
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400066, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1328307700}
+  m_PrefabParentObject: {fileID: 400014, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1271904941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 145192124}
-  m_RootOrder: 3
---- !u!114 &1328307702
+  m_Father: {fileID: 1689262517}
+  m_RootOrder: 5
+--- !u!114 &1271904943
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400004, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400036, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1328307700}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1271904941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 2
-  label: Ripper
-  fireRate: .150000006
-  spread: 1.20000005
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
+  weaponType: 11
+  label: Plasma Cannon
+  fireRate: .349999994
+  spread: 0
+  fireInSync: 1
+  usesEnergy: 1
+  energyCostPerShot: .170000002
   usesAmmunition: 0
   ammunitionMax: 0
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
   muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 171183602}
-  timeBetweenBursts: 12
-  shotsInBurst: 3
---- !u!1 &1331636593
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100026, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1331636594}
-  m_Layer: 0
-  m_Name: CapitalShip
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1331636594
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400026, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1331636593}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 107964567}
-  - {fileID: 1435027146}
-  - {fileID: 651195905}
-  - {fileID: 677310773}
-  m_Father: {fileID: 997882017}
-  m_RootOrder: 1
+  bulletDesc: {fileID: 1254646019}
 --- !u!1 &1389031934
 GameObject:
   m_ObjectHideFlags: 0
@@ -3021,244 +2438,54 @@ Transform:
   - {fileID: 1974228196}
   m_Father: {fileID: 1775487563}
   m_RootOrder: 0
---- !u!1 &1435027145
-GameObject:
+--- !u!1001 &1395982240
+Prefab:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100074, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1435027146}
-  - 114: {fileID: 1435027147}
-  m_Layer: 0
-  m_Name: FusionBeam
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1435027146
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400074, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1435027145}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1331636594}
-  m_RootOrder: 1
---- !u!114 &1435027147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400068, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1435027145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 18
-  label: Fusion Beam
-  fireRate: .0500000007
-  spread: 0
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 1972321029}
---- !u!1 &1441080344
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100040, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1441080345}
-  - 114: {fileID: 1441080346}
-  m_Layer: 0
-  m_Name: ParticleAccelerator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1441080345
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400040, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1441080344}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 565498314}
-  m_RootOrder: 2
---- !u!114 &1441080346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400046, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1441080344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 8
-  collisionType: 0
-  prefab: {fileID: 100000, guid: fe71fd4cae57a384280b7d9a259861c5, type: 2}
-  count: 500
-  moveSpeed: 350
-  maxDistance: 1000
-  damage: 10
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
---- !u!1 &1444977860
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1444977861}
-  m_Layer: 0
-  m_Name: WeaponSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1444977861
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1444977860}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.9559727, y: .59168148, z: 9.63763618}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1264017674}
-  - {fileID: 2041078028}
-  - {fileID: 997882017}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
---- !u!1 &1462406700
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100020, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1462406701}
-  - 114: {fileID: 1462406702}
-  m_Layer: 0
-  m_Name: EnergyChainGun
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1462406701
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400020, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1462406700}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 1
---- !u!114 &1462406702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400042, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1462406700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d76124284df936942af5592f7c3a93d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 7
-  label: Energy Chaingun
-  fireRate: .25
-  spread: 2.5
-  fireInSync: 0
-  usesEnergy: 1
-  energyCostPerShot: .0250000004
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 5742846}
-  spinUpTime: 1
-  spinDownTime: 1
-  spinDownDelay: .25
-  maxFireRate: .100000001
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 10.9559727
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: .59168148
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 9.63763618
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400010, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+      propertyPath: areaOfEffect
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_RootGameObject: {fileID: 467561926}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &1486935823
 GameObject:
   m_ObjectHideFlags: 0
@@ -3299,70 +2526,108 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1974228196}
   m_RootOrder: 0
---- !u!1 &1491207322
+--- !u!1 &1527900920
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100076, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100044, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1491207323}
-  - 114: {fileID: 1491207324}
+  - 4: {fileID: 1527900921}
+  - 114: {fileID: 1527900924}
+  - 114: {fileID: 1527900923}
+  - 114: {fileID: 1527900922}
   m_Layer: 0
-  m_Name: HellfireProjector
+  m_Name: LightLaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1491207323
+--- !u!4 &1527900921
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400076, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1491207322}
+  m_PrefabParentObject: {fileID: 400044, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1527900920}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 175859914}
-  m_RootOrder: 1
---- !u!114 &1491207324
+  m_Father: {fileID: 559874882}
+  m_RootOrder: 0
+--- !u!114 &1527900922
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400070, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400052, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1491207322}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1527900920}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 17
-  collisionType: 2
-  prefab: {fileID: 100002, guid: 3d52391b02b7aa34db8dab00a5ec2f82, type: 2}
-  count: 50
-  moveSpeed: 750
-  maxDistance: 5000
-  damage: 500
-  areaOfEffect: 1
-  aoeRadius: 1500
+  weaponType: 6
+  collisionType: 0
+  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  count: 200
+  moveSpeed: 250
+  maxDistance: 500
+  damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
   passesThroughTargets: 0
   smartBullet: 0
   fadeOut: -1
+--- !u!114 &1527900923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400054, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1527900920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 5
+  collisionType: 0
+  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  count: 200
+  moveSpeed: 250
+  maxDistance: 500
+  damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
+--- !u!114 &1527900924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400022, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1527900920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 4
+  collisionType: 0
+  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  count: 200
+  moveSpeed: 250
+  maxDistance: 500
+  damage: 10
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: 1
 --- !u!1 &1529828407
 GameObject:
   m_ObjectHideFlags: 0
@@ -3443,256 +2708,344 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlash: {fileID: 0}
-<<<<<<< local
-=======
---- !u!1 &1582512343
+--- !u!1 &1649421700
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100086, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 16861264}
+  m_PrefabParentObject: {fileID: 100076, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1582512344}
-  - 114: {fileID: 1582512345}
+  - 4: {fileID: 1649421701}
+  - 114: {fileID: 1649421702}
   m_Layer: 0
-  m_Name: MULE
+  m_Name: HellfireProjector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1582512344
+--- !u!4 &1649421701
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400086, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 16861264}
-  m_GameObject: {fileID: 1582512343}
+  m_PrefabParentObject: {fileID: 400076, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1649421700}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 565498314}
-  m_RootOrder: 9
---- !u!114 &1582512345
+  m_Father: {fileID: 168556421}
+  m_RootOrder: 1
+--- !u!114 &1649421702
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400080, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400070, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-  m_PrefabInternal: {fileID: 16861264}
-  m_GameObject: {fileID: 1582512343}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1649421700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1edb5fbb7400bf84287fb62c6ca68634, type: 3}
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 15
-  collisionType: 0
-  prefab: {fileID: 100000, guid: cfd72b19f2a486849901cf08e8f0b912, type: 2}
-  count: 0
-  moveSpeed: 35
-  maxDistance: 1500
-  damage: 10000
+  weaponType: 16
+  collisionType: 2
+  prefab: {fileID: 100002, guid: 3d52391b02b7aa34db8dab00a5ec2f82, type: 2}
+  count: 50
+  moveSpeed: 750
+  maxDistance: 5000
+  damage: 500
   areaOfEffect: 1
-  aoeRadius: 150
+  aoeRadius: 1500
   passesThroughTargets: 0
-  smartBullet: 1
+  smartBullet: 0
   fadeOut: -1
->>>>>>> other
---- !u!1 &1594301899
+--- !u!1 &1657422255
 GameObject:
   m_ObjectHideFlags: 0
-<<<<<<< local
-  m_PrefabParentObject: {fileID: 100084, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabParentObject: {fileID: 100088, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100070, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1594301900}
-  - 114: {fileID: 1594301901}
+  - 4: {fileID: 1657422256}
+  - 114: {fileID: 1657422257}
   m_Layer: 0
-  m_Name: GuidedMissile
+  m_Name: IonCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1594301900
+--- !u!4 &1657422256
 Transform:
   m_ObjectHideFlags: 0
-<<<<<<< local
-  m_PrefabParentObject: {fileID: 400084, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabParentObject: {fileID: 400088, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1594301899}
+  m_PrefabParentObject: {fileID: 400070, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1657422255}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 8
---- !u!114 &1594301901
+  m_Father: {fileID: 559874882}
+  m_RootOrder: 3
+--- !u!114 &1657422257
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400078, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400048, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1594301899}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1657422255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 14
-  label: Guided Missile
-  fireRate: 1
-  spread: 0
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 10
-  requiresWeaponLock: 1
-  lockOnDuration: 3
-  lockOnAngle: 15
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 2144643597}
---- !u!1 &1634915246
+  weaponType: 9
+  collisionType: 0
+  prefab: {fileID: 100000, guid: d7b7128ed5bd700418b0c329d1008584, type: 2}
+  count: 500
+  moveSpeed: 200
+  maxDistance: 650
+  damage: 14
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
+--- !u!1 &1670597789
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100078, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100034, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1634915247}
-  - 114: {fileID: 1634915248}
+  - 4: {fileID: 1670597790}
+  - 114: {fileID: 1670597791}
   m_Layer: 0
-  m_Name: RemoteLaser
+  m_Name: MesonBlaster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1634915247
+--- !u!4 &1670597790
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400078, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1634915246}
+  m_PrefabParentObject: {fileID: 400034, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1670597789}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 145192124}
+  m_Father: {fileID: 559874882}
+  m_RootOrder: 6
+--- !u!114 &1670597791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400016, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1670597789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 12
+  collisionType: 2
+  prefab: {fileID: 100002, guid: 8c7e9d9faf7c01441a40d5b0d8519c28, type: 2}
+  count: 500
+  moveSpeed: 200
+  maxDistance: 500
+  damage: 60
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
+--- !u!1 &1674580756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100058, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1674580757}
+  m_Layer: 0
+  m_Name: Turrets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1674580757
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400058, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1674580756}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1886671943}
+  - {fileID: 1792096051}
+  - {fileID: 876387180}
+  - {fileID: 1112852736}
+  m_Father: {fileID: 766195024}
+  m_RootOrder: 0
+--- !u!1 &1675290314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100026, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1675290315}
+  m_Layer: 0
+  m_Name: CapitalShip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1675290315
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400026, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1675290314}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1016172839}
+  - {fileID: 2052620832}
+  - {fileID: 1763324470}
+  - {fileID: 953004652}
+  m_Father: {fileID: 117896030}
+  m_RootOrder: 1
+--- !u!1 &1682371069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100002, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1682371070}
+  - 114: {fileID: 1682371071}
+  m_Layer: 0
+  m_Name: BulletManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1682371070
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400002, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1682371069}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 467561927}
+  m_RootOrder: 0
+--- !u!114 &1682371071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400000, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1682371069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd65ba79403e43c4cbf3fddcf7027610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugSeekingID: 0
+--- !u!1 &1689262516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100024, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1689262517}
+  m_Layer: 0
+  m_Name: Fighter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1689262517
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400024, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1689262516}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1874927861}
+  - {fileID: 301155613}
+  - {fileID: 925785152}
+  - {fileID: 77495687}
+  - {fileID: 1719036138}
+  - {fileID: 1271904942}
+  - {fileID: 1060499987}
+  - {fileID: 130228800}
+  - {fileID: 2082349012}
+  m_Father: {fileID: 117896030}
   m_RootOrder: 2
---- !u!114 &1634915248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400072, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1634915246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b99df28ca422fa744bc3b7bd8c18e4b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-<<<<<<< local
-  weaponType: 18
-=======
-  weaponType: 19
->>>>>>> other
-  label: Shredder
-  fireRate: .5
-  spread: 10
-  fireInSync: 0
-  usesEnergy: 0
-  energyCostPerShot: 0
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 171183602}
-  timeBetweenBursts: 1
-  shotsInBurst: 12
---- !u!1 &1657941585
+--- !u!1 &1719036137
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100014, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100016, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1657941586}
-  - 114: {fileID: 1657941587}
+  - 4: {fileID: 1719036138}
+  - 114: {fileID: 1719036139}
   m_Layer: 0
-  m_Name: PlasmaCannon
+  m_Name: HeavyLaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1657941586
+--- !u!4 &1719036138
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400014, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1657941585}
+  m_PrefabParentObject: {fileID: 400016, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1719036137}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 5
---- !u!114 &1657941587
+  m_Father: {fileID: 1689262517}
+  m_RootOrder: 4
+--- !u!114 &1719036139
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400036, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400038, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1657941585}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1719036137}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 11
-  label: Plasma Cannon
-  fireRate: .349999994
+  weaponType: 10
+  label: Heavy Laser
+  fireRate: .300000012
   spread: 0
   fireInSync: 1
   usesEnergy: 1
@@ -3703,7 +3056,61 @@ MonoBehaviour:
   lockOnDuration: 0
   lockOnAngle: 0
   muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 456018848}
+  bulletDesc: {fileID: 1894465435}
+--- !u!1 &1763324469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100008, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1763324470}
+  - 114: {fileID: 1763324471}
+  m_Layer: 0
+  m_Name: BarrageMissile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1763324470
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400008, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1763324469}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1675290315}
+  m_RootOrder: 2
+--- !u!114 &1763324471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400030, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1763324469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 19
+  label: BarrageMissile
+  fireRate: 0
+  spread: 0
+  fireInSync: 1
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 10
+  requiresWeaponLock: 1
+  lockOnDuration: 3
+  lockOnAngle: 15
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 918707486}
 --- !u!1 &1775487562
 GameObject:
   m_ObjectHideFlags: 0
@@ -3726,10 +3133,6 @@ GameObject:
   - 114: {fileID: 1775487576}
   - 114: {fileID: 1775487578}
   - 114: {fileID: 1775487566}
-<<<<<<< local
-=======
-  - 114: {fileID: 1775487577}
->>>>>>> other
   m_Layer: 0
   m_Name: Source
   m_TagString: Untagged
@@ -3750,7 +3153,7 @@ Transform:
   - {fileID: 1389031938}
   - {fileID: 1058755641}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!114 &1775487564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3860,11 +3263,6 @@ MonoBehaviour:
   - {fileID: 1775487575}
   - {fileID: 1775487576}
   - {fileID: 1775487578}
-<<<<<<< local
-=======
-  - {fileID: 1775487566}
-  - {fileID: 1775487577}
->>>>>>> other
   currentTarget: {fileID: 0}
   restrictions:
     transform: {fileID: 0}
@@ -4047,33 +3445,6 @@ MonoBehaviour:
   timeSinceShot: 0
   ammunition: 0
   currentLockOn: 0
-<<<<<<< local
-=======
---- !u!114 &1775487577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1775487562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce45eca3c510d7b4daabc8ca5b280440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 15
-  weaponDesc: {fileID: 0}
-  firePoints:
-  - {fileID: 1486935824}
-  firePointIndex: 0
-  energySystem: {fileID: 1775487564}
-  source: {fileID: 1775487568}
-  weaponIndex: 0
-  timeSinceShot: 0
-  ammunition: 0
-  currentLockOn: 0
-  chargeUpDesc: {fileID: 0}
-  currentCharge: 0
->>>>>>> other
 --- !u!114 &1775487578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4096,6 +3467,58 @@ MonoBehaviour:
   timeSinceShot: 0
   ammunition: 0
   currentLockOn: 0
+--- !u!1 &1792096050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100050, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1792096051}
+  - 114: {fileID: 1792096052}
+  m_Layer: 0
+  m_Name: RipperLaser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1792096051
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400050, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1792096050}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1674580757}
+  m_RootOrder: 1
+--- !u!114 &1792096052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400056, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1792096050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 2
+  collisionType: 2
+  prefab: {fileID: 100002, guid: 277040430de8f6346aa180306716bf3b, type: 2}
+  count: 2500
+  moveSpeed: 500
+  maxDistance: 1500
+  damage: 17
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
 --- !u!1 &1795290881
 GameObject:
   m_ObjectHideFlags: 0
@@ -4200,118 +3623,7 @@ Transform:
   m_LocalScale: {x: 3.80160952, y: 6.09508848, z: 2.28845549}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
---- !u!1 &1796665904
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100050, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1796665905}
-  - 114: {fileID: 1796665906}
-  m_Layer: 0
-  m_Name: RipperLaser
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1796665905
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400050, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1796665904}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 98134922}
-  m_RootOrder: 1
---- !u!114 &1796665906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400056, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1796665904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 2
-  collisionType: 2
-  prefab: {fileID: 100002, guid: 277040430de8f6346aa180306716bf3b, type: 2}
-  count: 2500
-  moveSpeed: 500
-  maxDistance: 1500
-  damage: 17
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
-<<<<<<< local
---- !u!1001 &1802523998
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 10.9559727
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: .59168148
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 9.63763618
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_RootGameObject: {fileID: 1444977860}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
-=======
->>>>>>> other
+  m_RootOrder: 3
 --- !u!1 &1850098808
 GameObject:
   m_ObjectHideFlags: 0
@@ -4443,86 +3755,228 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
---- !u!1 &1884866582
+  m_RootOrder: 2
+--- !u!1 &1874927860
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100018, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100022, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1884866583}
-  - 114: {fileID: 1884866584}
+  - 4: {fileID: 1874927861}
+  - 114: {fileID: 1874927864}
+  - 114: {fileID: 1874927863}
+  - 114: {fileID: 1874927862}
   m_Layer: 0
-  m_Name: ParticleAccelerator
+  m_Name: LightLaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1884866583
+--- !u!4 &1874927861
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400018, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1884866582}
+  m_PrefabParentObject: {fileID: 400022, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1874927860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 2
---- !u!114 &1884866584
+  m_Father: {fileID: 1689262517}
+  m_RootOrder: 0
+--- !u!114 &1874927862
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400040, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400026, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1884866582}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1874927860}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 8
-  label: Particle Accelerator
-  fireRate: .150000006
-  spread: 0
+  weaponType: 6
+  label: Light Laser 3
+  fireRate: .100000001
+  spread: .100000001
   fireInSync: 0
-  usesEnergy: 1
-  energyCostPerShot: .0700000003
+  usesEnergy: 0
+  energyCostPerShot: 0
   usesAmmunition: 0
   ammunitionMax: 0
   requiresWeaponLock: 0
   lockOnDuration: 0
   lockOnAngle: 0
   muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 1441080346}
---- !u!1 &1907854992
+  bulletDesc: {fileID: 1527900924}
+--- !u!114 &1874927863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400028, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1874927860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 5
+  label: Light Laser 2
+  fireRate: .150000006
+  spread: .100000001
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 1527900924}
+--- !u!114 &1874927864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400044, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1874927860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 4
+  label: Light Laser 1
+  fireRate: .200000003
+  spread: .100000001
+  fireInSync: 0
+  usesEnergy: 1
+  energyCostPerShot: .0500000007
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 100000, guid: 64903ff5fe095184b832d2d5fd2e1910, type: 2}
+  bulletDesc: {fileID: 1527900924}
+--- !u!1 &1886671941
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100032, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100052, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1907854993}
-  - 114: {fileID: 1907854994}
+  - 4: {fileID: 1886671943}
+  - 114: {fileID: 1886671942}
+  m_Layer: 0
+  m_Name: Shredder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1886671942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1886671941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 1
+  collisionType: 2
+  prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
+  count: 1000
+  moveSpeed: 450
+  maxDistance: 1500
+  damage: 25
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
+--- !u!4 &1886671943
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400052, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1886671941}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1674580757}
+  m_RootOrder: 0
+--- !u!1 &1894465433
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100038, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1894465434}
+  - 114: {fileID: 1894465435}
+  m_Layer: 0
+  m_Name: HeavyLaser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1894465434
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400038, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1894465433}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 559874882}
+  m_RootOrder: 4
+--- !u!114 &1894465435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400020, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1894465433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 10
+  collisionType: 0
+  prefab: {fileID: 100002, guid: a7c0458cc863f4845aeb4c7953d68493, type: 2}
+  count: 500
+  moveSpeed: 150
+  maxDistance: 500
+  damage: 35
+  areaOfEffect: 0
+  aoeRadius: 0
+  passesThroughTargets: 0
+  smartBullet: 0
+  fadeOut: -1
+--- !u!1 &1968678929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100032, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1968678930}
+  - 114: {fileID: 1968678931}
   m_Layer: 0
   m_Name: TachyonCannon
   m_TagString: Untagged
@@ -4530,33 +3984,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1907854993
+--- !u!4 &1968678930
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400032, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1907854992}
+  m_PrefabParentObject: {fileID: 400032, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1968678929}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 565498314}
+  m_Father: {fileID: 559874882}
   m_RootOrder: 7
---- !u!114 &1907854994
+--- !u!114 &1968678931
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400014, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400014, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1907854992}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 1968678929}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
@@ -4574,200 +4020,6 @@ MonoBehaviour:
   passesThroughTargets: 0
   smartBullet: 0
   fadeOut: .5
---- !u!1 &1924550140
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100080, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1924550141}
-  - 114: {fileID: 1924550142}
-  m_Layer: 0
-  m_Name: RemoteLaser
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1924550141
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400080, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1924550140}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 98134922}
-  m_RootOrder: 3
---- !u!114 &1924550142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400074, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1924550140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 19
-  collisionType: 0
-  prefab: {fileID: 100002, guid: 4e31db2b8ae35d7489e33d900189bf35, type: 2}
-  count: 250
-  moveSpeed: 450
-  maxDistance: 1500
-  damage: 25
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
---- !u!1 &1970716758
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100010, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1970716759}
-  - 114: {fileID: 1970716760}
-  m_Layer: 0
-  m_Name: TachyonCannon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1970716759
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400010, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1970716758}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 872540329}
-  m_RootOrder: 7
---- !u!114 &1970716760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400032, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1970716758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 13
-  label: Tachyon Cannon
-  fireRate: 1.70000005
-  spread: 0
-  fireInSync: 0
-  usesEnergy: 1
-  energyCostPerShot: .200000003
-  usesAmmunition: 0
-  ammunitionMax: 0
-  requiresWeaponLock: 0
-  lockOnDuration: 0
-  lockOnAngle: 0
-  muzzleFlashPrefab: {fileID: 0}
-  bulletDesc: {fileID: 1907854994}
---- !u!1 &1972321027
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100082, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1972321028}
-  - 114: {fileID: 1972321029}
-  m_Layer: 0
-  m_Name: FusionBeam
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1972321028
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400082, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1972321027}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 175859914}
-  m_RootOrder: 0
---- !u!114 &1972321029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400076, guid: daf4026cf301fb342ac4da636e008349,
-    type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 1972321027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponType: 18
-  collisionType: 2
-  prefab: {fileID: 100000, guid: 0448a5f9a67b609438fab7c4bae40da8, type: 2}
-  count: 50
-  moveSpeed: 50000
-  maxDistance: 10000
-  damage: 10
-  areaOfEffect: 0
-  aoeRadius: 0
-  passesThroughTargets: 1
-  smartBullet: 0
-  fadeOut: -1
 --- !u!1 &1974228193
 GameObject:
   m_ObjectHideFlags: 0
@@ -4825,125 +4077,118 @@ Transform:
   - {fileID: 1486935825}
   m_Father: {fileID: 1389031938}
   m_RootOrder: 0
---- !u!1 &2041078027
+--- !u!1 &2052620831
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100004, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100074, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 2041078028}
-  - 114: {fileID: 2041078029}
+  - 4: {fileID: 2052620832}
+  - 114: {fileID: 2052620833}
   m_Layer: 0
-  m_Name: BulletDescriptors
+  m_Name: FusionBeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2041078028
+--- !u!4 &2052620832
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400004, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 2041078027}
+  m_PrefabParentObject: {fileID: 400074, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 2052620831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 98134922}
-  - {fileID: 175859914}
-  - {fileID: 565498314}
-  m_Father: {fileID: 1444977861}
+  m_Children: []
+  m_Father: {fileID: 1675290315}
   m_RootOrder: 1
---- !u!114 &2041078029
+--- !u!114 &2052620833
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400006, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400068, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 2041078027}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 2052620831}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c372ea3693d25694096b134ca98d7c92, type: 3}
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2059711168
+  weaponType: 17
+  label: Fusion Beam
+  fireRate: .0500000007
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 0
+  requiresWeaponLock: 0
+  lockOnDuration: 0
+  lockOnAngle: 0
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 104562891}
+--- !u!1 &2061827870
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100034, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100086, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 2059711169}
-  - 114: {fileID: 2059711170}
+  - 4: {fileID: 2061827871}
+  - 114: {fileID: 2061827872}
   m_Layer: 0
-  m_Name: MesonBlaster
+  m_Name: GuidedMissile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2059711169
+--- !u!4 &2061827871
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400034, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 2059711168}
+  m_PrefabParentObject: {fileID: 400086, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 2061827870}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 565498314}
-  m_RootOrder: 6
---- !u!114 &2059711170
+  m_Father: {fileID: 559874882}
+  m_RootOrder: 8
+--- !u!114 &2061827872
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400016, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400080, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 2059711168}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 2061827870}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 12
-  collisionType: 2
-  prefab: {fileID: 100002, guid: 8c7e9d9faf7c01441a40d5b0d8519c28, type: 2}
-  count: 500
-  moveSpeed: 200
+  weaponType: 14
+  collisionType: 0
+  prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
+  count: 0
+  moveSpeed: 150
   maxDistance: 500
-  damage: 60
-  areaOfEffect: 0
-  aoeRadius: 0
+  damage: 100
+  areaOfEffect: 1
+  aoeRadius: 25
   passesThroughTargets: 0
-  smartBullet: 0
-  fadeOut: -1
+  smartBullet: 1
+  fadeOut: 1
+  turnRate: 50
+  canAngleOut: 0
+  maxDetectionAngle: .150000006
+  seekingDelayDistance: 15
+  explodes: 0
+  explosionObject: {fileID: 0}
 --- !u!1 &2075466941
 GameObject:
   m_ObjectHideFlags: 0
@@ -5048,21 +4293,16 @@ Transform:
   m_LocalScale: {x: 3.80160952, y: 6.09508848, z: 2.28845549}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
---- !u!1 &2144643595
+  m_RootOrder: 6
+--- !u!1 &2082349011
 GameObject:
   m_ObjectHideFlags: 0
-<<<<<<< local
-  m_PrefabParentObject: {fileID: 100086, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabParentObject: {fileID: 100090, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
+  m_PrefabParentObject: {fileID: 100084, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 2144643596}
-  - 114: {fileID: 2144643597}
+  - 4: {fileID: 2082349012}
+  - 114: {fileID: 2082349013}
   m_Layer: 0
   m_Name: GuidedMissile
   m_TagString: Untagged
@@ -5070,54 +4310,93 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2144643596
+--- !u!4 &2082349012
 Transform:
   m_ObjectHideFlags: 0
-<<<<<<< local
-  m_PrefabParentObject: {fileID: 400086, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabParentObject: {fileID: 400090, guid: daf4026cf301fb342ac4da636e008349, type: 2}
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 2144643595}
+  m_PrefabParentObject: {fileID: 400084, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 2082349011}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 565498314}
+  m_Father: {fileID: 1689262517}
   m_RootOrder: 8
---- !u!114 &2144643597
+--- !u!114 &2082349013
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400084, guid: daf4026cf301fb342ac4da636e008349,
+  m_PrefabParentObject: {fileID: 11400078, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
     type: 2}
-<<<<<<< local
-  m_PrefabInternal: {fileID: 1802523998}
-=======
-  m_PrefabInternal: {fileID: 16861264}
->>>>>>> other
-  m_GameObject: {fileID: 2144643595}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 2082349011}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 110d2fc91c6c514429fa8b7840d88181, type: 3}
+  m_Script: {fileID: 11500000, guid: 00c227888741a734086e23339af51f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 14
+  label: Guided Missile
+  fireRate: 1
+  spread: 0
+  fireInSync: 0
+  usesEnergy: 0
+  energyCostPerShot: 0
+  usesAmmunition: 0
+  ammunitionMax: 10
+  requiresWeaponLock: 1
+  lockOnDuration: 3
+  lockOnAngle: 15
+  muzzleFlashPrefab: {fileID: 0}
+  bulletDesc: {fileID: 2061827872}
+--- !u!1 &2117254763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100042, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2117254764}
+  - 114: {fileID: 2117254765}
+  m_Layer: 0
+  m_Name: EnergyChainGun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2117254764
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400042, guid: d37f773f1ce59b245a5f6b4bf35adbf7, type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 2117254763}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 559874882}
+  m_RootOrder: 1
+--- !u!114 &2117254765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400050, guid: d37f773f1ce59b245a5f6b4bf35adbf7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1395982240}
+  m_GameObject: {fileID: 2117254763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98f58b84db346e4c8cd02a783802d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 7
   collisionType: 0
-  prefab: {fileID: 100000, guid: c138d2d8692a28246ac673ec5d53ce28, type: 2}
-  count: 0
-  moveSpeed: 150
+  prefab: {fileID: 100000, guid: 0e4a1ed65b5a4274596b2c8c92b39bfb, type: 2}
+  count: 500
+  moveSpeed: 250
   maxDistance: 500
-  damage: 100
-  areaOfEffect: 1
-  aoeRadius: 25
+  damage: 5
+  areaOfEffect: 0
+  aoeRadius: 0
   passesThroughTargets: 0
-  smartBullet: 1
-  fadeOut: 1
-  turnRate: 50
-  canAngleOut: 0
-  maxDetectionAngle: .150000006
-  seekingDelayDistance: 15
-  explodes: 0
-  explosionObject: {fileID: 0}
+  smartBullet: 0
+  fadeOut: -1
