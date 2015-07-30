@@ -17,8 +17,8 @@ public class SmartBullet : BulletBase
 	
 	protected virtual void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		BulletManager.instance.smartBulletMap.Add( this.networkView.viewID, this );
-		if ( this.networkView.isMine == false )
+		BulletManager.instance.smartBulletMap.Add( this.GetComponent<NetworkView>().viewID, this );
+		if ( this.GetComponent<NetworkView>().isMine == false )
 		{
 			this.enabled = false;
 		}

@@ -151,9 +151,9 @@ public class BulletManager : MonoBehaviour
 		bulletScript.state = BulletBase.BULLET_STATE.ACTIVE_OWNED;
 		bulletScript.damageScale = _damageScale;
 		bulletScript.source = _weapon.source;
-		if ( _weapon.source.collider != null )
+		if ( _weapon.source.GetComponent<Collider>() != null )
 		{
-			Physics.IgnoreCollision( bulletObj.collider, _weapon.source.collider );
+			Physics.IgnoreCollision( bulletObj.GetComponent<Collider>(), _weapon.source.GetComponent<Collider>() );
 		}
 
 		// Bullet spread
@@ -185,7 +185,7 @@ public class BulletManager : MonoBehaviour
 			bulletScript.Reset();
 			bulletScript.state = BulletBase.BULLET_STATE.ACTIVE_NOT_OWNED;
 
-			bulletObj.collider.enabled = false;
+			bulletObj.GetComponent<Collider>().enabled = false;
 				
 			float delta = (float)Network.time - _sentTime;
 			Vector3 offset = bulletObj.transform.forward * descriptor.moveSpeed * delta;
@@ -202,10 +202,10 @@ public class BulletManager : MonoBehaviour
 		{
 			SeekingBullet seekingScript = descriptor.prefab.GetComponent<SeekingBullet>();
 			BaseHealth target = seekingScript != null ? bulletObj.GetComponent<SeekingBullet>().target : null;
-			NetworkViewID viewID = target != null ? target.networkView.viewID : NetworkViewID.unassigned;
+			NetworkViewID viewID = target != null ? target.GetComponent<NetworkView>().viewID : NetworkViewID.unassigned;
 
 			GameNetworkManager.instance.SendSmartBulletInfoRPC(
-                  bulletObj.networkView.viewID,
+                  bulletObj.GetComponent<NetworkView>().viewID,
 			      GamePlayerManager.instance.myPlayer.id,
                   viewID );
 		}
@@ -236,7 +236,7 @@ public class BulletManager : MonoBehaviour
 
 		if ( bulletScript.desc.smartBullet == false )
 		{
-			bulletObj.collider.enabled = false;
+			bulletObj.GetComponent<Collider>().enabled = false;
 
 			float delta = (float)Network.time - _creationTime;
 			Vector3 offset = bulletObj.transform.forward * bulletScript.desc.moveSpeed * delta;
@@ -267,15 +267,15 @@ public class BulletManager : MonoBehaviour
 			else
 #endif
 			{
-				if ( _bullet.networkView.isMine == false )
+				if ( _bullet.GetComponent<NetworkView>().isMine == false )
 				{
 					Debug.LogWarning( "You cannot destroy a seeking bullet you don't own!", _bullet );
 					return;
 				}
-				this.smartBulletMap.Remove( _bullet.networkView.viewID );
+				this.smartBulletMap.Remove( _bullet.GetComponent<NetworkView>().viewID );
 
 				TargetManager.instance.RemoveTarget( _bullet.GetComponent<BaseHealth>() );
-				GameNetworkManager.instance.SendDestroySmartBulletMessage( _bullet.networkView.viewID );
+				GameNetworkManager.instance.SendDestroySmartBulletMessage( _bullet.GetComponent<NetworkView>().viewID );
 
 				// If it fades, fade it out and let its own script destroy it
 				if ( _bullet.desc.fadeOut > 0.0f )

@@ -35,7 +35,7 @@ public class SeekingBullet : SmartBullet
 				this.target = null;
 			}
 		}
-		this.rigidbody.velocity = this.transform.forward * this.seekingDesc.moveSpeed;
+		this.GetComponent<Rigidbody>().velocity = this.transform.forward * this.seekingDesc.moveSpeed;
 	}
 
 	/// <summary>
@@ -88,7 +88,7 @@ public class SeekingBullet : SmartBullet
 	{
 		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
 		if ( this.source != null
-		    && this.source.collider == _collider )
+		    && this.source.GetComponent<Collider>() == _collider )
 		{
 			return;
 		}

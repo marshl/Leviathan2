@@ -53,13 +53,13 @@ public class FighterMovement : MonoBehaviour
 	
 	private void LateUpdate()
 	{
-		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+		if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			switch ( this.masterScript.state )
 			{
 			case FighterMaster.FIGHTERSTATE.FLYING:
 			{
-				this.rigidbody.AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
+				this.GetComponent<Rigidbody>().AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
 #if UNITY_EDITOR
 				if ( this.masterScript.isDummyShip == false )
 #endif
@@ -75,13 +75,13 @@ public class FighterMovement : MonoBehaviour
 			case FighterMaster.FIGHTERSTATE.UNDOCKING:
 			{
 				this.desiredSpeed = this.undockingSpeed;
-				this.rigidbody.AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
+				this.GetComponent<Rigidbody>().AddForce( this.transform.forward * this.desiredSpeed * Time.deltaTime );
 				break;
 			}
 			case FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL:
 			{
-				this.rigidbody.AddForce( this.transform.forward * this.deadFlyingSpeed * Time.deltaTime );
-				this.rigidbody.AddTorque( this.rigidbody.angularVelocity.normalized * this.deadSpinSpeed * Time.deltaTime );
+				this.GetComponent<Rigidbody>().AddForce( this.transform.forward * this.deadFlyingSpeed * Time.deltaTime );
+				this.GetComponent<Rigidbody>().AddTorque( this.GetComponent<Rigidbody>().angularVelocity.normalized * this.deadSpinSpeed * Time.deltaTime );
 				break;
 			}
 			}
@@ -109,7 +109,7 @@ public class FighterMovement : MonoBehaviour
 				transformedMousePos.x * Time.deltaTime * turnSpeed,
 				0.0f );
 			
-			this.rigidbody.AddRelativeTorque( torqueValue );
+			this.GetComponent<Rigidbody>().AddRelativeTorque( torqueValue );
 		}
 
 
@@ -132,11 +132,11 @@ public class FighterMovement : MonoBehaviour
 		
 		if ( Input.GetKey( KeyCode.Q) ) // Rotate left
 		{
-			this.rigidbody.AddRelativeTorque (new Vector3(0,0,rollSpeed));
+			this.GetComponent<Rigidbody>().AddRelativeTorque (new Vector3(0,0,rollSpeed));
 		}
 		if ( Input.GetKey(KeyCode.E) ) // Rotate right
 		{
-			this.rigidbody.AddRelativeTorque (new Vector3(0,0,-rollSpeed));
+			this.GetComponent<Rigidbody>().AddRelativeTorque (new Vector3(0,0,-rollSpeed));
 		}
 		
 		if ( Input.GetKey( KeyCode.Backspace ) ) // Stop
@@ -156,9 +156,9 @@ public class FighterMovement : MonoBehaviour
 	private void ApplyDrag()
 	{
 		//I pray this works. Obtain local angular velocity and reduce a single axis of it.
-		Vector3 angularVeloc = transform.InverseTransformDirection(rigidbody.angularVelocity);
+		Vector3 angularVeloc = transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 		angularVeloc.z *= rollDamping;
-		this.rigidbody.AddRelativeTorque( angularVeloc - transform.InverseTransformDirection( rigidbody.angularVelocity ) );
+		this.GetComponent<Rigidbody>().AddRelativeTorque( angularVeloc - transform.InverseTransformDirection( GetComponent<Rigidbody>().angularVelocity ) );
 	}
 
 	private void OnCollisionEnter( Collision _collision )
@@ -168,19 +168,19 @@ public class FighterMovement : MonoBehaviour
 			Vector3 normal = _collision.contacts[i].normal;
 			float collisionAngle = Vector3.Dot( normal, -this.transform.forward );
 			
-			this.rigidbody.velocity += normal * this.contactPushForce;
+			this.GetComponent<Rigidbody>().velocity += normal * this.contactPushForce;
 			Vector3 torqueAmount = Vector3.Cross( transform.forward, normal ) * this.contactTorque * collisionAngle;
-			this.rigidbody.AddTorque( torqueAmount );
+			this.GetComponent<Rigidbody>().AddTorque( torqueAmount );
 		}
 		
-		this.desiredSpeed = this.rigidbody.velocity.magnitude;
-		this.desiredSpeed *= Vector3.Dot( this.transform.forward, this.rigidbody.velocity.normalized ) > 0.0f ? 1.0f : -1.0f;
+		this.desiredSpeed = this.GetComponent<Rigidbody>().velocity.magnitude;
+		this.desiredSpeed *= Vector3.Dot( this.transform.forward, this.GetComponent<Rigidbody>().velocity.normalized ) > 0.0f ? 1.0f : -1.0f;
 	}
 
 	public void OnRespawn()
 	{
-		this.rigidbody.velocity = Vector3.zero;
-		this.rigidbody.angularVelocity = Vector3.zero;
+		this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		this.desiredSpeed = 0.0f;
 	}
 }

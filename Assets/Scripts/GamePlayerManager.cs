@@ -107,7 +107,7 @@ public class GamePlayerManager : MonoBehaviour
 			{
 				TargetManager.instance.RemoveTarget( player.fighter.health );
 				DebugConsole.Log( "Destroyed fighter object" );
-				Network.Destroy( player.fighter.networkView.viewID );
+				Network.Destroy( player.fighter.GetComponent<NetworkView>().viewID );
 			}
 		}
 	}

@@ -59,7 +59,7 @@ public class FighterMaster : MonoBehaviour
 		}
 
 
-		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
+		if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected)
 		{
 #if UNITY_EDITOR
 			if ( this.isDummyShip == false )
@@ -116,11 +116,11 @@ public class FighterMaster : MonoBehaviour
 		this.health.Owner.fighter = this;
 		DebugConsole.Log( "Set player " + id + " to own fighter", this.gameObject );
 
-		if ( this.networkView.isMine == false && Network.peerType != NetworkPeerType.Disconnected )
+		if ( this.GetComponent<NetworkView>().isMine == false && Network.peerType != NetworkPeerType.Disconnected )
 		{
 			this.enabled = false;
 			this.movement.enabled = false;
-			this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+			this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 		} 
 
 		this.weapons.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
@@ -167,7 +167,7 @@ public class FighterMaster : MonoBehaviour
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendRespawnedFighterMessage( this.networkView.viewID );
+			GameNetworkManager.instance.SendRespawnedFighterMessage( this.GetComponent<NetworkView>().viewID );
 		}
 
 		if ( bay != null )
@@ -179,8 +179,8 @@ public class FighterMaster : MonoBehaviour
 			DebugConsole.Warning( "No docking bays found", this );
 			this.transform.position = Vector3.zero;
 			this.transform.rotation = Quaternion.identity;
-			this.rigidbody.velocity = Vector3.zero;
-			this.rigidbody.angularVelocity = Vector3.zero;
+			this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 			this.state = FIGHTERSTATE.FLYING;
 		}
 	}
@@ -202,7 +202,7 @@ public class FighterMaster : MonoBehaviour
 	
 		GamePlayerManager.instance.AddDeath( this.health.Owner.id, true );
 
-		this.rigidbody.AddTorque( Common.RandomDirection() );
+		this.GetComponent<Rigidbody>().AddTorque( Common.RandomDirection() );
 	}
 
 	private void OnOutOfControlExpiration()
@@ -218,7 +218,7 @@ public class FighterMaster : MonoBehaviour
 
 	private void ToggleEnabled( bool _enabled, bool _local )
 	{
-		this.collider.enabled = _enabled;
+		this.GetComponent<Collider>().enabled = _enabled;
 		this.model.enabled = _enabled;
 
 		if ( _enabled )
@@ -230,7 +230,7 @@ public class FighterMaster : MonoBehaviour
 		}
 		else
 		{
-			this.rigidbody.velocity = this.rigidbody.angularVelocity = Vector3.zero;
+			this.GetComponent<Rigidbody>().velocity = this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		}
 	}
 
@@ -245,9 +245,9 @@ public class FighterMaster : MonoBehaviour
 		DebugConsole.Log( "Proceeding with dock", this );
 
 		this.movement.desiredSpeed = 0;
-		this.rigidbody.velocity = Vector3.zero;
-		this.rigidbody.angularVelocity = Vector3.zero;
-		this.rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+		this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+		this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 		this.transform.position = _slot.landedPosition.position;
 		this.transform.rotation = _slot.landedPosition.rotation;
 
@@ -257,14 +257,14 @@ public class FighterMaster : MonoBehaviour
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendDockedMessage( this.networkView.viewID, this.health.Owner.team, _slot.slotID );
+			GameNetworkManager.instance.SendDockedMessage( this.GetComponent<NetworkView>().viewID, this.health.Owner.team, _slot.slotID );
 		}
 	}
 
 	public void Undock()
 	{
-		this.rigidbody.constraints = RigidbodyConstraints.None;
-		this.rigidbody.angularVelocity = Vector3.zero;
+		this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+		this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
 		this.state = FIGHTERSTATE.UNDOCKING;
 		this.currentSlot.landedFighter = null;
@@ -275,7 +275,7 @@ public class FighterMaster : MonoBehaviour
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendUndockedMessage( this.networkView.viewID, this.health.Owner.team, this.currentSlot.slotID );
+			GameNetworkManager.instance.SendUndockedMessage( this.GetComponent<NetworkView>().viewID, this.health.Owner.team, this.currentSlot.slotID );
 		}
 		this.currentSlot = null;
 	}
@@ -287,7 +287,7 @@ public class FighterMaster : MonoBehaviour
 	
 	private void OnCollisionEnter( Collision _collision )
 	{
-		if ( Network.peerType == NetworkPeerType.Disconnected || this.networkView.isMine )
+		if ( Network.peerType == NetworkPeerType.Disconnected || this.GetComponent<NetworkView>().isMine )
 		{
 			if ( this.state == FIGHTERSTATE.OUT_OF_CONTROL )
 			{

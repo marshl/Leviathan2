@@ -14,12 +14,12 @@ public class FighterHealth : BaseHealth
 		  && this.masterScript.state != FighterMaster.FIGHTERSTATE.OUT_OF_CONTROL )
 		{
 			this.currentHealth = 0;
-			if ( Network.peerType == NetworkPeerType.Disconnected || this.networkView.isMine )
+			if ( Network.peerType == NetworkPeerType.Disconnected || this.GetComponent<NetworkView>().isMine )
 			{
 				this.masterScript.OnLethalDamage();
 			}
 		}
-		else if ( this.networkView.isMine )
+		else if ( this.GetComponent<NetworkView>().isMine )
 		{
 			this.RegenerateShields();
 		}

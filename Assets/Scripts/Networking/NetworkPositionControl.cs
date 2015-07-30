@@ -70,9 +70,9 @@ public class NetworkPositionControl : MonoBehaviour
 			Quaternion rot = this.transform.rotation;
 			_stream.Serialize( ref pos );
 			_stream.Serialize( ref rot );
-			if ( this.rigidbody != null )
+			if ( this.GetComponent<Rigidbody>() != null )
 			{
-				Vector3 vel = this.rigidbody.velocity;
+				Vector3 vel = this.GetComponent<Rigidbody>().velocity;
 				_stream.Serialize( ref vel );
 			}
 		}
@@ -84,7 +84,7 @@ public class NetworkPositionControl : MonoBehaviour
 			_stream.Serialize( ref rot );
 
 			Vector3 vel = Vector3.zero;
-			if ( this.rigidbody != null )
+			if ( this.GetComponent<Rigidbody>() != null )
 			{
 				_stream.Serialize( ref vel );
 			}
@@ -133,22 +133,22 @@ public class NetworkPositionControl : MonoBehaviour
 	private void Update()
 	{
 		if ( Network.peerType != NetworkPeerType.Disconnected 
-		  && this.networkView != null
-		  && !networkView.isMine )
+		  && this.GetComponent<NetworkView>() != null
+		  && !GetComponent<NetworkView>().isMine )
 		{
 			// This is separate to facilitate local testing
 			this.TransformLerp( Network.time );
 #if UNITY_EDITOR
-			this.ownerID = Common.NetworkID( this.networkView.viewID.owner );
+			this.ownerID = Common.NetworkID( this.GetComponent<NetworkView>().viewID.owner );
 #endif
 		}
 
 #if UNITY_EDITOR
-		if ( this.rigidbody != null )
+		if ( this.GetComponent<Rigidbody>() != null )
 		{
-			this.speed = this.rigidbody.velocity.magnitude;
-			this.velocity = this.rigidbody.velocity;
-			this.rotVel = this.rigidbody.angularVelocity;
+			this.speed = this.GetComponent<Rigidbody>().velocity.magnitude;
+			this.velocity = this.GetComponent<Rigidbody>().velocity;
+			this.rotVel = this.GetComponent<Rigidbody>().angularVelocity;
 		}
 #endif
 	}
@@ -174,13 +174,13 @@ public class NetworkPositionControl : MonoBehaviour
 			 Quaternion.Angle( this.olderData.rotation, this.newerData.rotation ) * multiplier, this.axis
 	    );
 
-		if ( this.rigidbody != null && this.olderData.velocity.magnitude > 0.0f )
+		if ( this.GetComponent<Rigidbody>() != null && this.olderData.velocity.magnitude > 0.0f )
 		{
 			Vector3 velocityGuess = Vector3.Lerp( this.olderData.velocity, this.newerData.velocity, multiplier );
 			Vector3 desiredPos = this.newerData.position + (float)timeSince * velocityGuess;
 			this.transform.position = Vector3.Lerp( this.transform.position, desiredPos, this.lerpRate );
 
-			this.rigidbody.velocity = velocityGuess;
+			this.GetComponent<Rigidbody>().velocity = velocityGuess;
 			this.transform.rotation = targetRotation;
 		}
 		else

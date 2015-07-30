@@ -13,7 +13,7 @@ public class GUITextScale : MonoBehaviour
 	
 	private void Awake()
 	{
-		this.startingSize = this.guiText.fontSize;
+		this.startingSize = this.GetComponent<GUIText>().fontSize;
 		this.fontSize = (float)this.startingSize;
 	}
 	
@@ -33,6 +33,6 @@ public class GUITextScale : MonoBehaviour
 		( 
 			 this.fontSize, this.mouseOver ? this.maxSize : this.startingSize, Time.deltaTime * this.scaleRate 
 		);
-		this.guiText.fontSize = (int)this.fontSize;
+		this.GetComponent<GUIText>().fontSize = (int)this.fontSize;
 	}
 }

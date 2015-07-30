@@ -18,14 +18,14 @@ public class ShieldGeneratorHealth : BaseHealth {
 		if ( this.currentHealth <= 0 && this.hasExploded == false )
 		{
 			this.currentHealth = 0;
-			if ( this.networkView.isMine )
+			if ( this.GetComponent<NetworkView>().isMine )
 			{
 				this.Explode();
 			}
 			this.hasExploded = true;
 			Debug.Log( "Shield generator (" + this.gameObject.name + ") has exploded", this.gameObject );
 		}
-		else if ( this.networkView.isMine )
+		else if ( this.GetComponent<NetworkView>().isMine )
 		{
 			this.RegenerateShields();
 		}
@@ -41,7 +41,7 @@ public class ShieldGeneratorHealth : BaseHealth {
           this.capitalShip.health.Owner );
 
 		this.ShieldDestroyedNetwork();
-		GameNetworkManager.instance.SendDeadShieldMessage( this.networkView.viewID );
+		GameNetworkManager.instance.SendDeadShieldMessage( this.GetComponent<NetworkView>().viewID );
 	}
 
 	public void ShieldDestroyedNetwork()

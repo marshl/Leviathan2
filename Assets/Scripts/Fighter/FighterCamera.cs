@@ -32,7 +32,7 @@ public class FighterCamera : MonoBehaviour
 			this.transform.position = eyePoint.transform.position;
 			this.transform.rotation = fighter.transform.rotation;
 
-			angularVeloc = transform.InverseTransformDirection (this.fighter.rigidbody.angularVelocity);
+			angularVeloc = transform.InverseTransformDirection (this.fighter.GetComponent<Rigidbody>().angularVelocity);
 
 			angularVeloc *= cameraDrift * 0.01f;
 			Vector3 tempVector = new Vector3();
@@ -47,7 +47,7 @@ public class FighterCamera : MonoBehaviour
 			this.transform.position = eyePoint.transform.position + ( this.transform.rotation * tempVector );
 			if(this.fighter.state != FighterMaster.FIGHTERSTATE.UNDOCKING && !this.fighter.movement.boostIgnoresMax)
 			{
-				this.camera.fieldOfView = 60 + ((this.fighter.movement.desiredSpeed / this.fighter.movement.maxSpeed) * pullBackFactor);
+				this.GetComponent<Camera>().fieldOfView = 60 + ((this.fighter.movement.desiredSpeed / this.fighter.movement.maxSpeed) * pullBackFactor);
 			}
 		}
 	}

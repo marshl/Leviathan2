@@ -55,7 +55,7 @@ public class CapitalShipMaster : MonoBehaviour
 			this.OwnerInitialise();
 		}
 
-		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+		if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			if ( this.health.currentHealth <= 0.0f )
 			{
@@ -150,7 +150,7 @@ public class CapitalShipMaster : MonoBehaviour
 								autoTurret.GetComponent<NetworkOwnerControl>().ownerID = this.health.Owner.id;
 
 
-								autoTurret.rigidbody.AddTorque( Common.RandomDirection() * 100.0f );
+								autoTurret.GetComponent<Rigidbody>().AddTorque( Common.RandomDirection() * 100.0f );
 								this.placingAutoTurret = false;
 								this.heightCheck = false;
 								this.placementMarkerObj.SetActive( false );
@@ -192,7 +192,7 @@ public class CapitalShipMaster : MonoBehaviour
 		this.health.Owner.capitalShip = this; 
 		DebugConsole.Log( "Set player " + playerID + " to own capital ship", this.gameObject ); 
 	
-		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+		if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			this.turrets.CreateTurrets();
 #if UNITY_EDITOR

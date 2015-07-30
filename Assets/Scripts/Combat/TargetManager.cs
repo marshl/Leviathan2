@@ -68,7 +68,7 @@ public class TargetManager : MonoBehaviour
 		else
 #endif
 		{
-			NetworkViewID viewID = _health.networkView.viewID;
+			NetworkViewID viewID = _health.GetComponent<NetworkView>().viewID;
 			if ( this.targetMap.ContainsKey( viewID ) )
 			{
 				DebugConsole.Warning( "Target Manager already contains " + viewID
@@ -119,7 +119,7 @@ public class TargetManager : MonoBehaviour
 		else
 #endif
 		{
-			this.targetMap.Remove( _target.networkView.viewID );
+			this.targetMap.Remove( _target.GetComponent<NetworkView>().viewID );
 		}
 	}
 

@@ -11,7 +11,7 @@ public abstract class BaseNetworkManager : MonoBehaviour
 
 	public void SendLobbyMessage( string _message, NetworkPlayer _receiver, MESSAGE_TYPE _messageType )
 	{
-		this.networkView.RPC( "OnSendLobbyMessageRPC", _receiver, Common.MyNetworkID(), _message, (int)_messageType );
+		this.GetComponent<NetworkView>().RPC( "OnSendLobbyMessageRPC", _receiver, Common.MyNetworkID(), _message, (int)_messageType );
 	}
 	 
 	[RPC]

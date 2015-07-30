@@ -28,7 +28,7 @@ public class FighterWeapons : BaseWeaponManager
 #if UNITY_EDITOR
 		if ( this.master.isDummyShip == false )
 #endif
-		if ( ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+		if ( ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected )
 		 && this.master.state == FighterMaster.FIGHTERSTATE.FLYING )
 		{
 			if ( TargetManager.instance.IsValidTarget( this.currentTarget, this ) == false )

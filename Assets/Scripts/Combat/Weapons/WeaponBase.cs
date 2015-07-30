@@ -140,7 +140,7 @@ public class WeaponBase : MonoBehaviour
 		{
 			if (_local )
 			{
-				GameNetworkManager.instance.SendWeaponFireMessage( this.source.networkView.viewID, this.weaponIndex, _firePoint );
+				GameNetworkManager.instance.SendWeaponFireMessage( this.source.GetComponent<NetworkView>().viewID, this.weaponIndex, _firePoint );
 			}
 			else
 			{

@@ -22,16 +22,16 @@ public class NetworkOwnerManager : MonoBehaviour
 	// Called by OnNetworkInstantiate
 	public void RegisterUnknownObject( MonoBehaviour _obj )
 	{
-		if ( _obj.networkView == null )
+		if ( _obj.GetComponent<NetworkView>() == null )
 		{
 			DebugConsole.Warning( "Cannot add NetworkOwnerControl without a NetworkView (" + _obj.gameObject.name + ")", _obj );
 			return;
 		}
 	
-		NetworkView view = _obj.networkView;
+		NetworkView view = _obj.GetComponent<NetworkView>();
 		NetworkViewID id = view.viewID;
 
-		if ( this.map.ContainsKey( _obj.networkView.viewID ) )
+		if ( this.map.ContainsKey( _obj.GetComponent<NetworkView>().viewID ) )
 		{
 			DebugConsole.Warning( "NetworkViewID " + id + " aleady exists as " + _obj.gameObject.name,
 			                 this.map[id].gameObject );

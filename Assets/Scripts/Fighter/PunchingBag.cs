@@ -16,7 +16,7 @@ public class PunchingBag : MonoBehaviour {
 		
 		if(Input.GetKeyDown(KeyCode.A))
 		{
-			this.rigidbody.AddForce(30,0,0);
+			this.GetComponent<Rigidbody>().AddForce(30,0,0);
 		}
 	
 	}

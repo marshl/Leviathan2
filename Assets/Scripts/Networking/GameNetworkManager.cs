@@ -56,7 +56,7 @@ public class GameNetworkManager : BaseNetworkManager
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
 			//TODO: This may have issues with laggy players LM 28/04/14
-			this.networkView.RPC( "OnConnectedToGameRPC", RPCMode.All, Common.MyNetworkID(), (int)info.playerType );      
+			this.GetComponent<NetworkView>().RPC( "OnConnectedToGameRPC", RPCMode.All, Common.MyNetworkID(), (int)info.playerType );      
 		}
 	}
 
@@ -68,7 +68,7 @@ public class GameNetworkManager : BaseNetworkManager
 		{
 			this.gameState = GAME_STATE.PRE_GAME;
 
-			this.networkView.RPC( "OnGameStartedRPC", RPCMode.All );
+			this.GetComponent<NetworkView>().RPC( "OnGameStartedRPC", RPCMode.All );
 		}
 
 #if UNITY_EDITOR
@@ -91,7 +91,7 @@ public class GameNetworkManager : BaseNetworkManager
 		}
 		else if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			this.networkView.RPC( "OnCapitalShipDeathRPC", RPCMode.Others, _capitalShip.health.Owner.id );
+			this.GetComponent<NetworkView>().RPC( "OnCapitalShipDeathRPC", RPCMode.Others, _capitalShip.health.Owner.id );
 		}
 
 		this.OnCapitalShipDeathRPC( _capitalShip.health.Owner.id );
@@ -110,7 +110,7 @@ public class GameNetworkManager : BaseNetworkManager
 	{
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			this.networkView.RPC( "OnCapitalShipExplodedRPC", RPCMode.Others );
+			this.GetComponent<NetworkView>().RPC( "OnCapitalShipExplodedRPC", RPCMode.Others );
 		}
 
 		this.OnCapitalShipExplodedRPC();
@@ -157,7 +157,7 @@ public class GameNetworkManager : BaseNetworkManager
 		DebugConsole.Log( _player.ipAddress + " has disconnected" );
 
 		int playerID = Common.NetworkID( _player );
-		this.networkView.RPC( "OnDisconnectPlayerRPC", RPCMode.All, playerID );
+		this.GetComponent<NetworkView>().RPC( "OnDisconnectPlayerRPC", RPCMode.All, playerID );
 	}
 	[RPC]
 	private void OnDisconnectPlayerRPC( int _playerID )
@@ -207,7 +207,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendWeaponFireMessage( NetworkViewID _weaponManagerViewID, int _weaponIndex, WeaponFirePoint _firePoint )
 	{
-		this.networkView.RPC( "OnWeaponFireRPC", RPCMode.Others, _weaponManagerViewID, _weaponIndex, (float)Network.time, _firePoint.transform.rotation );
+		this.GetComponent<NetworkView>().RPC( "OnWeaponFireRPC", RPCMode.Others, _weaponManagerViewID, _weaponIndex, (float)Network.time, _firePoint.transform.rotation );
 	}
 
 	[RPC]
@@ -220,7 +220,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDestroySmartBulletMessage( NetworkViewID _viewID )
 	{
-		this.networkView.RPC( "OnDestroySmartBulletRPC", RPCMode.Others, _viewID );
+		this.GetComponent<NetworkView>().RPC( "OnDestroySmartBulletRPC", RPCMode.Others, _viewID );
 	}
 
 	[RPC]
@@ -231,7 +231,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDestroyDumbBulletMessage( WEAPON_TYPE _weaponType, int _index, Vector3 _bulletPosition )
 	{
-		this.networkView.RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_weaponType, _index, _bulletPosition );
+		this.GetComponent<NetworkView>().RPC( "OnDestroyDumbBulletRPC", RPCMode.Others, (int)_weaponType, _index, _bulletPosition );
 	}
 
 	[RPC]
@@ -248,7 +248,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendOutOfControlFigherMessage( int _playerID )
 	{
-		this.networkView.RPC( "OnOutOfControlFighterRPC", RPCMode.Others, _playerID );
+		this.GetComponent<NetworkView>().RPC( "OnOutOfControlFighterRPC", RPCMode.Others, _playerID );
 	}
 
 	[RPC]
@@ -260,7 +260,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDeadFighterMessage( int _playerID )
 	{
-		this.networkView.RPC( "OnDeadFighterRPC", RPCMode.Others, _playerID );
+		this.GetComponent<NetworkView>().RPC( "OnDeadFighterRPC", RPCMode.Others, _playerID );
 	}
 	[RPC]
 	private void OnDeadFighterRPC( int _playerID )
@@ -271,7 +271,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDeadShieldMessage( NetworkViewID _id)
 	{
-		this.networkView.RPC( "OnDeadShieldRPC", RPCMode.Others, _id );
+		this.GetComponent<NetworkView>().RPC( "OnDeadShieldRPC", RPCMode.Others, _id );
 	}
 	[RPC]
 	private void OnDeadShieldRPC( NetworkViewID _id )
@@ -282,7 +282,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendRespawnedFighterMessage( NetworkViewID _id )
 	{
-		this.networkView.RPC( "OnRespawnedFighterRPC", RPCMode.Others, _id );
+		this.GetComponent<NetworkView>().RPC( "OnRespawnedFighterRPC", RPCMode.Others, _id );
 	}
 	[RPC]
 	private void OnRespawnedFighterRPC( NetworkViewID _id )
@@ -307,7 +307,7 @@ public class GameNetworkManager : BaseNetworkManager
 	public void SendDealDamageMessage( NetworkViewID _id, float _damage, GamePlayer _sourcePlayer )
 	{
 		int playerID = _sourcePlayer.id;
-		this.networkView.RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage, playerID );
+		this.GetComponent<NetworkView>().RPC( "OnDealDamageRPC", RPCMode.Others, _id, _damage, playerID );
 	}
 
 	[RPC]
@@ -320,7 +320,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendSetHealthMessage( NetworkViewID _id, float _health, float _shield )
 	{
-		this.networkView.RPC( "OnSetHealthRPC", RPCMode.Others, _id, _health, _shield );
+		this.GetComponent<NetworkView>().RPC( "OnSetHealthRPC", RPCMode.Others, _id, _health, _shield );
 	}
 
 	[RPC]
@@ -332,7 +332,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendDockedMessage( NetworkViewID _id, TEAM _team, int landedSlot )
 	{
-		this.networkView.RPC( "OnFighterDockedRPC", RPCMode.Others, _id, (int)_team, landedSlot );
+		this.GetComponent<NetworkView>().RPC( "OnFighterDockedRPC", RPCMode.Others, _id, (int)_team, landedSlot );
 	}
 
 	[RPC]
@@ -349,7 +349,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendUndockedMessage( NetworkViewID _id, TEAM _team, int landedSlot )
 	{
-		this.networkView.RPC ( "OnFighterUndockedRPC", RPCMode.Others, _id, (int)_team, landedSlot );
+		this.GetComponent<NetworkView>().RPC ( "OnFighterUndockedRPC", RPCMode.Others, _id, (int)_team, landedSlot );
 	}
 
 	[RPC]
@@ -370,7 +370,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendUpgradedMessage( int _id, float _newSpeed, float _newDefense, float _newEnergy)
 	{
-		this.networkView.RPC ( "OnSendUpgradedRPC", RPCMode.Others, _id, _newSpeed, _newDefense, _newEnergy);
+		this.GetComponent<NetworkView>().RPC ( "OnSendUpgradedRPC", RPCMode.Others, _id, _newSpeed, _newDefense, _newEnergy);
 	}
 
 	[RPC]
@@ -446,7 +446,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendSetViewIDMessage( int _ownerID, NetworkViewID _id )
 	{
-		this.networkView.RPC( "OnSetViewIDRPC", RPCMode.Others, _ownerID, _id );
+		this.GetComponent<NetworkView>().RPC( "OnSetViewIDRPC", RPCMode.Others, _ownerID, _id );
 	}
 
 	[RPC]
@@ -457,7 +457,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendSmartBulletInfoRPC( NetworkViewID _viewID, int _playerID, NetworkViewID _targetID )
 	{
-		this.networkView.RPC( "OnSmartBulletInfoRPC", RPCMode.Others, _viewID, (int)_playerID, _targetID );
+		this.GetComponent<NetworkView>().RPC( "OnSmartBulletInfoRPC", RPCMode.Others, _viewID, (int)_playerID, _targetID );
 	}
 
 	[RPC]
@@ -489,7 +489,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendTractorStartMessage( NetworkViewID _viewID, TractorBeam.TractorFunction _tractorDirection, NetworkViewID _targetID)
 	{
-		this.networkView.RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, (int)_tractorDirection, _targetID );
+		this.GetComponent<NetworkView>().RPC( "OnTractorStartRPC", RPCMode.Others, _viewID, (int)_tractorDirection, _targetID );
 	}
 
 	[RPC]
@@ -504,7 +504,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendTractorStopMessage(NetworkViewID _viewID)
 	{
-		this.networkView.RPC( "OnTractorStopRPC", RPCMode.Others, _viewID );
+		this.GetComponent<NetworkView>().RPC( "OnTractorStopRPC", RPCMode.Others, _viewID );
 	}
 
 	[RPC]
@@ -518,7 +518,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendAddScoreMessage( SCORE_TYPE _scoreType, GamePlayer _player )
 	{
-		this.networkView.RPC( "OnAddScoreRPC", RPCMode.Others, (int)_scoreType, _player.id );
+		this.GetComponent<NetworkView>().RPC( "OnAddScoreRPC", RPCMode.Others, (int)_scoreType, _player.id );
 	}
 
 	[RPC]
@@ -539,7 +539,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendRemoveTargetMessage( NetworkViewID _targetID )
 	{
-		this.networkView.RPC( "OnRemoveTargetRPC", RPCMode.Others, _targetID );
+		this.GetComponent<NetworkView>().RPC( "OnRemoveTargetRPC", RPCMode.Others, _targetID );
 	}
 
 	[RPC]
@@ -550,7 +550,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendAddKillMessage( int _playerID )
 	{
-		this.networkView.RPC( "OnAddKillRPC", RPCMode.Others, _playerID );
+		this.GetComponent<NetworkView>().RPC( "OnAddKillRPC", RPCMode.Others, _playerID );
 	}
 
 	[RPC]
@@ -561,7 +561,7 @@ public class GameNetworkManager : BaseNetworkManager
 
 	public void SendAddDeathMessage( int _playerID )
 	{
-		this.networkView.RPC( "OnAddDeathRPC", RPCMode.Others, _playerID );
+		this.GetComponent<NetworkView>().RPC( "OnAddDeathRPC", RPCMode.Others, _playerID );
 	}
 
 	[RPC]

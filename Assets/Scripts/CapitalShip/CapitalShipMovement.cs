@@ -79,7 +79,7 @@ public class CapitalShipMovement : MonoBehaviour
 
 	private void OnNetworkInstantiate( NetworkMessageInfo _info )
 	{
-		if ( this.networkView.isMine == false )
+		if ( this.GetComponent<NetworkView>().isMine == false )
 		{
 			this.enabled = false;
 		}

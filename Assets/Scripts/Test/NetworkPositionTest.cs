@@ -38,7 +38,7 @@ public class NetworkPositionTest : MonoBehaviour
 			data.timeStamp = (double)Time.realtimeSinceStartup;
 			data.position = this.transform.localPosition;
 			data.rotation = this.transform.rotation;
-			data.velocity = this.rigidbody != null ? this.rigidbody.velocity : Vector3.zero;
+			data.velocity = this.GetComponent<Rigidbody>() != null ? this.GetComponent<Rigidbody>().velocity : Vector3.zero;
 			this.dataPoints.Add( data );
 		}
 		 
@@ -52,10 +52,10 @@ public class NetworkPositionTest : MonoBehaviour
 
 		//this.transform.Rotate( this.transform.up, this.turnSpeed * Time.deltaTime );
 
-		if ( this.rigidbody != null )
+		if ( this.GetComponent<Rigidbody>() != null )
 		{
-			this.rigidbody.velocity = this.transform.forward * this.moveSpeed;
-			Debug.DrawRay( this.transform.position, this.rigidbody.velocity );
+			this.GetComponent<Rigidbody>().velocity = this.transform.forward * this.moveSpeed;
+			Debug.DrawRay( this.transform.position, this.GetComponent<Rigidbody>().velocity );
 		}
 		else
 		{

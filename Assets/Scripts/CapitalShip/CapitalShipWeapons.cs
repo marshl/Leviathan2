@@ -19,7 +19,7 @@ public class CapitalShipWeapons : BaseWeaponManager
 			return;
 #endif
 
-		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+		if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 		    if ( Input.GetKeyDown( KeyCode.Space )
 			  && this.firingGauss == false

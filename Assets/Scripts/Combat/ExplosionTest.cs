@@ -37,8 +37,8 @@ public class ExplosionTest : MonoBehaviour
 			chunk.transform.parent = this.transform;
 			chunk.transform.localScale = Vector3.one * Random.Range( this.startingScale.x, this.startingScale.y );
 
-			chunk.rigidbody.AddForce( Common.RandomDirection() * Random.Range( this.chunkForce.x, this.chunkForce.y ) );
-			chunk.rigidbody.AddTorque( Common.RandomDirection() * Random.Range( this.chunkSpin.x, this.chunkSpin.y ) );
+			chunk.GetComponent<Rigidbody>().AddForce( Common.RandomDirection() * Random.Range( this.chunkForce.x, this.chunkForce.y ) );
+			chunk.GetComponent<Rigidbody>().AddTorque( Common.RandomDirection() * Random.Range( this.chunkSpin.x, this.chunkSpin.y ) );
 			this.chunks.Add( chunk );
 		}
 	}

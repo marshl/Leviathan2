@@ -23,7 +23,7 @@ public class SlowExplosion : MonoBehaviour {
 
 	void OnNetworkInstantiate(NetworkMessageInfo info)
 	{
-		if(!this.networkView.isMine)
+		if(!this.GetComponent<NetworkView>().isMine)
 		{
 			damageless = true;
 		}

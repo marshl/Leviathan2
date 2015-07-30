@@ -57,7 +57,7 @@ public class TurretBehavior : BaseWeaponManager
 			}
 		}
 
-		if ( (this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected)
+		if ( (this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected)
 		    && this.health.currentHealth > 0.0f )
 		{
 			float range = this.weapon.weaponDesc.bulletDesc.maxDistance;
@@ -162,7 +162,7 @@ public class TurretBehavior : BaseWeaponManager
 		{
 			Quaternion swivelRot = this.swivel.rotation;
 			Quaternion pivotRot = this.pivot.rotation;
-			NetworkViewID viewID = this.currentTarget == null ? NetworkViewID.unassigned : this.currentTarget.networkView.viewID;
+			NetworkViewID viewID = this.currentTarget == null ? NetworkViewID.unassigned : this.currentTarget.GetComponent<NetworkView>().viewID;
 			_stream.Serialize( ref swivelRot );
 			_stream.Serialize( ref pivotRot );
 			_stream.Serialize( ref viewID );
@@ -220,7 +220,7 @@ public class TurretBehavior : BaseWeaponManager
 		}
 		this.restrictions.teams = (int)Common.OpposingTeam( this.health.Owner.team );
 
-		if ( Network.peerType != NetworkPeerType.Disconnected && !this.networkView.isMine )
+		if ( Network.peerType != NetworkPeerType.Disconnected && !this.GetComponent<NetworkView>().isMine )
 		{
 			this.enabled = false;
 		}
@@ -248,7 +248,7 @@ public class TurretBehavior : BaseWeaponManager
 		}
 		else
 		{
-			GameNetworkManager.instance.SendRemoveTargetMessage( this.networkView.viewID );
+			GameNetworkManager.instance.SendRemoveTargetMessage( this.GetComponent<NetworkView>().viewID );
 			Network.Destroy( this.gameObject );
 		}
 	}

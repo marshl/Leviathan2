@@ -41,7 +41,7 @@ public class CapitalShipComponent : MonoBehaviour
 
 		this.transform.parent = this.health.Owner.capitalShip.depthControl;
 	
-		if ( Network.peerType != NetworkPeerType.Disconnected && !this.networkView.isMine )
+		if ( Network.peerType != NetworkPeerType.Disconnected && !this.GetComponent<NetworkView>().isMine )
 		{
 			this.enabled = false;
 		}

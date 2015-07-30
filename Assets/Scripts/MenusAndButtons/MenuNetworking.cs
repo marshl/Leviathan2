@@ -116,7 +116,7 @@ public class MenuNetworking : BaseNetworkManager
 	{
 		DebugConsole.Log( "Connected to server." );
 		MenuGUI.instance.OpenGameLobby();
-		this.networkView.RPC( "OnSendConnectedInfoRPC", RPCMode.Others, Common.MyNetworkID(), PlayerOptions.instance.options.playerName );
+		this.GetComponent<NetworkView>().RPC( "OnSendConnectedInfoRPC", RPCMode.Others, Common.MyNetworkID(), PlayerOptions.instance.options.playerName );
 	}
 
 	[RPC]
@@ -180,15 +180,15 @@ public class MenuNetworking : BaseNetworkManager
 			if ( pair.Key != playerID ) // Info about the player is sent further down
 			{
 				DebugConsole.Log( "Telling " + playerID + " about " + pair.Key + ":" + pair.Value.playerType );
-				this.networkView.RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value.playerType );
+				this.GetComponent<NetworkView>().RPC( "SendPlayerTeamInfo", _player, pair.Key, (int)pair.Value.playerType );
 			}
 		}
 
 		DebugConsole.Log( "Telling everyone else about " + playerID + ":" + playerType );
 		// Then tell everyone about the new guy
-		this.networkView.RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
+		this.GetComponent<NetworkView>().RPC( "SendPlayerTeamInfo", RPCMode.All, playerID, (int)playerType );
 
-		this.networkView.RPC( "OnSendConnectedInfoRPC", _player, Common.MyNetworkID(), GamePlayerManager.instance.myPlayer.name );
+		this.GetComponent<NetworkView>().RPC( "OnSendConnectedInfoRPC", _player, Common.MyNetworkID(), GamePlayerManager.instance.myPlayer.name );
 
 	}
 
@@ -200,7 +200,7 @@ public class MenuNetworking : BaseNetworkManager
 		int playerID = Common.NetworkID( _player );
 		GamePlayerManager.instance.RemovePlayer( playerID );
 
-		this.networkView.RPC( "OnRemovePlayerRPC", RPCMode.Others, playerID );
+		this.GetComponent<NetworkView>().RPC( "OnRemovePlayerRPC", RPCMode.Others, playerID );
 
 		MessageManager.instance.CreateMessageLocal( "Player " + playerID + " has disconnected", MESSAGE_TYPE.LOCAL );
 	}
@@ -242,7 +242,7 @@ public class MenuNetworking : BaseNetworkManager
 	public void StartGame()
 	{
 		MasterServer.UnregisterHost();
-		this.networkView.RPC( "OnLoadGameSceneRPC", RPCMode.All );
+		this.GetComponent<NetworkView>().RPC( "OnLoadGameSceneRPC", RPCMode.All );
 	}
 
 	[RPC]
@@ -259,7 +259,7 @@ public class MenuNetworking : BaseNetworkManager
 
 	public void SendChangePlayerTypeMessage( int _playerID, PLAYER_TYPE _playerType )
 	{
-		this.networkView.RPC( "OnChangePlayerTypeRPC", RPCMode.All, _playerID, (int)_playerType );
+		this.GetComponent<NetworkView>().RPC( "OnChangePlayerTypeRPC", RPCMode.All, _playerID, (int)_playerType );
 	}
 
 	[RPC]
@@ -274,7 +274,7 @@ public class MenuNetworking : BaseNetworkManager
 
 	public void SendValidatePlayerTypeChange( int _playerID, PLAYER_TYPE _playerType )
 	{
-		this.networkView.RPC( "OnValidatePlayerTypeChangeRPC", RPCMode.Server, _playerID, (int)_playerType );
+		this.GetComponent<NetworkView>().RPC( "OnValidatePlayerTypeChangeRPC", RPCMode.Server, _playerID, (int)_playerType );
 	}
 
 	[RPC]

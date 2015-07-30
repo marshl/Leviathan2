@@ -46,14 +46,14 @@ public class DeprecatedFighter : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
-		if(this.rigidbody.velocity != this.transform.forward * currentSpeed)
-		this.rigidbody.velocity = (this.transform.forward * currentSpeed);// + (inertialVector * inertialSpeed);
-		this.rigidbody.maxAngularVelocity = 0;
+		if(this.GetComponent<Rigidbody>().velocity != this.transform.forward * currentSpeed)
+		this.GetComponent<Rigidbody>().velocity = (this.transform.forward * currentSpeed);// + (inertialVector * inertialSpeed);
+		this.GetComponent<Rigidbody>().maxAngularVelocity = 0;
 	}
 
 	void LateUpdate()
 	{
-		this.rigidbody.rotation = Quaternion.Slerp (this.rigidbody.rotation,desiredRotation,Time.deltaTime * turnRate);
+		this.GetComponent<Rigidbody>().rotation = Quaternion.Slerp (this.GetComponent<Rigidbody>().rotation,desiredRotation,Time.deltaTime * turnRate);
 	}
 	
 	void CheckFlightControls()

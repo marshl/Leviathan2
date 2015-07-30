@@ -53,8 +53,8 @@ public abstract class Common
 		
 		if ( Physics.Raycast( ray, out targetAim, TargetManager.instance.lineOfSightBlockingLayers ) )
 		{
-			if ( _source.collider != null
-			  && targetAim.collider == _source.collider )
+			if ( _source.GetComponent<Collider>() != null
+			  && targetAim.collider == _source.GetComponent<Collider>() )
 			{
 				return ray.direction;
 			}
@@ -171,13 +171,13 @@ public abstract class Common
 	/// <param name="_speed">_speed.</param>
 	public static Vector3 GetTargetLeadPosition( Vector3 _origin, Transform _target, float _speed )
 	{
-		if ( _target.rigidbody == null )
+		if ( _target.GetComponent<Rigidbody>() == null )
 		{
 			return _target.position;
 		}
 	
 		float s = _speed;
-		float v = _target.rigidbody.velocity.magnitude;
+		float v = _target.GetComponent<Rigidbody>().velocity.magnitude;
 
 		if ( s == v )
 		{
@@ -187,7 +187,7 @@ public abstract class Common
 		float d = ( _origin - _target.position ).magnitude;
 
 		// The angle between the forward of the target and the direction to the origin
-		float theta = Mathf.Acos( Vector3.Dot( _target.rigidbody.velocity.normalized, (_origin - _target.position).normalized ) );
+		float theta = Mathf.Acos( Vector3.Dot( _target.GetComponent<Rigidbody>().velocity.normalized, (_origin - _target.position).normalized ) );
 
 		// Now we need to solve for T, the time at which the bullet and target will collide
 		// First we can use the rule of sines ( c*c = a*a + b*b - 2*a*b*cos(theta)
@@ -206,11 +206,11 @@ public abstract class Common
 
 		if ( x1 >= 0.0f )
 		{
-			return _target.position + _target.rigidbody.velocity * x1;
+			return _target.position + _target.GetComponent<Rigidbody>().velocity * x1;
 		}
 		else if ( x2 >= 0.0f )
 		{
-			return _target.position + _target.rigidbody.velocity * x2;
+			return _target.position + _target.GetComponent<Rigidbody>().velocity * x2;
 		}
 		else
 		{

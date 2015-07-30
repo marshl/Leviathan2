@@ -74,11 +74,11 @@ public class BaseHealth : MonoBehaviour
 		// Tell the owner about that damage, and let him tell me the health
 		if ( _broadcast && Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendDealDamageMessage( this.networkView.viewID, _damage, _sourcePlayer );
+			GameNetworkManager.instance.SendDealDamageMessage( this.GetComponent<NetworkView>().viewID, _damage, _sourcePlayer );
 		}
 
 		// If it's mine, take the damage
-		if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+		if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected )
 		{
 			if( this.currentShield > 0 )
 			{
@@ -99,7 +99,7 @@ public class BaseHealth : MonoBehaviour
 
 			if ( Network.peerType != NetworkPeerType.Disconnected )
 			{
-				GameNetworkManager.instance.SendSetHealthMessage( this.networkView.viewID, this.currentHealth, this.currentShield );
+				GameNetworkManager.instance.SendSetHealthMessage( this.GetComponent<NetworkView>().viewID, this.currentHealth, this.currentShield );
 			}
 		}
 
@@ -127,7 +127,7 @@ public class BaseHealth : MonoBehaviour
 				//TODO: This might be way too frequent an update
 				if ( Network.peerType != NetworkPeerType.Disconnected )
 				{
-					GameNetworkManager.instance.SendSetHealthMessage( this.networkView.viewID, this.currentHealth, this.currentShield );
+					GameNetworkManager.instance.SendSetHealthMessage( this.GetComponent<NetworkView>().viewID, this.currentHealth, this.currentShield );
 				}
 			}
 		}
@@ -141,7 +141,7 @@ public class BaseHealth : MonoBehaviour
 
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendSetHealthMessage( this.networkView.viewID, this.currentHealth, this.currentShield );
+			GameNetworkManager.instance.SendSetHealthMessage( this.GetComponent<NetworkView>().viewID, this.currentHealth, this.currentShield );
 		}
 	}
 }

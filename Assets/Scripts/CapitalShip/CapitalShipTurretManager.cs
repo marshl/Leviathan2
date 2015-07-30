@@ -88,7 +88,7 @@ public class CapitalShipTurretManager : MonoBehaviour
 		if ( !this.master.isDummyShip )
 #endif
 		{
-			if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+			if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected )
 			{
 				if ( Input.GetKeyDown( KeyCode.Q ) )
 				{

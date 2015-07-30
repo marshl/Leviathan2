@@ -21,12 +21,12 @@ public class MuzzleFlash : MonoBehaviour
 	
 	public void OnFire()
 	{
-		this.audio.Play();
+		this.GetComponent<AudioSource>().Play();
 		this.flash.enabled = true;
 		this.flashTimer = 0.0f;
-		if ( this.particleSystem != null )
+		if ( this.GetComponent<ParticleSystem>() != null )
 		{
-			this.particleSystem.Play();
+			this.GetComponent<ParticleSystem>().Play();
 		}
 	}
 }

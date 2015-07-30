@@ -40,7 +40,7 @@ public class BulletBase : MonoBehaviour
 	/// </summary>
 	public virtual void OnShoot()
 	{
-		this.rigidbody.velocity = this.transform.forward * this.desc.moveSpeed;
+		this.GetComponent<Rigidbody>().velocity = this.transform.forward * this.desc.moveSpeed;
 		this.lastPosition = this.transform.position;
 		//this.specialCollision = false;
 	}
@@ -70,7 +70,7 @@ public class BulletBase : MonoBehaviour
 					{
 						GameObject.Destroy( this.gameObject );
 					}
-					else if ( this.networkView.isMine )
+					else if ( this.GetComponent<NetworkView>().isMine )
 					{
 						Network.Destroy( this.gameObject );
 					}
@@ -195,8 +195,8 @@ public class BulletBase : MonoBehaviour
 		}
 
 		if ( Network.peerType != NetworkPeerType.Disconnected
-		  && this.networkView != null
-		  && !this.networkView.isMine )
+		  && this.GetComponent<NetworkView>() != null
+		  && !this.GetComponent<NetworkView>().isMine )
 		{
 			return;
 		}
@@ -208,7 +208,7 @@ public class BulletBase : MonoBehaviour
 	{
 		//TODO: Quick and nasty fix, may have to be repaired to manage long-term missile collisions LM 08/05/14
 		if ( this.source != null
-		  && this.source.collider == _collider )
+		  && this.source.GetComponent<Collider>() == _collider )
 		{
 			return;
 		}
@@ -275,9 +275,9 @@ public class BulletBase : MonoBehaviour
 
 	public void OnFadeBegin()
 	{
-		this.collider.enabled = false;
+		this.GetComponent<Collider>().enabled = false;
 		this.state = BulletBase.BULLET_STATE.FADING;
-		this.rigidbody.velocity = Vector3.zero;
+		this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		foreach ( ParticleEmitter emitter in this.GetComponentsInChildren<ParticleEmitter>() )
 		{
 			emitter.emit = false;
@@ -293,16 +293,16 @@ public class BulletBase : MonoBehaviour
 	{
 		this.source = null;
 
-		this.collider.enabled = true;
+		this.GetComponent<Collider>().enabled = true;
 		//this.specialCollision = false;
 		this.distanceTravelled = 0.0f;
 
-		this.rigidbody.velocity = Vector3.zero;
-		this.rigidbody.angularVelocity = Vector3.zero;
+		this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		this.damageScale = 1.0f;
 
 		this.fadeTime = 0.0f;
-		this.collider.enabled = true;
+		this.GetComponent<Collider>().enabled = true;
 
 		foreach ( ParticleEmitter emitter in this.GetComponentsInChildren<ParticleEmitter>() )
 		{

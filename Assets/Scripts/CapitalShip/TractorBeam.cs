@@ -50,7 +50,7 @@ public class TractorBeam : MonoBehaviour
 		if ( this.master.isDummyShip == false )
 #endif
 		{
-			if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected ) 
+			if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected ) 
 			{
 				if ( this.tractorUITargetting && Input.GetMouseButtonDown(1) ) //Right click
 				{
@@ -70,7 +70,7 @@ public class TractorBeam : MonoBehaviour
 							FireAtTarget( hit.collider.gameObject, tractorUITargetType );
 							if ( Network.peerType != NetworkPeerType.Disconnected )
 							{
-							GameNetworkManager.instance.SendTractorStartMessage( this.networkView.viewID, tractorUITargetType, hit.collider.networkView.viewID );
+							GameNetworkManager.instance.SendTractorStartMessage( this.GetComponent<NetworkView>().viewID, tractorUITargetType, hit.collider.GetComponent<NetworkView>().viewID );
 							}
 						}
 						else
@@ -95,7 +95,7 @@ public class TractorBeam : MonoBehaviour
 			DebugConsole.Log ("Force vector is " + forceVector.ToString());
 			DebugConsole.Log ("Magnitude is " + forceVector.magnitude.ToString());
 
-			currentTarget.rigidbody.AddForce (forceVector);
+			currentTarget.GetComponent<Rigidbody>().AddForce (forceVector);
 
 			DebugConsole.Log ("Target name is " + currentTarget.name);
 			chargePercentage -= chargeDrain * Time.fixedDeltaTime;
@@ -103,7 +103,7 @@ public class TractorBeam : MonoBehaviour
 			if(chargePercentage <= 0)
 			{
 				chargePercentage = 0;
-				if(this.networkView.isMine)
+				if(this.GetComponent<NetworkView>().isMine)
 				{
 					StopTractor();
 					DebugConsole.Log ("Stopped tractor");
@@ -127,7 +127,7 @@ public class TractorBeam : MonoBehaviour
 		if ( !this.master.isDummyShip )
 #endif
 		{
-			if ( this.networkView.isMine || Network.peerType == NetworkPeerType.Disconnected )
+			if ( this.GetComponent<NetworkView>().isMine || Network.peerType == NetworkPeerType.Disconnected )
 			{
 				GUI.Label(tractorStatusLableRect,"Tractor: " + chargePercentage + "%");
 				if( GUI.Button(tractorPushLableRect, "Engage push"))
@@ -163,10 +163,10 @@ public class TractorBeam : MonoBehaviour
 		{
 		case TractorFunction.HOLD:
 		{
-				targetOriginalDrag = target.rigidbody.drag;
-				targetOriginalAngularDrag = target.rigidbody.angularDrag;
-				target.rigidbody.drag = dragOverride;
-				target.rigidbody.angularDrag = dragOverride;
+				targetOriginalDrag = target.GetComponent<Rigidbody>().drag;
+				targetOriginalAngularDrag = target.GetComponent<Rigidbody>().angularDrag;
+				target.GetComponent<Rigidbody>().drag = dragOverride;
+				target.GetComponent<Rigidbody>().angularDrag = dragOverride;
 
 				tractorDirection = 0;
 				currentTarget = target.gameObject;
@@ -177,10 +177,10 @@ public class TractorBeam : MonoBehaviour
 		}
 		case TractorFunction.PULL:
 		{
-			targetOriginalDrag = target.rigidbody.drag;
-			targetOriginalAngularDrag = target.rigidbody.angularDrag;
-			target.rigidbody.drag = dragOverride;
-			target.rigidbody.angularDrag = dragOverride;
+			targetOriginalDrag = target.GetComponent<Rigidbody>().drag;
+			targetOriginalAngularDrag = target.GetComponent<Rigidbody>().angularDrag;
+			target.GetComponent<Rigidbody>().drag = dragOverride;
+			target.GetComponent<Rigidbody>().angularDrag = dragOverride;
 			
 			tractorDirection = -1;
 			currentTarget = target.gameObject;
@@ -191,10 +191,10 @@ public class TractorBeam : MonoBehaviour
 		}
 		case TractorFunction.PUSH:
 		{
-			targetOriginalDrag = target.rigidbody.drag;
-			targetOriginalAngularDrag = target.rigidbody.angularDrag;
-			target.rigidbody.drag = dragOverride;
-			target.rigidbody.angularDrag = dragOverride;
+			targetOriginalDrag = target.GetComponent<Rigidbody>().drag;
+			targetOriginalAngularDrag = target.GetComponent<Rigidbody>().angularDrag;
+			target.GetComponent<Rigidbody>().drag = dragOverride;
+			target.GetComponent<Rigidbody>().angularDrag = dragOverride;
 			
 			tractorDirection = 1;
 			currentTarget = target.gameObject;
@@ -212,14 +212,14 @@ public class TractorBeam : MonoBehaviour
 		RefreshTarget();
 		if ( Network.peerType != NetworkPeerType.Disconnected )
 		{
-			GameNetworkManager.instance.SendTractorStopMessage( this.networkView.viewID );
+			GameNetworkManager.instance.SendTractorStopMessage( this.GetComponent<NetworkView>().viewID );
 		}
 	}
 
 	public void RefreshTarget()
 	{
-		currentTarget.rigidbody.drag = targetOriginalDrag;
-		currentTarget.rigidbody.angularDrag = targetOriginalAngularDrag;
+		currentTarget.GetComponent<Rigidbody>().drag = targetOriginalDrag;
+		currentTarget.GetComponent<Rigidbody>().angularDrag = targetOriginalAngularDrag;
 		tractorActive = false;
 	}
 

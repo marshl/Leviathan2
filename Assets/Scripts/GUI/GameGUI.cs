@@ -142,7 +142,7 @@ public class GameGUI : MonoBehaviour
 		case GUI_MODE.FIGHTER:
 		{
 			this.idleCamera.enabled = false;
-			this.camera.enabled = true;
+			this.GetComponent<Camera>().enabled = true;
 
 			BaseHealth target = this.player.fighter.weapons.currentTarget;
 			if ( target != null )
