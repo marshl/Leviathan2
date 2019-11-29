@@ -223,7 +223,7 @@ public static class DebugConsole
 	public static void OnSetHealth( string[] _chunks )
 	{
 		int playerID = -1;
-		int health;
+		int health = 0;
 		if ( (_chunks.Length == 2 && int.TryParse( _chunks[1], out health )
 		   || _chunks.Length == 3 && int.TryParse( _chunks[1], out health ) && int.TryParse( _chunks[2], out playerID ) )
 			== false )

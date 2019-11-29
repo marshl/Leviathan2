@@ -14,7 +14,7 @@ public class FighterCamera : MonoBehaviour
 	
 	private void Start ()
 	{
-		eyePoint = fighter.transform.FindChild ("CameraPoint");
+		eyePoint = fighter.transform.Find ("CameraPoint");
 			
 		this.transform.rotation = eyePoint.transform.rotation;
 		this.transform.position = eyePoint.transform.position;
